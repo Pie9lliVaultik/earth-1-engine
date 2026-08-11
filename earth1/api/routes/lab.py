@@ -1,6 +1,8 @@
 from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
-from earth1.api.schemas import OrderEffectSchema, CubeAggregateSchema
+from pydantic import BaseModel
+from typing import Optional
+from earth1.api.schemas import OrderEffectSchema, CubeAggregateSchema, EvolveRequest, EvolveResponse
 from earth1.api.deps import get_civ
 from earth1.questions import question_by_id
 from earth1.superposition import born_readout, sequential_measurement
@@ -80,3 +82,50 @@ def layer_scrub_endpoint(
 
     from earth1.layer_scrub import layer_scrub
     return layer_scrub(civ, question, epsilon=epsilon, layers=layers, country_idx=country_idx)
+
+
+@router.post("/evolve", response_model=EvolveResponse)
+def evolve_population(req: EvolveRequest):
+    """Evolve the population forward in time and optionally track opinion drift on a question."""
+    from earth1.dynamics import evolve, project_opinion_drift
+
+    civ = get_civ()
+
+    if req.question_id:
+        traj = project_opinion_drift(
+            civ, req.question_id,
+            years=req.years, seed=req.seed,
+        )
+        _, stats = evolve(civ, years=req.years, seed=req.seed, rebuild_graph=False)
+        stats_data = [
+            {
+                "year": s.year, "deaths": s.deaths, "births": s.births,
+                "migrants": s.migrants, "pop_by_country": s.pop_by_country,
+                "mean_age": s.mean_age, "mean_openness": s.mean_openness,
+                "mean_education": s.mean_education,
+                "urbanization_rate": s.urbanization_rate,
+            }
+            for s in stats
+        ]
+        return {
+            "years_evolved": req.years,
+            "stats": stats_data,
+            "opinion_drift": traj,
+        }
+    else:
+        _, stats = evolve(civ, years=req.years, seed=req.seed, rebuild_graph=False)
+        stats_data = [
+            {
+                "year": s.year, "deaths": s.deaths, "births": s.births,
+                "migrants": s.migrants, "pop_by_country": s.pop_by_country,
+                "mean_age": s.mean_age, "mean_openness": s.mean_openness,
+                "mean_education": s.mean_education,
+                "urbanization_rate": s.urbanization_rate,
+            }
+            for s in stats
+        ]
+        return {
+            "years_evolved": req.years,
+            "stats": stats_data,
+            "opinion_drift": None,
+        }

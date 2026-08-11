@@ -68,6 +68,24 @@ PREMISE CHECK:
   2. external_substrate → set premise_valid=false, explain why belief is not the cause
   3. incoherent/unanswerable → set premise_valid=false, explain
 
+COUNTRY SCOPING:
+  The engine models 9 countries: US, GB, DE, BR, NG, IN, JP, MX, FR.
+  If the question targets a specific country or region (e.g. "What do Germans think
+  about..."), set country_scope to that country code.  If it asks about "the world"
+  or "people" generically, set country_scope to "global".
+
+TEMPORAL CONTEXT:
+  If the question references a specific event, time period, or condition
+  (e.g. "After the 2024 election...", "During COVID..."), extract it as
+  temporal_context.  This does NOT change the weights — it is metadata for
+  the narration layer.  If no temporal framing, set to empty string.
+
+BINARY REFRAMING:
+  The engine needs a yes/no question.  If the input is open-ended
+  ("What do people think about X?"), reframe it as a binary:
+  "Do people support/approve/favor X?"  Return the reframed version
+  in binary_question.  If already binary, return as-is.
+
 YOUR TASK: Given the user's question, call the `estimate_weights` tool with your
 best estimates.  Think carefully about which forces ACTUALLY drive opinion, their
 directions (positive/negative), and their relative magnitudes.  Most questions are
@@ -114,11 +132,24 @@ WEIGHT_TOOL = {
                 "enum": ["calibrated", "transitional", "forward_estimate"],
                 "description": "How close is this to calibrated survey data? Most novel questions are forward_estimate.",
             },
+            "country_scope": {
+                "type": "string",
+                "description": "ISO-2 country code if question targets a specific country (US, GB, DE, BR, NG, IN, JP, MX, FR), or 'global' if not country-specific.",
+            },
+            "temporal_context": {
+                "type": "string",
+                "description": "Temporal framing extracted from the question (e.g. 'post-2024 US election', 'during COVID-19 pandemic'). Empty string if none.",
+            },
+            "binary_question": {
+                "type": "string",
+                "description": "The question reframed as a yes/no binary. If already binary, return as-is. If open-ended, reframe as 'Do people support/approve/favor X?'",
+            },
         },
         "required": [
             "baseline", "fear", "desire", "economics", "collective",
             "identity", "culture", "experience", "temperament",
             "domain", "premise_valid", "premise_reason", "lens", "confidence",
+            "country_scope", "temporal_context", "binary_question",
         ],
     },
 }
@@ -134,7 +165,10 @@ OPENAI_WEIGHT_TOOL = {
 
 
 class GatewayResult:
-    __slots__ = ("question", "confidence", "premise_valid", "premise_reason", "raw")
+    __slots__ = (
+        "question", "confidence", "premise_valid", "premise_reason",
+        "country_scope", "temporal_context", "binary_question", "raw",
+    )
 
     def __init__(
         self,
@@ -143,11 +177,17 @@ class GatewayResult:
         premise_valid: bool,
         premise_reason: str,
         raw: dict,
+        country_scope: str = "global",
+        temporal_context: str = "",
+        binary_question: str = "",
     ):
         self.question = question
         self.confidence = confidence
         self.premise_valid = premise_valid
         self.premise_reason = premise_reason
+        self.country_scope = country_scope
+        self.temporal_context = temporal_context
+        self.binary_question = binary_question
         self.raw = raw
 
 
@@ -182,11 +222,18 @@ def _parse_tool_input(data: dict, text: str) -> GatewayResult:
         note=f"LLM-estimated ({data.get('confidence', 'forward_estimate')})",
     )
 
+    country_scope = data.get("country_scope", "global")
+    temporal_context = data.get("temporal_context", "")
+    binary_question = data.get("binary_question", text)
+
     return GatewayResult(
         question=q,
         confidence=data.get("confidence", "forward_estimate"),
         premise_valid=premise_valid,
         premise_reason=premise_reason,
+        country_scope=country_scope,
+        temporal_context=temporal_context,
+        binary_question=binary_question,
         raw=data,
     )
 

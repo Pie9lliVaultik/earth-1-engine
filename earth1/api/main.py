@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from earth1.api.routes import ask, forecast, lab, observatory
+from earth1.api.routes import ask, forecast, lab, observatory, predictions
 from earth1.api.schemas import HealthSchema, CivStatsSchema
 from earth1.api.deps import get_civ
 from earth1.engine import civ_breakdown
@@ -17,6 +17,14 @@ async def lifespan(app: FastAPI):
     civ = get_civ()
     dt = time.time() - t0
     print(f"[earth1] Civilization built: {civ.n:,} agents in {dt:.1f}s")
+
+    from earth1.db import init_db, is_enabled
+    if is_enabled():
+        init_db()
+        print("[earth1] Database connected and tables created")
+    else:
+        print("[earth1] No DATABASE_URL — running without persistence")
+
     yield
 
 
@@ -39,6 +47,7 @@ app.include_router(ask.router)
 app.include_router(forecast.router)
 app.include_router(lab.router)
 app.include_router(observatory.router)
+app.include_router(predictions.router)
 
 
 @app.get("/health", response_model=HealthSchema)
