@@ -1,0 +1,23 @@
+[project]
+name = "earth1-engine"
+version = "0.1.0"
+description = "Earth-1 civilization engine — vectorized force-field opinion dynamics at scale"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.7",
+    "fastapi>=0.100",
+    "uvicorn[standard]>=0.20",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+gpu = ["torch>=2.0"]
+dev = ["pytest>=7.0", "httpx>=0.24"]
+
+[project.scripts]
+earth1-api = "earth1.api.main:run"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
