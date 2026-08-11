@@ -16,6 +16,7 @@ from earth1.forces import project_all
 from earth1.diffusion import diffuse
 from earth1.decompose import histogram, anatomize
 from earth1.questions import SURVEY_MATCHED
+from earth1.llm_gateway import estimate, GatewayResult
 
 DEFAULT_EPSILON = 0.18
 DEFAULT_LAYERS = 8
@@ -164,6 +165,38 @@ def run_multiverse(
 
     branches.sort(key=lambda b: b.contortion)
     return {"present": present, "branches": branches}
+
+
+def run_freetext(
+    text: str,
+    civ: Civilization,
+    epsilon: float = DEFAULT_EPSILON,
+    layers: int = DEFAULT_LAYERS,
+    provider: Optional[str] = None,
+    model: Optional[str] = None,
+) -> dict:
+    """Full pipeline: free-text → LLM weight estimation → engine forward pass → result.
+
+    Returns dict with 'gateway' (LLM estimation metadata) and 'result' (RunResult).
+    If premise is invalid, returns an abstained RunResult with the reason.
+    """
+    gw = estimate(text, provider=provider, model=model)
+
+    if not gw.premise_valid:
+        result = RunResult(
+            question=gw.question, n=civ.n, yes_pct=0.5, frac_yes=0.5,
+            regime="forward-estimate",
+            distribution_by_layer=[], final_distribution=np.zeros(20, dtype=int),
+            force_anatomy=np.zeros(NUM_FORCES),
+            dominant=Force.IDENTITY, conviction=0.0, fragility=0.0,
+            camps={"yes": None, "no": None},
+            params={"epsilon": epsilon, "layers": layers},
+            abstained=gw.premise_reason,
+        )
+        return {"gateway": gw, "result": result}
+
+    result = run_question(gw.question, civ, epsilon=epsilon, layers=layers)
+    return {"gateway": gw, "result": result}
 
 
 def civ_breakdown(civ: Civilization) -> List[dict]:

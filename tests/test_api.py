@@ -114,6 +114,19 @@ def test_layer_scrub():
     assert r.status_code == 200
     data = r.json()
     assert len(data["layers"]) == 9  # 0..8
+    assert "core" in data["layers"][0]
+    assert "crust" in data["layers"][0]
+    assert "sharpening" in data
+
+
+def test_layer_scrub_country():
+    r = client.get("/lab/layer-scrub?q=ssm&country=BR")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["population"] > 0
+    assert data["sharpening"]["verdict"] in [
+        "flat_to_sharp_confirmed", "sharpened_no_separation", "partial", "no_sharpening"
+    ]
 
 
 if __name__ == "__main__":

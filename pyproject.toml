@@ -13,10 +13,12 @@ dependencies = [
 
 [project.optional-dependencies]
 gpu = ["torch>=2.0"]
+llm = ["anthropic>=0.30", "openai>=1.0"]
 dev = ["pytest>=7.0", "httpx>=0.24"]
 
 [project.scripts]
 earth1-api = "earth1.api.main:run"
+earth1-benchmark = "earth1.benchmark:run_cli"
 
 [build-system]
 requires = ["setuptools>=68"]

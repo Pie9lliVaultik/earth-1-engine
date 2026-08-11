@@ -98,6 +98,28 @@ class CalibrationResultSchema(BaseModel):
     error: float
 
 
+class FreetextRequest(BaseModel):
+    question: str
+    epsilon: float = 0.18
+    layers: int = 8
+    provider: Optional[str] = None
+    model: Optional[str] = None
+
+
+class GatewaySchema(BaseModel):
+    premise_valid: bool
+    premise_reason: str
+    confidence: str
+    lens: str
+    estimated_weights: Dict[str, float]
+    baseline: float
+
+
+class FreetextResponse(BaseModel):
+    gateway: GatewaySchema
+    result: RunResultSchema
+
+
 class HealthSchema(BaseModel):
     status: str
     population: int

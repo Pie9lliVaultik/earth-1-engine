@@ -59,22 +59,24 @@ def cube_aggregate(
 
 
 @router.get("/layer-scrub")
-def layer_scrub(
+def layer_scrub_endpoint(
     q: str = Query(...),
     epsilon: float = Query(0.18, ge=0.01, le=1.0),
     layers: int = Query(8, ge=0, le=50),
+    country: str = Query(None, description="Country code to filter (e.g. BR, US)"),
 ):
-    """Returns distribution at each diffusion layer — shows compression → sharpening."""
+    """Layer-by-layer analysis with conviction core / conformity crust separation."""
     question = question_by_id(q)
     if not question:
         raise HTTPException(404, f"Unknown question: {q}")
     civ = get_civ()
-    result = run_question(question, civ, epsilon=epsilon, layers=layers)
-    return {
-        "question_id": question.id,
-        "layers": [
-            {"layer": i, "distribution": d.tolist()}
-            for i, d in enumerate(result.distribution_by_layer)
-        ],
-        "params": result.params,
-    }
+
+    country_idx = None
+    if country:
+        from earth1.population import COUNTRY_CODES
+        if country.upper() not in COUNTRY_CODES:
+            raise HTTPException(400, f"Unknown country: {country}")
+        country_idx = COUNTRY_CODES.index(country.upper())
+
+    from earth1.layer_scrub import layer_scrub
+    return layer_scrub(civ, question, epsilon=epsilon, layers=layers, country_idx=country_idx)
