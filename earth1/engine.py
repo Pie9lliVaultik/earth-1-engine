@@ -54,6 +54,29 @@ def build_genesis_civilization(
     return civ
 
 
+def attend(
+    civ: Civilization,
+    q: Question,
+    top_frac: float = 0.35,
+) -> np.ndarray:
+    """Attention (bible §19.2): select the active subpopulation.
+
+    An agent loads on a question to the degree its centered force profile
+    projects onto the question's weight direction — |centered @ weights| is
+    its logit displacement from baseline. Agents with negligible displacement
+    sit at the baseline stance regardless, so only the loaded top fraction
+    needs diffusion. This is how the population can be huge while inference
+    stays cheap.
+    """
+    centered = civ.forces - civ.means[np.newaxis, :]
+    load = np.abs(centered @ q.weights)
+    if top_frac >= 1.0:
+        return np.ones(civ.n, dtype=bool)
+    k = max(1, int(civ.n * top_frac))
+    thresh = np.partition(load, -k)[-k]
+    return load >= thresh
+
+
 def run_question(
     q: Question,
     civ: Civilization,
@@ -62,6 +85,7 @@ def run_question(
     field_shift: np.ndarray | None = None,
     event_log=None,
     t: float = 0.0,
+    attention_frac: float | None = None,
 ) -> RunResult:
     params = {"epsilon": epsilon, "layers": layers}
 
@@ -85,7 +109,21 @@ def run_question(
             effective_shift = event_deltas
 
     s0 = project_all(civ, q, effective_shift)
-    snaps = diffuse(s0, civ.alpha, civ.adj, epsilon, layers)
+    if attention_frac is not None and attention_frac < 1.0:
+        # §19.2: diffuse only the active subpopulation; inert agents hold
+        # their projected (baseline-adjacent) stance.
+        active = attend(civ, q, attention_frac)
+        sub_adj = civ.adj[active][:, active]
+        sub_snaps = diffuse(s0[active], civ.alpha[active], sub_adj, epsilon, layers)
+        snaps = []
+        for s in sub_snaps:
+            full = s0.copy()
+            full[active] = s
+            snaps.append(full)
+        params["attention_frac"] = attention_frac
+        params["active_agents"] = int(active.sum())
+    else:
+        snaps = diffuse(s0, civ.alpha, civ.adj, epsilon, layers)
     settled = snaps[-1]
 
     anat = anatomize(civ, settled, q)

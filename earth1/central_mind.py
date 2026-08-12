@@ -18,6 +18,7 @@ import numpy as np
 from earth1.types import Civilization, RunResult, CohortCell, Force, NUM_FORCES
 from earth1.llm_gateway import GatewayResult, estimate
 from earth1.corpus import QuestionCorpus
+from earth1.scenarios import EVENT_CATALOG, Event, ScenarioBranch, BranchStep
 from earth1.engine import run_question, run_segment
 from earth1.confidence import ConfidenceScore, score_confidence
 from earth1.narration import narrate
@@ -38,6 +39,41 @@ class MindResult:
     abstained: bool
 
 
+def author(
+    question: Question,
+    k: int = 4,
+    day: int = 7,
+    catalog: Optional[Dict[str, Event]] = None,
+) -> List[ScenarioBranch]:
+    """Authoring (bible §19.2): the mind authors counterfactual branches
+    for the multiverse (§13).
+
+    An event is relevant to a question to the degree its force shifts move
+    the question's logit — |weights · shifts|. The top-k relevant events
+    each become a branch beside the status quo. Deterministic: the catalog
+    and the computed loadings choose the futures, not an LLM.
+    """
+    cat = catalog or EVENT_CATALOG
+    w = np.asarray(question.weights[:NUM_FORCES])
+
+    scored = []
+    for e in cat.values():
+        shift = np.zeros(NUM_FORCES)
+        for fi, d in e.shifts.items():
+            shift[int(fi)] = d
+        relevance = abs(float(w @ shift))
+        if relevance > 0:
+            scored.append((relevance, e))
+    scored.sort(key=lambda t: -t[0])
+
+    branches = [ScenarioBranch(id="status_quo", label="Status quo", steps=[])]
+    for _, e in scored[:k]:
+        branches.append(ScenarioBranch(
+            id=e.id, label=e.label, steps=[BranchStep(day=day, event=e)],
+        ))
+    return branches
+
+
 def think(
     text: str,
     civ: Civilization,
@@ -48,6 +84,7 @@ def think(
     skip_narration: bool = False,
     corpus: Optional["QuestionCorpus"] = None,
     corpus_min_sim: float = 0.85,
+    attention_frac: Optional[float] = None,
 ) -> MindResult:
     # Perception is retrieval-first (bible §19.1): a near-neighbour in the
     # corpus supplies the solved loadings and no LLM call happens. The LLM
@@ -107,7 +144,8 @@ def think(
             abstained=True,
         )
 
-    result = run_question(gw.question, civ, epsilon=epsilon, layers=layers)
+    result = run_question(gw.question, civ, epsilon=epsilon, layers=layers,
+                          attention_frac=attention_frac)
 
     country_splits = None
     scope = gw.country_scope

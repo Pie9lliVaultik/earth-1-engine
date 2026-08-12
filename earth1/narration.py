@@ -16,6 +16,66 @@ import numpy as np
 
 from earth1.types import RunResult, CohortCell, Force, FORCE_NAMES
 
+# §19.3: a cause below this normalized-anatomy magnitude was not computed
+# to matter — the narration may not assert it. Enforced in code, not prompt.
+CAUSE_MIN = 0.05
+
+_ALL_FORCE_NAMES = frozenset(f.name.lower() for f in Force)
+
+
+def allowed_causes(result: RunResult) -> set:
+    """Forces the narration is permitted to cite: |anatomy| >= CAUSE_MIN."""
+    return {
+        Force(i).name.lower()
+        for i in range(len(result.force_anatomy))
+        if abs(float(result.force_anatomy[i])) >= CAUSE_MIN
+    }
+
+
+def render_deterministic(result: RunResult) -> dict:
+    """Narration as a pure rendering of the decomposition (§19.3 fallback).
+
+    No LLM, no invention possible: causes are the computed anatomy values
+    at or above CAUSE_MIN, sorted by magnitude. Used when the LLM narration
+    violates the honesty guard, or when no LLM is available.
+    """
+    anatomy = result.force_anatomy
+    causes = sorted(
+        ((Force(i).name.lower(), float(anatomy[i]))
+         for i in range(len(anatomy))
+         if abs(float(anatomy[i])) >= CAUSE_MIN),
+        key=lambda kv: -abs(kv[1]),
+    )
+    cause_txt = ", ".join(f"{n} ({v:+.2f})" for n, v in causes) or "no single force"
+    narration = (
+        f"The population answers {result.yes_pct:.0%} yes "
+        f"(conviction {result.conviction:.2f}, fragility {result.fragility:.2f}). "
+        f"Computed drivers: {cause_txt}."
+    )
+    return {
+        "narration": narration,
+        "headline": f"{result.yes_pct:.0%} yes — {result.dominant.name.lower()} driven",
+        "cited_forces": [n for n, _ in causes],
+        "honesty_guard": "deterministic",
+    }
+
+
+def enforce_honesty_guard(narr: dict, result: RunResult) -> dict:
+    """Law 2, mechanically: every cited or mentioned force must be a
+    computed cause. A violation withholds the LLM text entirely and
+    falls back to the deterministic rendering — no cause, not said."""
+    allowed = allowed_causes(result)
+    cited = {str(c).lower() for c in narr.get("cited_forces", [])}
+    text = (str(narr.get("narration", "")) + " " + str(narr.get("headline", ""))).lower()
+    mentioned = {n for n in _ALL_FORCE_NAMES if n in text}
+    violations = (cited | mentioned) - allowed
+    if violations:
+        guarded = render_deterministic(result)
+        guarded["honesty_guard"] = f"withheld_uncomputed_causes:{sorted(violations)}"
+        return guarded
+    narr["honesty_guard"] = "pass"
+    return narr
+
 
 NARRATION_PROMPT = """\
 You are the narration layer of Earth-1, a civilization engine.
@@ -172,17 +232,21 @@ def narrate(
         elif os.environ.get("OPENAI_API_KEY"):
             provider = "openai"
         else:
-            raise RuntimeError("No LLM API key found.")
+            # No LLM: narration is still available as a pure rendering
+            # of the decomposition (§19.3).
+            return render_deterministic(result)
 
     if provider == "anthropic":
-        return narrate_anthropic(
+        narr = narrate_anthropic(
             result, country_splits, temporal_context,
             model=model or "claude-haiku-4-5-20251001",
         )
     elif provider == "openai":
-        return narrate_openai(
+        narr = narrate_openai(
             result, country_splits, temporal_context,
             model=model or "gpt-4o",
         )
     else:
         raise ValueError(f"Unknown provider: {provider}")
+
+    return enforce_honesty_guard(narr, result)
