@@ -266,58 +266,70 @@ def _build_graph(
     region_idx: np.ndarray,
     country: np.ndarray,
     seed: int,
-    k: int = 8,
-    long_links: int = 2,
+    k_local: int = 8,
+    k_cross: int = 2,
+    cross_weight: float = 0.3,
 ) -> sparse.csr_matrix:
-    """Enhanced homophily graph with region and age dimensions."""
+    """Country-stratified social graph.
+
+    ~80% of edges connect agents within the same country (local homophily).
+    ~20% are cross-country links at reduced weight. Diffusion primarily
+    operates within countries, preserving per-country opinion structure
+    while still allowing cross-border influence.
+    """
     rng = make_rng(seed)
 
-    region_norm = region_idx.astype(np.float64)
-    if region_norm.max() > 0:
-        region_norm = region_norm / region_norm.max()
-
-    country_norm = country.astype(np.float64)
-    if country_norm.max() > 0:
-        country_norm = country_norm / country_norm.max()
-
-    pos = (0.25 * openness
-         + 0.15 * forces[:, Force.ECONOMICS]
-         + 0.10 * (1.0 - forces[:, Force.FEAR])
-         + 0.15 * (0.5 + culture_offset)
-         + 0.10 * country_norm
-         + 0.10 * region_norm
+    # Within-country position: trait-based similarity (no country/region terms)
+    pos = (0.30 * openness
+         + 0.20 * forces[:, Force.ECONOMICS]
+         + 0.15 * (1.0 - forces[:, Force.FEAR])
+         + 0.20 * np.clip(0.5 + culture_offset, 0, 1)
          + 0.15 * forces[:, Force.EXPERIENCE])
 
-    order = np.argsort(pos)
+    pos_range = pos.max() - pos.min()
+    if pos_range > 0:
+        pos = (pos - pos.min()) / pos_range
+
+    # Sort by (country, position) — nearest neighbors stay within-country
+    composite = country.astype(np.float64) * 2.0 + pos
+    order = np.argsort(composite)
     rank = np.empty(n, dtype=np.int64)
     rank[order] = np.arange(n)
 
-    half = max(1, k // 2)
+    half = max(1, k_local // 2)
     rows = []
     cols = []
+    weights = []
+
     for d in range(1, half + 1):
         valid_fwd = rank + d < n
         src_fwd = np.where(valid_fwd)[0]
         dst_fwd = order[rank[src_fwd] + d]
-        rows.append(src_fwd)
-        cols.append(dst_fwd)
+        same = country[src_fwd] == country[dst_fwd]
+        rows.append(src_fwd[same])
+        cols.append(dst_fwd[same])
+        weights.append(np.ones(same.sum(), dtype=np.float32))
 
         valid_bwd = rank - d >= 0
         src_bwd = np.where(valid_bwd)[0]
         dst_bwd = order[rank[src_bwd] - d]
-        rows.append(src_bwd)
-        cols.append(dst_bwd)
+        same = country[src_bwd] == country[dst_bwd]
+        rows.append(src_bwd[same])
+        cols.append(dst_bwd[same])
+        weights.append(np.ones(same.sum(), dtype=np.float32))
 
-    for _ in range(long_links):
+    # Cross-country links at reduced weight
+    for _ in range(k_cross):
         src_all = np.arange(n)
         dst_all = rng.integers(0, n, size=n)
-        mask = dst_all != src_all
+        mask = (dst_all != src_all) & (country[dst_all] != country[src_all])
         rows.append(src_all[mask])
         cols.append(dst_all[mask])
+        weights.append(np.full(mask.sum(), cross_weight, dtype=np.float32))
 
     row = np.concatenate(rows)
     col = np.concatenate(cols)
-    data = np.ones(len(row), dtype=np.float32)
+    data = np.concatenate(weights)
     adj = sparse.csr_matrix((data, (row, col)), shape=(n, n))
     return adj
 
