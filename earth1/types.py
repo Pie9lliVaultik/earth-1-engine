@@ -52,6 +52,16 @@ class Civilization:
     desire_intensity: np.ndarray
     economic_field: np.ndarray
     culture_offset: np.ndarray
+    # Big Five (beyond openness)
+    conscientiousness: np.ndarray
+    agreeableness: np.ndarray
+    extraversion: np.ndarray
+    neuroticism: np.ndarray
+    # Hofstede-derived per-agent
+    power_distance: np.ndarray
+    individualism: np.ndarray
+    uncertainty_avoidance: np.ndarray
+    long_term_orientation: np.ndarray
     # the eight force source terms (N, 8)
     forces: np.ndarray
     # conviction / residual strength (N,)

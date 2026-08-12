@@ -281,6 +281,126 @@ class EvolveResponse(BaseModel):
     opinion_drift: Optional[List[OpinionDriftPoint]] = None
 
 
+class ClaimRequest(BaseModel):
+    user_id: str
+    country_code: str
+    age: float = 0.38
+    education: int = 1
+    income: int = 1
+    urban: bool = True
+    openness: float = 0.55
+
+
+class ClaimSchema(BaseModel):
+    claim_id: str
+    agent_idx: int
+    user_id: str
+    country_code: str
+    match_score: float
+    demographics: Dict[str, Any]
+
+
+class RevealSchema(BaseModel):
+    agent_idx: int
+    country: str
+    traits: Dict[str, float]
+    force_profile: Dict[str, float]
+    projected_stances: Dict[str, float]
+
+
+class StanceCorrectionInput(BaseModel):
+    question_id: str
+    corrected_stance: float
+
+
+class CorrectRequest(BaseModel):
+    agent_idx: int
+    corrections: List[StanceCorrectionInput]
+    propagate: bool = True
+
+
+class CorrectionResultSchema(BaseModel):
+    agent_idx: int
+    n_region_updated: int
+    corrections_applied: int
+    before_stances: Dict[str, float]
+    after_stances: Dict[str, float]
+    trait_deltas: Dict[str, float]
+
+
+class CalibrationRequest(BaseModel):
+    agent_idx: int
+    corrections: List[StanceCorrectionInput]
+    holdout_question_ids: Optional[List[str]] = None
+
+
+class CalibrationReportSchema(BaseModel):
+    n_corrections: int
+    holdout_error_before: float
+    holdout_error_after: float
+    improvement: float
+    improved_questions: List[str]
+    cohort_improvements: Dict[str, float]
+
+
+class NoiseProfileSchema(BaseModel):
+    question_id: str
+    baseline_yes_pct: float
+    seed_std: float
+    epsilon_sensitivity: float
+    layer_sensitivity: float
+    minimum_detectable_effect: float
+    compression_zone: bool
+
+
+class ForceRelevanceSchema(BaseModel):
+    question_id: str
+    relevance: Dict[str, float]
+    temporal_sensitivity: float
+    dominant_forces: List[str]
+    irrelevant_forces: List[str]
+
+
+class FieldShiftRequest(BaseModel):
+    question_id: str
+    forces: List[float]
+    confidence: Optional[List[float]] = None
+    gain: float = 0.1
+
+
+class FieldShiftSchema(BaseModel):
+    question_id: str
+    field_shift: Dict[str, float]
+    magnitude: float
+    gain: float
+
+
+class FieldShiftRunRequest(BaseModel):
+    question_id: str
+    forces: List[float]
+    confidence: Optional[List[float]] = None
+    gain: float = 0.1
+    epsilon: float = 0.18
+    layers: int = 8
+
+
+class FalsificationRequest(BaseModel):
+    question_id: str
+    forces: List[float]
+    confidence: Optional[List[float]] = None
+
+
+class FalsificationReportSchema(BaseModel):
+    question_id: str
+    conditions: Dict[str, Any]
+    real_vs_off_delta: float
+    time_placebo_delta: float
+    country_placebo_delta: float
+    sign_placebo_delta: float
+    real_signal_exceeds_placebo: bool
+    signal_to_noise: float
+
+
 class HealthSchema(BaseModel):
     status: str
     population: int

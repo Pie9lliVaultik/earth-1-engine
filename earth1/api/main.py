@@ -1,11 +1,12 @@
 """Earth-1 API — FastAPI application."""
 from __future__ import annotations
+import os
 import time
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from earth1.api.routes import ask, forecast, lab, observatory, predictions
+from earth1.api.routes import ask, billing, forecast, lab, loop, observatory, predictions, receiver
 from earth1.api.schemas import HealthSchema, CivStatsSchema
 from earth1.api.deps import get_civ
 from earth1.engine import civ_breakdown
@@ -47,7 +48,19 @@ app.include_router(ask.router)
 app.include_router(forecast.router)
 app.include_router(lab.router)
 app.include_router(observatory.router)
+app.include_router(loop.router)
 app.include_router(predictions.router)
+app.include_router(receiver.router)
+app.include_router(billing.router)
+
+from earth1.api.middleware import RateLimitMiddleware, PauseSwitchMiddleware
+from earth1.api.auth import APIKeyMiddleware
+
+app.add_middleware(RateLimitMiddleware)
+if os.environ.get("EARTH1_PAUSED"):
+    app.add_middleware(PauseSwitchMiddleware)
+if os.environ.get("EARTH1_AUTH_REQUIRED"):
+    app.add_middleware(APIKeyMiddleware)
 
 
 @app.get("/health", response_model=HealthSchema)

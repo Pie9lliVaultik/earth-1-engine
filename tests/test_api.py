@@ -25,7 +25,7 @@ def test_civ():
     assert r.status_code == 200
     data = r.json()
     assert data["population"] == 5000
-    assert len(data["countries"]) == 9
+    assert len(data["countries"]) >= 50
 
 
 def test_ask():
@@ -54,7 +54,7 @@ def test_segment():
     r = client.get("/ask/segment?q=ssm&split_by=country")
     assert r.status_code == 200
     data = r.json()
-    assert len(data) == 9
+    assert len(data) >= 50
     assert all("yes_pct" in c for c in data)
 
 
@@ -78,14 +78,14 @@ def test_questions_list():
     r = client.get("/observatory/questions")
     assert r.status_code == 200
     data = r.json()
-    assert len(data) == 8
+    assert len(data) == 28
 
 
 def test_standing_readings():
     r = client.get("/observatory/standing-readings")
     assert r.status_code == 200
     data = r.json()
-    assert len(data) == 7  # 7 belief-causal questions
+    assert len(data) == 27  # 27 belief-causal questions
 
 
 def test_superposition():

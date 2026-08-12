@@ -63,7 +63,7 @@ def test_rain_abstains():
 def test_segment_country():
     q = question_by_id("ssm")
     cells = run_segment(q, civ, "country")
-    assert len(cells) == 9
+    assert len(cells) == 50
     total = sum(c.n for c in cells)
     assert total == POP
 
@@ -85,7 +85,7 @@ def test_multiverse():
 
 def test_breakdown():
     bd = civ_breakdown(civ)
-    assert len(bd) == 9
+    assert len(bd) == 50
     assert sum(c["n"] for c in bd) == POP
 
 

@@ -144,7 +144,7 @@ class TestSimulateCountry:
     def test_returns_all_countries(self):
         q = question_by_id("ssm")
         series = simulate_country(q, civ, duration_days=60, step_days=30)
-        assert len(series) == 9
+        assert len(series) == 50
 
     def test_each_country_has_time_series(self):
         q = question_by_id("ssm")

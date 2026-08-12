@@ -10,10 +10,15 @@ _civ: Civilization | None = None
 def get_civ() -> Civilization:
     global _civ
     if _civ is None:
-        from earth1.engine import build_civilization
         pop = int(os.environ.get("EARTH1_POP", "100000"))
         seed = int(os.environ.get("EARTH1_SEED", "42"))
-        _civ = build_civilization(pop, seed)
+        use_genesis = os.environ.get("EARTH1_GENESIS", "1") == "1"
+        if use_genesis:
+            from earth1.engine import build_genesis_civilization
+            _civ = build_genesis_civilization(pop, seed)
+        else:
+            from earth1.engine import build_civilization
+            _civ = build_civilization(pop, seed)
     return _civ
 
 

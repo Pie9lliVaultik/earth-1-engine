@@ -11,6 +11,7 @@ from earth1.db.store import (
     list_runs, get_run,
     save_prediction, list_predictions, get_prediction,
     record_outcome, prediction_accuracy, expire_predictions,
+    arm_prediction, resolve_with_atlas, query_atlas,
 )
 
 router = APIRouter(prefix="/predictions", tags=["predictions"])
@@ -220,3 +221,43 @@ def expire(db=Depends(get_db)):
     _check_enabled()
     n = expire_predictions(db)
     return {"expired": n}
+
+
+@router.post("/{prediction_id}/arm")
+def arm(prediction_id: str, db=Depends(get_db)):
+    _check_enabled()
+    try:
+        pred = arm_prediction(db, prediction_id)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    return {
+        "id": pred.id,
+        "armed": pred.armed,
+        "armed_at": pred.armed_at.isoformat() if pred.armed_at else None,
+        "prediction_hash": pred.prediction_hash,
+    }
+
+
+@router.get("/atlas")
+def atlas(
+    dominant_force: str = None,
+    min_fragility: float = None,
+    limit: int = 100,
+    db=Depends(get_db),
+):
+    _check_enabled()
+    entries = query_atlas(db, dominant_force=dominant_force, min_fragility=min_fragility, limit=limit)
+    return [
+        {
+            "id": fo.id,
+            "prediction_id": fo.prediction_id,
+            "dominant_force": fo.dominant_force,
+            "force_signature": fo.force_signature,
+            "fragility_at_prediction": fo.fragility_at_prediction,
+            "predicted_yes_pct": fo.predicted_yes_pct,
+            "actual_yes_pct": fo.actual_yes_pct,
+            "error": fo.error,
+            "resolved_at": fo.resolved_at.isoformat() if fo.resolved_at else None,
+        }
+        for fo in entries
+    ]

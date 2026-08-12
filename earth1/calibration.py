@@ -11,6 +11,7 @@ from __future__ import annotations
 import numpy as np
 from earth1.types import Civilization, NUM_FORCES
 from earth1.rng import logit, sigmoid
+from earth1.holdout import is_holdout
 
 
 def calibrate_weights(
@@ -28,6 +29,8 @@ def calibrate_weights(
 
     results = []
     for t in targets:
+        if is_holdout(t["id"]):
+            continue
         y_target = t["target_yes_pct"]
         y_logit = logit(np.array([y_target]))[0]
 

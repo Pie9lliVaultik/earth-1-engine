@@ -12,6 +12,10 @@ from earth1.types import (
     Force, FORCE_KEYS, NUM_FORCES, PERISHABILITY_HALF_LIFE,
 )
 from earth1.population import generate_population, COUNTRIES, AGE_LABELS
+from earth1.genesis import (
+    genesis, GENESIS_COUNTRIES, GENESIS_COUNTRY_CODES,
+    genesis_country_name, genesis_country_code,
+)
 from earth1.forces import project_all
 from earth1.diffusion import diffuse
 from earth1.decompose import histogram, anatomize
@@ -21,7 +25,13 @@ from earth1.llm_gateway import estimate, GatewayResult
 DEFAULT_EPSILON = 0.18
 DEFAULT_LAYERS = 8
 
+GENESIS_AGE_LABELS = ["18-29", "30-44", "45-59", "60-74", "75+"]
+
 _civ_cache: Dict[str, Civilization] = {}
+
+
+def _is_genesis(civ: Civilization) -> bool:
+    return int(civ.country.max()) >= len(COUNTRIES)
 
 
 def build_civilization(pop: int = 1_000_000, seed: int = 42) -> Civilization:
@@ -33,12 +43,25 @@ def build_civilization(pop: int = 1_000_000, seed: int = 42) -> Civilization:
     return civ
 
 
+def build_genesis_civilization(
+    pop: int = 1_000_000, seed: int = 42, min_per_country: int = 500,
+) -> Civilization:
+    key = f"genesis:{pop}:{seed}:{min_per_country}"
+    if key in _civ_cache:
+        return _civ_cache[key]
+    civ = genesis(pop, seed, min_per_country)
+    _civ_cache[key] = civ
+    return civ
+
+
 def run_question(
     q: Question,
     civ: Civilization,
     epsilon: float = DEFAULT_EPSILON,
     layers: int = DEFAULT_LAYERS,
     field_shift: np.ndarray | None = None,
+    event_log=None,
+    t: float = 0.0,
 ) -> RunResult:
     params = {"epsilon": epsilon, "layers": layers}
 
@@ -53,7 +76,15 @@ def run_question(
             abstained="Out of the belief-causal domain — belief is not the cause.",
         )
 
-    s0 = project_all(civ, q, field_shift)
+    effective_shift = field_shift
+    if event_log is not None and len(event_log) > 0:
+        event_deltas = event_log.effective_deltas_vectorized(t, civ)
+        if effective_shift is not None:
+            effective_shift = effective_shift + event_deltas
+        else:
+            effective_shift = event_deltas
+
+    s0 = project_all(civ, q, effective_shift)
     snaps = diffuse(s0, civ.alpha, civ.adj, epsilon, layers)
     settled = snaps[-1]
 
@@ -92,6 +123,11 @@ def run_segment(
     snaps = diffuse(s0, civ.alpha, civ.adj, epsilon, layers)
     settled = snaps[-1]
 
+    is_gen = _is_genesis(civ)
+    country_list = GENESIS_COUNTRIES if is_gen else COUNTRIES
+    age_labels = GENESIS_AGE_LABELS if is_gen else AGE_LABELS
+    code_key = "iso2" if is_gen else "code"
+
     attr_map = {
         "country": civ.country,
         "age_bucket": civ.age_bucket,
@@ -99,8 +135,8 @@ def run_segment(
         "income": civ.income,
     }
     label_map = {
-        "country": lambda v: COUNTRIES[v]["code"],
-        "age_bucket": lambda v: AGE_LABELS[v],
+        "country": lambda v: country_list[v][code_key],
+        "age_bucket": lambda v: age_labels[v],
         "education": lambda v: ["low", "mid", "high"][v],
         "income": lambda v: ["low", "mid", "high"][v],
     }
@@ -200,8 +236,12 @@ def run_freetext(
 
 
 def civ_breakdown(civ: Civilization) -> List[dict]:
-    counts = np.bincount(civ.country, minlength=len(COUNTRIES))
+    is_gen = _is_genesis(civ)
+    country_list = GENESIS_COUNTRIES if is_gen else COUNTRIES
+    code_key = "iso2" if is_gen else "code"
+    counts = np.bincount(civ.country, minlength=len(country_list))
     return [
-        {"code": COUNTRIES[i]["code"], "name": COUNTRIES[i]["name"], "n": int(counts[i])}
+        {"code": country_list[i][code_key], "name": country_list[i]["name"], "n": int(counts[i])}
         for i in np.argsort(-counts)
+        if i < len(country_list)
     ]

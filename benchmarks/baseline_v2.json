@@ -1,0 +1,3329 @@
+{
+  "timestamp": "2026-08-12 13:16:41",
+  "population": 100000,
+  "seed": 42,
+  "n_questions": 50,
+  "n_country_pairs": 449,
+  "global_mae": 0.0434,
+  "country_mae": 0.1201,
+  "overall_mae": 0.1124,
+  "by_regime": {
+    "calibrated": {
+      "threshold": 0.85,
+      "questions": [
+        "b_ssm",
+        "b_immig",
+        "b_climate",
+        "b_democracy",
+        "b_gender_eq",
+        "b_tech_good",
+        "b_abortion",
+        "b_death_penalty",
+        "b_econ_unfair",
+        "b_media_trust",
+        "b_life_sat",
+        "b_us_fav",
+        "b_nukes",
+        "b_natl_pride",
+        "b_ai_concern",
+        "b_inequality",
+        "b_hard_work",
+        "b_obedience",
+        "b_divorce",
+        "b_science_better",
+        "b_military_rule",
+        "b_env_vs_econ",
+        "b_terrorism",
+        "b_free_speech",
+        "b_vaccines",
+        "b_women_work",
+        "b_censorship",
+        "b_econ_improving",
+        "b_nato",
+        "b_automation",
+        "b_multinationals",
+        "b_social_mobility",
+        "b_internet_good",
+        "b_trad_family",
+        "b_foreign_aid",
+        "b_leaders_care",
+        "b_higher_ed",
+        "b_lgbtq_accept",
+        "b_cyber_threat",
+        "b_globalization"
+      ],
+      "mae": 0.1004,
+      "count": 40
+    },
+    "transitional": {
+      "threshold": 0.65,
+      "questions": [
+        "b_gov_trust",
+        "b_religion",
+        "b_two_parent",
+        "b_china_fav",
+        "b_trust_people",
+        "b_police_trust",
+        "b_corruption",
+        "b_elections_fair",
+        "b_health_sat",
+        "b_russia_unfav"
+      ],
+      "mae": 0.1976,
+      "count": 10
+    },
+    "forward_estimate": {
+      "threshold": 0.0,
+      "questions": [],
+      "mae": null,
+      "count": 0
+    }
+  },
+  "duration_s": 29.6,
+  "questions": [
+    {
+      "id": "b_ssm",
+      "text": "Do people support same-sex marriage?",
+      "predicted_global": 0.5809,
+      "target_global": 0.55,
+      "global_error": 0.0309,
+      "dominant": "identity",
+      "country_mae": 0.1162,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.7686,
+          "target": 0.71,
+          "error": 0.0586
+        },
+        {
+          "country": "GB",
+          "predicted": 0.7876,
+          "target": 0.77,
+          "error": 0.0176
+        },
+        {
+          "country": "DE",
+          "predicted": 0.7389,
+          "target": 0.75,
+          "error": 0.0111
+        },
+        {
+          "country": "FR",
+          "predicted": 0.7313,
+          "target": 0.77,
+          "error": 0.0387
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5751,
+          "target": 0.52,
+          "error": 0.0551
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5655,
+          "target": 0.55,
+          "error": 0.0155
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6852,
+          "target": 0.65,
+          "error": 0.0352
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5974,
+          "target": 0.22,
+          "error": 0.3774
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5064,
+          "target": 0.07,
+          "error": 0.4364
+        }
+      ]
+    },
+    {
+      "id": "b_immig",
+      "text": "Should immigration be more restricted?",
+      "predicted_global": 0.4692,
+      "target_global": 0.48,
+      "global_error": 0.0108,
+      "dominant": "identity",
+      "country_mae": 0.1282,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.3432,
+          "target": 0.48,
+          "error": 0.1368
+        },
+        {
+          "country": "GB",
+          "predicted": 0.3443,
+          "target": 0.52,
+          "error": 0.1757
+        },
+        {
+          "country": "DE",
+          "predicted": 0.3844,
+          "target": 0.46,
+          "error": 0.0756
+        },
+        {
+          "country": "FR",
+          "predicted": 0.3811,
+          "target": 0.56,
+          "error": 0.1789
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4814,
+          "target": 0.44,
+          "error": 0.0414
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4841,
+          "target": 0.38,
+          "error": 0.1041
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4239,
+          "target": 0.66,
+          "error": 0.2361
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4617,
+          "target": 0.42,
+          "error": 0.0417
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5135,
+          "target": 0.35,
+          "error": 0.1635
+        }
+      ]
+    },
+    {
+      "id": "b_climate",
+      "text": "Is urgent climate action a priority?",
+      "predicted_global": 0.5733,
+      "target_global": 0.62,
+      "global_error": 0.0467,
+      "dominant": "experience",
+      "country_mae": 0.1075,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6907,
+          "target": 0.54,
+          "error": 0.1507
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6983,
+          "target": 0.7,
+          "error": 0.0017
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6352,
+          "target": 0.71,
+          "error": 0.0748
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6488,
+          "target": 0.83,
+          "error": 0.1812
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6047,
+          "target": 0.72,
+          "error": 0.1153
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5873,
+          "target": 0.69,
+          "error": 0.1027
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5525,
+          "target": 0.75,
+          "error": 0.1975
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6004,
+          "target": 0.56,
+          "error": 0.0404
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5833,
+          "target": 0.48,
+          "error": 0.1033
+        }
+      ]
+    },
+    {
+      "id": "b_gov_trust",
+      "text": "Do people trust their national government?",
+      "predicted_global": 0.4361,
+      "target_global": 0.38,
+      "global_error": 0.0561,
+      "dominant": "economics",
+      "country_mae": 0.2067,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.5142,
+          "target": 0.2,
+          "error": 0.3142
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5182,
+          "target": 0.35,
+          "error": 0.1682
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4742,
+          "target": 0.45,
+          "error": 0.0242
+        },
+        {
+          "country": "FR",
+          "predicted": 0.495,
+          "target": 0.28,
+          "error": 0.215
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4498,
+          "target": 0.22,
+          "error": 0.2298
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4516,
+          "target": 0.21,
+          "error": 0.2416
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4373,
+          "target": 0.28,
+          "error": 0.1573
+        },
+        {
+          "country": "IN",
+          "predicted": 0.443,
+          "target": 0.77,
+          "error": 0.327
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4327,
+          "target": 0.25,
+          "error": 0.1827
+        }
+      ]
+    },
+    {
+      "id": "b_democracy",
+      "text": "Is democracy the best system of government?",
+      "predicted_global": 0.7618,
+      "target_global": 0.78,
+      "global_error": 0.0182,
+      "dominant": "experience",
+      "country_mae": 0.0461,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.8327,
+          "target": 0.85,
+          "error": 0.0173
+        },
+        {
+          "country": "GB",
+          "predicted": 0.8385,
+          "target": 0.87,
+          "error": 0.0315
+        },
+        {
+          "country": "DE",
+          "predicted": 0.8165,
+          "target": 0.92,
+          "error": 0.1035
+        },
+        {
+          "country": "FR",
+          "predicted": 0.8155,
+          "target": 0.84,
+          "error": 0.0245
+        },
+        {
+          "country": "BR",
+          "predicted": 0.7669,
+          "target": 0.72,
+          "error": 0.0469
+        },
+        {
+          "country": "MX",
+          "predicted": 0.7601,
+          "target": 0.68,
+          "error": 0.0801
+        },
+        {
+          "country": "JP",
+          "predicted": 0.7912,
+          "target": 0.82,
+          "error": 0.0288
+        },
+        {
+          "country": "IN",
+          "predicted": 0.7677,
+          "target": 0.75,
+          "error": 0.0177
+        },
+        {
+          "country": "NG",
+          "predicted": 0.7441,
+          "target": 0.68,
+          "error": 0.0641
+        }
+      ]
+    },
+    {
+      "id": "b_religion",
+      "text": "Is religion important in your daily life?",
+      "predicted_global": 0.5511,
+      "target_global": 0.62,
+      "global_error": 0.0689,
+      "dominant": "identity",
+      "country_mae": 0.3087,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6536,
+          "target": 0.65,
+          "error": 0.0036
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6599,
+          "target": 0.27,
+          "error": 0.3899
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5926,
+          "target": 0.25,
+          "error": 0.3426
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6282,
+          "target": 0.21,
+          "error": 0.4182
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5819,
+          "target": 0.86,
+          "error": 0.2781
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5653,
+          "target": 0.78,
+          "error": 0.2147
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5233,
+          "target": 0.13,
+          "error": 0.3933
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5761,
+          "target": 0.92,
+          "error": 0.3439
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5659,
+          "target": 0.96,
+          "error": 0.3941
+        }
+      ]
+    },
+    {
+      "id": "b_gender_eq",
+      "text": "Do men generally have a better life than women in your country?",
+      "predicted_global": 0.527,
+      "target_global": 0.52,
+      "global_error": 0.007,
+      "dominant": "experience",
+      "country_mae": 0.0603,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6119,
+          "target": 0.56,
+          "error": 0.0519
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6193,
+          "target": 0.54,
+          "error": 0.0793
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5986,
+          "target": 0.52,
+          "error": 0.0786
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6034,
+          "target": 0.62,
+          "error": 0.0166
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5054,
+          "target": 0.58,
+          "error": 0.0746
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5102,
+          "target": 0.6,
+          "error": 0.0898
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5965,
+          "target": 0.64,
+          "error": 0.0435
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5275,
+          "target": 0.48,
+          "error": 0.0475
+        },
+        {
+          "country": "NG",
+          "predicted": 0.481,
+          "target": 0.42,
+          "error": 0.061
+        }
+      ]
+    },
+    {
+      "id": "b_tech_good",
+      "text": "Does technology generally make life better?",
+      "predicted_global": 0.676,
+      "target_global": 0.72,
+      "global_error": 0.044,
+      "dominant": "desire",
+      "country_mae": 0.0707,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6994,
+          "target": 0.72,
+          "error": 0.0206
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6977,
+          "target": 0.68,
+          "error": 0.0177
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6845,
+          "target": 0.65,
+          "error": 0.0345
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6804,
+          "target": 0.62,
+          "error": 0.0604
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6876,
+          "target": 0.78,
+          "error": 0.0924
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6899,
+          "target": 0.76,
+          "error": 0.0701
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6602,
+          "target": 0.63,
+          "error": 0.0302
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6757,
+          "target": 0.85,
+          "error": 0.1743
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6836,
+          "target": 0.82,
+          "error": 0.1364
+        }
+      ]
+    },
+    {
+      "id": "b_abortion",
+      "text": "Should abortion be legal in most cases?",
+      "predicted_global": 0.507,
+      "target_global": 0.52,
+      "global_error": 0.013,
+      "dominant": "identity",
+      "country_mae": 0.1132,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6785,
+          "target": 0.61,
+          "error": 0.0685
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6968,
+          "target": 0.76,
+          "error": 0.0632
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6477,
+          "target": 0.72,
+          "error": 0.0723
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6428,
+          "target": 0.8,
+          "error": 0.1572
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4887,
+          "target": 0.38,
+          "error": 0.1087
+        },
+        {
+          "country": "MX",
+          "predicted": 0.486,
+          "target": 0.48,
+          "error": 0.006
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6091,
+          "target": 0.68,
+          "error": 0.0709
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5141,
+          "target": 0.36,
+          "error": 0.1541
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4383,
+          "target": 0.12,
+          "error": 0.3183
+        }
+      ]
+    },
+    {
+      "id": "b_death_penalty",
+      "text": "Do people favor the death penalty for serious crimes?",
+      "predicted_global": 0.5294,
+      "target_global": 0.55,
+      "global_error": 0.0206,
+      "dominant": "identity",
+      "country_mae": 0.1196,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.3852,
+          "target": 0.55,
+          "error": 0.1648
+        },
+        {
+          "country": "GB",
+          "predicted": 0.384,
+          "target": 0.48,
+          "error": 0.096
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4312,
+          "target": 0.32,
+          "error": 0.1112
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4486,
+          "target": 0.44,
+          "error": 0.0086
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5229,
+          "target": 0.57,
+          "error": 0.0471
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5288,
+          "target": 0.52,
+          "error": 0.0088
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4935,
+          "target": 0.8,
+          "error": 0.3065
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5283,
+          "target": 0.68,
+          "error": 0.1517
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5579,
+          "target": 0.74,
+          "error": 0.1821
+        }
+      ]
+    },
+    {
+      "id": "b_econ_unfair",
+      "text": "Is the economic system in your country unfair to most people?",
+      "predicted_global": 0.574,
+      "target_global": 0.62,
+      "global_error": 0.046,
+      "dominant": "economics",
+      "country_mae": 0.1034,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.5263,
+          "target": 0.58,
+          "error": 0.0537
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5111,
+          "target": 0.62,
+          "error": 0.1089
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5255,
+          "target": 0.48,
+          "error": 0.0455
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5553,
+          "target": 0.72,
+          "error": 0.1647
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5561,
+          "target": 0.76,
+          "error": 0.2039
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5558,
+          "target": 0.74,
+          "error": 0.1842
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5593,
+          "target": 0.58,
+          "error": 0.0207
+        },
+        {
+          "country": "IN",
+          "predicted": 0.587,
+          "target": 0.56,
+          "error": 0.027
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5778,
+          "target": 0.7,
+          "error": 0.1222
+        }
+      ]
+    },
+    {
+      "id": "b_two_parent",
+      "text": "Do children need both a mother and father to grow up happily?",
+      "predicted_global": 0.6384,
+      "target_global": 0.68,
+      "global_error": 0.0416,
+      "dominant": "culture",
+      "country_mae": 0.1572,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6633,
+          "target": 0.56,
+          "error": 0.1033
+        },
+        {
+          "country": "GB",
+          "predicted": 0.657,
+          "target": 0.48,
+          "error": 0.177
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6202,
+          "target": 0.42,
+          "error": 0.2002
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6595,
+          "target": 0.38,
+          "error": 0.2795
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6616,
+          "target": 0.72,
+          "error": 0.0584
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6527,
+          "target": 0.74,
+          "error": 0.0873
+        },
+        {
+          "country": "JP",
+          "predicted": 0.585,
+          "target": 0.62,
+          "error": 0.035
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6586,
+          "target": 0.88,
+          "error": 0.2214
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6671,
+          "target": 0.92,
+          "error": 0.2529
+        }
+      ]
+    },
+    {
+      "id": "b_media_trust",
+      "text": "Do people trust the news media?",
+      "predicted_global": 0.4004,
+      "target_global": 0.38,
+      "global_error": 0.0204,
+      "dominant": "identity",
+      "country_mae": 0.0805,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4298,
+          "target": 0.26,
+          "error": 0.1698
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4267,
+          "target": 0.36,
+          "error": 0.0667
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4041,
+          "target": 0.5,
+          "error": 0.0959
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4353,
+          "target": 0.3,
+          "error": 0.1353
+        },
+        {
+          "country": "BR",
+          "predicted": 0.3976,
+          "target": 0.42,
+          "error": 0.0224
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4005,
+          "target": 0.38,
+          "error": 0.0205
+        },
+        {
+          "country": "JP",
+          "predicted": 0.3981,
+          "target": 0.32,
+          "error": 0.0781
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4098,
+          "target": 0.52,
+          "error": 0.1102
+        },
+        {
+          "country": "NG",
+          "predicted": 0.3947,
+          "target": 0.42,
+          "error": 0.0253
+        }
+      ]
+    },
+    {
+      "id": "b_life_sat",
+      "text": "Are people generally satisfied with their life?",
+      "predicted_global": 0.6084,
+      "target_global": 0.58,
+      "global_error": 0.0284,
+      "dominant": "economics",
+      "country_mae": 0.0973,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6418,
+          "target": 0.72,
+          "error": 0.0782
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6364,
+          "target": 0.68,
+          "error": 0.0436
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6185,
+          "target": 0.7,
+          "error": 0.0815
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6202,
+          "target": 0.62,
+          "error": 0.0002
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6225,
+          "target": 0.55,
+          "error": 0.0725
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6229,
+          "target": 0.72,
+          "error": 0.0971
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5962,
+          "target": 0.52,
+          "error": 0.0762
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6079,
+          "target": 0.42,
+          "error": 0.1879
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6187,
+          "target": 0.38,
+          "error": 0.2387
+        }
+      ]
+    },
+    {
+      "id": "b_china_fav",
+      "text": "Do people have a favorable view of China?",
+      "predicted_global": 0.4193,
+      "target_global": 0.34,
+      "global_error": 0.0793,
+      "dominant": "economics",
+      "country_mae": 0.1747,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.3813,
+          "target": 0.15,
+          "error": 0.2313
+        },
+        {
+          "country": "GB",
+          "predicted": 0.3743,
+          "target": 0.18,
+          "error": 0.1943
+        },
+        {
+          "country": "DE",
+          "predicted": 0.3835,
+          "target": 0.21,
+          "error": 0.1735
+        },
+        {
+          "country": "FR",
+          "predicted": 0.3876,
+          "target": 0.16,
+          "error": 0.2276
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4265,
+          "target": 0.48,
+          "error": 0.0535
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4334,
+          "target": 0.42,
+          "error": 0.0134
+        },
+        {
+          "country": "JP",
+          "predicted": 0.3911,
+          "target": 0.09,
+          "error": 0.3011
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4146,
+          "target": 0.32,
+          "error": 0.0946
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4367,
+          "target": 0.72,
+          "error": 0.2833
+        }
+      ]
+    },
+    {
+      "id": "b_us_fav",
+      "text": "Do people have a favorable view of the United States?",
+      "predicted_global": 0.5943,
+      "target_global": 0.59,
+      "global_error": 0.0043,
+      "dominant": "economics",
+      "country_mae": 0.0894,
+      "country_results": [
+        {
+          "country": "GB",
+          "predicted": 0.6381,
+          "target": 0.69,
+          "error": 0.0519
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6209,
+          "target": 0.54,
+          "error": 0.0809
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6284,
+          "target": 0.52,
+          "error": 0.1084
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5938,
+          "target": 0.62,
+          "error": 0.0262
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5966,
+          "target": 0.52,
+          "error": 0.0766
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6104,
+          "target": 0.73,
+          "error": 0.1196
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5956,
+          "target": 0.65,
+          "error": 0.0544
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5832,
+          "target": 0.78,
+          "error": 0.1968
+        }
+      ]
+    },
+    {
+      "id": "b_nukes",
+      "text": "Are people worried about the threat of nuclear weapons?",
+      "predicted_global": 0.6367,
+      "target_global": 0.72,
+      "global_error": 0.0833,
+      "dominant": "fear",
+      "country_mae": 0.1117,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.5497,
+          "target": 0.73,
+          "error": 0.1803
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5473,
+          "target": 0.68,
+          "error": 0.1327
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5792,
+          "target": 0.7,
+          "error": 0.1208
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6009,
+          "target": 0.68,
+          "error": 0.0791
+        },
+        {
+          "country": "BR",
+          "predicted": 0.62,
+          "target": 0.62,
+          "error": 0.0
+        },
+        {
+          "country": "MX",
+          "predicted": 0.626,
+          "target": 0.58,
+          "error": 0.046
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6355,
+          "target": 0.88,
+          "error": 0.2445
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6408,
+          "target": 0.72,
+          "error": 0.0792
+        },
+        {
+          "country": "NG",
+          "predicted": 0.643,
+          "target": 0.52,
+          "error": 0.123
+        }
+      ]
+    },
+    {
+      "id": "b_natl_pride",
+      "text": "Is your country better than most other countries?",
+      "predicted_global": 0.5773,
+      "target_global": 0.52,
+      "global_error": 0.0573,
+      "dominant": "identity",
+      "country_mae": 0.0899,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6777,
+          "target": 0.68,
+          "error": 0.0023
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6757,
+          "target": 0.55,
+          "error": 0.1257
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6137,
+          "target": 0.42,
+          "error": 0.1937
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6445,
+          "target": 0.52,
+          "error": 0.1245
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6071,
+          "target": 0.48,
+          "error": 0.1271
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5914,
+          "target": 0.62,
+          "error": 0.0286
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5447,
+          "target": 0.55,
+          "error": 0.0053
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6029,
+          "target": 0.68,
+          "error": 0.0771
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5953,
+          "target": 0.72,
+          "error": 0.1247
+        }
+      ]
+    },
+    {
+      "id": "b_ai_concern",
+      "text": "Are people concerned about artificial intelligence?",
+      "predicted_global": 0.5435,
+      "target_global": 0.55,
+      "global_error": 0.0065,
+      "dominant": "experience",
+      "country_mae": 0.0933,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4835,
+          "target": 0.52,
+          "error": 0.0365
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4982,
+          "target": 0.58,
+          "error": 0.0818
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5265,
+          "target": 0.62,
+          "error": 0.0935
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5294,
+          "target": 0.64,
+          "error": 0.1106
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5271,
+          "target": 0.48,
+          "error": 0.0471
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5304,
+          "target": 0.44,
+          "error": 0.0904
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5725,
+          "target": 0.68,
+          "error": 0.1075
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5373,
+          "target": 0.42,
+          "error": 0.1173
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5346,
+          "target": 0.38,
+          "error": 0.1546
+        }
+      ]
+    },
+    {
+      "id": "b_inequality",
+      "text": "Is the gap between rich and poor too large?",
+      "predicted_global": 0.6811,
+      "target_global": 0.74,
+      "global_error": 0.0589,
+      "dominant": "economics",
+      "country_mae": 0.0802,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6305,
+          "target": 0.65,
+          "error": 0.0195
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6148,
+          "target": 0.72,
+          "error": 0.1052
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6314,
+          "target": 0.68,
+          "error": 0.0486
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6587,
+          "target": 0.78,
+          "error": 0.1213
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6654,
+          "target": 0.82,
+          "error": 0.1546
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6665,
+          "target": 0.8,
+          "error": 0.1335
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6661,
+          "target": 0.72,
+          "error": 0.0539
+        },
+        {
+          "country": "IN",
+          "predicted": 0.691,
+          "target": 0.68,
+          "error": 0.011
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6859,
+          "target": 0.76,
+          "error": 0.0741
+        }
+      ]
+    },
+    {
+      "id": "b_trust_people",
+      "text": "Can most people be trusted?",
+      "predicted_global": 0.3961,
+      "target_global": 0.28,
+      "global_error": 0.1161,
+      "dominant": "economics",
+      "country_mae": 0.1702,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.3384,
+          "target": 0.31,
+          "error": 0.0284
+        },
+        {
+          "country": "GB",
+          "predicted": 0.3205,
+          "target": 0.3,
+          "error": 0.0205
+        },
+        {
+          "country": "DE",
+          "predicted": 0.3376,
+          "target": 0.42,
+          "error": 0.0824
+        },
+        {
+          "country": "FR",
+          "predicted": 0.3579,
+          "target": 0.22,
+          "error": 0.1379
+        },
+        {
+          "country": "BR",
+          "predicted": 0.3896,
+          "target": 0.07,
+          "error": 0.3196
+        },
+        {
+          "country": "MX",
+          "predicted": 0.402,
+          "target": 0.12,
+          "error": 0.282
+        },
+        {
+          "country": "JP",
+          "predicted": 0.3662,
+          "target": 0.36,
+          "error": 0.0062
+        },
+        {
+          "country": "IN",
+          "predicted": 0.3934,
+          "target": 0.22,
+          "error": 0.1734
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4085,
+          "target": 0.11,
+          "error": 0.2985
+        },
+        {
+          "country": "SE",
+          "predicted": 0.3235,
+          "target": 0.64,
+          "error": 0.3165
+        },
+        {
+          "country": "CN",
+          "predicted": 0.4236,
+          "target": 0.63,
+          "error": 0.2064
+        }
+      ]
+    },
+    {
+      "id": "b_hard_work",
+      "text": "Does hard work generally lead to a better life?",
+      "predicted_global": 0.6072,
+      "target_global": 0.62,
+      "global_error": 0.0128,
+      "dominant": "economics",
+      "country_mae": 0.1267,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.672,
+          "target": 0.73,
+          "error": 0.058
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6732,
+          "target": 0.58,
+          "error": 0.0932
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6397,
+          "target": 0.52,
+          "error": 0.1197
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6397,
+          "target": 0.42,
+          "error": 0.2197
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6281,
+          "target": 0.62,
+          "error": 0.0081
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6275,
+          "target": 0.72,
+          "error": 0.0925
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5953,
+          "target": 0.42,
+          "error": 0.1753
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6108,
+          "target": 0.78,
+          "error": 0.1692
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6152,
+          "target": 0.82,
+          "error": 0.2048
+        }
+      ]
+    },
+    {
+      "id": "b_obedience",
+      "text": "Is obedience an important quality for children?",
+      "predicted_global": 0.5828,
+      "target_global": 0.58,
+      "global_error": 0.0028,
+      "dominant": "collective",
+      "country_mae": 0.1337,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.421,
+          "target": 0.38,
+          "error": 0.041
+        },
+        {
+          "country": "GB",
+          "predicted": 0.3942,
+          "target": 0.32,
+          "error": 0.0742
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4329,
+          "target": 0.28,
+          "error": 0.1529
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4851,
+          "target": 0.3,
+          "error": 0.1851
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5861,
+          "target": 0.72,
+          "error": 0.1339
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5941,
+          "target": 0.68,
+          "error": 0.0859
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4942,
+          "target": 0.44,
+          "error": 0.0542
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5912,
+          "target": 0.82,
+          "error": 0.2288
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6329,
+          "target": 0.88,
+          "error": 0.2471
+        }
+      ]
+    },
+    {
+      "id": "b_divorce",
+      "text": "Is divorce justifiable?",
+      "predicted_global": 0.5303,
+      "target_global": 0.56,
+      "global_error": 0.0297,
+      "dominant": "identity",
+      "country_mae": 0.0822,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6886,
+          "target": 0.64,
+          "error": 0.0486
+        },
+        {
+          "country": "GB",
+          "predicted": 0.7056,
+          "target": 0.72,
+          "error": 0.0144
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6582,
+          "target": 0.68,
+          "error": 0.0218
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6483,
+          "target": 0.74,
+          "error": 0.0917
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5223,
+          "target": 0.48,
+          "error": 0.0423
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5177,
+          "target": 0.52,
+          "error": 0.0023
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6128,
+          "target": 0.62,
+          "error": 0.0072
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5363,
+          "target": 0.28,
+          "error": 0.2563
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4749,
+          "target": 0.22,
+          "error": 0.2549
+        }
+      ]
+    },
+    {
+      "id": "b_science_better",
+      "text": "Does science do more good than harm?",
+      "predicted_global": 0.6378,
+      "target_global": 0.68,
+      "global_error": 0.0422,
+      "dominant": "experience",
+      "country_mae": 0.0846,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.7233,
+          "target": 0.62,
+          "error": 0.1033
+        },
+        {
+          "country": "GB",
+          "predicted": 0.7323,
+          "target": 0.68,
+          "error": 0.0523
+        },
+        {
+          "country": "DE",
+          "predicted": 0.7009,
+          "target": 0.72,
+          "error": 0.0191
+        },
+        {
+          "country": "FR",
+          "predicted": 0.7054,
+          "target": 0.64,
+          "error": 0.0654
+        },
+        {
+          "country": "BR",
+          "predicted": 0.637,
+          "target": 0.72,
+          "error": 0.083
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6401,
+          "target": 0.7,
+          "error": 0.0599
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6747,
+          "target": 0.58,
+          "error": 0.0947
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6441,
+          "target": 0.82,
+          "error": 0.1759
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6121,
+          "target": 0.72,
+          "error": 0.1079
+        }
+      ]
+    },
+    {
+      "id": "b_military_rule",
+      "text": "Could military rule ever be a good way to govern?",
+      "predicted_global": 0.3651,
+      "target_global": 0.24,
+      "global_error": 0.1251,
+      "dominant": "identity",
+      "country_mae": 0.0949,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.2082,
+          "target": 0.18,
+          "error": 0.0282
+        },
+        {
+          "country": "GB",
+          "predicted": 0.195,
+          "target": 0.12,
+          "error": 0.075
+        },
+        {
+          "country": "DE",
+          "predicted": 0.2401,
+          "target": 0.08,
+          "error": 0.1601
+        },
+        {
+          "country": "FR",
+          "predicted": 0.2606,
+          "target": 0.14,
+          "error": 0.1206
+        },
+        {
+          "country": "BR",
+          "predicted": 0.3391,
+          "target": 0.32,
+          "error": 0.0191
+        },
+        {
+          "country": "MX",
+          "predicted": 0.3505,
+          "target": 0.28,
+          "error": 0.0705
+        },
+        {
+          "country": "JP",
+          "predicted": 0.3144,
+          "target": 0.08,
+          "error": 0.2344
+        },
+        {
+          "country": "IN",
+          "predicted": 0.3605,
+          "target": 0.42,
+          "error": 0.0595
+        },
+        {
+          "country": "NG",
+          "predicted": 0.3936,
+          "target": 0.48,
+          "error": 0.0864
+        }
+      ]
+    },
+    {
+      "id": "b_env_vs_econ",
+      "text": "Should protecting the environment take priority over economic growth?",
+      "predicted_global": 0.5292,
+      "target_global": 0.52,
+      "global_error": 0.0092,
+      "dominant": "economics",
+      "country_mae": 0.095,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6172,
+          "target": 0.42,
+          "error": 0.1972
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6133,
+          "target": 0.58,
+          "error": 0.0333
+        },
+        {
+          "country": "DE",
+          "predicted": 0.566,
+          "target": 0.68,
+          "error": 0.114
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5808,
+          "target": 0.62,
+          "error": 0.0392
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5509,
+          "target": 0.56,
+          "error": 0.0091
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5339,
+          "target": 0.48,
+          "error": 0.0539
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5035,
+          "target": 0.52,
+          "error": 0.0165
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5526,
+          "target": 0.38,
+          "error": 0.1726
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5395,
+          "target": 0.32,
+          "error": 0.2195
+        }
+      ]
+    },
+    {
+      "id": "b_police_trust",
+      "text": "Do people trust the police?",
+      "predicted_global": 0.4678,
+      "target_global": 0.52,
+      "global_error": 0.0522,
+      "dominant": "collective",
+      "country_mae": 0.1698,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4754,
+          "target": 0.48,
+          "error": 0.0046
+        },
+        {
+          "country": "GB",
+          "predicted": 0.462,
+          "target": 0.62,
+          "error": 0.158
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4416,
+          "target": 0.72,
+          "error": 0.2784
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4774,
+          "target": 0.58,
+          "error": 0.1026
+        },
+        {
+          "country": "BR",
+          "predicted": 0.475,
+          "target": 0.38,
+          "error": 0.095
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4796,
+          "target": 0.28,
+          "error": 0.1996
+        },
+        {
+          "country": "JP",
+          "predicted": 0.434,
+          "target": 0.78,
+          "error": 0.346
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4782,
+          "target": 0.62,
+          "error": 0.1418
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4823,
+          "target": 0.28,
+          "error": 0.2023
+        }
+      ]
+    },
+    {
+      "id": "b_terrorism",
+      "text": "Are people worried about terrorism?",
+      "predicted_global": 0.5883,
+      "target_global": 0.62,
+      "global_error": 0.0317,
+      "dominant": "fear",
+      "country_mae": 0.1317,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4873,
+          "target": 0.58,
+          "error": 0.0927
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4826,
+          "target": 0.62,
+          "error": 0.1374
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5141,
+          "target": 0.54,
+          "error": 0.0259
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5426,
+          "target": 0.72,
+          "error": 0.1774
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5772,
+          "target": 0.42,
+          "error": 0.1572
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5826,
+          "target": 0.48,
+          "error": 0.1026
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5717,
+          "target": 0.38,
+          "error": 0.1917
+        },
+        {
+          "country": "IN",
+          "predicted": 0.594,
+          "target": 0.72,
+          "error": 0.126
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6057,
+          "target": 0.78,
+          "error": 0.1743
+        }
+      ]
+    },
+    {
+      "id": "b_free_speech",
+      "text": "Is free speech more important than not offending others?",
+      "predicted_global": 0.5499,
+      "target_global": 0.58,
+      "global_error": 0.0301,
+      "dominant": "identity",
+      "country_mae": 0.1029,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.7445,
+          "target": 0.71,
+          "error": 0.0345
+        },
+        {
+          "country": "GB",
+          "predicted": 0.7589,
+          "target": 0.58,
+          "error": 0.1789
+        },
+        {
+          "country": "DE",
+          "predicted": 0.696,
+          "target": 0.52,
+          "error": 0.176
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6781,
+          "target": 0.56,
+          "error": 0.1181
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5704,
+          "target": 0.48,
+          "error": 0.0904
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5545,
+          "target": 0.52,
+          "error": 0.0345
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6071,
+          "target": 0.42,
+          "error": 0.1871
+        },
+        {
+          "country": "IN",
+          "predicted": 0.563,
+          "target": 0.56,
+          "error": 0.003
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5168,
+          "target": 0.62,
+          "error": 0.1032
+        }
+      ]
+    },
+    {
+      "id": "b_corruption",
+      "text": "Is corruption a major problem in your country?",
+      "predicted_global": 0.6477,
+      "target_global": 0.72,
+      "global_error": 0.0723,
+      "dominant": "economics",
+      "country_mae": 0.2193,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6866,
+          "target": 0.52,
+          "error": 0.1666
+        },
+        {
+          "country": "GB",
+          "predicted": 0.696,
+          "target": 0.42,
+          "error": 0.276
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6895,
+          "target": 0.38,
+          "error": 0.3095
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6782,
+          "target": 0.58,
+          "error": 0.0982
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6427,
+          "target": 0.88,
+          "error": 0.2373
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6335,
+          "target": 0.86,
+          "error": 0.2265
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6797,
+          "target": 0.48,
+          "error": 0.1997
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6507,
+          "target": 0.82,
+          "error": 0.1693
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6296,
+          "target": 0.92,
+          "error": 0.2904
+        }
+      ]
+    },
+    {
+      "id": "b_vaccines",
+      "text": "Are vaccines safe and effective?",
+      "predicted_global": 0.7086,
+      "target_global": 0.79,
+      "global_error": 0.0814,
+      "dominant": "collective",
+      "country_mae": 0.1167,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.5969,
+          "target": 0.72,
+          "error": 0.1231
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5603,
+          "target": 0.82,
+          "error": 0.2597
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5994,
+          "target": 0.68,
+          "error": 0.0806
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6371,
+          "target": 0.58,
+          "error": 0.0571
+        },
+        {
+          "country": "BR",
+          "predicted": 0.7075,
+          "target": 0.82,
+          "error": 0.1125
+        },
+        {
+          "country": "MX",
+          "predicted": 0.7168,
+          "target": 0.78,
+          "error": 0.0632
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6512,
+          "target": 0.72,
+          "error": 0.0688
+        },
+        {
+          "country": "IN",
+          "predicted": 0.7124,
+          "target": 0.88,
+          "error": 0.1676
+        },
+        {
+          "country": "NG",
+          "predicted": 0.7379,
+          "target": 0.62,
+          "error": 0.1179
+        }
+      ]
+    },
+    {
+      "id": "b_women_work",
+      "text": "Should women have equal opportunities in the workforce?",
+      "predicted_global": 0.6806,
+      "target_global": 0.78,
+      "global_error": 0.0994,
+      "dominant": "identity",
+      "country_mae": 0.0646,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.7872,
+          "target": 0.82,
+          "error": 0.0328
+        },
+        {
+          "country": "GB",
+          "predicted": 0.8005,
+          "target": 0.86,
+          "error": 0.0595
+        },
+        {
+          "country": "DE",
+          "predicted": 0.7675,
+          "target": 0.84,
+          "error": 0.0725
+        },
+        {
+          "country": "FR",
+          "predicted": 0.7674,
+          "target": 0.88,
+          "error": 0.1126
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6801,
+          "target": 0.76,
+          "error": 0.0799
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6803,
+          "target": 0.72,
+          "error": 0.0397
+        },
+        {
+          "country": "JP",
+          "predicted": 0.7357,
+          "target": 0.68,
+          "error": 0.0557
+        },
+        {
+          "country": "IN",
+          "predicted": 0.687,
+          "target": 0.62,
+          "error": 0.067
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6417,
+          "target": 0.58,
+          "error": 0.0617
+        }
+      ]
+    },
+    {
+      "id": "b_censorship",
+      "text": "Is government censorship sometimes justified?",
+      "predicted_global": 0.4513,
+      "target_global": 0.42,
+      "global_error": 0.0313,
+      "dominant": "identity",
+      "country_mae": 0.0731,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.2506,
+          "target": 0.28,
+          "error": 0.0294
+        },
+        {
+          "country": "GB",
+          "predicted": 0.2358,
+          "target": 0.35,
+          "error": 0.1142
+        },
+        {
+          "country": "DE",
+          "predicted": 0.2958,
+          "target": 0.38,
+          "error": 0.0842
+        },
+        {
+          "country": "FR",
+          "predicted": 0.3291,
+          "target": 0.32,
+          "error": 0.0091
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4253,
+          "target": 0.48,
+          "error": 0.0547
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4424,
+          "target": 0.44,
+          "error": 0.0024
+        },
+        {
+          "country": "JP",
+          "predicted": 0.3963,
+          "target": 0.52,
+          "error": 0.1237
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4454,
+          "target": 0.62,
+          "error": 0.1746
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4843,
+          "target": 0.55,
+          "error": 0.0657
+        }
+      ]
+    },
+    {
+      "id": "b_econ_improving",
+      "text": "Is your personal economic situation getting better?",
+      "predicted_global": 0.4507,
+      "target_global": 0.38,
+      "global_error": 0.0707,
+      "dominant": "economics",
+      "country_mae": 0.1395,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4954,
+          "target": 0.42,
+          "error": 0.0754
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4998,
+          "target": 0.35,
+          "error": 0.1498
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4755,
+          "target": 0.38,
+          "error": 0.0955
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4678,
+          "target": 0.32,
+          "error": 0.1478
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4668,
+          "target": 0.28,
+          "error": 0.1868
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4712,
+          "target": 0.34,
+          "error": 0.1312
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4431,
+          "target": 0.22,
+          "error": 0.2231
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4472,
+          "target": 0.56,
+          "error": 0.1128
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4534,
+          "target": 0.32,
+          "error": 0.1334
+        }
+      ]
+    },
+    {
+      "id": "b_nato",
+      "text": "Is NATO important for national security?",
+      "predicted_global": 0.5929,
+      "target_global": 0.62,
+      "global_error": 0.0271,
+      "dominant": "collective",
+      "country_mae": 0.1169,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.5488,
+          "target": 0.65,
+          "error": 0.1012
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5385,
+          "target": 0.72,
+          "error": 0.1815
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5419,
+          "target": 0.64,
+          "error": 0.0981
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5836,
+          "target": 0.58,
+          "error": 0.0036
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5733,
+          "target": 0.55,
+          "error": 0.0233
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6069,
+          "target": 0.42,
+          "error": 0.1869
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6038,
+          "target": 0.38,
+          "error": 0.2238
+        }
+      ]
+    },
+    {
+      "id": "b_automation",
+      "text": "Will automation replace most jobs in the next 20 years?",
+      "predicted_global": 0.5273,
+      "target_global": 0.52,
+      "global_error": 0.0073,
+      "dominant": "economics",
+      "country_mae": 0.0748,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4852,
+          "target": 0.48,
+          "error": 0.0052
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4911,
+          "target": 0.55,
+          "error": 0.0589
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5131,
+          "target": 0.58,
+          "error": 0.0669
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5204,
+          "target": 0.56,
+          "error": 0.0396
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5081,
+          "target": 0.52,
+          "error": 0.0119
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5057,
+          "target": 0.48,
+          "error": 0.0257
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5503,
+          "target": 0.74,
+          "error": 0.1897
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5288,
+          "target": 0.42,
+          "error": 0.1088
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5166,
+          "target": 0.35,
+          "error": 0.1666
+        }
+      ]
+    },
+    {
+      "id": "b_elections_fair",
+      "text": "Are elections in your country generally fair?",
+      "predicted_global": 0.468,
+      "target_global": 0.48,
+      "global_error": 0.012,
+      "dominant": "collective",
+      "country_mae": 0.1715,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.474,
+          "target": 0.52,
+          "error": 0.046
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4606,
+          "target": 0.68,
+          "error": 0.2194
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4398,
+          "target": 0.72,
+          "error": 0.2802
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4797,
+          "target": 0.56,
+          "error": 0.0803
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4734,
+          "target": 0.32,
+          "error": 0.1534
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4777,
+          "target": 0.26,
+          "error": 0.2177
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4348,
+          "target": 0.58,
+          "error": 0.1452
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4806,
+          "target": 0.62,
+          "error": 0.1394
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4822,
+          "target": 0.22,
+          "error": 0.2622
+        }
+      ]
+    },
+    {
+      "id": "b_multinationals",
+      "text": "Do multinational corporations have a positive influence?",
+      "predicted_global": 0.494,
+      "target_global": 0.48,
+      "global_error": 0.014,
+      "dominant": "economics",
+      "country_mae": 0.0988,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.5033,
+          "target": 0.52,
+          "error": 0.0167
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5146,
+          "target": 0.48,
+          "error": 0.0346
+        },
+        {
+          "country": "DE",
+          "predicted": 0.514,
+          "target": 0.42,
+          "error": 0.094
+        },
+        {
+          "country": "FR",
+          "predicted": 0.492,
+          "target": 0.38,
+          "error": 0.112
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5043,
+          "target": 0.56,
+          "error": 0.0557
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5077,
+          "target": 0.54,
+          "error": 0.0323
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5005,
+          "target": 0.38,
+          "error": 0.1205
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4822,
+          "target": 0.68,
+          "error": 0.1978
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4942,
+          "target": 0.72,
+          "error": 0.2258
+        }
+      ]
+    },
+    {
+      "id": "b_social_mobility",
+      "text": "Is it harder to get ahead economically than it used to be?",
+      "predicted_global": 0.5917,
+      "target_global": 0.64,
+      "global_error": 0.0483,
+      "dominant": "economics",
+      "country_mae": 0.0941,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.536,
+          "target": 0.62,
+          "error": 0.084
+        },
+        {
+          "country": "GB",
+          "predicted": 0.524,
+          "target": 0.65,
+          "error": 0.126
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5475,
+          "target": 0.52,
+          "error": 0.0275
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5668,
+          "target": 0.72,
+          "error": 0.1532
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5772,
+          "target": 0.68,
+          "error": 0.1028
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5757,
+          "target": 0.66,
+          "error": 0.0843
+        },
+        {
+          "country": "JP",
+          "predicted": 0.587,
+          "target": 0.72,
+          "error": 0.133
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5981,
+          "target": 0.48,
+          "error": 0.1181
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5984,
+          "target": 0.58,
+          "error": 0.0184
+        }
+      ]
+    },
+    {
+      "id": "b_internet_good",
+      "text": "Is the internet a good thing for society?",
+      "predicted_global": 0.6378,
+      "target_global": 0.68,
+      "global_error": 0.0422,
+      "dominant": "desire",
+      "country_mae": 0.0875,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.7255,
+          "target": 0.72,
+          "error": 0.0055
+        },
+        {
+          "country": "GB",
+          "predicted": 0.7271,
+          "target": 0.68,
+          "error": 0.0471
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6864,
+          "target": 0.62,
+          "error": 0.0664
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6906,
+          "target": 0.58,
+          "error": 0.1106
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6574,
+          "target": 0.75,
+          "error": 0.0926
+        },
+        {
+          "country": "MX",
+          "predicted": 0.653,
+          "target": 0.72,
+          "error": 0.067
+        },
+        {
+          "country": "JP",
+          "predicted": 0.6335,
+          "target": 0.55,
+          "error": 0.0835
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6464,
+          "target": 0.82,
+          "error": 0.1736
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6384,
+          "target": 0.78,
+          "error": 0.1416
+        }
+      ]
+    },
+    {
+      "id": "b_trad_family",
+      "text": "Are traditional family values important for society?",
+      "predicted_global": 0.6049,
+      "target_global": 0.68,
+      "global_error": 0.0751,
+      "dominant": "culture",
+      "country_mae": 0.1398,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4681,
+          "target": 0.62,
+          "error": 0.1519
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4417,
+          "target": 0.48,
+          "error": 0.0383
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4682,
+          "target": 0.42,
+          "error": 0.0482
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5079,
+          "target": 0.38,
+          "error": 0.1279
+        },
+        {
+          "country": "BR",
+          "predicted": 0.6257,
+          "target": 0.78,
+          "error": 0.1543
+        },
+        {
+          "country": "MX",
+          "predicted": 0.6266,
+          "target": 0.76,
+          "error": 0.1334
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4946,
+          "target": 0.58,
+          "error": 0.0854
+        },
+        {
+          "country": "IN",
+          "predicted": 0.6148,
+          "target": 0.88,
+          "error": 0.2652
+        },
+        {
+          "country": "NG",
+          "predicted": 0.6663,
+          "target": 0.92,
+          "error": 0.2537
+        }
+      ]
+    },
+    {
+      "id": "b_foreign_aid",
+      "text": "Does foreign aid effectively help developing countries?",
+      "predicted_global": 0.4778,
+      "target_global": 0.42,
+      "global_error": 0.0578,
+      "dominant": "economics",
+      "country_mae": 0.0719,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4564,
+          "target": 0.38,
+          "error": 0.0764
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4449,
+          "target": 0.48,
+          "error": 0.0351
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4425,
+          "target": 0.52,
+          "error": 0.0775
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4769,
+          "target": 0.44,
+          "error": 0.0369
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4673,
+          "target": 0.42,
+          "error": 0.0473
+        },
+        {
+          "country": "MX",
+          "predicted": 0.4706,
+          "target": 0.38,
+          "error": 0.0906
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4597,
+          "target": 0.35,
+          "error": 0.1097
+        },
+        {
+          "country": "IN",
+          "predicted": 0.4917,
+          "target": 0.48,
+          "error": 0.0117
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4815,
+          "target": 0.32,
+          "error": 0.1615
+        }
+      ]
+    },
+    {
+      "id": "b_leaders_care",
+      "text": "Do political leaders care about ordinary people?",
+      "predicted_global": 0.3527,
+      "target_global": 0.26,
+      "global_error": 0.0927,
+      "dominant": "economics",
+      "country_mae": 0.1475,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.3038,
+          "target": 0.18,
+          "error": 0.1238
+        },
+        {
+          "country": "GB",
+          "predicted": 0.2947,
+          "target": 0.22,
+          "error": 0.0747
+        },
+        {
+          "country": "DE",
+          "predicted": 0.3079,
+          "target": 0.32,
+          "error": 0.0121
+        },
+        {
+          "country": "FR",
+          "predicted": 0.3219,
+          "target": 0.16,
+          "error": 0.1619
+        },
+        {
+          "country": "BR",
+          "predicted": 0.3484,
+          "target": 0.14,
+          "error": 0.2084
+        },
+        {
+          "country": "MX",
+          "predicted": 0.3598,
+          "target": 0.12,
+          "error": 0.2398
+        },
+        {
+          "country": "JP",
+          "predicted": 0.3327,
+          "target": 0.18,
+          "error": 0.1527
+        },
+        {
+          "country": "IN",
+          "predicted": 0.348,
+          "target": 0.52,
+          "error": 0.172
+        },
+        {
+          "country": "NG",
+          "predicted": 0.3621,
+          "target": 0.18,
+          "error": 0.1821
+        }
+      ]
+    },
+    {
+      "id": "b_health_sat",
+      "text": "Are people satisfied with healthcare in their country?",
+      "predicted_global": 0.4925,
+      "target_global": 0.48,
+      "global_error": 0.0125,
+      "dominant": "economics",
+      "country_mae": 0.1603,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4787,
+          "target": 0.52,
+          "error": 0.0413
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4718,
+          "target": 0.42,
+          "error": 0.0518
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4685,
+          "target": 0.68,
+          "error": 0.2115
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4917,
+          "target": 0.72,
+          "error": 0.2283
+        },
+        {
+          "country": "BR",
+          "predicted": 0.4916,
+          "target": 0.28,
+          "error": 0.2116
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5001,
+          "target": 0.32,
+          "error": 0.1801
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4826,
+          "target": 0.55,
+          "error": 0.0674
+        },
+        {
+          "country": "IN",
+          "predicted": 0.492,
+          "target": 0.32,
+          "error": 0.172
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4984,
+          "target": 0.22,
+          "error": 0.2784
+        }
+      ]
+    },
+    {
+      "id": "b_higher_ed",
+      "text": "Is a university education worth the cost?",
+      "predicted_global": 0.5431,
+      "target_global": 0.55,
+      "global_error": 0.0069,
+      "dominant": "economics",
+      "country_mae": 0.1383,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.6102,
+          "target": 0.48,
+          "error": 0.1302
+        },
+        {
+          "country": "GB",
+          "predicted": 0.6238,
+          "target": 0.52,
+          "error": 0.1038
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5892,
+          "target": 0.62,
+          "error": 0.0308
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5885,
+          "target": 0.55,
+          "error": 0.0385
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5552,
+          "target": 0.68,
+          "error": 0.1248
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5559,
+          "target": 0.72,
+          "error": 0.1641
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5522,
+          "target": 0.42,
+          "error": 0.1322
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5456,
+          "target": 0.78,
+          "error": 0.2344
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5345,
+          "target": 0.82,
+          "error": 0.2855
+        }
+      ]
+    },
+    {
+      "id": "b_lgbtq_accept",
+      "text": "Should homosexuality be accepted by society?",
+      "predicted_global": 0.5508,
+      "target_global": 0.52,
+      "global_error": 0.0308,
+      "dominant": "identity",
+      "country_mae": 0.1257,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.7304,
+          "target": 0.64,
+          "error": 0.0904
+        },
+        {
+          "country": "GB",
+          "predicted": 0.7489,
+          "target": 0.76,
+          "error": 0.0111
+        },
+        {
+          "country": "DE",
+          "predicted": 0.6998,
+          "target": 0.78,
+          "error": 0.0802
+        },
+        {
+          "country": "FR",
+          "predicted": 0.6938,
+          "target": 0.77,
+          "error": 0.0762
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5382,
+          "target": 0.52,
+          "error": 0.0182
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5324,
+          "target": 0.58,
+          "error": 0.0476
+        },
+        {
+          "country": "JP",
+          "predicted": 0.654,
+          "target": 0.68,
+          "error": 0.026
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5622,
+          "target": 0.22,
+          "error": 0.3422
+        },
+        {
+          "country": "NG",
+          "predicted": 0.4791,
+          "target": 0.04,
+          "error": 0.4391
+        }
+      ]
+    },
+    {
+      "id": "b_russia_unfav",
+      "text": "Do people view Russia unfavorably?",
+      "predicted_global": 0.5455,
+      "target_global": 0.62,
+      "global_error": 0.0745,
+      "dominant": "fear",
+      "country_mae": 0.2376,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4195,
+          "target": 0.72,
+          "error": 0.3005
+        },
+        {
+          "country": "GB",
+          "predicted": 0.4128,
+          "target": 0.78,
+          "error": 0.3672
+        },
+        {
+          "country": "DE",
+          "predicted": 0.4684,
+          "target": 0.74,
+          "error": 0.2716
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4788,
+          "target": 0.68,
+          "error": 0.2012
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5148,
+          "target": 0.38,
+          "error": 0.1348
+        },
+        {
+          "country": "MX",
+          "predicted": 0.526,
+          "target": 0.42,
+          "error": 0.106
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5498,
+          "target": 0.82,
+          "error": 0.2702
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5409,
+          "target": 0.28,
+          "error": 0.2609
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5458,
+          "target": 0.32,
+          "error": 0.2258
+        }
+      ]
+    },
+    {
+      "id": "b_cyber_threat",
+      "text": "Are cyberattacks a major threat to your country?",
+      "predicted_global": 0.5664,
+      "target_global": 0.68,
+      "global_error": 0.1136,
+      "dominant": "economics",
+      "country_mae": 0.1096,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.5359,
+          "target": 0.72,
+          "error": 0.1841
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5471,
+          "target": 0.65,
+          "error": 0.1029
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5545,
+          "target": 0.68,
+          "error": 0.1255
+        },
+        {
+          "country": "FR",
+          "predicted": 0.5725,
+          "target": 0.64,
+          "error": 0.0675
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5562,
+          "target": 0.52,
+          "error": 0.0362
+        },
+        {
+          "country": "MX",
+          "predicted": 0.561,
+          "target": 0.48,
+          "error": 0.081
+        },
+        {
+          "country": "JP",
+          "predicted": 0.5844,
+          "target": 0.78,
+          "error": 0.1956
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5687,
+          "target": 0.62,
+          "error": 0.0513
+        },
+        {
+          "country": "NG",
+          "predicted": 0.5624,
+          "target": 0.42,
+          "error": 0.1424
+        }
+      ]
+    },
+    {
+      "id": "b_globalization",
+      "text": "Has globalization been good for your country?",
+      "predicted_global": 0.5164,
+      "target_global": 0.52,
+      "global_error": 0.0036,
+      "dominant": "economics",
+      "country_mae": 0.0576,
+      "country_results": [
+        {
+          "country": "US",
+          "predicted": 0.4937,
+          "target": 0.48,
+          "error": 0.0137
+        },
+        {
+          "country": "GB",
+          "predicted": 0.5006,
+          "target": 0.45,
+          "error": 0.0506
+        },
+        {
+          "country": "DE",
+          "predicted": 0.5076,
+          "target": 0.58,
+          "error": 0.0724
+        },
+        {
+          "country": "FR",
+          "predicted": 0.4875,
+          "target": 0.42,
+          "error": 0.0675
+        },
+        {
+          "country": "BR",
+          "predicted": 0.5353,
+          "target": 0.52,
+          "error": 0.0153
+        },
+        {
+          "country": "MX",
+          "predicted": 0.5357,
+          "target": 0.56,
+          "error": 0.0243
+        },
+        {
+          "country": "JP",
+          "predicted": 0.4975,
+          "target": 0.48,
+          "error": 0.0175
+        },
+        {
+          "country": "IN",
+          "predicted": 0.5066,
+          "target": 0.68,
+          "error": 0.1734
+        },
+        {
+          "country": "NG",
+          "predicted": 0.536,
+          "target": 0.62,
+          "error": 0.084
+        }
+      ]
+    }
+  ]
+}

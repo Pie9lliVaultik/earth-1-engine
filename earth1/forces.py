@@ -19,6 +19,9 @@ def project_all(
     """Project all agents onto a question. Returns (N,) stance array in [0,1]."""
     centered = civ.forces - civ.means[np.newaxis, :]  # (N, 8) - (1, 8)
     if field_shift is not None:
-        centered = centered + field_shift[np.newaxis, :]
+        if field_shift.ndim == 1:
+            centered = centered + field_shift[np.newaxis, :]
+        else:
+            centered = centered + field_shift
     z = q.baseline + centered @ q.weights  # (N,)
     return sigmoid(z)

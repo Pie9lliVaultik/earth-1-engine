@@ -9,6 +9,7 @@ from unittest.mock import MagicMock, patch
 
 from earth1.central_mind import think, MindResult
 from earth1.engine import build_civilization
+from earth1.population import COUNTRIES
 
 
 POP = 5_000
@@ -202,7 +203,7 @@ class TestCentralMind:
             mind = think("Do people support same-sex marriage?", civ, provider="anthropic")
 
         assert mind.country_splits is not None
-        assert len(mind.country_splits) == 9
+        assert len(mind.country_splits) == len(COUNTRIES)
 
     def test_think_binary_question_preserved(self):
         mock_anthropic = _setup_mocks()
