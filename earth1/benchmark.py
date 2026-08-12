@@ -740,7 +740,7 @@ def run_benchmark(
     questions: Optional[List[BenchmarkQuestion]] = None,
     epsilon: float = 0.18,
     layers: int = 8,
-    use_force_dynamics: bool = False,
+    use_force_dynamics: bool = True,
     event_log=None,
     t: float = 0.0,
 ) -> BenchmarkReport:
@@ -792,6 +792,7 @@ def run_benchmark(
                 fragility=anat["fragility"],
                 camps=anat["camps"],
                 params={"epsilon": epsilon, "layers": layers, "mode": "force_dynamics"},
+                settled_stances=settled,
             )
         else:
             r = run_question(q, civ, epsilon=epsilon, layers=layers,
@@ -859,31 +860,40 @@ def run_benchmark(
     )
 
 
-def _classify_regimes(results: List[QuestionResult]) -> Dict[str, Dict]:
-    """Group results into bible §36 accuracy regimes."""
+def _classify_regimes(
+    results: List[QuestionResult],
+    questions: Optional[List[BenchmarkQuestion]] = None,
+) -> Dict[str, Dict]:
+    """Group results by data provenance, not by error.
+
+    - anchored: ≥7 country-level survey targets from primary sources
+    - partial:  3-6 country targets
+    - unanchored: <3 country targets (no meaningful geographic validation)
+    """
+    if questions is None:
+        questions = BENCHMARK_QUESTIONS
+    q_map = {bq.id: bq for bq in questions}
+
     regimes = {
-        "calibrated": {"threshold": 0.85, "questions": [], "mae": None},
-        "transitional": {"threshold": 0.65, "questions": [], "mae": None},
-        "forward_estimate": {"threshold": 0.0, "questions": [], "mae": None},
+        "anchored": {"min_countries": 7, "questions": [], "mae": None},
+        "partial": {"min_countries": 3, "questions": [], "mae": None},
+        "unanchored": {"min_countries": 0, "questions": [], "mae": None},
     }
 
     for r in results:
-        if r.country_mae is None:
-            continue
-        similarity = 1.0 - r.country_mae
-        if similarity >= 0.85:
-            regimes["calibrated"]["questions"].append(r.id)
-        elif similarity >= 0.65:
-            regimes["transitional"]["questions"].append(r.id)
+        bq = q_map.get(r.id)
+        n_countries = len(bq.country_targets) if bq else 0
+        if n_countries >= 7:
+            regimes["anchored"]["questions"].append(r.id)
+        elif n_countries >= 3:
+            regimes["partial"]["questions"].append(r.id)
         else:
-            regimes["forward_estimate"]["questions"].append(r.id)
+            regimes["unanchored"]["questions"].append(r.id)
 
     for regime in regimes.values():
         ids = set(regime["questions"])
-        errors = []
-        for r in results:
-            if r.id in ids and r.country_mae is not None:
-                errors.append(r.country_mae)
+        errors = [r.country_mae for r in results
+                  if r.id in ids and r.country_mae is not None]
         regime["count"] = len(regime["questions"])
         regime["mae"] = round(float(np.mean(errors)), 4) if errors else None
 
@@ -904,7 +914,7 @@ def format_report(report: BenchmarkReport) -> str:
         f"  Country MAE:  {report.country_mae:.4f}" if report.country_mae else "",
         f"  Bible target: 0.2210  {'PASS' if report.overall_mae <= 0.221 else 'FAIL'}",
         f"",
-        f"  By regime (bible s36):",
+        f"  By data provenance:",
     ]
 
     for name, regime in report.by_regime.items():
@@ -1093,6 +1103,480 @@ def format_comparison(comp: ComparisonResult) -> str:
     return "\n".join(lines)
 
 
+@dataclass
+class CrossValResult:
+    """Geographic cross-validation result for one question."""
+    id: str
+    text: str
+    llm_insample_mae: Optional[float]
+    llm_holdout_mae: Optional[float]
+    learned_insample_mae: Optional[float]
+    learned_holdout_mae: Optional[float]
+    holdout_countries: List[str]
+    train_countries: List[str]
+
+
+@dataclass
+class CrossValReport:
+    """Full geographic cross-validation report."""
+    n_questions: int
+    n_folds: int
+    llm_insample_mae: float
+    llm_holdout_mae: float
+    learned_insample_mae: float
+    learned_holdout_mae: float
+    questions: List[CrossValResult]
+
+
+def run_cross_validation(
+    civ: Civilization,
+    questions: Optional[List[BenchmarkQuestion]] = None,
+    n_folds: int = 3,
+    seed: int = 42,
+) -> CrossValReport:
+    """Geographic cross-validation: train on some countries, test on others.
+
+    For each question, splits its country targets into train/test sets.
+    Tests two weight sources:
+    1. LLM weights (hardcoded) — are they in-sample?
+    2. Learned weights (calibrated from train countries) — does the engine generalize?
+
+    If LLM holdout MAE is low, the weights capture real structure.
+    If learned holdout MAE is low, the engine's force profiles enable geographic transfer.
+    """
+    from earth1.calibration import calibrate_single, evaluate_weights
+
+    if questions is None:
+        questions = BENCHMARK_QUESTIONS
+
+    rng = np.random.RandomState(seed)
+    results = []
+
+    for bq in questions:
+        if len(bq.country_targets) < 6:
+            continue
+
+        codes = list(bq.country_targets.keys())
+        rng.shuffle(codes)
+
+        fold_size = len(codes) // n_folds
+        if fold_size < 1:
+            continue
+
+        llm_holdout_errors = []
+        llm_insample_errors = []
+        learned_holdout_errors = []
+        learned_insample_errors = []
+        last_holdout = []
+        last_train = []
+
+        for fold in range(n_folds):
+            start = fold * fold_size
+            end = start + fold_size if fold < n_folds - 1 else len(codes)
+            holdout_codes = codes[start:end]
+            train_codes = [c for c in codes if c not in holdout_codes]
+
+            train_targets = {c: bq.country_targets[c] for c in train_codes}
+            holdout_targets = {c: bq.country_targets[c] for c in holdout_codes}
+
+            learned_w = calibrate_single(civ, bq.baseline, train_targets)
+
+            llm_train_eval = evaluate_weights(civ, bq.baseline, bq.weights, train_targets)
+            llm_hold_eval = evaluate_weights(civ, bq.baseline, bq.weights, holdout_targets)
+
+            learned_train_eval = evaluate_weights(civ, bq.baseline, learned_w, train_targets)
+            learned_hold_eval = evaluate_weights(civ, bq.baseline, learned_w, holdout_targets)
+
+            if llm_train_eval["mae"] is not None:
+                llm_insample_errors.append(llm_train_eval["mae"])
+            if llm_hold_eval["mae"] is not None:
+                llm_holdout_errors.append(llm_hold_eval["mae"])
+            if learned_train_eval["mae"] is not None:
+                learned_insample_errors.append(learned_train_eval["mae"])
+            if learned_hold_eval["mae"] is not None:
+                learned_holdout_errors.append(learned_hold_eval["mae"])
+
+            last_holdout = holdout_codes
+            last_train = train_codes
+
+        results.append(CrossValResult(
+            id=bq.id,
+            text=bq.text,
+            llm_insample_mae=round(np.mean(llm_insample_errors), 4) if llm_insample_errors else None,
+            llm_holdout_mae=round(np.mean(llm_holdout_errors), 4) if llm_holdout_errors else None,
+            learned_insample_mae=round(np.mean(learned_insample_errors), 4) if learned_insample_errors else None,
+            learned_holdout_mae=round(np.mean(learned_holdout_errors), 4) if learned_holdout_errors else None,
+            holdout_countries=last_holdout,
+            train_countries=last_train,
+        ))
+
+    def safe_mean(vals):
+        vals = [v for v in vals if v is not None]
+        return round(float(np.mean(vals)), 4) if vals else 0.0
+
+    return CrossValReport(
+        n_questions=len(results),
+        n_folds=n_folds,
+        llm_insample_mae=safe_mean([r.llm_insample_mae for r in results]),
+        llm_holdout_mae=safe_mean([r.llm_holdout_mae for r in results]),
+        learned_insample_mae=safe_mean([r.learned_insample_mae for r in results]),
+        learned_holdout_mae=safe_mean([r.learned_holdout_mae for r in results]),
+        questions=sorted(results, key=lambda x: -(x.llm_holdout_mae or 0)),
+    )
+
+
+def format_cross_validation(report: CrossValReport) -> str:
+    """Format cross-validation report."""
+    lines = [
+        "Earth-1 Geographic Cross-Validation",
+        "=" * 65,
+        f"  Questions: {report.n_questions}  |  Folds: {report.n_folds}",
+        f"  Train on some countries, test on held-out countries.",
+        "",
+        f"  {'Metric':<28s} {'In-Sample':>10s} {'Holdout':>10s}",
+        f"  {'-'*50}",
+        f"  {'LLM weights MAE':<28s} {report.llm_insample_mae:10.4f} {report.llm_holdout_mae:10.4f}",
+        f"  {'Learned weights MAE':<28s} {report.learned_insample_mae:10.4f} {report.learned_holdout_mae:10.4f}",
+        "",
+    ]
+
+    llm_gap = report.llm_holdout_mae - report.llm_insample_mae
+    learned_gap = report.learned_holdout_mae - report.learned_insample_mae
+
+    if llm_gap < 0.03:
+        lines.append("  LLM weights: holdout ≈ in-sample → weights capture real structure")
+    else:
+        lines.append(f"  LLM weights: holdout gap +{llm_gap:.4f} → possible overfitting to targets")
+
+    if learned_gap < 0.05:
+        lines.append("  Learned weights: engine force profiles enable geographic transfer")
+    else:
+        lines.append(f"  Learned weights: holdout gap +{learned_gap:.4f} → limited geographic transfer")
+
+    lines.append("")
+    lines.append(f"  NOTE: In-sample MAE {report.llm_insample_mae:.4f} is what was previously")
+    lines.append(f"        reported as MAE 0.1124. The holdout MAE {report.llm_holdout_mae:.4f}")
+    lines.append(f"        is the honest out-of-sample number.")
+
+    lines.append("")
+    lines.append(f"  {'ID':<22s} {'LLM-in':>7s} {'LLM-out':>8s} {'Lrn-in':>7s} {'Lrn-out':>8s}")
+    lines.append(f"  {'-'*55}")
+
+    for q in report.questions:
+        li = f"{q.llm_insample_mae:.4f}" if q.llm_insample_mae is not None else "   -  "
+        lo = f"{q.llm_holdout_mae:.4f}" if q.llm_holdout_mae is not None else "   -  "
+        ci = f"{q.learned_insample_mae:.4f}" if q.learned_insample_mae is not None else "   -  "
+        co = f"{q.learned_holdout_mae:.4f}" if q.learned_holdout_mae is not None else "   -  "
+        lines.append(f"  {q.id:<22s} {li:>7s} {lo:>8s} {ci:>7s} {co:>8s}")
+
+    return "\n".join(lines)
+
+
+@dataclass
+class AdversarialQuestionResult:
+    id: str
+    text: str
+    engine_preds: Dict[str, float]
+    naive_preds: Dict[str, float]
+    targets: Dict[str, float]
+    engine_mae: float
+    naive_mae: float
+    winner: str
+
+
+@dataclass
+class AdversarialReport:
+    n_questions: int
+    n_country_pairs: int
+    engine_wins: int
+    naive_wins: int
+    ties: int
+    engine_overall_mae: float
+    naive_overall_mae: float
+    margin: float
+    results: List[AdversarialQuestionResult]
+
+
+def run_adversarial_benchmark(
+    civ: Civilization,
+    questions: Optional[List[BenchmarkQuestion]] = None,
+    epsilon: float = 0.18,
+    layers: int = 8,
+    use_force_dynamics: bool = True,
+    event_log=None,
+    t: float = 0.0,
+) -> AdversarialReport:
+    """Engine vs naive baseline: can the engine beat 'predict global mean for every country'?"""
+    qs = questions or BENCHMARK_QUESTIONS
+
+    all_engine_errors = []
+    all_naive_errors = []
+    results = []
+
+    for bq in qs:
+        if not bq.country_targets:
+            continue
+        q = bq.to_question()
+
+        cells = run_segment(q, civ, "country", epsilon=epsilon, layers=layers)
+        engine_preds = {c.label: c.yes_pct for c in cells}
+
+        naive_preds = {code: bq.global_target for code in bq.country_targets}
+
+        engine_errors = []
+        naive_errors = []
+        for code, target in bq.country_targets.items():
+            ep = engine_preds.get(code)
+            if ep is not None:
+                e_err = abs(ep - target)
+                n_err = abs(naive_preds[code] - target)
+                engine_errors.append(e_err)
+                naive_errors.append(n_err)
+                all_engine_errors.append(e_err)
+                all_naive_errors.append(n_err)
+
+        e_mae = float(np.mean(engine_errors)) if engine_errors else 0.0
+        n_mae = float(np.mean(naive_errors)) if naive_errors else 0.0
+        if e_mae < n_mae - 0.005:
+            winner = "engine"
+        elif n_mae < e_mae - 0.005:
+            winner = "naive"
+        else:
+            winner = "tie"
+
+        results.append(AdversarialQuestionResult(
+            id=bq.id, text=bq.text,
+            engine_preds={k: round(v, 4) for k, v in engine_preds.items()
+                          if k in bq.country_targets},
+            naive_preds={k: round(v, 4) for k, v in naive_preds.items()},
+            targets=bq.country_targets,
+            engine_mae=round(e_mae, 4),
+            naive_mae=round(n_mae, 4),
+            winner=winner,
+        ))
+
+    e_overall = float(np.mean(all_engine_errors)) if all_engine_errors else 0.0
+    n_overall = float(np.mean(all_naive_errors)) if all_naive_errors else 0.0
+
+    e_wins = sum(1 for r in results if r.winner == "engine")
+    n_wins = sum(1 for r in results if r.winner == "naive")
+    ties = sum(1 for r in results if r.winner == "tie")
+
+    return AdversarialReport(
+        n_questions=len(results),
+        n_country_pairs=len(all_engine_errors),
+        engine_wins=e_wins,
+        naive_wins=n_wins,
+        ties=ties,
+        engine_overall_mae=round(e_overall, 4),
+        naive_overall_mae=round(n_overall, 4),
+        margin=round(n_overall - e_overall, 4),
+        results=sorted(results, key=lambda r: r.engine_mae - r.naive_mae),
+    )
+
+
+def format_adversarial(report: AdversarialReport) -> str:
+    """Format adversarial benchmark as human-readable text."""
+    verdict = ("ENGINE WINS" if report.margin > 0.005
+               else "NAIVE WINS" if report.margin < -0.005
+               else "DRAW")
+    lines = [
+        "Earth-1 Adversarial Benchmark: Engine vs Naive Baseline",
+        "=" * 65,
+        f"  Engine country MAE:  {report.engine_overall_mae:.4f}",
+        f"  Naive country MAE:   {report.naive_overall_mae:.4f}",
+        f"  Margin:              {report.margin:+.4f}  ({verdict})",
+        "",
+        f"  Record: Engine {report.engine_wins} / Naive {report.naive_wins} / Tie {report.ties}"
+        f"  ({report.n_questions} questions, {report.n_country_pairs} country pairs)",
+        "",
+        f"  {'ID':<24s} {'Eng MAE':>8s} {'Naive MAE':>10s} {'Winner':>8s}",
+        f"  {'-'*54}",
+    ]
+    for r in report.results:
+        lines.append(
+            f"  {r.id:<24s} {r.engine_mae:8.4f} {r.naive_mae:10.4f} {r.winner:>8s}"
+        )
+    return "\n".join(lines)
+
+
+@dataclass
+class GOQAResult:
+    """GOQA benchmark result — engine vs naive vs external systems."""
+    n_questions: int
+    n_country_pairs: int
+    engine_mae: float
+    naive_mae: float
+    engine_cv_mae: float
+    naive_cv_mae: float
+    engine_wins: int
+    naive_wins: int
+    ties: int
+    per_question: List[Dict]
+
+
+ISO3_TO_ISO2 = {
+    "AND":"AD","ARG":"AR","ARM":"AM","AUS":"AU","BGD":"BD","BOL":"BO",
+    "BRA":"BR","CAN":"CA","CHL":"CL","CHN":"CN","COL":"CO","CYP":"CY",
+    "CZE":"CZ","DEU":"DE","ECU":"EC","EGY":"EG","ETH":"ET","GBR":"GB",
+    "GRC":"GR","GTM":"GT","HKG":"HK","IDN":"ID","IND":"IN",
+    "IRN":"IR","IRQ":"IQ","JOR":"JO","JPN":"JP","KAZ":"KZ","KEN":"KE",
+    "KGZ":"KG","KOR":"KR","LBN":"LB","LBY":"LY","MAC":"MO","MAR":"MA",
+    "MDV":"MV","MEX":"MX","MMR":"MM","MNG":"MN","MYS":"MY","NGA":"NG",
+    "NIC":"NI","NIR":"GB","NLD":"NL","NZL":"NZ","PAK":"PK","PER":"PE",
+    "PHL":"PH","PRI":"PR","ROU":"RO","RUS":"RU","SGP":"SG","SRB":"RS",
+    "SVK":"SK","THA":"TH","TJK":"TJ","TUN":"TN","TUR":"TR","TWN":"TW",
+    "UKR":"UA","URY":"UY","USA":"US","UZB":"UZ","VEN":"VE","VNM":"VN",
+    "ZWE":"ZW",
+}
+
+
+def run_goqa_benchmark(
+    civ: Civilization,
+    goqa_data: List[Dict],
+    ridge_alpha: float = 0.1,
+    extended: bool = True,
+    cv_holdout: int = 5,
+    cv_seed: int = 42,
+) -> GOQAResult:
+    """Run GOQA benchmark: 40 WVS questions x 66 countries.
+
+    Uses extended calibration (forces + traits, 18 features) by default.
+    Computes both in-sample MAE and leave-k-out cross-validation.
+    """
+    from earth1.calibration import calibrate_single, _build_features, _get_country_index
+
+    code_to_idx, country_codes = _get_country_index(civ)
+    e1_codes = set(country_codes)
+    features = _build_features(civ, extended=extended)
+    n_feat = features.shape[1]
+
+    rng = np.random.RandomState(cv_seed)
+
+    all_e = []
+    all_n = []
+    cv_e = []
+    cv_n = []
+    results = []
+
+    for q in goqa_data:
+        qid = q['id']
+        text = q['text']
+        global_yes = q['global_yes_popweighted']
+
+        ct = {}
+        for iso3, dist in q['countries'].items():
+            iso2 = ISO3_TO_ISO2.get(iso3)
+            if iso2 and iso2 in e1_codes:
+                ct[iso2] = dist['yes']
+
+        if len(ct) < 3:
+            continue
+
+        baseline = float(global_yes)
+        from earth1.rng import logit as _logit, sigmoid as _sigmoid
+        baseline_logit = _logit(np.array([baseline]))[0]
+
+        w = calibrate_single(civ, baseline, ct, ridge_alpha=ridge_alpha,
+                             extended=extended)
+
+        eng_errs = []
+        naive_errs = []
+        for code, target in ct.items():
+            if code not in code_to_idx:
+                continue
+            mask = civ.country == code_to_idx[code]
+            if mask.sum() < 10:
+                continue
+            pred = float(_sigmoid(baseline_logit + features[mask] @ w).mean())
+            eng_errs.append(abs(pred - target))
+            naive_errs.append(abs(global_yes - target))
+            all_e.append(abs(pred - target))
+            all_n.append(abs(global_yes - target))
+
+        # Cross-validation
+        if len(ct) >= cv_holdout + 3:
+            codes = list(ct.keys())
+            rng.shuffle(codes)
+            test_codes = codes[:cv_holdout]
+            train_ct = {c: ct[c] for c in codes[cv_holdout:]}
+
+            w_cv = calibrate_single(civ, baseline, train_ct,
+                                    ridge_alpha=ridge_alpha, extended=extended)
+            for code in test_codes:
+                if code not in code_to_idx:
+                    continue
+                mask = civ.country == code_to_idx[code]
+                if mask.sum() < 10:
+                    continue
+                pred = float(_sigmoid(baseline_logit + features[mask] @ w_cv).mean())
+                cv_e.append(abs(pred - ct[code]))
+                cv_n.append(abs(global_yes - ct[code]))
+
+        e_mae = np.mean(eng_errs) if eng_errs else 0.0
+        n_mae = np.mean(naive_errs) if naive_errs else 0.0
+        winner = ('engine' if e_mae < n_mae - 0.005
+                  else 'naive' if n_mae < e_mae - 0.005 else 'tie')
+
+        results.append({
+            'id': qid, 'text': text[:60],
+            'n_countries': len(eng_errs),
+            'engine': round(e_mae, 4), 'naive': round(n_mae, 4),
+            'winner': winner,
+        })
+
+    return GOQAResult(
+        n_questions=len(results),
+        n_country_pairs=len(all_e),
+        engine_mae=round(np.mean(all_e), 4),
+        naive_mae=round(np.mean(all_n), 4),
+        engine_cv_mae=round(np.mean(cv_e), 4) if cv_e else 0.0,
+        naive_cv_mae=round(np.mean(cv_n), 4) if cv_n else 0.0,
+        engine_wins=sum(1 for r in results if r['winner'] == 'engine'),
+        naive_wins=sum(1 for r in results if r['winner'] == 'naive'),
+        ties=sum(1 for r in results if r['winner'] == 'tie'),
+        per_question=sorted(results, key=lambda r: r['engine'] - r['naive']),
+    )
+
+
+def format_goqa(report: GOQAResult) -> str:
+    """Format GOQA benchmark as human-readable text."""
+    lines = [
+        "Earth-1 GOQA Benchmark (WVS × 66 countries)",
+        "=" * 80,
+        f"  Questions: {report.n_questions}  |  Country-question pairs: {report.n_country_pairs}",
+        "",
+        "  IN-SAMPLE (all countries used for calibration):",
+        f"    Earth-1 engine:   MAE = {report.engine_mae:.4f}",
+        f"    Global-avg naive: MAE = {report.naive_mae:.4f}",
+        f"    Margin:                 {report.naive_mae - report.engine_mae:+.4f}",
+        "",
+        "  CROSS-VALIDATION (5 countries held out per question):",
+        f"    Earth-1 engine:   MAE = {report.engine_cv_mae:.4f}",
+        f"    Global-avg naive: MAE = {report.naive_cv_mae:.4f}",
+        f"    Margin:                 {report.naive_cv_mae - report.engine_cv_mae:+.4f}",
+        "",
+        "  GOQA Leaderboard (from VNF database):",
+        f"    Global-avg naive:        0.1370",
+        f"    Claude Sonnet 4.5:       0.1733",
+        f"    GPT-5:                   0.1810",
+        f"    Gemini 2.5 Pro:          0.1987",
+        f"    Anima (VNF best):        0.2636",
+        "",
+        f"  Record: Engine {report.engine_wins} W / Naive {report.naive_wins} W"
+        f" / Tie {report.ties}",
+        "",
+        f"  {'ID':<8s} {'Text':<55s} {'N':>3s} {'Eng':>7s} {'Naive':>7s} {'Win':>7s}",
+        f"  {'-'*88}",
+    ]
+    for r in report.per_question:
+        lines.append(
+            f"  {r['id']:<8s} {r['text']:<55s} {r['n_countries']:3d}"
+            f" {r['engine']:7.4f} {r['naive']:7.4f} {r['winner']:>7s}"
+        )
+    return "\n".join(lines)
+
+
 def run_cli():
     """CLI entry point for running benchmarks."""
     import argparse
@@ -1103,10 +1587,37 @@ def run_cli():
     parser.add_argument("--baseline", type=str, default=None, help="Compare against baseline JSON")
     parser.add_argument("--force-dynamics", action="store_true", help="Use force dynamics mode")
     parser.add_argument("--compare", action="store_true", help="Compare scalar vs force dynamics")
+    parser.add_argument("--cross-validate", action="store_true", help="Geographic cross-validation")
+    parser.add_argument("--adversarial", action="store_true", help="Engine vs naive baseline")
+    parser.add_argument("--goqa", type=str, default=None,
+                        help="Path to GOQA ground truth JSON (40 WVS questions × 66 countries)")
     args = parser.parse_args()
+
+    if args.goqa:
+        from earth1.engine import build_genesis_civilization
+        print(f"Building genesis civilization ({args.pop:,} agents, seed={args.seed})...")
+        civ = build_genesis_civilization(args.pop, args.seed)
+        with open(args.goqa) as f:
+            goqa = json.load(f)
+        print(f"Running GOQA benchmark ({len(goqa['rows'])} questions)...")
+        report = run_goqa_benchmark(civ, goqa['rows'])
+        print(format_goqa(report))
+        return
 
     print(f"Building civilization ({args.pop:,} agents, seed={args.seed})...")
     civ = build_civilization(args.pop, args.seed)
+
+    if args.adversarial:
+        print(f"Running adversarial benchmark: engine vs naive ({len(BENCHMARK_QUESTIONS)} questions)...")
+        adv = run_adversarial_benchmark(civ)
+        print(format_adversarial(adv))
+        return
+
+    if args.cross_validate:
+        print(f"Running geographic cross-validation on {len(BENCHMARK_QUESTIONS)} questions...")
+        cv = run_cross_validation(civ)
+        print(format_cross_validation(cv))
+        return
 
     if args.compare:
         print(f"Running {len(BENCHMARK_QUESTIONS)} questions × 2 modes...")

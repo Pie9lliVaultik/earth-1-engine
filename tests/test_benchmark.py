@@ -61,9 +61,9 @@ def test_country_errors_reasonable():
 
 def test_regime_classification():
     report = run_benchmark(civ)
-    assert "calibrated" in report.by_regime
-    assert "transitional" in report.by_regime
-    assert "forward_estimate" in report.by_regime
+    assert "anchored" in report.by_regime
+    assert "partial" in report.by_regime
+    assert "unanchored" in report.by_regime
     total = sum(r["count"] for r in report.by_regime.values())
     assert total <= len(BENCHMARK_QUESTIONS)
 

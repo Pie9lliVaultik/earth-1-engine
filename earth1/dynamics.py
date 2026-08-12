@@ -162,6 +162,7 @@ def diffuse_forces(
     residues = np.zeros((n, NUM_FORCES), dtype=np.float64)
 
     rows, cols = civ.adj.nonzero()
+    edge_weights = np.asarray(civ.adj[rows, cols]).ravel()
     centered = civ.forces - civ.means[np.newaxis, :]  # (N, 8)
     if field_shift is not None:
         if field_shift.ndim == 1:
@@ -175,20 +176,17 @@ def diffuse_forces(
         mask = diffs < epsilon
         mask_float = mask.astype(np.float64)
 
-        # Build count matrix for normalization
-        counts_adj = sparse.csr_matrix(
-            (mask_float, (rows, cols)), shape=(n, n))
-        counts = np.asarray(counts_adj.sum(axis=1)).ravel()
-        safe_counts = np.where(counts > 0, counts, 1.0)
+        w_mask = edge_weights * mask_float
+        weight_sums = sparse.csr_matrix(
+            (w_mask, (rows, cols)), shape=(n, n))
+        w_totals = np.asarray(weight_sums.sum(axis=1)).ravel()
+        safe_w = np.where(w_totals > 0, w_totals, 1.0)
 
-        # For each force channel, propagate neighbor signals
-        # received[i, f] = mean of centered[j, f] for j in filtered neighbors of i
         received = np.zeros((n, NUM_FORCES), dtype=np.float64)
         for f in range(NUM_FORCES):
-            # Neighbor values for this force, masked by epsilon
-            vals = centered[cols, f] * mask_float
+            vals = centered[cols, f] * w_mask
             force_adj = sparse.csr_matrix((vals, (rows, cols)), shape=(n, n))
-            received[:, f] = np.asarray(force_adj.sum(axis=1)).ravel() / safe_counts
+            received[:, f] = np.asarray(force_adj.sum(axis=1)).ravel() / safe_w
 
         # Susceptibility-weighted absorption: each agent absorbs selectively
         absorbed = received * susceptibility  # (N, 8)
@@ -202,7 +200,7 @@ def diffuse_forces(
         social = np.clip(social, 0, 1)
 
         cur_new = np.where(
-            counts > 0,
+            w_totals > 0,
             civ.alpha * s0 + (1.0 - civ.alpha) * social,
             cur,
         )

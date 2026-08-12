@@ -23,22 +23,22 @@ def diffuse(
     cur = s0.copy()
 
     rows, cols = adj.nonzero()
+    edge_weights = np.asarray(adj[rows, cols]).ravel()
 
     for _ in range(layers):
-        # compute |s_j - s_i| for every edge
         diffs = np.abs(cur[cols] - cur[rows])
         mask = diffs < epsilon
 
-        # build masked adjacency with values = s_j where within epsilon
-        masked_vals = cur[cols] * mask
+        w_mask = edge_weights * mask.astype(np.float64)
+        masked_vals = cur[cols] * w_mask
         masked_adj = sparse.csr_matrix((masked_vals, (rows, cols)), shape=(n, n))
-        counts_adj = sparse.csr_matrix((mask.astype(np.float64), (rows, cols)), shape=(n, n))
+        weight_sums = sparse.csr_matrix((w_mask, (rows, cols)), shape=(n, n))
 
         sums = np.asarray(masked_adj.sum(axis=1)).ravel()
-        counts = np.asarray(counts_adj.sum(axis=1)).ravel()
+        w_totals = np.asarray(weight_sums.sum(axis=1)).ravel()
 
-        safe_counts = np.where(counts > 0, counts, 1.0)
-        social = np.where(counts > 0, sums / safe_counts, cur)
+        safe_w = np.where(w_totals > 0, w_totals, 1.0)
+        social = np.where(w_totals > 0, sums / safe_w, cur)
         cur = alpha * s0 + (1.0 - alpha) * social
         snapshots.append(cur.copy())
 

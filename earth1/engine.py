@@ -106,6 +106,7 @@ def run_question(
         fragility=anat["fragility"],
         camps=anat["camps"],
         params=params,
+        settled_stances=settled,
     )
 
 

@@ -186,6 +186,7 @@ def world_tick(
                 params={"epsilon": 0.18, "layers": 8,
                         "residue_rate": residue_rate,
                         "susceptibility_gain": susceptibility_gain},
+                settled_stances=settled,
             )
         else:
             r = run_question(
@@ -198,9 +199,7 @@ def world_tick(
         results[q.id] = r
 
         if enable_feedback and not use_force_dynamics:
-            from earth1.diffusion import diffuse
-            s0 = np.full(state.civ.n, r.yes_pct)
-            settled = diffuse(s0, state.civ.alpha, state.civ.adj, 0.18, 8)[-1]
+            settled = r.settled_stances
             fb = opinion_feedback(
                 state.civ, settled, q, r.force_anatomy,
                 learning_rate=learning_rate,
@@ -236,13 +235,12 @@ def world_tick(
         n_events += len(emergent)
 
     if enable_rewire and results:
-        avg_settled = np.mean(
-            [r.yes_pct for r in results.values()]
-        )
-        proxy_stances = np.full(state.civ.n, avg_settled)
-        for q_id, r in results.items():
-            proxy_stances += (r.yes_pct - 0.5) * 0.1
-        proxy_stances = np.clip(proxy_stances, 0, 1)
+        stance_arrays = [r.settled_stances for r in results.values()
+                         if r.settled_stances is not None]
+        if stance_arrays:
+            proxy_stances = np.clip(np.mean(stance_arrays, axis=0), 0, 1)
+        else:
+            proxy_stances = np.full(state.civ.n, 0.5)
         new_adj = update_graph(state.civ.adj, proxy_stances, state.rng)
         object.__setattr__(state.civ, "adj", new_adj)
 

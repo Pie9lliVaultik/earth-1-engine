@@ -18,6 +18,7 @@ from earth1.census import (
     CENSUS_TARGETS, effective_force_norms, get_within_country,
 )
 from earth1.regions import get_regions, sample_region
+from earth1.culture import INGLEHART
 from earth1.rng import make_rng
 
 
@@ -161,6 +162,13 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     uncertainty_avoidance = np.clip(rng.normal(h_uai, 0.12), 0, 1)
     long_term_orientation = np.clip(rng.normal(h_lto, 0.12), 0, 1)
 
+    # Inglehart-Welzel dimensions (wider cross-country range than Hofstede)
+    _ING_DEFAULT = {"trad_sec": 0.45, "surv_self": 0.45}
+    ing_trad_sec = np.array([INGLEHART.get(c["iso2"], _ING_DEFAULT)["trad_sec"]
+                             for c in GENESIS_COUNTRIES])[country]
+    ing_surv_self = np.array([INGLEHART.get(c["iso2"], _ING_DEFAULT)["surv_self"]
+                              for c in GENESIS_COUNTRIES])[country]
+
     # Culture offset: derived from Hofstede IND (indulgence) centered at 0.5
     culture_offset = (h_ind - 0.5) * 0.4 + region_culture_delta
 
@@ -173,24 +181,24 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     c_doubt = np.array([_INCOME_CLASS_DOUBT.get(c["income"], 0.54)
                          for c in GENESIS_COUNTRIES])[country]
 
-    # Modulate base rates by Hofstede dimensions
-    c_open = c_open + (h_idv - 0.5) * 0.15
-    c_risk = c_risk + (h_ind - 0.5) * 0.1
-    c_doubt = c_doubt + (h_uai - 0.5) * 0.15
+    # Modulate base rates by Hofstede + Inglehart dimensions
+    c_open = c_open + (h_idv - 0.5) * 0.15 + (ing_surv_self - 0.5) * 0.20
+    c_risk = c_risk + (h_ind - 0.5) * 0.1 + (h_mas - 0.5) * 0.10
+    c_doubt = c_doubt + (h_uai - 0.5) * 0.15 - (ing_trad_sec - 0.5) * 0.12
 
     edu_lift = np.where(education == 2, 0.08, np.where(education == 0, -0.06, 0.0))
 
     openness = np.clip(rng.normal(c_open + edu_lift - age * 0.08, 0.16), 0, 1)
     risk_appetite = np.clip(rng.normal(c_risk - age * 0.12, 0.17), 0, 1)
     doubt = np.clip(rng.normal(c_doubt - edu_lift * 0.5, 0.16), 0, 1)
-    empathy = np.clip(rng.normal(0.55, 0.16, size=actual_pop), 0, 1)
-    desire_intensity = np.clip(rng.normal(0.5 + (0.6 - age) * 0.3, 0.17), 0, 1)
+    empathy = np.clip(rng.normal(0.55 + (ing_surv_self - 0.5) * 0.15, 0.16), 0, 1)
+    desire_intensity = np.clip(rng.normal(0.5 + (0.6 - age) * 0.3 + (h_mas - 0.5) * 0.12, 0.17), 0, 1)
     economic_field = np.clip(rng.normal(INCOME_ECON[income], 0.1), 0, 1)
 
     conscientiousness = np.clip(rng.normal(0.52 + age * 0.1 + edu_lift * 0.3, 0.15), 0, 1)
-    agreeableness = np.clip(rng.normal(0.54 + age * 0.05, 0.15, size=actual_pop), 0, 1)
-    extraversion = np.clip(rng.normal(0.50 - age * 0.06, 0.16, size=actual_pop), 0, 1)
-    neuroticism = np.clip(rng.normal(0.48 - age * 0.04 - edu_lift * 0.2, 0.16), 0, 1)
+    agreeableness = np.clip(rng.normal(0.54 + age * 0.05 + (ing_trad_sec - 0.5) * 0.10, 0.15), 0, 1)
+    extraversion = np.clip(rng.normal(0.50 - age * 0.06 + (h_ind - 0.5) * 0.12, 0.16), 0, 1)
+    neuroticism = np.clip(rng.normal(0.48 - age * 0.04 - edu_lift * 0.2 + (h_uai - 0.5) * 0.10, 0.16), 0, 1)
 
     # ── Layer 5: Force computation ──
 

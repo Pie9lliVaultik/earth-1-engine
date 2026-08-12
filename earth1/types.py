@@ -107,6 +107,7 @@ class RunResult:
     camps: Dict[str, CampAnatomy]
     params: Dict[str, float]
     abstained: Optional[str] = None
+    settled_stances: Optional[np.ndarray] = None
 
 
 @dataclass
