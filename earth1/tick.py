@@ -44,6 +44,7 @@ class WorldState:
     coupling_matrix: Dict
     last_fired: Dict[str, float]
     rng: np.random.Generator
+    receiver_config: object = None
 
     @staticmethod
     def create(
@@ -110,6 +111,7 @@ def world_tick(
     enable_thresholds: bool = True,
     enable_rewire: bool = True,
     enable_event_generation: bool = True,
+    enable_receiver: bool = False,
     use_force_dynamics: bool = False,
     residue_rate: float = 0.0005,
     susceptibility_gain: float = 4.0,
@@ -119,7 +121,18 @@ def world_tick(
     When use_force_dynamics=True, agents communicate through force signatures
     instead of scalar stances. Learning happens through trait residue from
     absorbed forces — no explicit feedback needed.
+
+    When enable_receiver=True, polls external sources (GDELT, ACLED, FRED,
+    Google Trends) and injects their signals as events into the event log.
     """
+    # Step 0: Sense — poll external sources
+    if enable_receiver and state.receiver_config is not None:
+        from earth1.receiver import sense_sources, activations_to_events
+        activations = sense_sources(state.receiver_config, state.tick_count)
+        receiver_events = activations_to_events(activations, state.t, state.receiver_config)
+        for ev in receiver_events:
+            state.event_log.append(ev)
+
     qs = questions or [q for q in QUESTIONS if q.domain != "external_substrate"]
     selected = _select_questions(state.tick_count, qs, batch_size)
 

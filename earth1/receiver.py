@@ -1115,5 +1115,129 @@ def run_full_falsification_suite(
     return reports
 
 
+# ---------------------------------------------------------------------------
+#  Build 26 — Live Source Wiring
+# ---------------------------------------------------------------------------
+
+@dataclass
+class SourceConfig:
+    """Configuration for a single source adapter."""
+    source_id: str
+    enabled: bool = True
+    poll_interval_ticks: int = 1
+    gain: float = 0.1
+    decay_half_life: float = 3.0
+    scopes: List[GeoScope] = field(default_factory=lambda: [GeoScope.global_scope()])
+
+
+@dataclass
+class ReceiverConfig:
+    """Controls which sources are polled and how signals enter the event log."""
+    sources: List[SourceConfig] = field(default_factory=list)
+    global_gain: float = 0.1
+    min_confidence: float = 0.1
+
+    @staticmethod
+    def default() -> "ReceiverConfig":
+        return ReceiverConfig(sources=[
+            SourceConfig("gdelt", poll_interval_ticks=1, gain=0.1, decay_half_life=3.0),
+            SourceConfig("acled", poll_interval_ticks=7, gain=0.12, decay_half_life=14.0),
+            SourceConfig("fred", poll_interval_ticks=30, gain=0.08, decay_half_life=60.0),
+            SourceConfig("google_trends", poll_interval_ticks=1, gain=0.1, decay_half_life=3.0),
+        ])
+
+    @staticmethod
+    def offline() -> "ReceiverConfig":
+        return ReceiverConfig(sources=[])
+
+
+_CADENCE_TO_DECAY = {
+    "realtime": 1.0,
+    "hourly": 2.0,
+    "daily": 3.0,
+    "weekly": 14.0,
+    "monthly": 60.0,
+    "annual": 365.0,
+}
+
+
+def sense_sources(
+    config: ReceiverConfig,
+    tick: int,
+    scopes: Optional[List[GeoScope]] = None,
+) -> List[ForceActivation]:
+    """Poll enabled sources that are due this tick. Returns activations."""
+    _init_default_adapters()
+    activations = []
+
+    for src in config.sources:
+        if not src.enabled:
+            continue
+        if tick % src.poll_interval_ticks != 0:
+            continue
+
+        adapter = get_adapter(src.source_id)
+        if adapter is None:
+            continue
+
+        poll_scopes = scopes or src.scopes
+        for scope in poll_scopes:
+            reading = adapter.fetch(scope)
+            if reading.status != "ok":
+                continue
+            if reading.confidence < config.min_confidence:
+                continue
+            activation = adapter.to_forces(reading)
+            activations.append(activation)
+
+    return activations
+
+
+def activations_to_events(
+    activations: List[ForceActivation],
+    t: float,
+    config: ReceiverConfig,
+) -> List:
+    """Convert ForceActivations into WorldEvents for the event log."""
+    from earth1.event_log import WorldEvent
+
+    events = []
+    source_configs = {s.source_id: s for s in config.sources}
+
+    for act in activations:
+        magnitude = float(np.abs(act.forces).max())
+        if magnitude < 1e-6:
+            continue
+
+        src_conf = source_configs.get(act.source_id)
+        gain = src_conf.gain if src_conf else config.global_gain
+        decay = src_conf.decay_half_life if src_conf else _CADENCE_TO_DECAY.get("daily", 3.0)
+
+        force_deltas = {}
+        force_names = [f.name.lower() for f in Force]
+        for i, fname in enumerate(force_names):
+            val = float(act.forces[i] * act.confidence[i] * gain)
+            if abs(val) > 1e-6:
+                force_deltas[fname] = val
+
+        if not force_deltas:
+            continue
+
+        region = "*"
+        if act.scope.country_code and act.scope.country_code != "global":
+            region = f"{act.scope.country_code}-*"
+
+        event = WorldEvent.create(
+            timestamp=t,
+            force_deltas=force_deltas,
+            region_pattern=region,
+            decay_half_life=decay,
+            source=f"receiver:{act.source_id}",
+        )
+        events.append(event)
+
+    return events
+
+
 # --- Initialize on import ---
 _init_default_adapters()

@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from earth1.api.routes import ask, billing, forecast, lab, loop, observatory, predictions, receiver
+from earth1.api.routes import ask, billing, forecast, lab, loop, observatory, predictions, receiver, world
 from earth1.api.schemas import HealthSchema, CivStatsSchema
 from earth1.api.deps import get_civ
 from earth1.engine import civ_breakdown
@@ -52,6 +52,7 @@ app.include_router(loop.router)
 app.include_router(predictions.router)
 app.include_router(receiver.router)
 app.include_router(billing.router)
+app.include_router(world.router)
 
 from earth1.api.middleware import RateLimitMiddleware, PauseSwitchMiddleware
 from earth1.api.auth import APIKeyMiddleware
