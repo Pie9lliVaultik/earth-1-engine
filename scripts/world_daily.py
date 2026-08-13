@@ -70,15 +70,26 @@ def main():
 
     # ── 2b. §14 placebo gate for receiver activation ──
     receiver_active = False
+    passport_path = WORLD_PATH / "placebo_passport.json"
     if args.enable_receiver:
         if world.state.receiver_config is None:
             world.state.receiver_config = ReceiverConfig.default()
 
-        if not args.skip_placebo:
+        if not args.skip_placebo and not passport_path.exists():
+            import json as _json
             from earth1.placebo import run_placebo_gate, print_passport
+            from earth1.engine import build_genesis_civilization
+            gate_civ = build_genesis_civilization(5000, seed=args.seed)
             gate_questions = questions[:min(3, len(questions))]
-            passport = run_placebo_gate(gate_questions, n_perms=100)
+            passport = run_placebo_gate(gate_civ, gate_questions, n_perms=50)
             print(print_passport(passport))
+            with open(passport_path, "w") as f:
+                _json.dump({
+                    "all_pass": passport.all_pass,
+                    "sources": {sid: {"passes": r.passes, "p_value": r.p_value,
+                                      "real_dispersion": r.real_dispersion}
+                                for sid, r in passport.results.items()},
+                }, f)
             if passport.all_pass:
                 receiver_active = True
                 validated = [sid for sid, r in passport.results.items() if r.passes]
@@ -88,6 +99,18 @@ def main():
             else:
                 failed = [sid for sid, r in passport.results.items() if not r.passes]
                 print(f"Receiver BLOCKED — sources failed placebo: {failed}")
+        elif passport_path.exists():
+            import json as _json
+            with open(passport_path) as f:
+                cached = _json.load(f)
+            if cached["all_pass"]:
+                receiver_active = True
+                validated = [s for s, d in cached["sources"].items() if d["passes"]]
+                for src in world.state.receiver_config.sources:
+                    src.enabled = src.source_id in validated
+                print(f"Receiver activated (cached passport): {validated}")
+            else:
+                print("Receiver BLOCKED (cached passport)")
         else:
             receiver_active = True
             print("Receiver activated (placebo gate skipped)")

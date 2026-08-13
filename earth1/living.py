@@ -139,6 +139,8 @@ class LivingWorld:
                     for s in rc.sources
                 ],
             }
+        else:
+            self.meta.pop("receiver_config", None)
         self.meta["rng_state"] = json.loads(
             json.dumps(self.state.rng.bit_generator.state))
         self.meta["events"] = [
@@ -230,7 +232,7 @@ class LivingWorld:
         """
         from earth1.generational import generational_tick
 
-        stats = {"deaths": 0, "receiver_events": 0}
+        stats = {"deaths": 0}
         for _ in range(days):
             world_tick(
                 self.state, questions=questions, dt=1.0,

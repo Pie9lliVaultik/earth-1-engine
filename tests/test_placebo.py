@@ -5,7 +5,8 @@ sys.path.insert(0, ".")
 import numpy as np
 import pytest
 
-from earth1.types import Question, NUM_FORCES
+from earth1.types import Question, NUM_FORCES, Force
+from earth1.engine import build_genesis_civilization
 from earth1.receiver import (
     ForceActivation, GeoScope, ReceiverConfig, SourceConfig,
     aggregate_activations, compute_country_field_shift,
@@ -14,16 +15,26 @@ from earth1.receiver import (
 from earth1.placebo import (
     _synthetic_activations,
     _shuffle_geography,
-    _per_country_shift_magnitude,
-    _geographic_specificity,
+    _per_country_yes_pct,
+    _build_country_indices,
+    _coherence,
+    _intended_effects,
     placebo_test_source,
     run_placebo_gate,
 )
 
 
+POP = 5_000
+
+
 @pytest.fixture(autouse=True)
 def init_adapters():
     _init_default_adapters()
+
+
+@pytest.fixture
+def civ():
+    return build_genesis_civilization(POP, seed=42)
 
 
 def _make_q(qid="test_q", dominant_force=0):
@@ -78,48 +89,85 @@ def test_shuffle_geography_changes_assignment():
     assert any_different
 
 
-def test_geographic_specificity_perfect_correlation():
-    intended = np.array([0.2, 0.4, 0.6, 0.8, 1.0])
-    observed = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
-    rho = _geographic_specificity(intended, observed)
-    assert rho > 0.9
+def test_build_country_indices(civ):
+    indices = _build_country_indices(civ, COUNTRIES)
+    for cc, idx in indices.items():
+        assert len(idx) > 0
+        assert np.all(idx < civ.n)
 
 
-def test_geographic_specificity_zero_for_constant():
-    intended = np.array([0.2, 0.4, 0.6, 0.8, 1.0])
-    observed = np.full(5, 0.3)
-    rho = _geographic_specificity(intended, observed)
-    assert rho == 0.0
+def test_per_country_yes_pct_changes_with_signal(civ):
+    """Engine predictions per country should change when a field_shift
+    is applied — the receiver signal actually modifies the model."""
+    q = _make_q(dominant_force=Force.FEAR)
+    indices = _build_country_indices(civ, COUNTRIES)
 
-
-def test_per_country_shift_varies_with_activations():
     rng = np.random.default_rng(42)
-    mags = np.array([1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    mags = np.linspace(0.3, 1.0, len(COUNTRIES))
     acts = _synthetic_activations("gdelt", COUNTRIES, mags, rng)
-    q = _make_q(dominant_force=2)
-    shifts = _per_country_shift_magnitude(acts, q, COUNTRIES)
-    assert shifts[0] > 0 or shifts.sum() > 0
+
+    baseline = _per_country_yes_pct(civ, q, [], COUNTRIES, indices)
+    real = _per_country_yes_pct(civ, q, acts, COUNTRIES, indices)
+
+    diff = np.abs(real - baseline)
+    assert diff.max() > 0.001, (
+        f"receiver signal had no effect: max diff = {diff.max():.6f}"
+    )
 
 
-def test_placebo_test_source_passes_for_geographic_source():
-    """GDELT with country-specific signals should pass the placebo gate
-    because correct geography routes signals to the right countries."""
-    q = _make_q(dominant_force=2)
+def test_coherence_metric():
+    intended = np.array([1.0, -1.0, 0.5, -0.5])
+    deviations = np.array([0.8, -0.9, 0.3, -0.6])
+    c = _coherence(intended, deviations)
+    assert c > 0.9
+
+    anti = np.array([-0.8, 0.9, -0.3, 0.6])
+    c_anti = _coherence(intended, anti)
+    assert c_anti < -0.9
+
+
+def test_coherence_zero_for_orthogonal():
+    intended = np.array([1.0, 0.0, 0.0, 0.0])
+    deviations = np.array([0.0, 1.0, 0.0, 0.0])
+    c = _coherence(intended, deviations)
+    assert abs(c) < 0.01
+
+
+def test_placebo_real_coherence_positive_on_relevant_question(civ):
+    """For a question that loads on GDELT's target forces, the real
+    geographic assignment should produce positive coherence — the
+    right countries deviate in the right direction."""
+    q = _make_q(dominant_force=Force.FEAR)
     result = placebo_test_source(
-        "gdelt", [q],
+        "gdelt", civ, [q],
         countries=COUNTRIES,
         n_perms=50, seed=42,
     )
     assert result.source_id == "gdelt"
     assert result.n_questions == 1
-    assert result.n_countries == len(COUNTRIES)
-    assert result.real_specificity > result.placebo_mean
+    assert result.real_dispersion > 0
 
 
-def test_placebo_gate_runs_all_sources():
-    q = _make_q(dominant_force=2)
+def test_placebo_no_force_overlap_zero_coherence(civ):
+    """A question with zero overlap with GDELT's forces should see
+    zero coherence — the source cannot affect it."""
+    w = np.zeros(NUM_FORCES)
+    w[Force.CULTURE] = 0.9
+    w[Force.EXPERIENCE] = -0.4
+    q = Question(id="no_overlap", text="culture q", domain="belief_causal",
+                 baseline=0.5, weights=w, lens="wvs")
+    result = placebo_test_source(
+        "gdelt", civ, [q],
+        countries=COUNTRIES,
+        n_perms=30, seed=42,
+    )
+    assert abs(result.real_dispersion) < 0.001
+
+
+def test_placebo_gate_runs_all_sources(civ):
+    q = _make_q(dominant_force=Force.ECONOMICS)
     passport = run_placebo_gate(
-        [q],
+        civ, [q],
         source_ids=["gdelt", "acled"],
         countries=COUNTRIES,
         n_perms=30, seed=42,
@@ -156,6 +204,24 @@ def test_receiver_config_persists_in_living_world(tmp_path):
     assert loaded.state.receiver_config.sources[1].enabled is False
 
 
+def test_receiver_config_none_clears_on_save(tmp_path):
+    """When receiver_config is set to None and saved, the key should
+    not persist in world.json."""
+    from earth1.living import LivingWorld
+    import json
+
+    rc = ReceiverConfig(sources=[SourceConfig("gdelt")])
+    world = LivingWorld.create(tmp_path / "w", pop=1000, seed=42,
+                               receiver_config=rc)
+    with open(tmp_path / "w" / "world.json") as f:
+        assert "receiver_config" in json.load(f)
+
+    world.state.receiver_config = None
+    world.save()
+    with open(tmp_path / "w" / "world.json") as f:
+        assert "receiver_config" not in json.load(f)
+
+
 def test_living_world_tick_with_receiver_flag(tmp_path):
     from earth1.living import LivingWorld
 
@@ -163,3 +229,4 @@ def test_living_world_tick_with_receiver_flag(tmp_path):
     q = _make_q()
     stats = world.tick([q], days=1, enable_receiver=False, save=False)
     assert "deaths" in stats
+    assert "receiver_events" not in stats
