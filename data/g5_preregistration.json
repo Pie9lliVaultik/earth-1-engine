@@ -1,0 +1,56 @@
+{
+  "gate": "G5 — The world is alive (bible v2 §21)",
+  "registered": "2026-08-13",
+  "status": "PRE-REGISTERED — committed before any results run. Results that follow a protocol change require a new registration entry; the old entry is never edited.",
+  "claim": "The living core's opinion trajectory validates against historical opinion time-series; a real injected event yields a simulated reaction matching the measured one; demography matches UN-derived census projections.",
+  "on_failure": "Fix the physics or narrow the domain — never let the LLM decide (bible v2 §7 risk table).",
+  "legs": {
+    "temporal": {
+      "protocol": "Calibrate per-question force weights on WVS Wave 6 country targets only (Wave 7 never touched during calibration — held out in time). Snapshot t0 force means. Evolve the living world through the W6->W7 interval (default 7 years, 30-day steps) with all endogenous mechanisms on (feedback, coupling, thresholds, rewiring, generational replacement) and zero hand-authored cohort drift; receiver off (no historical signal replay in v1). Re-predict per country at t1 with the SAME weights, feature-centered on the t0 means anchor so global secular drift is not silently subtracted. Score predicted deltas against observed W7-W6 deltas.",
+      "dataset": "earth1/wvs_paired.py — 15 questions, WVS Wave 6 (2010-2014) vs Wave 7 (2017-2022), compiled from published aggregates.",
+      "metrics": {
+        "mae_engine": "mean |predicted_delta - observed_delta| over all (question, country) pairs",
+        "mae_nochange": "mean |observed_delta| (the no-change baseline: predicted delta = 0)",
+        "sign_accuracy": "fraction of pairs with |observed_delta| >= 0.02 where sign(predicted) == sign(observed)",
+        "sign_p": "one-sided binomial p-value of sign_accuracy against 0.5"
+      },
+      "pass": "mae_engine < mae_nochange AND sign_accuracy > 0.5 with sign_p < 0.05",
+      "caveats": [
+        "The genesis manifold is calibrated on ~2020-era sources, closer to Wave 7 than Wave 6; this tests whether endogenous dynamics move deltas in the observed direction, not full historical reconstruction.",
+        "WVS paired values are compiled from published aggregates and marked verify-against-official-database in the source file."
+      ]
+    },
+    "event_reaction": {
+      "protocol": "Encode a documented real event with its measured before/after poll values. Calibrate the case question's weights on the PRE-event country values only. Inject the event as force-delta WorldEvents scoped to the affected countries, tick the world through the measured reaction window, and compare the simulated shift to the measured shift.",
+      "case": "COVID-19 onset rally-round-the-flag: trust in national government, Eurobarometer Standard EB 92 (autumn 2019) vs EB 93 (summer 2020), EU country toplines. Measured EU-average shift approximately +6pp. Injected as a FEAR + COLLECTIVE force shock scoped to the encoded EU countries, 90-day window, decay half-life 45 days.",
+      "metrics": {
+        "sign_match": "sign(simulated mean shift) == sign(measured mean shift)",
+        "magnitude_ratio": "simulated mean shift / measured mean shift"
+      },
+      "pass": "sign_match AND magnitude_ratio in [0.25, 4.0]",
+      "caveats": [
+        "EB country values compiled from published toplines; verify against GESIS archive.",
+        "Shock force-deltas are authored (magnitude chosen a priori at 0.15 fear / 0.10 collective, gain not tuned to the answer); the test is whether the ENGINE's propagation of an authored shock matches measured reality in sign and order of magnitude."
+      ]
+    },
+    "demography": {
+      "protocol": "Run the generational tick alone (no opinion dynamics) for 5 simulated years at 30-day steps on a fresh genesis population. Record every death with its country and age.",
+      "metrics": {
+        "le_tracking": "fraction of countries with >= 20 recorded deaths whose mean age at death is within +/- 6 years of the census life expectancy (GENESIS_COUNTRIES 'le', UN-derived)",
+        "world_adult_cdr": "annualized deaths per 1000 agents across the whole (18+ only) population"
+      },
+      "pass": "le_tracking >= 0.70 AND world_adult_cdr in [6.0, 15.0]",
+      "caveats": [
+        "The population is adults-only (18+) with fixed-N slot replacement, so births == deaths by construction and infant mortality is out of scope; the band [6,15] reflects adult-only crude death rates, wider than the UN all-ages world CDR (~8)."
+      ]
+    }
+  },
+  "defaults": {
+    "pop": 50000,
+    "seed": 42,
+    "temporal_years": 7.0,
+    "demography_years": 5.0,
+    "dt_days": 30.0,
+    "min_obs_delta": 0.02
+  }
+}

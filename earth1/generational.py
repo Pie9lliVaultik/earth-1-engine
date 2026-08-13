@@ -59,8 +59,13 @@ def generational_tick(
     heritability: float = 0.4,
     cohort_drift: Optional[Dict[str, float]] = None,
     mobility: float = 0.3,
+    return_details: bool = False,
 ) -> Dict[str, int]:
-    """One generational step: age, die, be born. Returns {'deaths': n}."""
+    """One generational step: age, die, be born. Returns {'deaths': n}.
+
+    return_details=True adds 'dead_ages' (years) and 'dead_countries'
+    (country indices) arrays — needed by the G5 demography leg.
+    """
     cohort_drift = cohort_drift or {}
     dt_years = dt_days / 365.0
 
@@ -77,9 +82,14 @@ def generational_tick(
     dead = rng.random(civ.n) < p_death
     n_dead = int(dead.sum())
     if n_dead == 0:
+        if return_details:
+            return {"deaths": 0, "dead_ages": np.array([]),
+                    "dead_countries": np.array([], dtype=int)}
         return {"deaths": 0}
 
     dead_idx = np.flatnonzero(dead)
+    dead_ages = age_years[dead_idx].copy()
+    dead_countries = civ.country[dead_idx].copy()
 
     # ── birth into the freed slots, same country ──
     # parent pool: adults 30-60 in the same country (weighted by presence)
@@ -122,4 +132,7 @@ def generational_tick(
     _recompute_forces(civ)
     civ.means = civ.forces.mean(axis=0)
 
+    if return_details:
+        return {"deaths": n_dead, "dead_ages": dead_ages,
+                "dead_countries": dead_countries}
     return {"deaths": n_dead}
