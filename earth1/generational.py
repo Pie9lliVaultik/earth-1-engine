@@ -47,9 +47,40 @@ def _age_years(civ: Civilization) -> np.ndarray:
     return _AGE_MIN + civ.age * _AGE_SPAN
 
 
+def _cohort_mean_age_at_death(a: float, b: float = GOMPERTZ_B) -> float:
+    """Mean age at death for a cohort entering at 18 under Gompertz
+    hazard h(x) = a * exp(b * (x - 18)), by discrete survival sum."""
+    years = np.arange(0.0, 122.0 - _AGE_MIN)
+    # cumulative hazard from 18 to 18+n: (a/b) * (exp(b*n) - 1)
+    cum_h = (a / b) * (np.exp(b * years) - 1.0)
+    survival = np.exp(-cum_h)
+    return _AGE_MIN + float(survival.sum())
+
+
 def _gompertz_a(life_expectancy: float) -> float:
-    """Baseline hazard such that the modal age at death ~ life expectancy."""
-    return GOMPERTZ_B * float(np.exp(-GOMPERTZ_B * (life_expectancy - _AGE_MIN)))
+    """Baseline hazard such that the COHORT mean age at death matches
+    the census life expectancy.
+
+    The previous calibration pinned the *modal* age at death to LE,
+    which left the mid-life hazard several times the real rate and
+    dragged mean age at death ~25 years under LE (G5 run #2 finding).
+    Solved numerically; cached per LE value.
+    """
+    le = round(float(life_expectancy), 1)
+    if le in _GOMPERTZ_A_CACHE:
+        return _GOMPERTZ_A_CACHE[le]
+    lo, hi = 1e-8, 0.1
+    for _ in range(60):
+        mid = np.sqrt(lo * hi)  # log-scale bisection
+        if _cohort_mean_age_at_death(mid) > le:
+            lo = mid
+        else:
+            hi = mid
+    _GOMPERTZ_A_CACHE[le] = float(np.sqrt(lo * hi))
+    return _GOMPERTZ_A_CACHE[le]
+
+
+_GOMPERTZ_A_CACHE: Dict[float, float] = {}
 
 
 def generational_tick(

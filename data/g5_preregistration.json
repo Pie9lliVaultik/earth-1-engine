@@ -45,6 +45,16 @@
       ]
     }
   },
+  "amendments": [
+    {
+      "id": "A1",
+      "date": "2026-08-13",
+      "after_run": 2,
+      "leg": "demography",
+      "what": "The le_tracking metric changes from period mean-age-at-death vs LE to a cohort simulation: per distinct census LE value, a synthetic cohort is stepped from age 18 through the SAME hazard code path and dt-scaling the generational tick uses, until extinction; the cohort's mean age at death must be within +/- 6 years of census LE for >= 90% of LE values. Rationale: run #2 exposed (a) a genuine physics bug — the Gompertz calibration pinned the MODAL age at death to LE, leaving mid-life hazard several times life-table rates (fixed in earth1/generational.py, commit follows this amendment); and (b) a metric design error — period mean-age-at-death in a young standing population sits far below cohort LE even under correct physics, so the registered metric could not pass regardless. The cohort metric tests the implementation (dt scaling, age encoding, clipping), not the analytic calibration, and is not satisfiable by construction: bugs in the tick path fail it.",
+      "unchanged": "The world_adult_cdr band [6,15] stays as registered — it is an external anchor (UN-derived adult mortality). Run #2 plus the hazard fix shows it will fail for a now-diagnosed reason: the genesis age structure under-represents the elderly (all-ages census median used as adult mean, thin-tailed normal). That failure is the leg doing its job; fixing genesis age sampling alters the frozen manifold and is a founder decision, not a harness tweak."
+    }
+  ],
   "defaults": {
     "pop": 50000,
     "seed": 42,

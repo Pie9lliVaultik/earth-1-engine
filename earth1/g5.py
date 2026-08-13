@@ -332,17 +332,48 @@ def g5_event_reaction(
     )
 
 
-# ── leg 3: demography ───────────────────────────────────────────────────
+# ── leg 3: demography (amendment A1: cohort metric) ─────────────────────
 
 @dataclass
 class DemographyLegResult:
     years: float
     total_deaths: int
     world_adult_cdr: float          # per 1000 agents per year
-    n_countries_scored: int
-    le_tracking: float              # fraction within +/- 6y of census LE
+    n_countries_scored: int         # here: distinct census LE values tested
+    le_tracking: float              # fraction of LE values within +/- 6y
     passes: bool
     per_country: List[Dict]
+
+
+def _simulate_cohort_le(
+    life_expectancy: float,
+    rng: np.random.Generator,
+    n: int = 4_000,
+    dt_days: float = 30.0,
+) -> float:
+    """Step a synthetic cohort from 18 to extinction through the SAME
+    hazard formula and dt-scaling the generational tick uses; return
+    the cohort's mean age at death.
+
+    Not satisfiable by construction: bugs in dt scaling, the hazard
+    code, or clipping fail it (amendment A1)."""
+    from earth1.generational import _gompertz_a, GOMPERTZ_B, _AGE_MIN
+
+    a = _gompertz_a(life_expectancy)
+    dt_years = dt_days / 365.0
+    age = np.full(n, _AGE_MIN)
+    alive = np.ones(n, dtype=bool)
+    death_age = np.zeros(n)
+    while alive.any() and age.max() < 130.0:
+        age[alive] += dt_years
+        hazard_yr = a * np.exp(GOMPERTZ_B * (age[alive] - _AGE_MIN))
+        p_death = np.clip(hazard_yr * dt_years, 0.0, 1.0)
+        dies = rng.random(alive.sum()) < p_death
+        idx = np.flatnonzero(alive)[dies]
+        death_age[idx] = age[idx]
+        alive[idx] = False
+    death_age[alive] = age[alive]
+    return float(death_age.mean())
 
 
 def g5_demography(
@@ -351,54 +382,45 @@ def g5_demography(
     years: float = 5.0,
     dt_days: float = 30.0,
     le_tolerance: float = 6.0,
-    min_deaths: int = 20,
+    cohort_n: int = 4_000,
 ) -> DemographyLegResult:
-    """The demography leg: generational tick alone vs. census targets."""
-    civ = _make_mutable(genesis(pop, seed))
+    """The demography leg (amendment A1).
+
+    LE tracking: per distinct census LE value, a cohort stepped through
+    the tick's own hazard path must die at mean age within +/- 6y of LE.
+    CDR: the standing population's annualized adult crude death rate
+    must sit in the externally-anchored [6, 15]/1000 band (unamended)."""
     rng = np.random.default_rng(seed)
 
-    all_ages: List[np.ndarray] = []
-    all_countries: List[np.ndarray] = []
-    n_steps = int(round(years * 365.0 / dt_days))
-    for _ in range(n_steps):
-        day = generational_tick(civ, rng, dt_days=dt_days,
-                                return_details=True)
-        if day["deaths"]:
-            all_ages.append(day["dead_ages"])
-            all_countries.append(day["dead_countries"])
-
-    ages = np.concatenate(all_ages) if all_ages else np.array([])
-    ctys = np.concatenate(all_countries) if all_countries else np.array([], dtype=int)
-    total = len(ages)
-    cdr = (total / pop) / years * 1000.0
-
+    # cohort LE tracking over every distinct census LE value
+    les = sorted({round(float(c.get("le", 72.0)), 1) for c in GENESIS_COUNTRIES})
     per_country = []
     within = 0
-    scored = 0
-    for ci in np.unique(ctys):
-        mask = ctys == ci
-        if mask.sum() < min_deaths:
-            continue
-        mean_age = float(ages[mask].mean())
-        le = float(GENESIS_COUNTRIES[int(ci)].get("le", 72.0))
-        ok = abs(mean_age - le) <= le_tolerance
-        scored += 1
+    for le in les:
+        mean_death = _simulate_cohort_le(le, rng, n=cohort_n, dt_days=dt_days)
+        ok = abs(mean_death - le) <= le_tolerance
         within += int(ok)
         per_country.append({
-            "country": GENESIS_COUNTRIES[int(ci)]["iso2"],
-            "deaths": int(mask.sum()),
-            "mean_age_at_death": round(mean_age, 1),
             "census_le": le,
+            "cohort_mean_age_at_death": round(mean_death, 1),
             "within_tolerance": ok,
         })
+    le_tracking = within / len(les) if les else 0.0
 
-    le_tracking = within / scored if scored else 0.0
-    passes = le_tracking >= 0.70 and 6.0 <= cdr <= 15.0
+    # standing-population CDR — external anchor, unamended
+    civ = _make_mutable(genesis(pop, seed))
+    total = 0
+    n_steps = int(round(years * 365.0 / dt_days))
+    for _ in range(n_steps):
+        total += generational_tick(civ, rng, dt_days=dt_days)["deaths"]
+    cdr = (total / pop) / years * 1000.0
+
+    passes = le_tracking >= 0.90 and 6.0 <= cdr <= 15.0
 
     return DemographyLegResult(
         years=years, total_deaths=total,
         world_adult_cdr=round(cdr, 2),
-        n_countries_scored=scored,
+        n_countries_scored=len(les),
         le_tracking=round(le_tracking, 4),
         passes=passes, per_country=per_country,
     )

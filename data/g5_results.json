@@ -1,0 +1,468 @@
+[
+  {
+    "timestamp": "2026-08-13T19:31:38.842389+00:00",
+    "pop": 10000,
+    "seed": 42,
+    "smoke_run": true,
+    "all_pass": false,
+    "temporal": {
+      "n_pairs": 410,
+      "n_sign_pairs": 300,
+      "mae_engine": 0.02882,
+      "mae_nochange": 0.02905,
+      "sign_accuracy": 0.59,
+      "sign_p": 0.00108,
+      "passes": true,
+      "per_question": [
+        {
+          "question_id": "t_homosexuality",
+          "n_countries": 37,
+          "mae_engine": 0.05759,
+          "mae_nochange": 0.04135,
+          "mean_pred_delta": -0.01624,
+          "mean_obs_delta": 0.04135
+        },
+        {
+          "question_id": "t_abortion",
+          "n_countries": 27,
+          "mae_engine": 0.02577,
+          "mae_nochange": 0.0237,
+          "mean_pred_delta": -0.00089,
+          "mean_obs_delta": 0.02074
+        },
+        {
+          "question_id": "t_divorce",
+          "n_countries": 27,
+          "mae_engine": 0.03758,
+          "mae_nochange": 0.03593,
+          "mean_pred_delta": -0.0013,
+          "mean_obs_delta": 0.03593
+        },
+        {
+          "question_id": "t_religion",
+          "n_countries": 27,
+          "mae_engine": 0.0223,
+          "mae_nochange": 0.02407,
+          "mean_pred_delta": -0.00403,
+          "mean_obs_delta": -0.02407
+        },
+        {
+          "question_id": "t_trust",
+          "n_countries": 27,
+          "mae_engine": 0.01753,
+          "mae_nochange": 0.01296,
+          "mean_pred_delta": 0.00593,
+          "mean_obs_delta": -0.00852
+        },
+        {
+          "question_id": "t_democracy",
+          "n_countries": 27,
+          "mae_engine": 0.03022,
+          "mae_nochange": 0.0337,
+          "mean_pred_delta": -0.00382,
+          "mean_obs_delta": -0.0337
+        },
+        {
+          "question_id": "t_army_rule",
+          "n_countries": 27,
+          "mae_engine": 0.01936,
+          "mae_nochange": 0.02222,
+          "mean_pred_delta": 0.00347,
+          "mean_obs_delta": 0.01481
+        },
+        {
+          "question_id": "t_life_sat",
+          "n_countries": 27,
+          "mae_engine": 0.02658,
+          "mae_nochange": 0.03444,
+          "mean_pred_delta": -0.01269,
+          "mean_obs_delta": -0.02407
+        },
+        {
+          "question_id": "t_men_leaders",
+          "n_countries": 27,
+          "mae_engine": 0.04092,
+          "mae_nochange": 0.03704,
+          "mean_pred_delta": 0.00388,
+          "mean_obs_delta": -0.03704
+        },
+        {
+          "question_id": "t_pride",
+          "n_countries": 27,
+          "mae_engine": 0.02416,
+          "mae_nochange": 0.03556,
+          "mean_pred_delta": -0.0114,
+          "mean_obs_delta": -0.03556
+        },
+        {
+          "question_id": "t_two_parent",
+          "n_countries": 27,
+          "mae_engine": 0.02885,
+          "mae_nochange": 0.03148,
+          "mean_pred_delta": -0.00263,
+          "mean_obs_delta": -0.03148
+        },
+        {
+          "question_id": "t_tech_good",
+          "n_countries": 26,
+          "mae_engine": 0.01628,
+          "mae_nochange": 0.02115,
+          "mean_pred_delta": -0.00524,
+          "mean_obs_delta": -0.02115
+        },
+        {
+          "question_id": "t_death_penalty",
+          "n_countries": 25,
+          "mae_engine": 0.02417,
+          "mae_nochange": 0.0252,
+          "mean_pred_delta": -0.00057,
+          "mean_obs_delta": -0.022
+        },
+        {
+          "question_id": "t_environment",
+          "n_countries": 26,
+          "mae_engine": 0.03624,
+          "mae_nochange": 0.03115,
+          "mean_pred_delta": -0.00508,
+          "mean_obs_delta": 0.03115
+        },
+        {
+          "question_id": "t_hard_work",
+          "n_countries": 26,
+          "mae_engine": 0.01304,
+          "mae_nochange": 0.02038,
+          "mean_pred_delta": -0.01299,
+          "mean_obs_delta": -0.01962
+        }
+      ]
+    },
+    "event": {
+      "case_id": "covid_rally_2020",
+      "n_countries": 10,
+      "simulated_mean_shift": 0.00137,
+      "measured_mean_shift": 0.079,
+      "sign_match": true,
+      "magnitude_ratio": 0.0173,
+      "passes": false,
+      "per_country": [
+        {
+          "country": "DE",
+          "simulated": 0.00219,
+          "measured": 0.15
+        },
+        {
+          "country": "FR",
+          "simulated": 0.00102,
+          "measured": 0.05
+        },
+        {
+          "country": "IT",
+          "simulated": 0.00293,
+          "measured": 0.09
+        },
+        {
+          "country": "ES",
+          "simulated": 0.00137,
+          "measured": 0.02
+        },
+        {
+          "country": "NL",
+          "simulated": 0.0011,
+          "measured": 0.09
+        },
+        {
+          "country": "PT",
+          "simulated": 0.00111,
+          "measured": 0.12
+        },
+        {
+          "country": "AT",
+          "simulated": 0.00148,
+          "measured": 0.13
+        },
+        {
+          "country": "FI",
+          "simulated": 0.0001,
+          "measured": 0.1
+        },
+        {
+          "country": "SE",
+          "simulated": 0.00113,
+          "measured": 0.1
+        },
+        {
+          "country": "PL",
+          "simulated": 0.00128,
+          "measured": -0.06
+        }
+      ]
+    },
+    "demography": {
+      "years": 2.0,
+      "total_deaths": 117,
+      "world_adult_cdr": 5.85,
+      "n_countries_scored": 0,
+      "le_tracking": 0.0,
+      "passes": false,
+      "per_country": []
+    }
+  },
+  {
+    "timestamp": "2026-08-13T19:59:03.322043+00:00",
+    "pop": 50000,
+    "seed": 42,
+    "smoke_run": false,
+    "all_pass": false,
+    "temporal": {
+      "n_pairs": 410,
+      "n_sign_pairs": 300,
+      "mae_engine": 0.02949,
+      "mae_nochange": 0.02905,
+      "sign_accuracy": 0.61,
+      "sign_p": 8e-05,
+      "passes": false,
+      "per_question": [
+        {
+          "question_id": "t_homosexuality",
+          "n_countries": 37,
+          "mae_engine": 0.08211,
+          "mae_nochange": 0.04135,
+          "mean_pred_delta": -0.04076,
+          "mean_obs_delta": 0.04135
+        },
+        {
+          "question_id": "t_abortion",
+          "n_countries": 27,
+          "mae_engine": 0.02615,
+          "mae_nochange": 0.0237,
+          "mean_pred_delta": 0.00301,
+          "mean_obs_delta": 0.02074
+        },
+        {
+          "question_id": "t_divorce",
+          "n_countries": 27,
+          "mae_engine": 0.03566,
+          "mae_nochange": 0.03593,
+          "mean_pred_delta": 0.00125,
+          "mean_obs_delta": 0.03593
+        },
+        {
+          "question_id": "t_religion",
+          "n_countries": 27,
+          "mae_engine": 0.02096,
+          "mae_nochange": 0.02407,
+          "mean_pred_delta": -0.01738,
+          "mean_obs_delta": -0.02407
+        },
+        {
+          "question_id": "t_trust",
+          "n_countries": 27,
+          "mae_engine": 0.02284,
+          "mae_nochange": 0.01296,
+          "mean_pred_delta": 0.01173,
+          "mean_obs_delta": -0.00852
+        },
+        {
+          "question_id": "t_democracy",
+          "n_countries": 27,
+          "mae_engine": 0.02856,
+          "mae_nochange": 0.0337,
+          "mean_pred_delta": -0.00606,
+          "mean_obs_delta": -0.0337
+        },
+        {
+          "question_id": "t_army_rule",
+          "n_countries": 27,
+          "mae_engine": 0.021,
+          "mae_nochange": 0.02222,
+          "mean_pred_delta": -0.00058,
+          "mean_obs_delta": 0.01481
+        },
+        {
+          "question_id": "t_life_sat",
+          "n_countries": 27,
+          "mae_engine": 0.02322,
+          "mae_nochange": 0.03444,
+          "mean_pred_delta": -0.02779,
+          "mean_obs_delta": -0.02407
+        },
+        {
+          "question_id": "t_men_leaders",
+          "n_countries": 27,
+          "mae_engine": 0.04291,
+          "mae_nochange": 0.03704,
+          "mean_pred_delta": 0.00587,
+          "mean_obs_delta": -0.03704
+        },
+        {
+          "question_id": "t_pride",
+          "n_countries": 27,
+          "mae_engine": 0.01292,
+          "mae_nochange": 0.03556,
+          "mean_pred_delta": -0.02965,
+          "mean_obs_delta": -0.03556
+        },
+        {
+          "question_id": "t_two_parent",
+          "n_countries": 27,
+          "mae_engine": 0.02188,
+          "mae_nochange": 0.03148,
+          "mean_pred_delta": -0.01036,
+          "mean_obs_delta": -0.03148
+        },
+        {
+          "question_id": "t_tech_good",
+          "n_countries": 26,
+          "mae_engine": 0.00646,
+          "mae_nochange": 0.02115,
+          "mean_pred_delta": -0.01705,
+          "mean_obs_delta": -0.02115
+        },
+        {
+          "question_id": "t_death_penalty",
+          "n_countries": 25,
+          "mae_engine": 0.0236,
+          "mae_nochange": 0.0252,
+          "mean_pred_delta": -0.00165,
+          "mean_obs_delta": -0.022
+        },
+        {
+          "question_id": "t_environment",
+          "n_countries": 26,
+          "mae_engine": 0.04037,
+          "mae_nochange": 0.03115,
+          "mean_pred_delta": -0.00922,
+          "mean_obs_delta": 0.03115
+        },
+        {
+          "question_id": "t_hard_work",
+          "n_countries": 26,
+          "mae_engine": 0.01274,
+          "mae_nochange": 0.02038,
+          "mean_pred_delta": -0.03047,
+          "mean_obs_delta": -0.01962
+        }
+      ]
+    },
+    "event": {
+      "case_id": "covid_rally_2020",
+      "n_countries": 10,
+      "simulated_mean_shift": 0.0013,
+      "measured_mean_shift": 0.079,
+      "sign_match": true,
+      "magnitude_ratio": 0.0164,
+      "passes": false,
+      "per_country": [
+        {
+          "country": "DE",
+          "simulated": 0.00208,
+          "measured": 0.15
+        },
+        {
+          "country": "FR",
+          "simulated": 0.00119,
+          "measured": 0.05
+        },
+        {
+          "country": "IT",
+          "simulated": 0.00281,
+          "measured": 0.09
+        },
+        {
+          "country": "ES",
+          "simulated": 0.00171,
+          "measured": 0.02
+        },
+        {
+          "country": "NL",
+          "simulated": 0.00097,
+          "measured": 0.09
+        },
+        {
+          "country": "PT",
+          "simulated": 0.00091,
+          "measured": 0.12
+        },
+        {
+          "country": "AT",
+          "simulated": 0.00115,
+          "measured": 0.13
+        },
+        {
+          "country": "FI",
+          "simulated": -0.0002,
+          "measured": 0.1
+        },
+        {
+          "country": "SE",
+          "simulated": 0.00106,
+          "measured": 0.1
+        },
+        {
+          "country": "PL",
+          "simulated": 0.0013,
+          "measured": -0.06
+        }
+      ]
+    },
+    "demography": {
+      "years": 5.0,
+      "total_deaths": 1409,
+      "world_adult_cdr": 5.64,
+      "n_countries_scored": 7,
+      "le_tracking": 0.0,
+      "passes": false,
+      "per_country": [
+        {
+          "country": "IN",
+          "deaths": 78,
+          "mean_age_at_death": 44.1,
+          "census_le": 72.0,
+          "within_tolerance": false
+        },
+        {
+          "country": "CN",
+          "deaths": 119,
+          "mean_age_at_death": 54.9,
+          "census_le": 78.6,
+          "within_tolerance": false
+        },
+        {
+          "country": "US",
+          "deaths": 22,
+          "mean_age_at_death": 54.8,
+          "census_le": 79.3,
+          "within_tolerance": false
+        },
+        {
+          "country": "ID",
+          "deaths": 20,
+          "mean_age_at_death": 42.6,
+          "census_le": 72.0,
+          "within_tolerance": false
+        },
+        {
+          "country": "NG",
+          "deaths": 27,
+          "mean_age_at_death": 31.3,
+          "census_le": 53.6,
+          "within_tolerance": false
+        },
+        {
+          "country": "RU",
+          "deaths": 29,
+          "mean_age_at_death": 53.6,
+          "census_le": 71.3,
+          "within_tolerance": false
+        },
+        {
+          "country": "BG",
+          "deaths": 20,
+          "mean_age_at_death": 59.9,
+          "census_le": 75.6,
+          "within_tolerance": false
+        }
+      ]
+    }
+  }
+]

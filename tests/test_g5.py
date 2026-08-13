@@ -147,9 +147,19 @@ def test_generational_tick_no_details_by_default():
 
 def test_demography_leg_runs_small():
     res = g5_demography(pop=POP, seed=42, years=3.0, dt_days=30.0,
-                        min_deaths=5)
+                        cohort_n=500)
     assert res.total_deaths > 0
     assert res.world_adult_cdr > 0
     assert 0.0 <= res.le_tracking <= 1.0
     for pc in res.per_country:
-        assert pc["mean_age_at_death"] >= 18.0
+        assert pc["cohort_mean_age_at_death"] >= 18.0
+
+
+def test_cohort_le_matches_census():
+    """The tick's own hazard path must reproduce census LE — the
+    amendment A1 implementation test."""
+    from earth1.g5 import _simulate_cohort_le
+    rng = np.random.default_rng(7)
+    for le in (55.0, 72.0, 82.0):
+        mean_death = _simulate_cohort_le(le, rng, n=3000, dt_days=30.0)
+        assert abs(mean_death - le) <= 4.0, (le, mean_death)
