@@ -31,6 +31,7 @@ from earth1.types import Civilization, Question, NUM_FORCES
 from earth1.genesis import genesis
 from earth1.event_log import EventLog, WorldEvent
 from earth1.tick import WorldState, world_tick, _make_mutable
+from earth1.receiver import ReceiverConfig, SourceConfig
 
 FORMAT_VERSION = 1
 
@@ -73,6 +74,7 @@ class LivingWorld:
         seed: int = 42,
         min_per_country: int = 100,
         questions: Optional[List[Question]] = None,
+        receiver_config: Optional[ReceiverConfig] = None,
     ) -> "LivingWorld":
         """Bifurcate: genesis the frozen copy, record its anchors, and
         persist the living copy beside them."""
@@ -96,6 +98,7 @@ class LivingWorld:
             coupling_matrix={},
             last_fired={},
             rng=np.random.default_rng(seed),
+            receiver_config=receiver_config,
         )
         meta = {
             "format_version": FORMAT_VERSION,
@@ -124,6 +127,18 @@ class LivingWorld:
         self.meta["civ_seed"] = int(self.state.civ.seed)
         self.meta["living_pop_hash"] = pop_hash(self.state.civ)
         self.meta["last_fired"] = self.state.last_fired
+        if self.state.receiver_config is not None:
+            rc = self.state.receiver_config
+            self.meta["receiver_config"] = {
+                "global_gain": rc.global_gain,
+                "min_confidence": rc.min_confidence,
+                "sources": [
+                    {"source_id": s.source_id, "enabled": s.enabled,
+                     "poll_interval_ticks": s.poll_interval_ticks,
+                     "gain": s.gain, "decay_half_life": s.decay_half_life}
+                    for s in rc.sources
+                ],
+            }
         self.meta["rng_state"] = json.loads(
             json.dumps(self.state.rng.bit_generator.state))
         self.meta["events"] = [
@@ -163,12 +178,31 @@ class LivingWorld:
         rng = np.random.default_rng()
         rng.bit_generator.state = meta["rng_state"]
 
+        rc = None
+        if "receiver_config" in meta:
+            rc_data = meta["receiver_config"]
+            rc = ReceiverConfig(
+                global_gain=rc_data.get("global_gain", 0.1),
+                min_confidence=rc_data.get("min_confidence", 0.1),
+                sources=[
+                    SourceConfig(
+                        source_id=s["source_id"],
+                        enabled=s.get("enabled", True),
+                        poll_interval_ticks=s.get("poll_interval_ticks", 1),
+                        gain=s.get("gain", 0.1),
+                        decay_half_life=s.get("decay_half_life", 3.0),
+                    )
+                    for s in rc_data.get("sources", [])
+                ],
+            )
+
         state = WorldState(
             civ=civ, event_log=log,
             t=meta["t"], tick_count=meta["ticks"],
             question_history=[], coupling_matrix={},
             last_fired=meta.get("last_fired", {}),
             rng=rng,
+            receiver_config=rc,
         )
         return cls(state, p, meta)
 
@@ -180,6 +214,7 @@ class LivingWorld:
         days: int = 1,
         save: bool = True,
         enable_generational: bool = True,
+        enable_receiver: bool = False,
         cohort_drift: Optional[Dict[str, float]] = None,
         **tick_kwargs,
     ) -> Dict[str, int]:
@@ -188,12 +223,20 @@ class LivingWorld:
         Each day: the opinion tick (§21.1 diffusion/feedback/coupling)
         then the generational tick (aging, Gompertz mortality, births
         with inheritance) — the slow engine of secular change.
+
+        When enable_receiver=True and a receiver_config is set, external
+        source signals (GDELT/ACLED/FRED) are polled and injected as
+        events — but only sources that passed the §14 placebo gate.
         """
         from earth1.generational import generational_tick
 
-        stats = {"deaths": 0}
+        stats = {"deaths": 0, "receiver_events": 0}
         for _ in range(days):
-            world_tick(self.state, questions=questions, dt=1.0, **tick_kwargs)
+            world_tick(
+                self.state, questions=questions, dt=1.0,
+                enable_receiver=enable_receiver,
+                **tick_kwargs,
+            )
             if enable_generational:
                 day = generational_tick(
                     self.state.civ, self.state.rng, dt_days=1.0,

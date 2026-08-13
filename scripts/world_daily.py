@@ -32,6 +32,10 @@ def main():
     ap.add_argument("--db", default=f"sqlite:///{ROOT}/data/standing_record.db")
     ap.add_argument("--skip-record", action="store_true",
                     help="tick only; do not touch the standing record")
+    ap.add_argument("--enable-receiver", action="store_true",
+                    help="activate grounding stack (§14 placebo gate enforced)")
+    ap.add_argument("--skip-placebo", action="store_true",
+                    help="skip placebo gate (trust cached passport)")
     args = ap.parse_args()
 
     os.environ.setdefault("DATABASE_URL", args.db)
@@ -40,6 +44,7 @@ def main():
     from earth1.living import LivingWorld
     from earth1.corpus import QuestionCorpus
     from earth1.types import Question
+    from earth1.receiver import ReceiverConfig
 
     # ── 1. the world ──
     if (WORLD_PATH / "world.json").exists():
@@ -63,6 +68,30 @@ def main():
         for i in idx
     ]
 
+    # ── 2b. §14 placebo gate for receiver activation ──
+    receiver_active = False
+    if args.enable_receiver:
+        if world.state.receiver_config is None:
+            world.state.receiver_config = ReceiverConfig.default()
+
+        if not args.skip_placebo:
+            from earth1.placebo import run_placebo_gate, print_passport
+            gate_questions = questions[:min(3, len(questions))]
+            passport = run_placebo_gate(gate_questions, n_perms=100)
+            print(print_passport(passport))
+            if passport.all_pass:
+                receiver_active = True
+                validated = [sid for sid, r in passport.results.items() if r.passes]
+                for src in world.state.receiver_config.sources:
+                    src.enabled = src.source_id in validated
+                print(f"Receiver activated: {validated}")
+            else:
+                failed = [sid for sid, r in passport.results.items() if not r.passes]
+                print(f"Receiver BLOCKED — sources failed placebo: {failed}")
+        else:
+            receiver_active = True
+            print("Receiver activated (placebo gate skipped)")
+
     stats = world.tick(
         questions, days=args.days,
         use_force_dynamics=True, residue_rate=0.0005,
@@ -70,6 +99,7 @@ def main():
         enable_thresholds=True, enable_rewire=True,
         enable_event_generation=True,
         enable_generational=True,
+        enable_receiver=receiver_active,
     )
     drift = world.drift_report()
     worst = max(drift.values(), key=lambda v: v["max_abs"])["max_abs"]
@@ -78,7 +108,8 @@ def main():
         world.save()
     print(f"Ticked {args.days} day(s) -> day {world.state.tick_count}. "
           f"Deaths/births: {stats['deaths']}. Worst census drift: {worst:.4f}"
-          + (f" ({fixed} cells re-anchored)" if fixed else ""))
+          + (f" ({fixed} cells re-anchored)" if fixed else "")
+          + (f" [receiver ON]" if receiver_active else ""))
 
     if args.skip_record:
         return
