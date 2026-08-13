@@ -10,3 +10,6 @@ build/
 venv/
 .env
 *.so
+
+# live standing record — append-only local DB, never in git
+data/standing_record.db
