@@ -1,0 +1,125 @@
+"""Generational dynamics — aging, mortality, births, inheritance (bible §21.1).
+
+The mechanism of slow secular change. Weight decay models how shock
+reactions fade; generational replacement models why societies drift —
+younger cohorts enter with different values than the elders they replace.
+
+Mechanics (vectorized, fixed-N slot replacement):
+  Aging      — every agent ages with the tick clock.
+  Mortality  — Gompertz hazard calibrated per country so the modal age
+               at death tracks the census life expectancy.
+  Birth      — a death frees a slot; a newborn adult (18) fills it in
+               the same country. Population count and graph topology
+               stay fixed — the newborn inherits the household's social
+               position; composition and values change.
+  Inheritance — child traits = heritability x parent + (1-h) x country
+               mean, plus an optional per-trait cohort drift and noise.
+               Education/income inherit with mobility noise.
+
+Default cohort_drift is ZERO: secular drift should emerge from
+inheritance, feedback, and the receiver — not from a hand-authored
+prior. The parameter exists for controlled experiments.
+"""
+from __future__ import annotations
+
+from typing import Dict, Optional
+
+import numpy as np
+
+from earth1.types import Civilization
+from earth1.genesis import GENESIS_COUNTRIES
+from earth1.feedback import _recompute_forces
+
+# Gompertz slope: adult human mortality doubles roughly every 8 years.
+GOMPERTZ_B = 0.085
+
+# age encoding (genesis.py): raw years 18..90 -> age = (raw - 18) / 72
+_AGE_SPAN = 72.0
+_AGE_MIN = 18.0
+
+_INHERITED_TRAITS = (
+    "openness", "empathy", "risk_appetite", "doubt", "desire_intensity",
+    "conscientiousness", "agreeableness", "extraversion", "neuroticism",
+)
+
+
+def _age_years(civ: Civilization) -> np.ndarray:
+    return _AGE_MIN + civ.age * _AGE_SPAN
+
+
+def _gompertz_a(life_expectancy: float) -> float:
+    """Baseline hazard such that the modal age at death ~ life expectancy."""
+    return GOMPERTZ_B * float(np.exp(-GOMPERTZ_B * (life_expectancy - _AGE_MIN)))
+
+
+def generational_tick(
+    civ: Civilization,
+    rng: np.random.Generator,
+    dt_days: float = 1.0,
+    heritability: float = 0.4,
+    cohort_drift: Optional[Dict[str, float]] = None,
+    mobility: float = 0.3,
+) -> Dict[str, int]:
+    """One generational step: age, die, be born. Returns {'deaths': n}."""
+    cohort_drift = cohort_drift or {}
+    dt_years = dt_days / 365.0
+
+    # ── aging ──
+    civ.age = np.clip(civ.age + dt_years / _AGE_SPAN, 0.0, 1.0)
+    age_years = _age_years(civ)
+    civ.age_bucket = np.digitize(age_years, [30, 45, 60, 75])
+
+    # ── mortality: per-country Gompertz ──
+    le_by_country = np.array([c.get("le", 72.0) for c in GENESIS_COUNTRIES])
+    a = np.array([_gompertz_a(le) for le in le_by_country])[civ.country]
+    hazard_yr = a * np.exp(GOMPERTZ_B * (age_years - _AGE_MIN))
+    p_death = np.clip(hazard_yr * dt_years, 0.0, 1.0)
+    dead = rng.random(civ.n) < p_death
+    n_dead = int(dead.sum())
+    if n_dead == 0:
+        return {"deaths": 0}
+
+    dead_idx = np.flatnonzero(dead)
+
+    # ── birth into the freed slots, same country ──
+    # parent pool: adults 30-60 in the same country (weighted by presence)
+    parent_ok = (age_years >= 30) & (age_years <= 60) & ~dead
+    for c in np.unique(civ.country[dead_idx]):
+        slots = dead_idx[civ.country[dead_idx] == c]
+        pool = np.flatnonzero(parent_ok & (civ.country == c))
+        parents = (rng.choice(pool, size=len(slots))
+                   if len(pool) > 0 else None)
+        cmask = civ.country == c
+
+        for t in _INHERITED_TRAITS:
+            arr = getattr(civ, t)
+            c_mean = float(arr[cmask & ~dead].mean()) if (~dead & cmask).any() \
+                else float(arr[cmask].mean())
+            base = (heritability * arr[parents] + (1 - heritability) * c_mean
+                    if parents is not None else np.full(len(slots), c_mean))
+            drift = float(cohort_drift.get(t, 0.0))
+            arr[slots] = np.clip(
+                base + drift + rng.normal(0.0, 0.08, len(slots)), 0, 1)
+
+        # demographic slots
+        civ.age[slots] = 0.0                       # 18 years old
+        civ.age_bucket[slots] = 0
+        if parents is not None:
+            keep = rng.random(len(slots)) > mobility
+            civ.education[slots] = np.where(
+                keep, civ.education[parents],
+                rng.integers(0, 3, len(slots)))
+            civ.income[slots] = np.where(
+                keep, civ.income[parents],
+                rng.integers(0, 3, len(slots)))
+            civ.urban[slots] = civ.urban[parents]
+        # conviction starts young: genesis formula from openness
+        civ.alpha[slots] = np.clip(
+            0.28 + 0.5 * civ.openness[slots]
+            - 0.12 * (1.0 - civ.openness[slots]), 0, 1)
+
+    # newborn (and everyone's) forces follow from current traits
+    _recompute_forces(civ)
+    civ.means = civ.forces.mean(axis=0)
+
+    return {"deaths": n_dead}

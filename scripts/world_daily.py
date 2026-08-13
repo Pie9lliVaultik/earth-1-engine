@@ -63,12 +63,13 @@ def main():
         for i in idx
     ]
 
-    world.tick(
+    stats = world.tick(
         questions, days=args.days,
         use_force_dynamics=True, residue_rate=0.0005,
         enable_feedback=True, enable_coupling=True,
         enable_thresholds=True, enable_rewire=True,
         enable_event_generation=True,
+        enable_generational=True,
     )
     drift = world.drift_report()
     worst = max(drift.values(), key=lambda v: v["max_abs"])["max_abs"]
@@ -76,7 +77,7 @@ def main():
     if fixed:
         world.save()
     print(f"Ticked {args.days} day(s) -> day {world.state.tick_count}. "
-          f"Worst census drift: {worst:.4f}"
+          f"Deaths/births: {stats['deaths']}. Worst census drift: {worst:.4f}"
           + (f" ({fixed} cells re-anchored)" if fixed else ""))
 
     if args.skip_record:

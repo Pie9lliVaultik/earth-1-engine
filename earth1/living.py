@@ -179,13 +179,30 @@ class LivingWorld:
         questions: List[Question],
         days: int = 1,
         save: bool = True,
+        enable_generational: bool = True,
+        cohort_drift: Optional[Dict[str, float]] = None,
         **tick_kwargs,
-    ) -> None:
-        """Advance the world. Deterministic given the persisted rng state."""
+    ) -> Dict[str, int]:
+        """Advance the world. Deterministic given the persisted rng state.
+
+        Each day: the opinion tick (§21.1 diffusion/feedback/coupling)
+        then the generational tick (aging, Gompertz mortality, births
+        with inheritance) — the slow engine of secular change.
+        """
+        from earth1.generational import generational_tick
+
+        stats = {"deaths": 0}
         for _ in range(days):
             world_tick(self.state, questions=questions, dt=1.0, **tick_kwargs)
+            if enable_generational:
+                day = generational_tick(
+                    self.state.civ, self.state.rng, dt_days=1.0,
+                    cohort_drift=cohort_drift,
+                )
+                stats["deaths"] += day["deaths"]
         if save:
             self.save()
+        return stats
 
     # ── §34 census-drift guard ──
 
