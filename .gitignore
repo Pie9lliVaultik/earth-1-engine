@@ -13,3 +13,6 @@ venv/
 
 # live standing record — append-only local DB, never in git
 data/standing_record.db
+
+# the living world — persisted on disk, never in git (large binary state)
+data/living/
