@@ -94,9 +94,15 @@ def g5_temporal(
     min_obs_delta: float = 0.02,
     questions: Optional[List[WVSPairedQuestion]] = None,
     progress: bool = False,
+    replay_events: Optional[Dict[int, List]] = None,
 ) -> TemporalLegResult:
     """The temporal leg: does the evolved world track observed deltas
-    better than no-change?"""
+    better than no-change?
+
+    replay_events (amendment A2): {step_index: [WorldEvent, ...]} of
+    historical exogenous signal, injected into the event log as the
+    world reaches each step. Requires dt_days to match the replay's
+    monthly grid (events are stamped t = month_index * 30)."""
     questions = questions if questions is not None else WVS_PAIRED
     civ = _make_mutable(genesis(pop, seed))
     cmap = _country_index_map()
@@ -138,6 +144,9 @@ def g5_temporal(
     )
     n_steps = int(round(years * 365.0 / dt_days))
     for step in range(n_steps):
+        if replay_events:
+            for ev in replay_events.get(step, []):
+                state.event_log.append(ev)
         world_tick(state, questions=tick_questions, dt=dt_days)
         generational_tick(state.civ, state.rng, dt_days=dt_days)
         if progress and (step + 1) % 12 == 0:
@@ -195,6 +204,81 @@ def g5_temporal(
         sign_accuracy=round(sign_accuracy, 4),
         sign_p=round(sign_p, 5),
         passes=passes, per_question=per_question,
+    )
+
+
+# ── leg 1b: temporal with historical replay (amendment A2) ──────────────
+
+@dataclass
+class TemporalReplayResult:
+    endogenous: TemporalLegResult
+    real: TemporalLegResult
+    shuffled: TemporalLegResult
+    passes: bool
+
+
+def _replay_receiver_config():
+    """Replay-specific config: monthly-resolution events need a
+    month-scale half-life (the live gdelt default of 3 days would
+    evaporate a monthly signal almost immediately)."""
+    from earth1.receiver import ReceiverConfig, SourceConfig
+    return ReceiverConfig(sources=[
+        SourceConfig("gdelt", gain=0.1, decay_half_life=30.0),
+    ])
+
+
+def g5_temporal_replay(
+    history: Dict,
+    pop: int = 50_000,
+    seed: int = 42,
+    dt_days: float = 30.0,
+    progress: bool = False,
+) -> TemporalReplayResult:
+    """Amendment A2: the temporal leg with exogenous historical forcing
+    and its own inline §14 placebo control.
+
+    Three conditions, identical seeds:
+      endogenous — no replay (the A1-era protocol, for reference)
+      real       — GDELT 2017-2022 signals on the correct countries
+      shuffled   — the same signals, country labels permuted
+
+    Pass: real beats no-change on MAE, beats shuffled on MAE, and has
+    sign accuracy > 0.5 at p < 0.05. If real does not beat shuffled,
+    the signal is noise, not geography-carrying information.
+    """
+    from earth1.replay import build_replay_events, shuffle_history_geography
+
+    months = sorted({m for c in history.values() for m in c.get("tone", {})})
+    years = max(1.0, len(months) * dt_days / 365.0)
+    config = _replay_receiver_config()
+
+    if progress:
+        print(f"  replay window: {months[0]}..{months[-1]} "
+              f"({len(months)} months, {years:.1f}y)")
+        print("  condition 1/3: endogenous...")
+    endo = g5_temporal(pop=pop, seed=seed, years=years, dt_days=dt_days,
+                       progress=progress)
+
+    if progress:
+        print("  condition 2/3: real geography...")
+    real_events = build_replay_events(history, config)
+    real = g5_temporal(pop=pop, seed=seed, years=years, dt_days=dt_days,
+                       progress=progress, replay_events=real_events)
+
+    if progress:
+        print("  condition 3/3: shuffled geography (§14 control)...")
+    shuf_rng = np.random.default_rng(seed + 1)
+    shuf_events = build_replay_events(
+        shuffle_history_geography(history, shuf_rng), config)
+    shuffled = g5_temporal(pop=pop, seed=seed, years=years, dt_days=dt_days,
+                           progress=progress, replay_events=shuf_events)
+
+    passes = (real.mae_engine < real.mae_nochange
+              and real.mae_engine < shuffled.mae_engine
+              and real.sign_accuracy > 0.5 and real.sign_p < 0.05)
+
+    return TemporalReplayResult(
+        endogenous=endo, real=real, shuffled=shuffled, passes=passes,
     )
 
 

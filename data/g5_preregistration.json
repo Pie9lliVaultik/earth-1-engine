@@ -47,6 +47,15 @@
   },
   "amendments": [
     {
+      "id": "A2",
+      "date": "2026-08-14",
+      "after_run": 5,
+      "leg": "temporal",
+      "what": "The temporal leg gains exogenous historical forcing: GDELT monthly tone/volume timelines (2017-2022, fetched once from the DOC 2.0 API, cached in data/gdelt_history.json) are replayed through the SAME adapter force-mapping and gain path the live receiver uses, with Welford baselines warmed on a full-period climatology pass. Evolution window shrinks to the replay window (~6y, the API's historical floor is Jan 2017). Three conditions run with identical seeds: endogenous (A1-era reference), real geography, and shuffled geography (country labels permuted — the inline §14 placebo control). PASS: real beats no-change on MAE AND real beats shuffled on MAE AND real sign accuracy > 0.5 at p < 0.05.",
+      "rationale": "Runs #3-#5 established the physics arc: 63.7% sign accuracy on the broken v1 pyramid, 39.7% on cohort entry without trait aging, 44.3% (~parity) on correct stationary physics. Endogenous dynamics alone cannot track history — secular drift requires exogenous signal, exactly as the §14 grounding stack intends. The shuffled-geography control ensures a pass cannot come from global-average forcing alone: the signal must carry country-specific information.",
+      "unchanged": "Calibration remains Wave-6-only; W7 stays held out. The A1-era endogenous criterion remains recorded per run for reference but no longer gates."
+    },
+    {
       "id": "A1",
       "date": "2026-08-13",
       "after_run": 2,

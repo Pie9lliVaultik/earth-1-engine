@@ -163,3 +163,59 @@ def test_cohort_le_matches_census():
     for le in (55.0, 72.0, 82.0):
         mean_death = _simulate_cohort_le(le, rng, n=3000, dt_days=30.0)
         assert abs(mean_death - le) <= 4.0, (le, mean_death)
+
+
+# ── replay (amendment A2) ──
+
+def _synthetic_history():
+    rng = np.random.default_rng(9)
+    months = [f"2020-{m:02d}" for m in range(1, 13)]
+    hist = {}
+    for cc in ("US", "DE", "NG"):
+        base = rng.normal(-2.0, 0.5)
+        hist[cc] = {
+            "tone": {m: round(base + rng.normal(0, 1.0), 3) for m in months},
+            "vol": {m: round(abs(rng.normal(1.0, 0.3)), 3) for m in months},
+        }
+    return hist
+
+
+def test_replay_builds_monthly_events():
+    from earth1.replay import build_replay_events
+    from earth1.g5 import _replay_receiver_config
+    events = build_replay_events(_synthetic_history(),
+                                 _replay_receiver_config())
+    assert events, "no events built"
+    all_evs = [e for evs in events.values() for e in evs]
+    assert all(e.source == "receiver:gdelt" for e in all_evs)
+    # events are country-scoped, never global
+    assert all(e.region_pattern.endswith("-*") for e in all_evs)
+    # timestamps align to the monthly grid used by g5_temporal (dt=30)
+    for mi, evs in events.items():
+        assert all(e.timestamp == mi * 30 for e in evs)
+
+
+def test_replay_shuffle_preserves_series():
+    from earth1.replay import shuffle_history_geography
+    hist = _synthetic_history()
+    rng = np.random.default_rng(0)
+    shuf = shuffle_history_geography(hist, rng)
+    assert sorted(shuf) == sorted(hist)
+    orig = sorted(json_str(v) for v in hist.values())
+    perm = sorted(json_str(v) for v in shuf.values())
+    assert orig == perm  # same series, relabelled
+
+
+def json_str(v):
+    import json
+    return json.dumps(v, sort_keys=True)
+
+
+def test_temporal_accepts_replay_events():
+    from earth1.replay import build_replay_events
+    from earth1.g5 import _replay_receiver_config
+    events = build_replay_events(_synthetic_history(),
+                                 _replay_receiver_config())
+    res = g5_temporal(pop=POP, seed=42, years=1.0, dt_days=30.0,
+                      questions=WVS_PAIRED[:2], replay_events=events)
+    assert res.n_pairs > 10
