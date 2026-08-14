@@ -87,11 +87,14 @@ def test_inheritance_pulls_toward_parents(civ):
     cohort shift — proving the inheritance channel is live."""
     rng = np.random.default_rng(5)
     open_before = civ.openness.copy()
+    age_before = _age_years(civ).copy()
     generational_tick(civ, rng, dt_days=365.0,
                       heritability=0.4,
                       cohort_drift={"openness": 0.5})
-    born = civ.openness != open_before
-    # among changed agents, the openness distribution shifted up hard
+    # newborns are the agents whose age reset below their prior age
+    # (trait aging now moves everyone's openness slightly each tick,
+    # so trait change alone no longer identifies births)
+    born = _age_years(civ) < age_before
     if born.sum() > 20:
         assert civ.openness[born].mean() > open_before[born].mean() + 0.2
 
@@ -111,3 +114,22 @@ def test_zero_drift_by_default_keeps_country_means_stable(civ):
     open_mean_before = civ.openness.mean()
     generational_tick(civ, rng, dt_days=365.0)
     assert abs(civ.openness.mean() - open_mean_before) < 0.01
+
+
+def test_trait_distribution_stationary_under_turnover():
+    """Manifold v2.1: with cohort entry AND trait aging, the world's
+    trait means must be near-stationary under pure generational
+    turnover — drift may only come from composition change, feedback,
+    or exogenous signal, never from the aging machinery itself
+    (G5 run #4 finding: entry without aging = runaway youth drift)."""
+    from earth1.genesis import genesis
+    from earth1.tick import _make_mutable
+    civ = _make_mutable(genesis(20000, seed=42))
+    rng = np.random.default_rng(3)
+    before = {t: float(getattr(civ, t).mean())
+              for t in ("openness", "risk_appetite", "conscientiousness")}
+    for _ in range(36):  # 3 years, monthly steps
+        generational_tick(civ, rng, dt_days=30.0)
+    for t, b in before.items():
+        after = float(getattr(civ, t).mean())
+        assert abs(after - b) < 0.02, (t, b, after)

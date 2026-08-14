@@ -1323,5 +1323,864 @@
         }
       ]
     }
+  },
+  {
+    "timestamp": "2026-08-14T10:06:43.904609+00:00",
+    "pop": 50000,
+    "seed": 42,
+    "smoke_run": false,
+    "all_pass": false,
+    "temporal": {
+      "n_pairs": 410,
+      "n_sign_pairs": 300,
+      "mae_engine": 0.03765,
+      "mae_nochange": 0.02905,
+      "sign_accuracy": 0.3967,
+      "sign_p": 0.99987,
+      "passes": false,
+      "per_question": [
+        {
+          "question_id": "t_homosexuality",
+          "n_countries": 37,
+          "mae_engine": 0.09237,
+          "mae_nochange": 0.04135,
+          "mean_pred_delta": -0.05102,
+          "mean_obs_delta": 0.04135
+        },
+        {
+          "question_id": "t_abortion",
+          "n_countries": 27,
+          "mae_engine": 0.03741,
+          "mae_nochange": 0.0237,
+          "mean_pred_delta": -0.01505,
+          "mean_obs_delta": 0.02074
+        },
+        {
+          "question_id": "t_divorce",
+          "n_countries": 27,
+          "mae_engine": 0.05288,
+          "mae_nochange": 0.03593,
+          "mean_pred_delta": -0.01696,
+          "mean_obs_delta": 0.03593
+        },
+        {
+          "question_id": "t_religion",
+          "n_countries": 27,
+          "mae_engine": 0.04708,
+          "mae_nochange": 0.02407,
+          "mean_pred_delta": 0.02278,
+          "mean_obs_delta": -0.02407
+        },
+        {
+          "question_id": "t_trust",
+          "n_countries": 27,
+          "mae_engine": 0.01367,
+          "mae_nochange": 0.01296,
+          "mean_pred_delta": -0.00449,
+          "mean_obs_delta": -0.00852
+        },
+        {
+          "question_id": "t_democracy",
+          "n_countries": 27,
+          "mae_engine": 0.0247,
+          "mae_nochange": 0.0337,
+          "mean_pred_delta": -0.0103,
+          "mean_obs_delta": -0.0337
+        },
+        {
+          "question_id": "t_army_rule",
+          "n_countries": 27,
+          "mae_engine": 0.01443,
+          "mae_nochange": 0.02222,
+          "mean_pred_delta": 0.01363,
+          "mean_obs_delta": 0.01481
+        },
+        {
+          "question_id": "t_life_sat",
+          "n_countries": 27,
+          "mae_engine": 0.02351,
+          "mae_nochange": 0.03444,
+          "mean_pred_delta": -0.0268,
+          "mean_obs_delta": -0.02407
+        },
+        {
+          "question_id": "t_men_leaders",
+          "n_countries": 27,
+          "mae_engine": 0.05499,
+          "mae_nochange": 0.03704,
+          "mean_pred_delta": 0.01795,
+          "mean_obs_delta": -0.03704
+        },
+        {
+          "question_id": "t_pride",
+          "n_countries": 27,
+          "mae_engine": 0.03779,
+          "mae_nochange": 0.03556,
+          "mean_pred_delta": 0.00224,
+          "mean_obs_delta": -0.03556
+        },
+        {
+          "question_id": "t_two_parent",
+          "n_countries": 27,
+          "mae_engine": 0.04188,
+          "mae_nochange": 0.03148,
+          "mean_pred_delta": 0.0104,
+          "mean_obs_delta": -0.03148
+        },
+        {
+          "question_id": "t_tech_good",
+          "n_countries": 26,
+          "mae_engine": 0.01394,
+          "mae_nochange": 0.02115,
+          "mean_pred_delta": -0.00754,
+          "mean_obs_delta": -0.02115
+        },
+        {
+          "question_id": "t_death_penalty",
+          "n_countries": 25,
+          "mae_engine": 0.02675,
+          "mae_nochange": 0.0252,
+          "mean_pred_delta": 0.00217,
+          "mean_obs_delta": -0.022
+        },
+        {
+          "question_id": "t_environment",
+          "n_countries": 26,
+          "mae_engine": 0.04654,
+          "mae_nochange": 0.03115,
+          "mean_pred_delta": -0.01539,
+          "mean_obs_delta": 0.03115
+        },
+        {
+          "question_id": "t_hard_work",
+          "n_countries": 26,
+          "mae_engine": 0.01424,
+          "mae_nochange": 0.02038,
+          "mean_pred_delta": -0.01034,
+          "mean_obs_delta": -0.01962
+        }
+      ]
+    },
+    "event": {
+      "case_id": "covid_rally_2020",
+      "n_countries": 10,
+      "simulated_mean_shift": 0.00159,
+      "measured_mean_shift": 0.079,
+      "sign_match": true,
+      "magnitude_ratio": 0.0201,
+      "passes": false,
+      "per_country": [
+        {
+          "country": "DE",
+          "simulated": 0.00243,
+          "measured": 0.15
+        },
+        {
+          "country": "FR",
+          "simulated": 0.00125,
+          "measured": 0.05
+        },
+        {
+          "country": "IT",
+          "simulated": 0.00312,
+          "measured": 0.09
+        },
+        {
+          "country": "ES",
+          "simulated": 0.00213,
+          "measured": 0.02
+        },
+        {
+          "country": "NL",
+          "simulated": 0.00127,
+          "measured": 0.09
+        },
+        {
+          "country": "PT",
+          "simulated": 0.00127,
+          "measured": 0.12
+        },
+        {
+          "country": "AT",
+          "simulated": 0.0013,
+          "measured": 0.13
+        },
+        {
+          "country": "FI",
+          "simulated": 2e-05,
+          "measured": 0.1
+        },
+        {
+          "country": "SE",
+          "simulated": 0.00129,
+          "measured": 0.1
+        },
+        {
+          "country": "PL",
+          "simulated": 0.00178,
+          "measured": -0.06
+        }
+      ]
+    },
+    "demography": {
+      "years": 5.0,
+      "total_deaths": 3995,
+      "world_adult_cdr": 15.98,
+      "n_countries_scored": 130,
+      "le_tracking": 1.0,
+      "passes": false,
+      "per_country": [
+        {
+          "census_le": 53.3,
+          "cohort_mean_age_at_death": 53.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 53.6,
+          "cohort_mean_age_at_death": 52.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 54.4,
+          "cohort_mean_age_at_death": 53.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 55.7,
+          "cohort_mean_age_at_death": 55.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 57.5,
+          "cohort_mean_age_at_death": 57.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 57.7,
+          "cohort_mean_age_at_death": 57.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 59.4,
+          "cohort_mean_age_at_death": 58.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 60.2,
+          "cohort_mean_age_at_death": 59.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 60.5,
+          "cohort_mean_age_at_death": 60.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 60.7,
+          "cohort_mean_age_at_death": 60.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 60.9,
+          "cohort_mean_age_at_death": 60.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 61.6,
+          "cohort_mean_age_at_death": 61.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 61.7,
+          "cohort_mean_age_at_death": 61.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 61.8,
+          "cohort_mean_age_at_death": 60.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 62.0,
+          "cohort_mean_age_at_death": 61.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 62.1,
+          "cohort_mean_age_at_death": 61.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 62.4,
+          "cohort_mean_age_at_death": 61.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 62.7,
+          "cohort_mean_age_at_death": 62.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 63.0,
+          "cohort_mean_age_at_death": 62.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 63.3,
+          "cohort_mean_age_at_death": 62.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 63.4,
+          "cohort_mean_age_at_death": 63.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 63.5,
+          "cohort_mean_age_at_death": 63.1,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 63.6,
+          "cohort_mean_age_at_death": 62.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 63.8,
+          "cohort_mean_age_at_death": 63.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 64.3,
+          "cohort_mean_age_at_death": 63.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 64.6,
+          "cohort_mean_age_at_death": 63.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 65.0,
+          "cohort_mean_age_at_death": 64.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 65.2,
+          "cohort_mean_age_at_death": 64.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 65.5,
+          "cohort_mean_age_at_death": 64.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 65.6,
+          "cohort_mean_age_at_death": 64.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 66.1,
+          "cohort_mean_age_at_death": 65.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 66.4,
+          "cohort_mean_age_at_death": 66.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 66.7,
+          "cohort_mean_age_at_death": 66.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 67.0,
+          "cohort_mean_age_at_death": 66.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 67.1,
+          "cohort_mean_age_at_death": 66.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 67.4,
+          "cohort_mean_age_at_death": 66.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 67.5,
+          "cohort_mean_age_at_death": 66.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 67.9,
+          "cohort_mean_age_at_death": 67.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 68.4,
+          "cohort_mean_age_at_death": 67.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 68.5,
+          "cohort_mean_age_at_death": 68.1,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 68.7,
+          "cohort_mean_age_at_death": 68.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 68.8,
+          "cohort_mean_age_at_death": 68.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 69.0,
+          "cohort_mean_age_at_death": 68.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 69.3,
+          "cohort_mean_age_at_death": 69.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 69.4,
+          "cohort_mean_age_at_death": 69.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 70.5,
+          "cohort_mean_age_at_death": 70.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.0,
+          "cohort_mean_age_at_death": 70.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.3,
+          "cohort_mean_age_at_death": 70.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.4,
+          "cohort_mean_age_at_death": 70.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.5,
+          "cohort_mean_age_at_death": 70.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.6,
+          "cohort_mean_age_at_death": 70.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.7,
+          "cohort_mean_age_at_death": 71.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.8,
+          "cohort_mean_age_at_death": 71.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 71.9,
+          "cohort_mean_age_at_death": 71.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.0,
+          "cohort_mean_age_at_death": 71.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.1,
+          "cohort_mean_age_at_death": 71.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.2,
+          "cohort_mean_age_at_death": 71.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.3,
+          "cohort_mean_age_at_death": 71.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.4,
+          "cohort_mean_age_at_death": 71.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.5,
+          "cohort_mean_age_at_death": 72.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.7,
+          "cohort_mean_age_at_death": 72.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 72.8,
+          "cohort_mean_age_at_death": 72.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 73.4,
+          "cohort_mean_age_at_death": 72.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 73.5,
+          "cohort_mean_age_at_death": 72.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 73.6,
+          "cohort_mean_age_at_death": 73.1,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 73.7,
+          "cohort_mean_age_at_death": 73.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 73.8,
+          "cohort_mean_age_at_death": 73.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 73.9,
+          "cohort_mean_age_at_death": 73.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 74.0,
+          "cohort_mean_age_at_death": 73.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 74.3,
+          "cohort_mean_age_at_death": 73.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 74.4,
+          "cohort_mean_age_at_death": 74.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 74.5,
+          "cohort_mean_age_at_death": 74.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 74.6,
+          "cohort_mean_age_at_death": 74.1,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.0,
+          "cohort_mean_age_at_death": 74.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.1,
+          "cohort_mean_age_at_death": 74.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.2,
+          "cohort_mean_age_at_death": 74.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.4,
+          "cohort_mean_age_at_death": 74.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.5,
+          "cohort_mean_age_at_death": 74.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.6,
+          "cohort_mean_age_at_death": 75.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.7,
+          "cohort_mean_age_at_death": 75.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.8,
+          "cohort_mean_age_at_death": 75.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 75.9,
+          "cohort_mean_age_at_death": 75.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 76.0,
+          "cohort_mean_age_at_death": 75.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 76.1,
+          "cohort_mean_age_at_death": 75.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 76.4,
+          "cohort_mean_age_at_death": 75.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 76.5,
+          "cohort_mean_age_at_death": 75.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 76.6,
+          "cohort_mean_age_at_death": 75.5,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 76.9,
+          "cohort_mean_age_at_death": 76.1,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 77.0,
+          "cohort_mean_age_at_death": 76.7,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 77.1,
+          "cohort_mean_age_at_death": 76.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 77.3,
+          "cohort_mean_age_at_death": 76.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 77.5,
+          "cohort_mean_age_at_death": 76.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 77.6,
+          "cohort_mean_age_at_death": 77.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 77.7,
+          "cohort_mean_age_at_death": 77.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 77.8,
+          "cohort_mean_age_at_death": 77.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 78.0,
+          "cohort_mean_age_at_death": 76.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 78.1,
+          "cohort_mean_age_at_death": 77.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 78.6,
+          "cohort_mean_age_at_death": 78.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 79.0,
+          "cohort_mean_age_at_death": 79.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 79.1,
+          "cohort_mean_age_at_death": 78.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 79.3,
+          "cohort_mean_age_at_death": 78.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 79.4,
+          "cohort_mean_age_at_death": 78.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 79.5,
+          "cohort_mean_age_at_death": 79.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 79.6,
+          "cohort_mean_age_at_death": 79.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 79.7,
+          "cohort_mean_age_at_death": 79.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 80.0,
+          "cohort_mean_age_at_death": 79.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 80.5,
+          "cohort_mean_age_at_death": 80.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 80.6,
+          "cohort_mean_age_at_death": 80.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 80.7,
+          "cohort_mean_age_at_death": 80.4,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 81.2,
+          "cohort_mean_age_at_death": 80.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 81.4,
+          "cohort_mean_age_at_death": 80.8,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 81.6,
+          "cohort_mean_age_at_death": 81.1,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 81.7,
+          "cohort_mean_age_at_death": 80.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 82.0,
+          "cohort_mean_age_at_death": 81.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 82.4,
+          "cohort_mean_age_at_death": 82.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 82.5,
+          "cohort_mean_age_at_death": 81.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 82.6,
+          "cohort_mean_age_at_death": 81.9,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 82.7,
+          "cohort_mean_age_at_death": 82.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 83.1,
+          "cohort_mean_age_at_death": 82.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 83.2,
+          "cohort_mean_age_at_death": 83.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 83.4,
+          "cohort_mean_age_at_death": 83.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 83.5,
+          "cohort_mean_age_at_death": 83.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 83.7,
+          "cohort_mean_age_at_death": 83.1,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 84.0,
+          "cohort_mean_age_at_death": 83.6,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 84.5,
+          "cohort_mean_age_at_death": 84.3,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 84.7,
+          "cohort_mean_age_at_death": 84.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 85.0,
+          "cohort_mean_age_at_death": 84.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 85.4,
+          "cohort_mean_age_at_death": 85.2,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 85.5,
+          "cohort_mean_age_at_death": 85.0,
+          "within_tolerance": true
+        },
+        {
+          "census_le": 86.7,
+          "cohort_mean_age_at_death": 86.0,
+          "within_tolerance": true
+        }
+      ]
+    }
   }
 ]

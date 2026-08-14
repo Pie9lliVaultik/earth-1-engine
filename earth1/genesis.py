@@ -52,15 +52,27 @@ _AGE_GRID = np.arange(0.0, 110.0, 0.5)
 _ADULT_AGE_CACHE: dict = {}
 
 
+# global life expectancy has risen ~0.2y per calendar year for six
+# decades; an agent aged x lived under lower LE than today's — using
+# current LE for every cohort over-populates the elderly (G5 run #4:
+# adult CDR 16/1000 vs [6,15] band). Older cohorts get an LE discount,
+# capped at 12y.
+_COHORT_LE_SLOPE = 0.1
+_COHORT_LE_CAP = 6.0
+
+
 def _survival_from_18(ages: np.ndarray, le: float) -> np.ndarray:
-    """Gompertz survival (child mortality ignored: S=1 below 18)."""
+    """Cohort-adjusted Gompertz survival (child mortality ignored:
+    S=1 below 18). Stepwise cumulative hazard over the age grid, with
+    each age's hazard drawn from that cohort's effective LE."""
     from earth1.generational import _gompertz_a, GOMPERTZ_B
-    a = _gompertz_a(le)
-    s = np.ones_like(ages)
-    adult = ages > 18.0
-    s[adult] = np.exp(-(a / GOMPERTZ_B)
-                      * (np.exp(GOMPERTZ_B * (ages[adult] - 18.0)) - 1.0))
-    return s
+    le_eff = le - np.minimum(_COHORT_LE_SLOPE * np.maximum(ages - 18.0, 0.0),
+                             _COHORT_LE_CAP)
+    a = np.array([_gompertz_a(v) for v in np.round(le_eff, 1)])
+    hazard = np.where(ages > 18.0,
+                      a * np.exp(GOMPERTZ_B * (ages - 18.0)), 0.0)
+    steps = np.diff(ages, prepend=ages[0])
+    return np.exp(-np.cumsum(hazard * steps))
 
 
 def _adult_age_distribution(u18: float, le: float) -> tuple:

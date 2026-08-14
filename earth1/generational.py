@@ -42,6 +42,24 @@ _INHERITED_TRAITS = (
     "conscientiousness", "agreeableness", "extraversion", "neuroticism",
 )
 
+# Trait aging (Manifold v2.1): agents slide along the SAME age gradients
+# genesis bakes into the cross-section (per normalized age unit, 72y).
+# Without this, cohort-anchored births produce runaway youth-ward drift —
+# newborns enter young but nobody ever ages — which G5 run #4 caught:
+# sign accuracy fell to 39.7%, significantly below chance. With entry
+# AND aging, the trait distribution is stationary under a stationary
+# pyramid; drift can only emerge from composition change, feedback, or
+# exogenous signal — never from the aging machinery itself.
+_AGE_GRADIENTS = {
+    "openness": -0.08,
+    "risk_appetite": -0.12,
+    "desire_intensity": -0.30,
+    "conscientiousness": +0.10,
+    "agreeableness": +0.05,
+    "extraversion": -0.06,
+    "neuroticism": -0.04,
+}
+
 
 def _age_years(civ: Civilization) -> np.ndarray:
     return _AGE_MIN + civ.age * _AGE_SPAN
@@ -101,9 +119,15 @@ def generational_tick(
     dt_years = dt_days / 365.0
 
     # ── aging ──
-    civ.age = np.clip(civ.age + dt_years / _AGE_SPAN, 0.0, 1.0)
+    d_age = dt_years / _AGE_SPAN
+    civ.age = np.clip(civ.age + d_age, 0.0, 1.0)
     age_years = _age_years(civ)
     civ.age_bucket = np.digitize(age_years, [30, 45, 60, 75])
+
+    # traits age along the genesis gradients (see _AGE_GRADIENTS)
+    for t, g in _AGE_GRADIENTS.items():
+        arr = getattr(civ, t)
+        arr[:] = np.clip(arr + g * d_age, 0.0, 1.0)
 
     # ── mortality: per-country Gompertz ──
     le_by_country = np.array([c.get("le", 72.0) for c in GENESIS_COUNTRIES])
