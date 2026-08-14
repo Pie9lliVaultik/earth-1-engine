@@ -55,7 +55,7 @@ def _fetch(ip: str, name: str, mode: str) -> dict:
            f"&format=json&TIMELINESMOOTH=0")
     for attempt in range(MAX_RETRIES):
         r = subprocess.run(
-            ["curl", "-s", "--max-time", "60",
+            ["curl", "-s", "--max-time", "180",
              "--resolve", f"api.gdeltproject.org:443:{ip}",
              "-A", "Earth1-Engine/1.0 research", url],
             capture_output=True, text=True)
