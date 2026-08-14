@@ -34,6 +34,86 @@ _INCOME_CLASS_RISK = {"HIC": 0.50, "UMIC": 0.52, "LMIC": 0.54, "LIC": 0.56}
 _INCOME_CLASS_DOUBT = {"HIC": 0.46, "UMIC": 0.52, "LMIC": 0.58, "LIC": 0.62}
 
 
+# ── Manifold v2: demographically coherent adult ages ──────────────────
+#
+# The v1 sampler drew adult ages from normal(all-ages census median, 12),
+# which (a) used a median that includes children as the ADULT mean and
+# (b) had almost no mass past 65 — the world had no elderly (G5 run #2/#3
+# finding: p90 age 51 vs ~68 real; adult CDR 3.6/1000 vs ~10 real).
+#
+# v2 derives each country's adult age pyramid from first principles:
+# stable-population density  f(x) ∝ exp(-r·x) · S(x), where S is the
+# country's own Gompertz survival (the same curve the generational tick
+# kills with — one mortality physics, one pyramid) and the growth rate r
+# is solved so the under-18 share matches the census u18 target. Two
+# census inputs, zero free parameters.
+
+_AGE_GRID = np.arange(0.0, 110.0, 0.5)
+_ADULT_AGE_CACHE: dict = {}
+
+
+def _survival_from_18(ages: np.ndarray, le: float) -> np.ndarray:
+    """Gompertz survival (child mortality ignored: S=1 below 18)."""
+    from earth1.generational import _gompertz_a, GOMPERTZ_B
+    a = _gompertz_a(le)
+    s = np.ones_like(ages)
+    adult = ages > 18.0
+    s[adult] = np.exp(-(a / GOMPERTZ_B)
+                      * (np.exp(GOMPERTZ_B * (ages[adult] - 18.0)) - 1.0))
+    return s
+
+
+def _adult_age_distribution(u18: float, le: float) -> tuple:
+    """(ages, probabilities) for adults under the stable-population model.
+
+    r is bisected so that the modelled under-18 share matches census u18.
+    """
+    key = (round(u18, 4), round(le, 1))
+    if key in _ADULT_AGE_CACHE:
+        return _ADULT_AGE_CACHE[key]
+
+    surv = _survival_from_18(_AGE_GRID, le)
+    child = _AGE_GRID < 18.0
+
+    def u18_share(r: float) -> float:
+        dens = np.exp(-r * _AGE_GRID) * surv
+        return float(dens[child].sum() / dens.sum())
+
+    lo, hi = -0.05, 0.10   # covers shrinking Japan to booming Niger
+    for _ in range(60):
+        mid = 0.5 * (lo + hi)
+        if u18_share(mid) < u18:
+            lo = mid
+        else:
+            hi = mid
+    # floor r at replacement level: low-fertility countries backfill
+    # working ages through immigration (DE, JP, IT), so their age
+    # structure tracks r≈0 far better than stable-shrinking, which
+    # over-ages them badly (Germany came out 44% over-65 among adults
+    # vs ~30% real). u18 then over-shoots census for those countries —
+    # acceptable: only the adult portion is sampled.
+    r = float(np.clip(0.5 * (lo + hi), 0.0, 0.10))
+
+    dens = np.exp(-r * _AGE_GRID) * surv
+    adult_mask = ~child
+    ages = _AGE_GRID[adult_mask]
+    p = dens[adult_mask] / dens[adult_mask].sum()
+    _ADULT_AGE_CACHE[key] = (ages, p)
+    return _ADULT_AGE_CACHE[key]
+
+
+def _sample_adult_ages(country: np.ndarray, rng: np.random.Generator) -> np.ndarray:
+    """Per-agent adult ages (raw years, clipped to the [18, 90] encoding)."""
+    out = np.empty(len(country))
+    for ci in np.unique(country):
+        c = GENESIS_COUNTRIES[int(ci)]
+        ages, p = _adult_age_distribution(
+            float(c.get("u18", 0.25)), float(c.get("le", 72.0)))
+        mask = country == ci
+        out[mask] = rng.choice(ages, size=int(mask.sum()), p=p)
+    return np.clip(out, 18.0, 90.0)
+
+
 def _allocate_countries(total: int, min_per_country: int = 500) -> np.ndarray:
     """Allocate agent counts across 194 countries with minimum floor."""
     nc = len(GENESIS_COUNTRIES)
@@ -76,8 +156,10 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     edu_hi = np.array([_INCOME_CLASS_EDU.get(c["income"], 0.25)
                        for c in GENESIS_COUNTRIES])[country]
 
-    # Age: normal around country median, normalized to [0,1] where 0=18, 1=90
-    age_raw = np.clip(rng.normal(c_med_age, 12.0), 18, 90)
+    # Age (Manifold v2): stable-population adult pyramid per country,
+    # derived from census u18 + the same Gompertz survival the
+    # generational tick uses. Normalized to [0,1] where 0=18, 1=90.
+    age_raw = _sample_adult_ages(country, rng)
     age = (age_raw - 18.0) / 72.0
 
     age_bucket = np.digitize(age_raw, [30, 45, 60, 75])

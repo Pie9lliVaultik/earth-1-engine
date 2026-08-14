@@ -125,6 +125,14 @@ def generational_tick(
     # ── birth into the freed slots, same country ──
     # parent pool: adults 30-60 in the same country (weighted by presence)
     parent_ok = (age_years >= 30) & (age_years <= 60) & ~dead
+    # cohort anchor (Manifold v2): newborns regress toward the YOUNG
+    # cohort's mean, not the all-ages mean. Genesis conditions traits on
+    # age (younger = more open, more risk-appetite); anchoring births to
+    # the all-ages mean erased that gradient every turnover and made
+    # liberalization drift impossible (G5 run #2/#3: t_homosexuality
+    # predicted -4pp vs observed +4pp). The young-cohort mean is
+    # empirical and evolves with the world — emergent, not authored.
+    young = age_years <= 30.0
     for c in np.unique(civ.country[dead_idx]):
         slots = dead_idx[civ.country[dead_idx] == c]
         pool = np.flatnonzero(parent_ok & (civ.country == c))
@@ -134,8 +142,13 @@ def generational_tick(
 
         for t in _INHERITED_TRAITS:
             arr = getattr(civ, t)
-            c_mean = float(arr[cmask & ~dead].mean()) if (~dead & cmask).any() \
-                else float(arr[cmask].mean())
+            ymask = cmask & ~dead & young
+            if ymask.sum() >= 20:
+                c_mean = float(arr[ymask].mean())
+            elif (~dead & cmask).any():
+                c_mean = float(arr[cmask & ~dead].mean())
+            else:
+                c_mean = float(arr[cmask].mean())
             base = (heritability * arr[parents] + (1 - heritability) * c_mean
                     if parents is not None else np.full(len(slots), c_mean))
             drift = float(cohort_drift.get(t, 0.0))

@@ -229,3 +229,24 @@ class TestCompatibility:
         result = run_question(QUESTIONS[0], c)
         assert 0 <= result.yes_pct <= 1
         assert result.dominant in list(Force)
+
+
+class TestManifoldV2AgePyramid:
+    """Manifold v2: adult ages from the stable-population model
+    (census u18 + Gompertz survival), not normal(all-ages median, 12).
+    Locks the fix for the G5 run #2/#3 finding: the world had no elderly."""
+
+    def test_world_has_elderly(self, civ):
+        age = 18 + civ.age * 72
+        over65 = (age > 65).mean()
+        assert 0.10 < over65 < 0.25, f"world over-65 share {over65:.3f}"
+        assert np.percentile(age, 90) > 65
+
+    def test_old_countries_older_than_young_ones(self, civ):
+        from earth1.genesis import GENESIS_COUNTRY_CODES
+        age = 18 + civ.age * 72
+        de = age[civ.country == GENESIS_COUNTRY_CODES.index("DE")]
+        ng = age[civ.country == GENESIS_COUNTRY_CODES.index("NG")]
+        assert de.mean() > ng.mean() + 10
+        assert (de > 65).mean() > 0.20
+        assert (ng > 65).mean() < 0.10
