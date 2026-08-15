@@ -69,10 +69,12 @@ PREMISE CHECK:
   3. incoherent/unanswerable → set premise_valid=false, explain
 
 COUNTRY SCOPING:
-  The engine models 9 countries: US, GB, DE, BR, NG, IN, JP, MX, FR.
-  If the question targets a specific country or region (e.g. "What do Germans think
-  about..."), set country_scope to that country code.  If it asks about "the world"
-  or "people" generically, set country_scope to "global".
+  The engine models 194 countries — every UN member state plus major
+  territories, each identified by its ISO 3166-1 alpha-2 code (US, IT,
+  NG, JP, ...).  If the question targets a specific country (e.g. "What
+  do Italians think about..."), set country_scope to that ISO2 code.
+  If it asks about "the world" or "people" generically, set
+  country_scope to "global".
 
 TEMPORAL CONTEXT:
   If the question references a specific event, time period, or condition

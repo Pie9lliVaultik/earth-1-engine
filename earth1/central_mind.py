@@ -24,6 +24,40 @@ from earth1.confidence import ConfidenceScore, score_confidence
 from earth1.narration import narrate
 from earth1.population import COUNTRY_CODES
 
+# demonym -> ISO2 for cheap LLM-free scope extraction (corpus-hit path).
+# Country NAMES are matched from GENESIS_COUNTRY_NAMES; this map covers
+# the demonym forms questions actually use ("Italians", "the French").
+_DEMONYMS = {
+    "american": "US", "italian": "IT", "german": "DE", "french": "FR",
+    "british": "GB", "spanish": "ES", "portuguese": "PT", "dutch": "NL",
+    "brazilian": "BR", "mexican": "MX", "argentine": "AR",
+    "argentinian": "AR", "chilean": "CL", "colombian": "CO",
+    "peruvian": "PE", "indian": "IN", "chinese": "CN", "japanese": "JP",
+    "korean": "KR", "russian": "RU", "ukrainian": "UA", "polish": "PL",
+    "turkish": "TR", "egyptian": "EG", "nigerian": "NG", "kenyan": "KE",
+    "ghanaian": "GH", "moroccan": "MA", "tunisian": "TN",
+    "indonesian": "ID", "filipino": "PH", "thai": "TH", "malaysian": "MY",
+    "vietnamese": "VN", "pakistani": "PK", "bangladeshi": "BD",
+    "iranian": "IR", "iraqi": "IQ", "israeli": "IL", "saudi": "SA",
+    "australian": "AU", "canadian": "CA", "swedish": "SE",
+    "norwegian": "NO", "danish": "DK", "finnish": "FI", "greek": "GR",
+    "romanian": "RO", "austrian": "AT", "swiss": "CH", "belgian": "BE",
+}
+
+
+def _extract_scope(text: str) -> str:
+    """LLM-free country-scope extraction from question text: demonyms
+    first, then country names. Returns ISO2 or 'global'."""
+    from earth1.genesis import GENESIS_COUNTRY_NAMES
+    low = text.lower()
+    for demonym, iso2 in _DEMONYMS.items():
+        if demonym in low:
+            return iso2
+    for iso2, name in GENESIS_COUNTRY_NAMES.items():
+        if name.lower() in low:
+            return iso2
+    return "global"
+
 
 @dataclass
 class MindResult:
@@ -100,7 +134,9 @@ def think(
                 premise_reason="",
                 raw={"source": "corpus", "corpus_id": hit.id,
                      "similarity": hit.similarity},
-                country_scope="global",
+                # scope belongs to the CURRENT text, not the corpus entry —
+                # a corpus hit must not silently discard "What do Italians..."
+                country_scope=_extract_scope(text),
                 temporal_context="",
                 binary_question=hit.text,
             )
@@ -146,13 +182,25 @@ def think(
 
     result = run_question(gw.question, civ, epsilon=epsilon, layers=layers,
                           attention_frac=attention_frac)
+    country_splits = run_segment(gw.question, civ, "country",
+                                 epsilon=epsilon, layers=layers)
 
-    country_splits = None
-    scope = gw.country_scope
-    if scope and scope != "global" and scope.upper() in COUNTRY_CODES:
-        country_splits = run_segment(gw.question, civ, "country", epsilon=epsilon, layers=layers)
-    else:
-        country_splits = run_segment(gw.question, civ, "country", epsilon=epsilon, layers=layers)
+    # Scope the headline: a question about Italians is answered BY the
+    # Italian cohort, not by the planet with an Italian footnote. The
+    # settled stances already exist for every agent; re-read them under
+    # the scope mask. Force anatomy/camps stay population-wide (noted in
+    # params) — scoping those needs a sub-civilization, a later step.
+    scope = (gw.country_scope or "global").upper()
+    if scope != "GLOBAL" and result.settled_stances is not None:
+        from earth1.genesis import GENESIS_COUNTRY_CODES
+        if scope in GENESIS_COUNTRY_CODES:
+            mask = civ.country == GENESIS_COUNTRY_CODES.index(scope)
+            if mask.sum() >= 30:
+                stances = result.settled_stances[mask]
+                result.yes_pct = float(stances.mean())
+                result.frac_yes = float((stances > 0.5).mean())
+                result.params["country_scope"] = scope
+                result.params["scope_n"] = int(mask.sum())
 
     conf = score_confidence(gw.question)
 
