@@ -131,9 +131,15 @@ def run_question(
 
     frac_yes = float((settled >= 0.5).mean())
 
+    yes_weighted = None
+    if _is_genesis(civ):
+        from earth1.genesis import census_weights
+        yes_weighted = float(np.average(settled, weights=census_weights(civ)))
+
     return RunResult(
         question=q, n=civ.n,
         yes_pct=float(settled.mean()),
+        yes_pct_weighted=yes_weighted,
         frac_yes=frac_yes,
         regime="survey-matched" if q.id in SURVEY_MATCHED else "forward-estimate",
         distribution_by_layer=dists,

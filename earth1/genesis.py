@@ -34,6 +34,27 @@ _INCOME_CLASS_RISK = {"HIC": 0.50, "UMIC": 0.52, "LMIC": 0.54, "LIC": 0.56}
 _INCOME_CLASS_DOUBT = {"HIC": 0.46, "UMIC": 0.52, "LMIC": 0.58, "LIC": 0.62}
 
 
+def census_weights(civ) -> np.ndarray:
+    """Per-agent census weights for population-true global aggregation.
+
+    The genesis floor (min_per_country) guarantees statistical
+    representation but distorts population shares — at 100k agents,
+    174/194 countries sit AT the floor and India holds 11.2% of agents
+    vs 17.9% of humanity. weight_i = census_share(country_i) /
+    agent_share(country_i), normalized to mean 1.0, so
+    np.average(x, weights=census_weights(civ)) is a population-true
+    world read while per-country reads stay unweighted.
+    """
+    shares = np.array([c["pop"] for c in GENESIS_COUNTRIES])
+    shares = shares / shares.sum()
+    counts = np.bincount(civ.country, minlength=len(GENESIS_COUNTRIES))
+    agent_share = counts / counts.sum()
+    ratio = np.divide(shares, agent_share,
+                      out=np.zeros_like(shares), where=agent_share > 0)
+    w = ratio[civ.country]
+    return w / w.mean()
+
+
 # ── Manifold v2: demographically coherent adult ages ──────────────────
 #
 # The v1 sampler drew adult ages from normal(all-ages census median, 12),

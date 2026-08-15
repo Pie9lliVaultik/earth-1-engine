@@ -201,6 +201,13 @@ def think(
                 result.frac_yes = float((stances > 0.5).mean())
                 result.params["country_scope"] = scope
                 result.params["scope_n"] = int(mask.sum())
+    elif result.yes_pct_weighted is not None:
+        # global questions get the census-weighted world read: the
+        # min-per-country floor overrepresents small countries (at 100k
+        # agents India is 11.2% of agents vs 17.9% of humanity), so the
+        # raw agent mean is not what "the world" thinks
+        result.params["yes_pct_unweighted"] = result.yes_pct
+        result.yes_pct = result.yes_pct_weighted
 
     conf = score_confidence(gw.question)
 

@@ -108,6 +108,9 @@ class RunResult:
     params: Dict[str, float]
     abstained: Optional[str] = None
     settled_stances: Optional[np.ndarray] = None
+    # census-weighted world read (genesis civs only): corrects the
+    # min-per-country floor's small-country overrepresentation
+    yes_pct_weighted: Optional[float] = None
 
 
 @dataclass
