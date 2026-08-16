@@ -58,6 +58,10 @@ class PerceivedEvent:
     confidence: float
     decay_half_life: float
     rationale: str = ""
+    # ISO2 of the population this news CONCERNS (may differ from the
+    # publisher's country — GDELT sourcecountry is the outlet's home),
+    # or "GLOBAL". Defaults to the item's country for pre-scope callers.
+    scope: str = ""
 
     def clipped(self) -> "PerceivedEvent":
         deltas = {int(k): float(np.clip(v, -_MAX_DELTA, _MAX_DELTA))
@@ -65,7 +69,8 @@ class PerceivedEvent:
                   if abs(v) > 1e-4 and 0 <= int(k) < NUM_FORCES}
         decay = float(np.clip(self.decay_half_life, *_DECAY_BOUNDS))
         return PerceivedEvent(self.item, deltas, float(self.confidence),
-                              decay, self.rationale)
+                              decay, self.rationale,
+                              self.scope or self.item.country)
 
 
 PERCEPTION_TOOL = {
@@ -85,9 +90,17 @@ PERCEPTION_TOOL = {
                            "description": "0-1: how clearly this item "
                                           "maps to force changes"},
             "decay_half_life_days": {"type": "number"},
+            "concerns": {"type": "string",
+                         "description": "ISO2 code of the country this news "
+                                        "actually CONCERNS (the population "
+                                        "whose forces it moves), 'GLOBAL' "
+                                        "for worldwide events, or 'NONE' if "
+                                        "it concerns no clear population. "
+                                        "May differ from the publisher's "
+                                        "country."},
             "rationale": {"type": "string"},
         },
-        "required": ["force_deltas", "confidence"],
+        "required": ["force_deltas", "confidence", "concerns"],
     },
 }
 
@@ -96,6 +109,7 @@ PERCEPTION_SYSTEM = """You translate ONE news item into Earth-1 force-field delt
 The eight forces: fear (threat/insecurity), desire (aspiration/consumption), economics (material conditions), collective (in-group cohesion/conformity), identity (self-definition/expression), culture (tradition/norms), experience (lived events), temperament (risk mood).
 
 Rules:
+- concerns: the country whose POPULATION this news moves — NOT the country whose outlet published it. A Lagos paper covering a US election concerns US (or GLOBAL if it moves everyone). Foreign wire stories with no local impact on any clear population -> NONE.
 - Output deltas ONLY for forces this item plausibly moves; magnitudes in [-0.25, 0.25]; typical news is 0.02-0.10, only major national events exceed 0.15.
 - confidence reflects how clearly the item maps to forces (routine sports/weather -> low; coups, crashes, landmark rulings -> high).
 - decay_half_life_days: how long the reaction persists (celebrity story ~2, policy change ~30-90).
@@ -139,8 +153,13 @@ def _parse_perception(item: NewsItem, data: dict) -> Optional[PerceivedEvent]:
                 continue
     conf = float(data.get("confidence", 0.0))
     decay = float(data.get("decay_half_life_days", _DEFAULT_DECAY))
+    scope = str(data.get("concerns", "")).strip().upper()
+    if scope == "NONE":
+        return None       # concerns no clear population — abstain
+    if scope != "GLOBAL" and len(scope) != 2:
+        scope = item.country   # malformed -> publisher country fallback
     ev = PerceivedEvent(item, deltas, conf, decay,
-                        str(data.get("rationale", ""))).clipped()
+                        str(data.get("rationale", "")), scope).clipped()
     if ev.confidence < _MIN_CONFIDENCE or not ev.force_deltas:
         return None
     return ev

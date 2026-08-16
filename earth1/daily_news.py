@@ -137,14 +137,20 @@ def read_todays_news(
                 continue
             deltas = {force_names[i]: float(v)
                       for i, v in ev.force_deltas.items()}
+            # scope to the population the news CONCERNS (perceiver's
+            # call), not the publisher's country — GDELT sourcecountry
+            # is the outlet's home, and outlets carry wire stories
+            scope = ev.scope or cc
+            region = "*" if scope == "GLOBAL" else f"{scope}-*"
             events.append(WorldEvent.create(
                 timestamp=t,
                 force_deltas=deltas,
-                region_pattern=f"{cc}-*",
+                region_pattern=region,
                 decay_half_life=ev.decay_half_life,
                 source="perception:llm",
             ))
             ledger.append({"ts": stamp, "day": day, "country": cc,
+                           "scope": scope,
                            "title": art["title"], "outcome": "perceived",
                            "deltas": deltas,
                            "confidence": ev.confidence})
