@@ -21,7 +21,7 @@
 |-----|--------|-----------|
 | **Demography** | ✅ **PASSING** (runs #5, #6) | LE tracking 100% of 130 countries; adult CDR 12.8/1000 in band. Passed only after we found and fixed real physics bugs (see §3). |
 | **Temporal** | ❌ Failing — *and we now know exactly why* | Endogenous dynamics ≈ no-change parity (proven via 3-run arc). News statistics carry no signal (proven twice, pre-registered). The fix candidate exists: response physics + perceived history replay (§3, §4). |
-| **Event reaction** | ❌ Failing — *fix candidate validated at case level* | Old physics: 50× too weak, wrong mechanism. New response physics predicts 10/12 real historical reactions out-of-sample. Not yet wired into the engine. |
+| **Event reaction** | ✅ **PASSING** (run #7, A3, 2026-08-16) | Simulated +0.0572 vs measured +0.0567 — **ratio 1.01** (was 0.02). LLM-read headlines → blind-authored response law → engine. Gain leave-COVID-out; criteria unchanged from original registration. |
 
 ### Current honest benchmark numbers (Manifold v2.1, 200K agents, GOQA 40×66)
 
