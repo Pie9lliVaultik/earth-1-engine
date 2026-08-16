@@ -427,14 +427,59 @@ class EventLegResult:
     per_country: List[Dict]
 
 
+def _load_case_response_profile(case_id: str):
+    """The case's blind-authored response profile (A3). None = the leg
+    runs the retired law, which is a protocol violation for any case
+    with a registered profile."""
+    import json
+    from pathlib import Path
+    p = Path(__file__).resolve().parents[1] / "data" / "question_profiles.json"
+    if not p.exists():
+        return None
+    profiles = json.loads(p.read_text())
+    if case_id in profiles:
+        return np.array(profiles[case_id], dtype=np.float64)
+    return None
+
+
+def _load_case_perceived_shocks(case_id: str) -> Dict[str, List]:
+    """Per-country LLM-perceived shocks for the case headlines (A3,
+    cached blind in data/perceived_cases.json). {} = fall back to the
+    hand-authored case deltas."""
+    import json
+    from pathlib import Path
+    p = Path(__file__).resolve().parents[1] / "data" / "perceived_cases.json"
+    if not p.exists():
+        return {}
+    cache = json.loads(p.read_text())
+    shocks: Dict[str, List] = {}
+    for key, perc in cache.items():
+        parts = key.split("|")
+        if parts[0] != case_id or perc is None:
+            continue
+        cc = parts[1]
+        deltas = {int(k): float(v) for k, v in perc["deltas"].items()}
+        shocks.setdefault(cc, []).append(
+            (deltas, float(perc.get("decay", 45.0))))
+    return shocks
+
+
 def g5_event_reaction(
     case: EventCase = COVID_RALLY,
     pop: int = 50_000,
     seed: int = 42,
     dt_days: float = 30.0,
 ) -> EventLegResult:
-    """The event leg: inject the documented shock, compare the simulated
-    shift to the measured one."""
+    """The event leg UNDER A3 — the one law, in the official court.
+
+    Re-audit round 4 finding: this harness still ran the retired
+    cross-sectional law (ratio -0.027) while the validated A3 run lived
+    in a side script. The canonical gate now exercises exactly the
+    physics that passed: perceived per-country shocks (cached blind) +
+    the case's blind-authored response profile. Falls back to the
+    hand-authored case deltas when no perception cache exists; the
+    response profile is required for any registered case that has one.
+    """
     civ = _make_mutable(genesis(pop, seed))
     cmap = _country_index_map()
 
@@ -443,29 +488,43 @@ def g5_event_reaction(
     weights = calibrate_single(civ, baseline, case.pre)
     t0_means = civ.means.copy()
 
+    response_profile = _load_case_response_profile(case.id)
+    perceived = _load_case_perceived_shocks(case.id)
+
     countries = [cc for cc in case.pre if cc in cmap and cc in case.post]
+    if perceived:
+        countries = [cc for cc in countries if cc in perceived]
     t0_pred = {}
     for cc in countries:
         p = _predict_country_anchored(civ, baseline, weights, cmap[cc], t0_means)
         if p is not None:
             t0_pred[cc] = p
 
-    # inject the shock — one event per affected country
+    # inject the shock — perceived per-country events (A3) or the
+    # a-priori case deltas as fallback
     q = Question(id=case.id, text=case.question_text, domain="belief_causal",
-                 baseline=baseline, weights=weights, lens="eb")
+                 baseline=baseline, weights=weights, lens="eb",
+                 response_profile=response_profile)
     state = WorldState(
         civ=civ, event_log=EventLog(), t=0.0, tick_count=0,
         question_history=[], coupling_matrix={}, last_fired={},
         rng=np.random.default_rng(seed),
     )
     for cc in countries:
-        state.event_log.append(WorldEvent.create(
-            timestamp=0.0,
-            force_deltas=dict(case.force_deltas),
-            region_pattern=f"{cc}-*",
-            decay_half_life=case.decay_half_life,
-            source=f"g5:{case.id}",
-        ))
+        if perceived:
+            for deltas, decay in perceived[cc]:
+                state.event_log.append(WorldEvent.create(
+                    timestamp=0.0, force_deltas=deltas,
+                    region_pattern=f"{cc}-*", decay_half_life=decay,
+                    source=f"g5:{case.id}:perceived"))
+        else:
+            state.event_log.append(WorldEvent.create(
+                timestamp=0.0,
+                force_deltas=dict(case.force_deltas),
+                region_pattern=f"{cc}-*",
+                decay_half_life=case.decay_half_life,
+                source=f"g5:{case.id}",
+            ))
 
     n_steps = max(1, int(round(case.window_days / dt_days)))
     for _ in range(n_steps):
@@ -483,7 +542,8 @@ def g5_event_reaction(
             continue
         p1 = _predict_country_anchored(
             state.civ, baseline, weights, cmap[cc], t0_means,
-            extra_shift=event_deltas)
+            extra_shift=event_deltas,
+            response_profile=response_profile)
         if p1 is None:
             continue
         sim = p1 - t0_pred[cc]

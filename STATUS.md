@@ -81,7 +81,7 @@ These came from gate failures — each one found by a pre-registered test, fixed
 
 5. **Perception discipline** (5.8). One LLM call per news *item* authoring force events — the disciplined version of vivid-node-forge's per-agent absorption (which felt alive but measured 26.4pp GOQA vs our 10.2). Perception authors causes only; clipped, confidence-floored, source-tagged, channel-off-without-key.
 
-6. **Population weighting** (external review, verified, fixed). At 100K agents, 174/194 countries sit at the representation floor — India was 11.2% of agents vs 17.9% of humanity. Census weights now correct all global reads.
+6. **Population weighting** (external review, verified, partially fixed). At 100K agents, 174/194 countries sit at the representation floor — India was 11.2% of agents vs 17.9% of humanity. Census weights correct the Central Mind global HEADLINE; generic /ask, anatomy, camps, histograms and fragility still operate on raw synthetic-agent mass — moving weighting into the model core is queued (Build 30 remainder), and signed anatomy has not landed.
 
 7. **Scoping fixes** (external review, verified, fixed). "What do Italians think?" now answers about Italians; the gateway knows all 194 countries; corpus hits keep scope.
 

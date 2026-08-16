@@ -213,3 +213,36 @@ class TestWorldReadsAreEventAware:
         deps.reset_civ()
         assert abs(after - before) > 1e-4, \
             "/ask is event-blind — it reads the substrate, not the world"
+
+
+def test_all_surfaces_see_the_same_changed_earth():
+    """Re-audit round 4: /ask moved on an injected event while
+    /observatory/standing-readings and /forecast/perishability stayed
+    frozen. Every current-state surface must observe the same Earth."""
+    import os
+    from fastapi.testclient import TestClient
+    prev_pop = os.environ.get("EARTH1_POP")
+    os.environ["EARTH1_POP"] = "4000"
+    from earth1.api import deps
+    deps.reset_civ()
+    try:
+        from earth1.api.main import app
+        from earth1.event_log import WorldEvent
+        client = TestClient(app)
+
+        obs_before = client.get("/observatory/standing-readings").json()
+        state = deps.get_world_state()
+        state.event_log.append(WorldEvent.create(
+            timestamp=state.t,
+            force_deltas={"fear": 0.25, "collective": 0.2},
+            region_pattern="*", decay_half_life=60.0))
+        state.t += 1.0
+        obs_after = client.get("/observatory/standing-readings").json()
+        assert obs_before != obs_after, \
+            "/observatory is event-blind — not reading the world"
+    finally:
+        if prev_pop is None:
+            os.environ.pop("EARTH1_POP", None)
+        else:
+            os.environ["EARTH1_POP"] = prev_pop
+        deps.reset_civ()

@@ -219,3 +219,19 @@ def test_temporal_accepts_replay_events():
     res = g5_temporal(pop=POP, seed=42, years=1.0, dt_days=30.0,
                       questions=WVS_PAIRED[:2], replay_events=events)
     assert res.n_pairs > 10
+
+
+def test_event_leg_runs_the_one_law():
+    """Re-audit round 4: the official gate was still judging under the
+    retired cross-sectional law while the validated A3 run lived in a
+    side script. The harness must construct the case question WITH its
+    blind-authored response profile and use perceived shocks when the
+    cache exists."""
+    from earth1.g5 import (_load_case_response_profile,
+                           _load_case_perceived_shocks, COVID_RALLY)
+    prof = _load_case_response_profile(COVID_RALLY.id)
+    assert prof is not None, "covid response profile missing from cache"
+    assert prof.shape == (8,)
+    shocks = _load_case_perceived_shocks(COVID_RALLY.id)
+    assert shocks, "perceived covid shocks missing from cache"
+    assert all(len(v) >= 1 for v in shocks.values())

@@ -91,11 +91,14 @@ class CorpusHit:
     lens: str
     source: str
     similarity: float
+    response_profile: Optional[np.ndarray] = None   # ONE LAW: temporal coupling
 
     def to_question(self, qid: Optional[str] = None) -> Question:
         return Question(
             id=qid or self.id, text=self.text, domain=self.domain,
             baseline=self.baseline, weights=self.weights.copy(), lens=self.lens,
+            response_profile=(self.response_profile.copy()
+                              if self.response_profile is not None else None),
         )
 
 
@@ -110,6 +113,9 @@ class QuestionCorpus:
         self.domains: List[str] = []
         self.lenses: List[str] = []
         self.sources: List[str] = []
+        # ONE LAW: per-entry temporal response profile; NaN row = not
+        # yet authored (question is event-inert until authored)
+        self.profiles: np.ndarray = np.zeros((0, NUM_FORCES))
         self.matrix: np.ndarray = np.zeros((0, EMBED_DIM))
         self.vectorizer = _Vectorizer()
 
@@ -137,15 +143,27 @@ class QuestionCorpus:
         self.vectorizer.fit(self.texts)
         self.matrix = np.stack([self.vectorizer.embed(t) for t in self.texts])
 
+    def _profile(self, idx: int):
+        """Stored response profile, or None while un-authored (NaN)."""
+        if idx >= len(self.profiles):
+            return None
+        row = self.profiles[idx]
+        return None if np.isnan(row).any() else row
+
     def add(
         self, id: str, text: str, baseline: float, weights: np.ndarray,
         domain: str = "belief_causal", lens: str = "wvs", source: str = "llm",
+        response_profile: Optional[np.ndarray] = None,
     ) -> None:
         """Append a newly-solved question. IDF stays frozen (build-time)."""
         self.ids.append(id)
         self.texts.append(text)
         self.baselines = np.append(self.baselines, baseline)
         self.weights = np.vstack([self.weights, np.asarray(weights)[np.newaxis, :]])
+        prof = (np.asarray(response_profile, dtype=np.float64)
+                if response_profile is not None
+                else np.full(NUM_FORCES, np.nan))
+        self.profiles = np.vstack([self.profiles, prof[np.newaxis, :]])
         self.domains.append(domain)
         self.lenses.append(lens)
         self.sources.append(source)
@@ -172,6 +190,7 @@ class QuestionCorpus:
             baseline=float(self.baselines[best]), weights=self.weights[best],
             domain=self.domains[best], lens=self.lenses[best],
             source=self.sources[best], similarity=float(sims[best]),
+            response_profile=self._profile(best),
         )
 
     def retrieve(
@@ -208,6 +227,7 @@ class QuestionCorpus:
             return CorpusHit(
                 id=self.ids[idx], text=self.texts[idx],
                 baseline=float(self.baselines[idx]),
+                response_profile=self._profile(idx),
                 weights=self.weights[idx] if weights is None else weights,
                 domain=self.domains[idx], lens=self.lenses[idx],
                 source=self.sources[idx], similarity=float(sims[idx]),
@@ -245,6 +265,7 @@ class QuestionCorpus:
         np.savez_compressed(
             path.with_suffix(".npz"),
             baselines=self.baselines, weights=self.weights, matrix=self.matrix,
+            profiles=self.profiles,
         )
         meta = {
             "ids": self.ids, "texts": self.texts, "domains": self.domains,
@@ -270,6 +291,8 @@ class QuestionCorpus:
         c.baselines = arrays["baselines"]
         c.weights = arrays["weights"]
         c.matrix = arrays["matrix"]
+        c.profiles = (arrays["profiles"] if "profiles" in arrays
+                      else np.full((len(c.ids), NUM_FORCES), np.nan))
         c.vectorizer = _Vectorizer(idf=meta["idf"])
         c.vectorizer.n_docs = meta["n_docs"]
         return c

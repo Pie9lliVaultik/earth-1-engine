@@ -1,6 +1,6 @@
 from __future__ import annotations
 from fastapi import APIRouter, Query
-from earth1.api.deps import get_civ
+from earth1.api.deps import get_civ, get_world_state
 from earth1.api.schemas import QuestionSchema
 from earth1.questions import QUESTIONS
 from earth1.engine import run_question
@@ -25,12 +25,13 @@ def standing_readings(
     layers: int = Query(8),
 ):
     """Run all belief-causal questions and return a standing record."""
-    civ = get_civ()
+    state = get_world_state()
+    civ = state.civ
     readings = []
     for q in QUESTIONS:
         if q.domain != "belief_causal":
             continue
-        result = run_question(q, civ, epsilon=epsilon, layers=layers)
+        result = run_question(q, civ, epsilon=epsilon, layers=layers, event_log=state.event_log, t=state.t)
         readings.append({
             "question_id": q.id,
             "question_text": q.text,

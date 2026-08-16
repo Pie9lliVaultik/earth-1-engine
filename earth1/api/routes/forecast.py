@@ -5,7 +5,7 @@ from earth1.api.schemas import (
     TimelineSchema, TimelineRequest, ScenarioRequest,
     TreeRequest, ScenarioTreeSchema, EventSchema,
 )
-from earth1.api.deps import get_civ
+from earth1.api.deps import get_civ, get_world_state
 from earth1.engine import run_multiverse
 from earth1.questions import question_by_id
 from earth1.perishability import decay_curve
@@ -29,7 +29,8 @@ def multiverse(
     question = question_by_id(q)
     if not question:
         raise HTTPException(404, f"Unknown question: {q}")
-    civ = get_civ()
+    state = get_world_state()
+    civ = state.civ
     mv = run_multiverse(question, civ, epsilon=epsilon, layers=layers)
     return {
         "present": serialize_result(mv["present"]),
@@ -46,9 +47,10 @@ def perishability(
     question = question_by_id(q)
     if not question:
         raise HTTPException(404, f"Unknown question: {q}")
-    civ = get_civ()
+    state = get_world_state()
+    civ = state.civ
     from earth1.engine import run_question
-    result = run_question(question, civ, epsilon=epsilon, layers=layers)
+    result = run_question(question, civ, epsilon=epsilon, layers=layers, event_log=state.event_log, t=state.t)
     curve = decay_curve(result.yes_pct, result.dominant)
     return curve
 
@@ -103,7 +105,8 @@ def timeline(req: TimelineRequest):
     question = question_by_id(req.question_id)
     if not question:
         raise HTTPException(404, f"Unknown question: {req.question_id}")
-    civ = get_civ()
+    state = get_world_state()
+    civ = state.civ
     shocks = _parse_shocks(req.shocks)
     tl = simulate(
         question, civ,
@@ -122,7 +125,8 @@ def scenarios(req: ScenarioRequest):
     question = question_by_id(req.question_id)
     if not question:
         raise HTTPException(404, f"Unknown question: {req.question_id}")
-    civ = get_civ()
+    state = get_world_state()
+    civ = state.civ
 
     force_map = {f.name.lower(): f.value for f in Force}
     parsed_scenarios = []
@@ -168,7 +172,8 @@ def tree(req: TreeRequest):
     question = question_by_id(req.question_id)
     if not question:
         raise HTTPException(404, f"Unknown question: {req.question_id}")
-    civ = get_civ()
+    state = get_world_state()
+    civ = state.civ
 
     branches = []
     for b in req.branches:

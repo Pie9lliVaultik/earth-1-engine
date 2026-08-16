@@ -224,6 +224,16 @@ def _parse_tool_input(data: dict, text: str) -> GatewayResult:
         note=f"LLM-estimated ({data.get('confidence', 'forward_estimate')})",
     )
 
+    # ONE LAW: a novelty-frontier question gets its temporal response
+    # profile authored blind alongside the cross-sectional weights —
+    # otherwise it would be event-inert in the living world.
+    if premise_valid:
+        try:
+            from earth1.news_perception import perceive_question_response
+            q.response_profile = perceive_question_response(text)
+        except Exception:
+            q.response_profile = None   # authoring failure = honest inert
+
     country_scope = data.get("country_scope", "global")
     temporal_context = data.get("temporal_context", "")
     binary_question = data.get("binary_question", text)

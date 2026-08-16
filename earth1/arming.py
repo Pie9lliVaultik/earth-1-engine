@@ -58,6 +58,7 @@ def perceive(
                     baseline=gw.question.baseline, weights=gw.question.weights,
                     domain=gw.question.domain, lens=gw.question.lens,
                     source="llm",
+                    response_profile=gw.question.response_profile,
                 )
             return gw.question
         return None
