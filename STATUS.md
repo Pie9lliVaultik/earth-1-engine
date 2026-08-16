@@ -9,7 +9,7 @@ retired); one WorldState for all API routes; one 194-country registry; corpus wi
 production; all control middlewares mounted. Run #9 on the fixed engine: demography
 PASSES (LE 100%, CDR 12.8), legacy cross-sectional event path honestly measured for the
 first time (ratio −0.027, wrong sign) — confirming the response law (A3) is the physics
-that works. 884 tests green. See PLAN.md.
+that works. 899 tests green. See PLAN.md.
 
 **Build 30 "One Law" (2026-08-17): THE canonical transduction law is live.** An event
 enters opinion through exactly one operator — the response law — on its own channel

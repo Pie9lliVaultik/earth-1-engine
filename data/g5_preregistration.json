@@ -47,6 +47,16 @@
   },
   "amendments": [
     {
+      "id": "A6.1",
+      "date": "2026-08-17",
+      "after_run": 9,
+      "leg": "secular",
+      "addendum_to": "A6",
+      "what": "RATE NORMALIZATION, registered before fit_secular.py exists. The functional form is drift = beta_q . D_rate, where D_rate = D / years_i * YEARS_REF \u2014 each country's development-change vector divided by ITS OWN fieldwork interval length in years, rescaled to YEARS_REF = 7.0 (the nominal wave gap). Predictions for W6->W7 multiply by the target country's own interval: predicted_drift_i = (beta_q . D_rate_i(W6->W7)) * years_i(W6->W7) / YEARS_REF.",
+      "rationale": "A6's fieldwork-year alignment makes intervals genuinely vary (5-year vs 12-year countries), and interval length is NOT random \u2014 it correlates with which countries fielded late. Unnormalized beta . D would let the ridge learn interval duration as a confound. Because this changes the functional form, append-only discipline requires it in the registration, not in the fit script.",
+      "unchanged": "Everything else in A6: sign constraints, W5->W6-only fitting, frozen betas, LOO-country scoring, shuffled-development placebo, contaminated-sign declaration."
+    },
+    {
       "id": "A5",
       "date": "2026-08-16",
       "after_run": 9,

@@ -1,0 +1,14 @@
+[
+  {
+    "registered": "2026-08-17",
+    "must_precede": "any output of scripts/fit_secular.py",
+    "anomaly": "The 2026-08-16 screen scored event-accumulation at 86% (environment) and 83% (abortion) sign accuracy on DECADE-scale W6->W7 deltas \u2014 yet the A5 blind partition classifies every WVS question, including these, as SECULAR. If the partition is right that decade-scale change is drift-dominated, why did summed event shocks predict these two questions so well?",
+    "candidate_explanations": {
+      "H1_curation_bias": "The 24 screening events were curated with outcome knowledge; the apparent event-signal on these questions is leakage, not physics.",
+      "H2_coarse_binary": "The EVENT/SECULAR binary is too coarse: some questions are genuinely mixed-regime, and the blind classifier's 'primarily' instruction forced them into SECULAR.",
+      "H3_genuine_mixture": "Both physics operate: development drift sets the trend, event accumulation modulates it, and environment/abortion happen to have had decade-defining event streams (climate movement, Roe)."
+    },
+    "discriminating_observable": "After fit_secular.py produces frozen betas: does the development term absorb environment's and abortion's W6->W7 drift (residual event contribution ~ 0 -> supports H1/H2-secular), or does the event sum still carry independent signal on exactly these two questions after the secular fit (-> supports H3 mixture)? Recorded either way.",
+    "resolution": null
+  }
+]
