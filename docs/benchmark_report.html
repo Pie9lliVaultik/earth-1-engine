@@ -1,0 +1,193 @@
+<title>Earth-1 · Benchmark & Calibration Report</title>
+<style>
+  :root {
+    --bg: #FAFAF7; --panel: #FFFFFF; --ink: #1A2233; --muted: #5A6478;
+    --accent: #B3541E; --accent-soft: #B3541E22; --good: #2E7D4F;
+    --bad: #A63A3A; --line: #E3E1DA; --engine: #B3541E; --baseline: #8A93A6;
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #0D1117; --panel: #161C26; --ink: #E8E6E1; --muted: #9AA3B5;
+    --accent: #E08849; --accent-soft: #E0884926; --good: #5CBF8A;
+    --bad: #D97B7B; --line: #2A3140; --engine: #E08849; --baseline: #5A6478;
+  }}
+  :root[data-theme="dark"] {
+    --bg: #0D1117; --panel: #161C26; --ink: #E8E6E1; --muted: #9AA3B5;
+    --accent: #E08849; --accent-soft: #E0884926; --good: #5CBF8A;
+    --bad: #D97B7B; --line: #2A3140; --engine: #E08849; --baseline: #5A6478;
+  }
+  :root[data-theme="light"] {
+    --bg: #FAFAF7; --panel: #FFFFFF; --ink: #1A2233; --muted: #5A6478;
+    --accent: #B3541E; --accent-soft: #B3541E22; --good: #2E7D4F;
+    --bad: #A63A3A; --line: #E3E1DA; --engine: #B3541E; --baseline: #8A93A6;
+  }
+  body { background: var(--bg); color: var(--ink);
+    font: 16px/1.65 "Avenir Next", "Helvetica Neue", -apple-system, sans-serif;
+    margin: 0; padding: 0 20px 80px; }
+  main { max-width: 880px; margin: 0 auto; }
+  header { padding: 56px 0 8px; border-bottom: 3px solid var(--accent); margin-bottom: 40px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 12px;
+    color: var(--accent); font-weight: 600; }
+  h1 { font-size: 40px; line-height: 1.15; margin: 10px 0 6px; font-weight: 700;
+    text-wrap: balance; }
+  .sub { color: var(--muted); font-size: 17px; max-width: 60ch; }
+  h2 { font-size: 24px; margin: 52px 0 8px; }
+  h2 .n { color: var(--accent); font-weight: 700; margin-right: 10px; }
+  .lede { color: var(--muted); max-width: 68ch; margin-top: 0; }
+  .panel { background: var(--panel); border: 1px solid var(--line);
+    border-radius: 10px; padding: 24px 28px; margin: 20px 0; }
+  table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  th { text-align: left; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); padding: 8px 12px 8px 0;
+    border-bottom: 1px solid var(--line); }
+  td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: none; }
+  .num { text-align: right; }
+  .win { color: var(--good); font-weight: 600; }
+  .lose { color: var(--bad); font-weight: 600; }
+  .big { font-size: 30px; font-weight: 700; }
+  .kpis { display: flex; gap: 16px; flex-wrap: wrap; margin: 24px 0; }
+  .kpi { flex: 1 1 180px; background: var(--panel); border: 1px solid var(--line);
+    border-left: 4px solid var(--accent); border-radius: 8px; padding: 16px 18px; }
+  .kpi .v { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .l { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .bar-wrap { overflow-x: auto; }
+  svg text { font-family: inherit; }
+  .honesty { border-left: 4px solid var(--muted); }
+  .footer { margin-top: 56px; color: var(--muted); font-size: 13px;
+    border-top: 1px solid var(--line); padding-top: 16px; }
+  code { background: var(--accent-soft); border-radius: 4px; padding: 1px 6px;
+    font-size: 14px; }
+</style>
+<main>
+<header>
+  <div class="eyebrow">Earthling Labs · Confidential</div>
+  <h1>Earth-1 Benchmark &amp; Calibration Report</h1>
+  <p class="sub">A 200,000-agent synthetic civilization, measured against public
+  ground truth, adversarial baselines, and its own pre-registered gates.
+  Every number reproducible from a committed seed.</p>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">10.24pp</div><div class="l">Engine cross-validated MAE — beats every baseline</div></div>
+  <div class="kpi"><div class="v">33 / 40</div><div class="l">Questions won vs strongest baseline</div></div>
+  <div class="kpi"><div class="v">10 / 12</div><div class="l">Real historical opinion shifts, direction predicted out-of-sample</div></div>
+  <div class="kpi"><div class="v">100%</div><div class="l">Countries whose simulated mortality matches census life expectancy</div></div>
+</div>
+
+<h2><span class="n">01</span>The accuracy ladder</h2>
+<p class="lede">GlobalOpinionQA: 40 World Values Survey questions × 66 countries
+(2,598 country-question pairs). Leave-one-country-out cross-validation — the
+engine predicts each country having seen <em>nothing</em> from it. Lower is better.</p>
+<div class="panel bar-wrap">
+<svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MAE ladder">
+  <g font-size="15" fill="var(--ink)">
+    <text x="8" y="42">Earth-1 engine</text>
+    <text x="8" y="94">Aligned stereotype*</text>
+    <text x="8" y="146">Country stereotype</text>
+    <text x="8" y="198">Naive global mean</text>
+  </g>
+  <g>
+    <rect x="200" y="24" width="358" height="28" rx="4" fill="var(--engine)"/>
+    <rect x="200" y="76" width="400" height="28" rx="4" fill="var(--baseline)"/>
+    <rect x="200" y="128" width="444" height="28" rx="4" fill="var(--baseline)"/>
+    <rect x="200" y="180" width="442" height="28" rx="4" fill="var(--baseline)"/>
+  </g>
+  <g font-size="15" font-weight="700" fill="var(--ink)">
+    <text x="566" y="44">10.24pp</text>
+    <text x="608" y="96">11.42pp</text>
+    <text x="652" y="148">12.69pp</text>
+    <text x="650" y="200">12.64pp</text>
+  </g>
+</svg>
+<p style="color:var(--muted); font-size:13px; margin:8px 0 0">
+*Strongest leakage-free lookup: SVD polarity-aligned country offsets. The
+comparison is tilted <em>against</em> the engine — the lookup sees the held-out
+country's answers to other questions; the engine sees nothing from it at all.
+The engine wins regardless, by 1.2pp across 2,598 pairs.</p>
+</div>
+
+<h2><span class="n">02</span>Methodology — built to be attacked</h2>
+<div class="panel">
+<table>
+<tr><th>Principle</th><th>Implementation</th></tr>
+<tr><td>No self-grading</td><td>Adversarial baselines built by us, at full strength (polarity-aligned lookup); public ground truth (WVS via GlobalOpinionQA)</td></tr>
+<tr><td>No leakage</td><td>Recalibrate-then-measure with leave-one-country-out folds; held country contributes zero data to its own prediction</td></tr>
+<tr><td>Pre-registration</td><td>Validation gates committed to git <em>before</em> results run; protocol changes are append-only amendments; failed runs stay in the record</td></tr>
+<tr><td>Placebo controls</td><td>Every signal source must beat shuffled-geography placebo — three plausible signal channels were killed by this discipline, in public</td></tr>
+<tr><td>Reproducibility</td><td>Deterministic seeds; population identified by cryptographic hash; every result traces to a commit</td></tr>
+</table>
+</div>
+
+<h2><span class="n">03</span>Calibration is physical, not just statistical</h2>
+<p class="lede">The population is not fitted curves — it is 200,000 agents with
+census demographics, cultural coordinates, and psychometric traits, whose
+aggregate behavior is validated against reality on independent axes:</p>
+<div class="panel">
+<table>
+<tr><th>Axis</th><th>Test</th><th class="num">Result</th></tr>
+<tr><td>Demography</td><td>Simulated cohort mortality vs census life expectancy, 130 LE values through the engine's own aging machinery</td><td class="num win">100% within ±6y</td></tr>
+<tr><td>Mortality rate</td><td>Adult crude death rate vs UN-derived band [6–15/1000/yr]</td><td class="num win">12.8 ✓</td></tr>
+<tr><td>Age structure</td><td>Stable-population pyramids from census fertility + survival (Germany 32.5% of adults over 65 vs ~30% real; Nigeria 1.7%)</td><td class="num win">country-accurate</td></tr>
+<tr><td>Population weighting</td><td>Census-weighted world reads (India = 17.9% of humanity, not 11.2% of agents)</td><td class="num win">corrected &amp; tested</td></tr>
+</table>
+</div>
+
+<h2><span class="n">04</span>New result: predicting the direction of real opinion change</h2>
+<p class="lede">Six historical natural experiments with published before/after
+polling. An LLM reads the era's headlines and authors force-field shocks; a
+second, independent LLM pass authors each question's response profile — both
+<strong>blind to the outcomes</strong>. Sign predictions are therefore
+parameter-free.</p>
+<div class="panel">
+<table>
+<tr><th>Event</th><th>Measured shift</th><th class="num">Predicted direction</th></tr>
+<tr><td>COVID onset → EU trust in government (5 of 6 countries)</td><td>+2 to +15pp</td><td class="num win">✓</td></tr>
+<tr><td>Ukraine invasion → Finnish NATO support</td><td>+38pp</td><td class="num win">✓</td></tr>
+<tr><td>Ukraine invasion → Swedish NATO support</td><td>+14pp</td><td class="num win">✓</td></tr>
+<tr><td>Fukushima → German nuclear-exit support</td><td>+26pp</td><td class="num win">✓</td></tr>
+<tr><td>9/11 → US trust in government</td><td>+30pp</td><td class="num win">✓ (magnitude +29.9 vs +30.0)</td></tr>
+<tr><td>2008 crash → US economic optimism</td><td>−19pp</td><td class="num win">✓ (negative, correctly)</td></tr>
+<tr><td>COVID → Polish trust (political anomaly)</td><td>−6pp</td><td class="num lose">✗</td></tr>
+<tr><td>2015 migration → German confidence</td><td>−22pp</td><td class="num lose">✗</td></tr>
+</table>
+<p style="color:var(--muted); font-size:14px; margin-bottom:0">
+10/12 correct (binomial p = 0.019; effective independent n ≈ 7–8 as COVID
+countries share a profile — stated plainly). The physics behind it — opinion
+<em>change</em> obeys different signs than opinion <em>levels</em> — is, to our
+knowledge, not encoded in any competing system.</p>
+</div>
+
+<h2><span class="n">05</span>What we do not claim</h2>
+<div class="panel honesty">
+<p style="margin-top:0">The record is append-only and includes the failures, because the
+failures are the moat — they prove the gates are real:</p>
+<table>
+<tr><th>Not yet claimed</th><th>Status</th></tr>
+<tr><td>Long-horizon temporal tracking (decade-scale value drift)</td><td>Gate failing honestly; six recorded runs isolated the missing physics; fix validated at case level (§04), engine integration in progress</td></tr>
+<tr><td>Market foresight (beating prices at resolution)</td><td>Machinery complete and tamper-evident; awaiting time-in-market — a record that cannot be backdated</td></tr>
+<tr><td>Per-mechanism emergence validation</td><td>Social machinery built and running; ablation program defined, begins when event gate passes</td></tr>
+</table>
+<p style="color:var(--muted); font-size:14px; margin-bottom:0">Three plausible
+signal sources (news tone, topic salience ×2 statistics) were killed by our own
+pre-registered placebo tests before reaching production. No competitor publishes
+equivalent negative results — or equivalent controls.</p>
+</div>
+
+<h2><span class="n">06</span>Competitive position</h2>
+<div class="panel">
+<p style="margin-top:0">Simile, Aaru, and Artificial Societies publish no APIs, no
+reproducible benchmarks, and no pre-registered validation. Earth-1's position is
+structural: <strong>every claim above traces to a public dataset, a committed
+seed, and an append-only record</strong>. The predecessor system (per-agent LLM
+simulation, the industry's default architecture) scored 26.4pp on this same
+benchmark — 2.5× worse than Earth-1's physics engine, at ~1000× the inference
+cost per query.</p>
+</div>
+
+<div class="footer">
+Earth-1 · Manifold v2.1 · 200,000 agents · seed 42 · GlobalOpinionQA (WVS W7) ·
+reaction cases compiled from Eurobarometer, Gallup, Pew, Yle, Infratest dimap ·
+report generated 2026-08-16 · all figures reproduce from repository
+<code>earth-1-engine</code> at the commit tagged in each data file.
+</div>
+</main>
