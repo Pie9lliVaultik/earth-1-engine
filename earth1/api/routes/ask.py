@@ -81,7 +81,10 @@ def _get_corpus():
         import os
         from earth1.corpus import QuestionCorpus
         path = os.environ.get("EARTH1_CORPUS_PATH", "data/corpus/goqa_seed")
-        if os.path.exists(path):
+        # the corpus is stored as <base>.json + <base>.npz — test a real
+        # file, not the suffixless base (re-audit: the base-path check
+        # made this whole wiring a silent no-op)
+        if os.path.exists(path + ".json"):
             _corpus = QuestionCorpus.load(path)
     return _corpus
 

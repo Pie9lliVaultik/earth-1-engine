@@ -58,14 +58,16 @@ from earth1.api.middleware import RateLimitMiddleware, PauseSwitchMiddleware
 from earth1.api.auth import APIKeyMiddleware
 
 # All control middlewares mount unconditionally and self-gate on env
-# flags PER REQUEST (2026-08-16 audit: conditional mounting froze the
-# flags at startup — toggling EARTH1_PAUSED later did nothing, and
-# BudgetMiddleware existed but was never mounted at all).
-app.add_middleware(RateLimitMiddleware)
-app.add_middleware(PauseSwitchMiddleware)
-app.add_middleware(APIKeyMiddleware)
+# flags PER REQUEST (2026-08-16 audit). Starlette middleware is LIFO —
+# the LAST added runs FIRST. Execution order (outermost -> innermost):
+# Pause -> APIKey -> Budget -> RateLimit. Budget must run INSIDE APIKey
+# because it reads request.state.api_key (re-audit finding: the old
+# order ran Budget first, so the budget check silently skipped).
 from earth1.api.metering import BudgetMiddleware
+app.add_middleware(RateLimitMiddleware)
 app.add_middleware(BudgetMiddleware)
+app.add_middleware(APIKeyMiddleware)
+app.add_middleware(PauseSwitchMiddleware)
 
 
 @app.get("/health", response_model=HealthSchema)
