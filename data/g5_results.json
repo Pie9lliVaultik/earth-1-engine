@@ -4341,5 +4341,12 @@
         "measured": -0.06
       }
     ]
+  },
+  {
+    "type": "ERRATUM",
+    "date": "2026-08-16",
+    "affects": "event_reaction leg of runs recorded before A3 (runs #3-#6)",
+    "finding": "External review: COVID_RALLY.force_deltas used integer enum keys; _event_force_vector resolved only string names, so the injected shock was a ZERO vector. Those event-leg results measured endogenous drift against a no-op event, not the engine's response physics. The 'magnitude_ratio 0.02 / 50x too weak' interpretation is retired. Run #7 (A3, ratio 1.01) is unaffected: verified to inject string-keyed deltas. Fix: canonicalization at WorldEvent.create + semantic injection tests (commit 819e9f8).",
+    "rows_unmodified": "prior run rows left exactly as recorded (append-only)"
   }
 ]

@@ -1,0 +1,146 @@
+{
+ "label": "POST-CUTOFF BACKTEST \u2014 never pool with standing record",
+ "generated": "2026-08-16T15:19:52.739220+00:00",
+ "window_days": 14,
+ "n_scored": 8,
+ "n_abstained": 18,
+ "engine_brier": 0.36678,
+ "market_brier_24h": 0.15189,
+ "llm_baseline_brier": 0.49841,
+ "by_force": {
+  "experience": {
+   "n": 1,
+   "hits": 1,
+   "brier": 0.20476,
+   "hit_rate": 1.0
+  },
+  "desire": {
+   "n": 1,
+   "hits": 1,
+   "brier": 0.14547,
+   "hit_rate": 1.0
+  },
+  "collective": {
+   "n": 1,
+   "hits": 0,
+   "brier": 0.88906,
+   "hit_rate": 0.0
+  },
+  "economics": {
+   "n": 3,
+   "hits": 2,
+   "brier": 0.27855,
+   "hit_rate": 0.667
+  },
+  "temperament": {
+   "n": 1,
+   "hits": 0,
+   "brier": 0.7312,
+   "hit_rate": 0.0
+  },
+  "identity": {
+   "n": 1,
+   "hits": 1,
+   "brier": 0.12809,
+   "hit_rate": 1.0
+  }
+ },
+ "rows": [
+  {
+   "question": "Will I vote in the Michigan primary this month?",
+   "market_id": "OCpszCUtRA",
+   "resolved": "YES",
+   "outcome": 1.0,
+   "engine_p": 0.5475,
+   "market_p_24h": 0.6283,
+   "llm_p": 0.72,
+   "dominant_force": "experience",
+   "fragility": 0.7624,
+   "regime": "forward-estimate"
+  },
+  {
+   "question": "Will anyone help me find an edge forecasting Zambian elections by question close.",
+   "market_id": "8zNQdIph8n",
+   "resolved": "NO",
+   "outcome": 0.0,
+   "engine_p": 0.3814,
+   "market_p_24h": 0.1187,
+   "llm_p": 0.15,
+   "dominant_force": "desire",
+   "fragility": 0.4942,
+   "regime": "forward-estimate"
+  },
+  {
+   "question": "Will Amy Klobuchar win all state legislative districts in the 2026 DFL Governor primary?",
+   "market_id": "cU5y8scqPZ",
+   "resolved": "YES",
+   "outcome": 1.0,
+   "engine_p": 0.0571,
+   "market_p_24h": 0.7489,
+   "llm_p": 0.01,
+   "dominant_force": "collective",
+   "fragility": 0.0,
+   "regime": "forward-estimate"
+  },
+  {
+   "question": "Will US impose new tariffs on Spain by end of July  2026?",
+   "market_id": "qCQNAlC0SP",
+   "resolved": "YES",
+   "outcome": 1.0,
+   "engine_p": 0.5953,
+   "market_p_24h": 0.0543,
+   "llm_p": 0.35,
+   "dominant_force": "economics",
+   "fragility": 0.5942,
+   "regime": "forward-estimate"
+  },
+  {
+   "question": "If the Clacton by-election is held, will Count Binface get at least 10 percent of the vote?",
+   "market_id": "02tEhZy222",
+   "resolved": "YES",
+   "outcome": 1.0,
+   "engine_p": 0.1449,
+   "market_p_24h": 0.9163,
+   "llm_p": 0.02,
+   "dominant_force": "temperament",
+   "fragility": 0.0,
+   "regime": "forward-estimate"
+  },
+  {
+   "question": "Will Trump's approval rating hit 39% or lower before Sep 1st 2026",
+   "market_id": "yuZSCgCUl9",
+   "resolved": "YES",
+   "outcome": 1.0,
+   "engine_p": 0.5456,
+   "market_p_24h": 0.69,
+   "llm_p": 0.72,
+   "dominant_force": "economics",
+   "fragility": 0.5964,
+   "regime": "forward-estimate"
+  },
+  {
+   "question": "Brazil Election 2026: Will Michelle Bolsonaro be registered as a candidate for any office?",
+   "market_id": "nEzPPgZnls",
+   "resolved": "YES",
+   "outcome": 1.0,
+   "engine_p": 0.6421,
+   "market_p_24h": 0.9597,
+   "llm_p": 0.15,
+   "dominant_force": "identity",
+   "fragility": 0.4563,
+   "regime": "forward-estimate"
+  },
+  {
+   "question": "[Kalshi] 21st Century ROAD to Housing law becomes law this year?",
+   "market_id": "IRNI90EEgn",
+   "resolved": "YES",
+   "outcome": 1.0,
+   "engine_p": 0.3178,
+   "market_p_24h": 0.9727,
+   "llm_p": 0.15,
+   "dominant_force": "economics",
+   "fragility": 0.307,
+   "regime": "forward-estimate"
+  }
+ ]
+}
