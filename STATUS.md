@@ -71,6 +71,33 @@ These came from gate failures — each one found by a pre-registered test, fixed
 
 ---
 
+## 3b. The emergence stack — built vs. validated (the honest gap)
+
+Every social-interaction mechanism exists and runs in the living world daily.
+Almost none has been *individually* validated against reality — the gates test
+the ensemble, and the ensemble result so far is "≈ no-change without exogenous
+signal." Component by component:
+
+| Mechanism | Built | Validated against reality? |
+|-----------|-------|---------------------------|
+| Opinion diffusion over social graph (edge-weighted after audit fix) | ✅ | 🔶 Restores dynamic range on held-out shapes (G2-era test); audit found it calibration-*neutral* — it doesn't add predictive accuracy on levels |
+| Opinion→trait feedback (inner loop) | ✅ | ❌ Runs in every tick; no isolated reality test exists |
+| Cross-question coupling | ✅ | ❌ Same |
+| Non-linear thresholds (phase transitions) | ✅ | ❌ Same — no measured cascade has been reproduced |
+| Dynamic graph rewiring (homophily) | ✅ | ❌ Same |
+| Model→world event generation (emergent events) | ✅ | ❌ Same |
+| Force-field dynamics (8-channel propagation, susceptibility, residue) | ✅ | 🔶 Benchmark-equivalent to scalar path at tick 0; temporal contribution untested |
+| Emergence observatory (detection/metrics) | ✅ | — (instrument, not claim) |
+| Generational replacement + trait aging | ✅ | ✅ **Demography leg passes**; stationarity law enforced by test |
+
+**What this means:** the emergent machinery is currently *plausible physics
+awaiting its experiments*. The response-law work (§4) creates the first real
+test bed: once perceived events drive the world, each mechanism can be ablated
+(on/off) against measured reactions — does rewiring help or hurt tracking the
+COVID rally? Does coupling propagate the NATO shock to related questions as
+reality did? That ablation program is the validation path for emergence, and it
+becomes possible exactly when the event leg starts passing.
+
 ## 4. What is missing for the full model — the critical path
 
 In order; each unblocks the next:
