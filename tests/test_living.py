@@ -80,7 +80,7 @@ def test_event_log_survives_reload(tmp_path):
     w2 = LivingWorld.load(tmp_path / "world")
     assert len(w2.state.event_log) == 1
     e = w2.state.event_log.events()[0]
-    assert e.force_deltas == {0: 0.3}
+    assert e.force_deltas == {"fear": 0.3}
     assert e.source == "test"
 
 

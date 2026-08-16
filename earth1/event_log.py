@@ -45,10 +45,34 @@ class WorldEvent:
             timestamp=timestamp,
             region_pattern=region_pattern,
             demographic_filter=demographic_filter or {},
-            force_deltas=force_deltas,
+            force_deltas=_canonical_deltas(force_deltas),
             decay_half_life=decay_half_life,
             source=source,
         )
+
+
+def _canonical_deltas(force_deltas: dict) -> dict:
+    """Canonicalize force keys to lowercase names at construction.
+
+    External-review finding (2026-08-16): integer enum keys silently
+    produced ZERO event vectors — G5 runs #3-#6 event legs injected
+    no-op shocks. Accept Force enums, ints, digit strings, and names;
+    reject unknowns loudly rather than dropping them silently.
+    """
+    from earth1.types import Force
+
+    out = {}
+    for key, delta in force_deltas.items():
+        if isinstance(key, Force):
+            name = key.name.lower()
+        elif isinstance(key, int) or (isinstance(key, str) and key.isdigit()):
+            name = Force(int(key)).name.lower()
+        elif isinstance(key, str) and key.lower() in _FORCE_NAME_TO_IDX:
+            name = key.lower()
+        else:
+            raise ValueError(f"unknown force key {key!r} in event deltas")
+        out[name] = float(delta)
+    return out
 
 
 def _event_force_vector(event: WorldEvent) -> np.ndarray:

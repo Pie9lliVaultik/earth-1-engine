@@ -162,3 +162,42 @@ class TestEngineIntegration:
         log = EventLog()
         r2 = run_question(q, civ, event_log=log, t=0.0)
         assert r1.yes_pct == r2.yes_pct
+
+
+class TestSemanticEventInjection:
+    """External-review finding (2026-08-16): int-keyed deltas silently
+    became zero vectors. These tests pin SEMANTIC correctness — an
+    injected event must physically change the force field."""
+
+    def test_int_keys_canonicalized(self):
+        from earth1.types import Force
+        ev = WorldEvent.create(timestamp=0.0,
+                               force_deltas={int(Force.FEAR): 0.15,
+                                             int(Force.COLLECTIVE): 0.10})
+        assert ev.force_deltas == {"fear": 0.15, "collective": 0.10}
+
+    def test_enum_and_digit_string_keys(self):
+        from earth1.types import Force
+        ev = WorldEvent.create(timestamp=0.0,
+                               force_deltas={Force.ECONOMICS: -0.1, "4": 0.05})
+        assert ev.force_deltas == {"economics": -0.1, "identity": 0.05}
+
+    def test_unknown_key_raises_loudly(self):
+        import pytest
+        with pytest.raises(ValueError):
+            WorldEvent.create(timestamp=0.0, force_deltas={"anger": 0.1})
+
+    def test_injected_event_changes_force_field(self):
+        """The test that would have caught the G5 no-op bug: an event in
+        the log must produce a nonzero delta on scoped agents."""
+        from earth1.genesis import genesis
+        from earth1.types import Force
+        civ = genesis(2000, seed=7)
+        log = EventLog()
+        log.append(WorldEvent.create(
+            timestamp=0.0,
+            force_deltas={int(Force.FEAR): 0.15},
+            region_pattern="*", decay_half_life=45.0))
+        deltas = log.effective_deltas_vectorized(1.0, civ)
+        assert abs(deltas[:, int(Force.FEAR)]).max() > 0.01, \
+            "injected event was a no-op on the force field"
