@@ -4296,5 +4296,50 @@
         ]
       }
     }
+  },
+  {
+    "timestamp": "2026-08-16T13:26:35.837941+00:00",
+    "run": 7,
+    "amendment": "A3",
+    "leg": "event_reaction_only",
+    "pop": 50000,
+    "seed": 42,
+    "response_gain": 3.1,
+    "simulated_mean_shift": 0.0572,
+    "measured_mean_shift": 0.05667,
+    "magnitude_ratio": 1.0093,
+    "passes": true,
+    "per_country": [
+      {
+        "country": "DE",
+        "simulated": 0.049,
+        "measured": 0.15
+      },
+      {
+        "country": "FR",
+        "simulated": 0.0792,
+        "measured": 0.05
+      },
+      {
+        "country": "IT",
+        "simulated": 0.0603,
+        "measured": 0.09
+      },
+      {
+        "country": "ES",
+        "simulated": 0.0538,
+        "measured": 0.02
+      },
+      {
+        "country": "NL",
+        "simulated": 0.0481,
+        "measured": 0.09
+      },
+      {
+        "country": "PL",
+        "simulated": 0.0528,
+        "measured": -0.06
+      }
+    ]
   }
 ]
