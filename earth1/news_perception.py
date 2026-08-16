@@ -195,3 +195,65 @@ def events_from_news(
                     else "perception:llm"),
         ))
     return events
+
+
+# ── question response profiles (temporal coupling, v2) ─────────────────
+
+RESPONSE_TOOL = {
+    "name": "author_response_profile",
+    "description": "How agreement with a survey question RESPONDS to force rises.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "response": {
+                "type": "object",
+                "description": "Force name -> signed sensitivity in [-1,1]: "
+                               "if this force RISES, does agreement rise (+) "
+                               "or fall (-)? 0 = no response.",
+                "properties": {f.name.lower(): {"type": "number"}
+                               for f in Force},
+            },
+            "rationale": {"type": "string"},
+        },
+        "required": ["response"],
+    },
+}
+
+RESPONSE_SYSTEM = """You author the TEMPORAL response profile of one survey question in Earth-1's force framework.
+
+The eight forces: fear (threat/insecurity), desire (aspiration), economics (material conditions), collective (in-group cohesion), identity (self-expression), culture (tradition), experience (lived events), temperament (risk mood).
+
+Question: if a force RISES in a society, does agreement with the survey question rise (+) or fall (-)? This is about SHORT-RUN reaction to events, not cross-country levels — e.g. a fear spike RAISES support for protective institutions (rally effect) even though chronically fearful societies trust less.
+
+Output signed sensitivities in [-1,1] only for forces with a real mechanism; 0 otherwise. You author structure; you never predict opinion values."""
+
+
+def perceive_question_response(
+    question_text: str,
+    model: str = "claude-haiku-4-5-20251001",
+) -> Optional[np.ndarray]:
+    """LLM authors the question's signed force-response profile —
+    blind to any outcome data. None when the channel is off (no key)."""
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        return None
+    import anthropic
+    client = anthropic.Anthropic()
+    resp = client.messages.create(
+        model=model, max_tokens=512,
+        system=RESPONSE_SYSTEM,
+        tools=[RESPONSE_TOOL],
+        tool_choice={"type": "tool", "name": "author_response_profile"},
+        messages=[{"role": "user", "content": question_text}],
+    )
+    name_to_val = {f.name.lower(): f.value for f in Force}
+    for block in resp.content:
+        if block.type == "tool_use" and block.name == "author_response_profile":
+            out = np.zeros(NUM_FORCES)
+            for name, v in (block.input.get("response") or {}).items():
+                if name in name_to_val:
+                    try:
+                        out[name_to_val[name]] = float(np.clip(float(v), -1, 1))
+                    except (TypeError, ValueError):
+                        continue
+            return out
+    return None
