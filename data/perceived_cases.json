@@ -1,0 +1,196 @@
+{
+ "covid_rally_2020|IT|Italy imposes nationwide lockdown as cor": {
+  "deltas": {
+   "0": 0.18,
+   "2": -0.15,
+   "3": 0.12,
+   "6": 0.16,
+   "7": -0.14,
+   "1": -0.08
+  },
+  "confidence": 0.92,
+  "decay": 45.0
+ },
+ "covid_rally_2020|ES|Spain declares state of emergency over c": {
+  "deltas": {
+   "0": 0.18,
+   "2": -0.12,
+   "3": 0.1,
+   "6": 0.15,
+   "7": -0.14
+  },
+  "confidence": 0.92,
+  "decay": 45.0
+ },
+ "covid_rally_2020|DE|Germany closes borders with five countri": {
+  "deltas": {
+   "0": 0.12,
+   "1": -0.08,
+   "2": -0.1,
+   "3": 0.09,
+   "4": 0.06,
+   "5": 0.05,
+   "6": 0.11,
+   "7": -0.1
+  },
+  "confidence": 0.82,
+  "decay": 45.0
+ },
+ "covid_rally_2020|FR|France orders nationwide lockdown; Macro": {
+  "deltas": {
+   "0": 0.15,
+   "3": 0.12,
+   "2": -0.1,
+   "7": -0.13,
+   "6": 0.18
+  },
+  "confidence": 0.92,
+  "decay": 60.0
+ },
+ "covid_rally_2020|NL|Netherlands announces 'intelligent lockd": {
+  "deltas": {
+   "0": 0.12,
+   "3": 0.08,
+   "2": -0.1,
+   "7": -0.08,
+   "6": 0.1
+  },
+  "confidence": 0.85,
+  "decay": 60.0
+ },
+ "covid_rally_2020|PL|Poland closes borders and schools in cor": {
+  "deltas": {
+   "0": 0.18,
+   "2": -0.12,
+   "3": 0.1,
+   "7": -0.15,
+   "6": 0.14
+  },
+  "confidence": 0.88,
+  "decay": 45.0
+ },
+ "nato_nordics_2022|FI|Russia launches full-scale invasion of U": {
+  "deltas": {
+   "0": 0.2,
+   "1": -0.08,
+   "2": -0.12,
+   "3": 0.15,
+   "4": 0.1,
+   "5": 0.05,
+   "6": 0.18,
+   "7": -0.15
+  },
+  "confidence": 0.95,
+  "decay": 90.0
+ },
+ "nato_nordics_2022|FI|Russian forces shell Kyiv as war reaches": {
+  "deltas": {
+   "0": 0.18,
+   "3": 0.12,
+   "4": 0.1,
+   "2": -0.08,
+   "7": -0.1
+  },
+  "confidence": 0.92,
+  "decay": 60.0
+ },
+ "nato_nordics_2022|SE|Russia invades Ukraine; Sweden weighs se": {
+  "deltas": {
+   "0": 0.18,
+   "3": 0.12,
+   "4": 0.08,
+   "2": -0.1,
+   "7": -0.12
+  },
+  "confidence": 0.92,
+  "decay": 90.0
+ },
+ "fukushima_de_2011|DE|Explosions rock Fukushima nuclear plant ": {
+  "deltas": {
+   "0": 0.15,
+   "1": -0.08,
+   "2": -0.1,
+   "3": 0.05,
+   "4": 0.03,
+   "5": 0.08,
+   "6": 0.12,
+   "7": -0.12
+  },
+  "confidence": 0.92,
+  "decay": 60.0
+ },
+ "fukushima_de_2011|DE|Radiation fears grow as Fukushima crisis": {
+  "deltas": {
+   "0": 0.15,
+   "1": -0.08,
+   "2": -0.1,
+   "3": 0.05,
+   "7": -0.12
+  },
+  "confidence": 0.85,
+  "decay": 60.0
+ },
+ "migration_de_2015|DE|Hundreds of thousands of refugees arrive": {
+  "deltas": {
+   "0": 0.12,
+   "1": -0.05,
+   "2": -0.08,
+   "3": -0.1,
+   "4": 0.08,
+   "5": -0.08,
+   "6": 0.15,
+   "7": 0.06
+  },
+  "confidence": 0.92,
+  "decay": 75.0
+ },
+ "migration_de_2015|DE|Cologne New Year's Eve assaults ignite f": {
+  "deltas": {
+   "0": 0.18,
+   "3": 0.12,
+   "4": 0.1,
+   "2": -0.05,
+   "5": 0.08,
+   "1": -0.06
+  },
+  "confidence": 0.92,
+  "decay": 75.0
+ },
+ "us_rally_2001|US|Terrorists crash airliners into World Tr": {
+  "deltas": {
+   "0": 0.25,
+   "6": 0.25,
+   "3": 0.15,
+   "4": 0.1,
+   "7": -0.2,
+   "1": -0.1
+  },
+  "confidence": 0.99,
+  "decay": 90.0
+ },
+ "crisis_us_2008|US|Lehman Brothers collapses in largest ban": {
+  "deltas": {
+   "0": 0.2,
+   "1": -0.15,
+   "2": -0.2,
+   "3": -0.1,
+   "4": -0.08,
+   "5": 0.05,
+   "6": 0.15,
+   "7": -0.18
+  },
+  "confidence": 0.95,
+  "decay": 90.0
+ },
+ "crisis_us_2008|US|Stock market plunges as credit crisis de": {
+  "deltas": {
+   "0": 0.18,
+   "2": -0.2,
+   "1": -0.12,
+   "7": -0.15,
+   "3": -0.08
+  },
+  "confidence": 0.92,
+  "decay": 60.0
+ }
+}
