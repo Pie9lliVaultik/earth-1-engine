@@ -52,20 +52,29 @@ def _predict_country_anchored(
     country_idx: int,
     t0_means: np.ndarray,
     extra_shift: Optional[np.ndarray] = None,
+    response_profile: Optional[np.ndarray] = None,
 ) -> Optional[float]:
     """Per-country prediction with feature centering frozen at t0.
 
     extra_shift: optional (N, NUM_FORCES) additive force deltas (e.g.
-    active event-log deltas at prediction time).
+    active event-log deltas at prediction time). With response_profile,
+    extra_shift routes through the TEMPORAL response law (validated,
+    forces.RESPONSE_GAIN) instead of the cross-sectional weights.
     """
+    from earth1.forces import RESPONSE_GAIN
+
     mask = civ.country == country_idx
     if mask.sum() < 10:
         return None
     feats = civ.forces[mask] - t0_means[np.newaxis, :]
+    resp = 0.0
     if extra_shift is not None:
-        feats = feats + extra_shift[mask]
+        if response_profile is not None:
+            resp = RESPONSE_GAIN * (extra_shift[mask] @ response_profile)
+        else:
+            feats = feats + extra_shift[mask]
     b = logit(np.array([baseline]))[0]
-    return float(sigmoid(b + feats @ weights).mean())
+    return float(sigmoid(b + feats @ weights + resp).mean())
 
 
 def _country_index_map() -> Dict[str, int]:

@@ -81,6 +81,10 @@ class Question:
     weights: np.ndarray  # (8,) float
     lens: str = ""
     note: str = ""
+    # temporal response profile (8,): how agreement RESPONDS to force
+    # rises — different physics (and different signs) than the
+    # cross-sectional weights. None = no temporal path (legacy behavior).
+    response_profile: "Optional[np.ndarray]" = None
 
 
 @dataclass

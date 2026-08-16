@@ -47,6 +47,15 @@
   },
   "amendments": [
     {
+      "id": "A3",
+      "date": "2026-08-16",
+      "after_run": 6,
+      "leg": "event_reaction",
+      "what": "The event leg runs under the TEMPORAL RESPONSE LAW: d_logit = RESPONSE_GAIN x (perceived_shock . question_response_profile). Perceived shocks are LLM-authored from documented headlines (cached in data/perceived_cases.json, authored blind to outcomes); the question's signed response profile is LLM-authored from question text alone (data/question_profiles.json, blind to outcomes); RESPONSE_GAIN = 3.1 is the leave-COVID-out fit over the other five reaction cases — the tested case never touched the constant. Events propagate through the engine (event log, ticks, decay) exactly as in the original protocol; measurement uses the anchored predictor with the response path. PASS criteria unchanged from the original registration: sign match AND magnitude ratio in [0.25, 4.0].",
+      "rationale": "Run #6 and the perceived-shock test isolated the failure to the shock->opinion transduction: cross-sectional weights carry the wrong (even opposite) signs for temporal response — COVID fear RAISED trust while fearful societies trust less. The response law was validated out-of-sample at case level (10/12 signs, parameter-free; LOO gain stable 2.0-3.1) before this registration.",
+      "unchanged": "Measured EB92->93 values, 90-day window, per-country event injection, decay machinery, pass thresholds."
+    },
+    {
       "id": "A2",
       "date": "2026-08-14",
       "after_run": 5,
