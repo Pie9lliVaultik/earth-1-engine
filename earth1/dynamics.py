@@ -290,17 +290,25 @@ def run_with_dynamics(
     layers: int = 8,
     susceptibility: np.ndarray | None = None,
     field_shift: np.ndarray | None = None,
+    event_shift: np.ndarray | None = None,
     residue_rate: float = 0.0005,
     gain: float = 4.0,
 ) -> Tuple[np.ndarray, np.ndarray, List[np.ndarray]]:
     """Run a question through force-aware dynamics.
+
+    ONE LAW: event_shift acts on opinion via the response law inside
+    project_all ONLY. It never enters the broadcast channel — a
+    constructed sign-conflict showed events propagated through the
+    cross-sectional weights REVERSING the validated response law.
+    field_shift (counterfactual/coupling field state) keeps its legacy
+    semantics in both projection and propagation.
 
     Returns (settled_stances, force_residues, snapshots).
     Does NOT apply residues to traits — caller decides when to do that.
     """
     from earth1.forces import project_all
 
-    s0 = project_all(civ, q, field_shift)
+    s0 = project_all(civ, q, field_shift=field_shift, event_shift=event_shift)
 
     if susceptibility is None:
         susceptibility = compute_susceptibility(civ, gain=gain)

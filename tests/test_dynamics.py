@@ -345,3 +345,58 @@ class TestObservatoryComparison:
         )
         assert metrics.tick_count == 15
         assert metrics.trait_drift_magnitude > 0
+
+
+class TestOneLaw:
+    """Build 30: an event enters opinion through the response operator
+    ONLY. The re-audit constructed a sign conflict — temporal law said
+    64.7%, the force-dynamics broadcast door said 33.9% from the same
+    shock. Both doors must now agree in direction, because only one
+    exists."""
+
+    def _setup(self):
+        from earth1.engine import build_genesis_civilization
+        from earth1.types import Question, Force
+        civ = build_genesis_civilization(4000, seed=9)
+        # negative fear weight + positive fear response profile — the
+        # exact configuration where the two doors used to disagree
+        weights = np.zeros(NUM_FORCES); weights[int(Force.FEAR)] = -4.0
+        profile = np.zeros(NUM_FORCES); profile[int(Force.FEAR)] = 0.8
+        q = Question(id="conflict", text="t", domain="belief_causal",
+                     baseline=0.0, weights=weights,
+                     response_profile=profile)
+        shock = np.zeros(NUM_FORCES); shock[int(Force.FEAR)] = 0.2
+        return civ, q, shock
+
+    def test_dynamics_agrees_with_temporal_law(self):
+        from earth1.forces import project_all
+        from earth1.dynamics import run_with_dynamics
+        civ, q, shock = self._setup()
+        base_scalar = project_all(civ, q).mean()
+        law_scalar = project_all(civ, q, event_shift=shock).mean()
+        assert law_scalar > base_scalar          # profile says: shock raises
+
+        base_dyn, _, _ = run_with_dynamics(civ, q)
+        shocked_dyn, _, _ = run_with_dynamics(civ, q, event_shift=shock)
+        d_dyn = shocked_dyn.mean() - base_dyn.mean()
+        d_law = law_scalar - base_scalar
+        assert d_dyn * d_law > 0, (
+            f"force-dynamics door disagrees with the response law "
+            f"(law {d_law:+.4f}, dynamics {d_dyn:+.4f})")
+
+    def test_event_without_profile_is_inert_at_read(self):
+        """No profile -> no read-time reaction. Unmodeled response is
+        honest; the retired cross-sectional path was wrong-signed."""
+        from earth1.forces import project_all
+        civ, q, shock = self._setup()
+        q.response_profile = None
+        assert np.allclose(project_all(civ, q),
+                           project_all(civ, q, event_shift=shock))
+
+    def test_field_shift_keeps_counterfactual_semantics(self):
+        """field_shift (multiverse/coupling) still shifts the standing
+        world's features — it is a different physical object."""
+        from earth1.forces import project_all
+        civ, q, shock = self._setup()
+        assert not np.allclose(project_all(civ, q),
+                               project_all(civ, q, field_shift=shock))

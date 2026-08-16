@@ -112,3 +112,30 @@ QUESTION_MAP = {q.id: q for q in QUESTIONS}
 
 def question_by_id(qid: str) -> Question | None:
     return QUESTION_MAP.get(qid)
+
+
+# ── temporal response profiles (THE ONE LAW, Build 30) ─────────────────
+# Authored blind from question text (data/production_profiles.json).
+# Without a profile a question does NOT react to events at read time —
+# unmodeled response is honest; the retired cross-sectional path
+# measured wrong-signed (run #9, ratio -0.027).
+
+def _attach_response_profiles() -> int:
+    import json
+    import os
+    import numpy as np
+    path = os.path.join(os.path.dirname(__file__), "..",
+                        "data", "production_profiles.json")
+    if not os.path.exists(path):
+        return 0
+    with open(path) as f:
+        profiles = json.load(f).get("profiles", {})
+    n = 0
+    for q in QUESTIONS:
+        if q.id in profiles:
+            q.response_profile = np.array(profiles[q.id], dtype=np.float64)
+            n += 1
+    return n
+
+
+_N_PROFILES = _attach_response_profiles()

@@ -19,7 +19,10 @@ from earth1.api.deps import get_living_world, reset_civ
 
 class TickRequest(BaseModel):
     n_ticks: int = 1
-    use_force_dynamics: bool = True
+    # PHYSICS_VERSION E1-0.4: the validated scalar path is canonical.
+    # Force dynamics is experimental until it passes a gate of its own
+    # (re-audit: the API served physics G5 never validated).
+    use_force_dynamics: bool = False
     enable_receiver: bool = False
     batch_size: int = 5
     dt: float = 1.0

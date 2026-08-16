@@ -137,7 +137,9 @@ def main():
 
     stats = world.tick(
         questions, days=args.days,
-        use_force_dynamics=True, residue_rate=0.0005,
+        # E1-0.4 canonical: the physics G5 validated is the physics the
+        # living world runs — never serve what you didn't validate
+        use_force_dynamics=False, residue_rate=0.0005,
         enable_feedback=True, enable_coupling=True,
         enable_thresholds=True, enable_rewire=True,
         enable_event_generation=True,

@@ -188,6 +188,7 @@ class TestWorldReadsAreEventAware:
         """The route itself: inject into THE WorldState, /ask must move."""
         import os
         from fastapi.testclient import TestClient
+        prev_pop = os.environ.get("EARTH1_POP")
         os.environ["EARTH1_POP"] = "4000"
         from earth1.api import deps
         deps.reset_civ()
@@ -203,6 +204,12 @@ class TestWorldReadsAreEventAware:
             region_pattern="*", decay_half_life=60.0))
         state.t += 1.0
         after = client.get(f"/ask?q={qid}").json()["yes_pct"]
+        # restore the environment — leaking EARTH1_POP=4000 broke later
+        # API tests expecting 5000 (re-audit: order-dependent suite)
+        if prev_pop is None:
+            os.environ.pop("EARTH1_POP", None)
+        else:
+            os.environ["EARTH1_POP"] = prev_pop
         deps.reset_civ()
         assert abs(after - before) > 1e-4, \
             "/ask is event-blind — it reads the substrate, not the world"

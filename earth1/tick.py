@@ -148,20 +148,18 @@ def world_tick(
     for q in selected:
         extra_shift = accumulated_shifts.get(q.id)
 
-        # Compute effective event log shift
-        effective_shift = extra_shift
+        # ONE LAW: coupling shift and event deltas are different physics
+        # and ride different channels — never merged
+        event_deltas = None
         if state.event_log is not None and len(state.event_log) > 0:
             event_deltas = state.event_log.effective_deltas_vectorized(state.t, state.civ)
-            if effective_shift is not None:
-                effective_shift = effective_shift + event_deltas
-            else:
-                effective_shift = event_deltas
 
         if use_force_dynamics:
             settled, residues, snaps = run_with_dynamics(
                 state.civ, q,
                 susceptibility=susceptibility,
-                field_shift=effective_shift,
+                field_shift=extra_shift,
+                event_shift=event_deltas,
                 residue_rate=residue_rate,
                 gain=susceptibility_gain,
             )

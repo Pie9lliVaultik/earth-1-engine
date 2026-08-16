@@ -100,15 +100,13 @@ def run_question(
             abstained="Out of the belief-causal domain — belief is not the cause.",
         )
 
-    effective_shift = field_shift
+    # ONE LAW: events ride their own channel (response law); field_shift
+    # keeps counterfactual/coupling semantics. Never merged.
+    event_shift = None
     if event_log is not None and len(event_log) > 0:
-        event_deltas = event_log.effective_deltas_vectorized(t, civ)
-        if effective_shift is not None:
-            effective_shift = effective_shift + event_deltas
-        else:
-            effective_shift = event_deltas
+        event_shift = event_log.effective_deltas_vectorized(t, civ)
 
-    s0 = project_all(civ, q, effective_shift)
+    s0 = project_all(civ, q, field_shift=field_shift, event_shift=event_shift)
     if attention_frac is not None and attention_frac < 1.0:
         # §19.2: diffuse only the active subpopulation; inert agents hold
         # their projected (baseline-adjacent) stance.
@@ -166,10 +164,10 @@ def run_segment(
     if q.domain == "external_substrate":
         return []
 
-    field_shift = None
+    event_shift = None
     if event_log is not None and len(event_log) > 0:
-        field_shift = event_log.effective_deltas_vectorized(t, civ)
-    s0 = project_all(civ, q, field_shift=field_shift)
+        event_shift = event_log.effective_deltas_vectorized(t, civ)
+    s0 = project_all(civ, q, event_shift=event_shift)
     snaps = diffuse(s0, civ.alpha, civ.adj, epsilon, layers)
     settled = snaps[-1]
 
