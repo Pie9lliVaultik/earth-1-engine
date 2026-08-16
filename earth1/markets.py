@@ -155,3 +155,117 @@ def horizon_days(m: LiveMarket, cap: int = 3650) -> int:
         return max(1, min(days, cap))
     except Exception:
         return 90
+
+
+# ── civilization-scope gate (rule v1-2026-08-16) ───────────────────────
+#
+# is_belief_causal is token include/exclude only; the backtest showed it
+# admits personal-resolution ("Will I vote...") and market-meta ("Will
+# anyone help me find an edge...") questions. The scope gate asks the
+# real question: does this market resolve on CIVILIZATION-scale human
+# behavior? Two tiers: free heuristics, then one cached Haiku call.
+# Rule committed before further record accumulation; applied forward;
+# existing rows retro-labeled, never deleted; scoreboards print scoped
+# and unscoped side by side forever.
+
+SCOPE_RULE_VERSION = "v1-2026-08-16"
+
+_META_TOKENS = ("this market", "anyone help", "find me",
+                "resolves yes if i", "@")
+_PRONOUN_RE = None  # compiled lazily
+
+_SCOPE_PROMPT = (
+    "Classify what this prediction-market question resolves on. Reply "
+    "with exactly one token: AGGREGATE (resolves on aggregate human "
+    "behavior - elections, polls, adoption, macro indicators), "
+    "INSTITUTION (resolves on a decision by a government, court, "
+    "central bank, legislature, or major organization), NATURAL "
+    "(resolves on a physical/natural event), INDIVIDUAL (resolves on "
+    "one private person's action or circumstance), META (resolves on "
+    "the market itself, its creator, or its traders). "
+    "Question: {question}"
+)
+
+# NATURAL fails scope (divergence from the draft, deliberate): the
+# behavioral-response claim covers human REACTION to events, not the
+# physical events themselves — the engine has no geophysics.
+_SCOPE_PASS = {"AGGREGATE", "INSTITUTION"}
+_SCOPE_FAIL = {"NATURAL", "INDIVIDUAL", "META"}
+
+
+def _protect_us_tokens(question: str) -> str:
+    """Replace standalone US/U.S./USA (case-sensitive, the country)
+    before lowercasing, so the pronoun regex can't hit them."""
+    import re
+    return re.sub(r"\b(U\.S\.A?\.?|US|USA)\b", "UNITEDSTATES", question)
+
+
+def is_civilization_scope(
+    market: dict,
+    cache_path: str = "data/market_scope_cache.json",
+) -> tuple:
+    """(passed, reason) — does this market resolve on civilization-scale
+    behavior? market: dict with at least 'question'; 'id',
+    'uniqueBettorCount', 'volume' used when present."""
+    import json as _json
+    import os
+    import re
+    from pathlib import Path
+
+    global _PRONOUN_RE
+    if _PRONOUN_RE is None:
+        _PRONOUN_RE = re.compile(
+            r"\b(i|me|my|mine|we|our|us|you|your)\b")
+
+    question = market.get("question", "")
+
+    # Tier 1a: personal resolution
+    protected = _protect_us_tokens(question).lower()
+    if _PRONOUN_RE.search(protected):
+        return False, "personal_resolution"
+
+    # Tier 1b: market-meta
+    ql = question.lower()
+    if any(t in ql for t in _META_TOKENS):
+        return False, "market_meta"
+
+    # Tier 1c: thin market (fields present in Manifold market JSON)
+    if ("uniqueBettorCount" in market
+            and market.get("uniqueBettorCount", 0) < 15):
+        return False, "thin_market"
+    if ("volume" in market and market.get("volume", 0) < 100):
+        return False, "thin_market"
+
+    # Tier 2: LLM scope class, cached, degrades OPEN without a key
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        return True, "tier2_skipped"
+
+    cache = {}
+    cp = Path(cache_path)
+    if cp.exists():
+        cache = _json.loads(cp.read_text())
+    mid = str(market.get("id", question[:64]))
+    if mid in cache:
+        cls = cache[mid]["class"]
+    else:
+        import anthropic
+        from datetime import datetime, timezone
+        client = anthropic.Anthropic()
+        resp = client.messages.create(
+            model="claude-haiku-4-5-20251001", max_tokens=8,
+            temperature=0,
+            messages=[{"role": "user",
+                       "content": _SCOPE_PROMPT.format(question=question)}],
+        )
+        cls = resp.content[0].text.strip().upper()
+        if cls not in _SCOPE_PASS | _SCOPE_FAIL:
+            cls = "AGGREGATE"          # malformed -> degrade open, cached
+        cache[mid] = {"class": cls,
+                      "model": "claude-haiku-4-5-20251001",
+                      "ts": datetime.now(timezone.utc).isoformat()}
+        cp.parent.mkdir(parents=True, exist_ok=True)
+        cp.write_text(_json.dumps(cache, indent=1))
+
+    if cls in _SCOPE_PASS:
+        return True, f"scope_{cls.lower()}"
+    return False, f"scope_{cls.lower()}"

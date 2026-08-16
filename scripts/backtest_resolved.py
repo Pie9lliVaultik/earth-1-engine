@@ -110,7 +110,7 @@ def main():
     from earth1.corpus import QuestionCorpus
     from earth1.arming import perceive
     from earth1.multiverse import rehearse_question
-    from earth1.markets import is_belief_causal
+    from earth1.markets import is_belief_causal, is_civilization_scope, SCOPE_RULE_VERSION
     from earth1.types import NUM_FORCES, Force
 
     print(f"Fetching markets resolved in the last {WINDOW_DAYS} days...")
@@ -140,8 +140,11 @@ def main():
 
         price = price_before_resolution(m["id"], m["resolutionTime"])
         llm_p = llm_baseline(question)
+        scope_pass, scope_reason = is_civilization_scope(m)
 
         rows.append({
+            "scope_pass": scope_pass,
+            "scope_reason": scope_reason,
             "question": question,
             "market_id": m["id"],
             "resolved": m["resolution"],
@@ -166,6 +169,18 @@ def main():
     mkt_b, n_mkt = brier("market_p_24h")
     llm_b, n_llm = brier("llm_p")
 
+    scoped = [r for r in rows if r.get("scope_pass")]
+    def brier_scoped(key):
+        vals = [(r[key] - r["outcome"]) ** 2 for r in scoped
+                if r.get(key) is not None]
+        return (round(sum(vals) / len(vals), 5), len(vals)) if vals else (None, 0)
+    s_eng, s_n = brier_scoped("engine_p")
+    s_mkt, _ = brier_scoped("market_p_24h")
+    s_llm, _ = brier_scoped("llm_p")
+    from collections import Counter
+    fail_reasons = Counter(r["scope_reason"] for r in rows
+                           if not r.get("scope_pass"))
+
     by_force = {}
     for r in rows:
         d = by_force.setdefault(r["dominant_force"],
@@ -185,6 +200,13 @@ def main():
         "engine_brier": eng_b,
         "market_brier_24h": mkt_b,
         "llm_baseline_brier": llm_b,
+        "scope_gate": {"rule_version": SCOPE_RULE_VERSION,
+                       "n_pass": len(scoped),
+                       "n_fail": len(rows) - len(scoped),
+                       "fail_reasons": dict(fail_reasons)},
+        "engine_brier_scoped": s_eng,
+        "market_brier_24h_scoped": s_mkt,
+        "llm_baseline_brier_scoped": s_llm,
         "by_force": by_force,
         "rows": rows,
     }
@@ -193,9 +215,11 @@ def main():
     print(f"\n{'='*56}")
     print(f"POST-CUTOFF BACKTEST — {len(rows)} resolved markets "
           f"({abstained} abstained)")
-    print(f"  engine Brier:      {eng_b}  (n={n_eng})")
-    print(f"  market 24h Brier:  {mkt_b}  (n={n_mkt})")
-    print(f"  raw-LLM Brier:     {llm_b}  (n={n_llm})")
+    print(f"  ALL     engine {eng_b} | market {mkt_b} | raw-LLM {llm_b}  (n={n_eng})")
+    print(f"  SCOPED  engine {s_eng} | market {s_mkt} | raw-LLM {s_llm}  (n={s_n})")
+    for r in rows:
+        if not r.get("scope_pass"):
+            print(f"    excluded [{r['scope_reason']}]: {r['question'][:60]}")
     print(f"  anatomy:")
     for f, d in sorted(by_force.items(), key=lambda kv: kv[1]["brier"]):
         print(f"    {f:<12} n={d['n']:<4} brier={d['brier']:.4f} "

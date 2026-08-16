@@ -126,7 +126,8 @@ def arm_market(
         predicted_yes_pct=present.yes_pct,
         confidence_regime=present.regime,
         horizon_days=horizon_days(market),
-        tags=[market.source, "standing_record"],
+        tags=[market.source, "standing_record",
+              "scope:v1-2026-08-16"],
     )
     pred.force_anatomy = {f"f{i}": float(present.force_anatomy[i])
                           for i in range(NUM_FORCES)}

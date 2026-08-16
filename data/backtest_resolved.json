@@ -56,7 +56,9 @@
    "llm_p": 0.72,
    "dominant_force": "experience",
    "fragility": 0.7624,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": false,
+   "scope_reason": "personal_resolution"
   },
   {
    "question": "Will anyone help me find an edge forecasting Zambian elections by question close.",
@@ -68,7 +70,9 @@
    "llm_p": 0.15,
    "dominant_force": "desire",
    "fragility": 0.4942,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": false,
+   "scope_reason": "personal_resolution"
   },
   {
    "question": "Will Amy Klobuchar win all state legislative districts in the 2026 DFL Governor primary?",
@@ -80,7 +84,9 @@
    "llm_p": 0.01,
    "dominant_force": "collective",
    "fragility": 0.0,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": true,
+   "scope_reason": "scope_aggregate"
   },
   {
    "question": "Will US impose new tariffs on Spain by end of July  2026?",
@@ -92,7 +98,9 @@
    "llm_p": 0.35,
    "dominant_force": "economics",
    "fragility": 0.5942,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": true,
+   "scope_reason": "scope_institution"
   },
   {
    "question": "If the Clacton by-election is held, will Count Binface get at least 10 percent of the vote?",
@@ -104,7 +112,9 @@
    "llm_p": 0.02,
    "dominant_force": "temperament",
    "fragility": 0.0,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": true,
+   "scope_reason": "scope_aggregate"
   },
   {
    "question": "Will Trump's approval rating hit 39% or lower before Sep 1st 2026",
@@ -116,7 +126,9 @@
    "llm_p": 0.72,
    "dominant_force": "economics",
    "fragility": 0.5964,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": true,
+   "scope_reason": "scope_aggregate"
   },
   {
    "question": "Brazil Election 2026: Will Michelle Bolsonaro be registered as a candidate for any office?",
@@ -128,7 +140,9 @@
    "llm_p": 0.15,
    "dominant_force": "identity",
    "fragility": 0.4563,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": true,
+   "scope_reason": "scope_institution"
   },
   {
    "question": "[Kalshi] 21st Century ROAD to Housing law becomes law this year?",
@@ -140,7 +154,21 @@
    "llm_p": 0.15,
    "dominant_force": "economics",
    "fragility": 0.307,
-   "regime": "forward-estimate"
+   "regime": "forward-estimate",
+   "scope_pass": true,
+   "scope_reason": "scope_institution"
   }
- ]
+ ],
+ "scope_gate": {
+  "rule_version": "v1-2026-08-16",
+  "retro_labeled": true,
+  "n_pass": 6,
+  "n_fail": 2,
+  "fail_reasons": {
+   "personal_resolution": 2
+  }
+ },
+ "engine_brier_scoped": 0.43067,
+ "market_brier_24h_scoped": 0.17715,
+ "llm_baseline_brier_scoped": 0.64773
 }

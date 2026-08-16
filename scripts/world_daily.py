@@ -167,9 +167,19 @@ def main():
     init_db()
     session = get_session()
 
-    from earth1.markets import horizon_days
+    from earth1.markets import horizon_days, is_civilization_scope
 
     markets = fetch_open_markets()
+    scoped_out = 0
+    kept = []
+    for m in markets:
+        ok, _reason = is_civilization_scope(
+            {"question": m.question, "id": m.id, "volume": m.volume})
+        if ok:
+            kept.append(m)
+        else:
+            scoped_out += 1
+    markets = kept
     existing = {p.question_text for p in
                 session.query(Prediction).filter_by(armed=True).all()}
     fresh_all = sorted((m for m in markets if m.question not in existing),
@@ -183,8 +193,8 @@ def main():
     fresh = fast + slow
     outcomes = arm_all(session, world.state.civ, fresh)
     armed = sum(1 for o in outcomes if o.status == "armed")
-    print(f"Record: {len(markets)} live markets, {len(fresh_all)} new "
-          f"({len(fast)} fast-lane <=7d, {len(slow)} standing), "
+    print(f"Record: {len(markets)} in-scope markets ({scoped_out} scope-gated), "
+          f"{len(fresh_all)} new ({len(fast)} fast-lane <=7d, {len(slow)} standing), "
           f"{armed} armed, {len(fresh) - armed} abstained (ledgered)")
 
     resolved = [o for o in resolve_armed(session) if o.status == "resolved"]
