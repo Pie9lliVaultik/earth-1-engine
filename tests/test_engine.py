@@ -143,3 +143,66 @@ def test_reproducibility():
 if __name__ == "__main__":
     import pytest
     pytest.main([__file__, "-v"])
+
+
+class TestWorldReadsAreEventAware:
+    """Re-audit P0 (2026-08-16): /ask answered 58.9% while the event-
+    aware world read said 83.4% — same Earth, same moment. Civilization
+    is the population substrate; WorldState is Earth-1. Every read path
+    must consult the event log at world time."""
+
+    def test_run_question_sees_active_events(self):
+        import numpy as np
+        from earth1.engine import run_question, build_genesis_civilization
+        from earth1.event_log import EventLog, WorldEvent
+        from earth1.questions import QUESTIONS
+        civ = build_genesis_civilization(5000, seed=3)
+        q = next(x for x in QUESTIONS if x.domain != "external_substrate")
+        log = EventLog()
+        log.append(WorldEvent.create(
+            timestamp=0.0, force_deltas={"fear": 0.2, "collective": 0.15},
+            region_pattern="*", decay_half_life=60.0))
+        blind = run_question(q, civ)
+        aware = run_question(q, civ, event_log=log, t=1.0)
+        assert abs(aware.yes_pct - blind.yes_pct) > 1e-4, \
+            "active event invisible to run_question"
+
+    def test_run_segment_sees_active_events(self):
+        from earth1.engine import run_segment, build_genesis_civilization
+        from earth1.event_log import EventLog, WorldEvent
+        from earth1.questions import QUESTIONS
+        civ = build_genesis_civilization(5000, seed=3)
+        q = next(x for x in QUESTIONS if x.domain != "external_substrate")
+        log = EventLog()
+        log.append(WorldEvent.create(
+            timestamp=0.0, force_deltas={"fear": 0.25, "collective": 0.2,
+                                          "economics": -0.15},
+            region_pattern="*", decay_half_life=60.0))
+        blind = run_segment(q, civ, "income")
+        aware = run_segment(q, civ, "income", event_log=log, t=1.0)
+        diffs = [abs(a.yes_pct - b.yes_pct)
+                 for a, b in zip(aware, blind)]
+        assert max(diffs) > 1e-4, "active event invisible to run_segment"
+
+    def test_ask_route_reads_the_world(self):
+        """The route itself: inject into THE WorldState, /ask must move."""
+        import os
+        from fastapi.testclient import TestClient
+        os.environ["EARTH1_POP"] = "4000"
+        from earth1.api import deps
+        deps.reset_civ()
+        from earth1.api.main import app
+        from earth1.event_log import WorldEvent
+        client = TestClient(app)
+        from earth1.questions import QUESTIONS
+        qid = next(x.id for x in QUESTIONS if x.domain != "external_substrate")
+        before = client.get(f"/ask?q={qid}").json()["yes_pct"]
+        state = deps.get_world_state()
+        state.event_log.append(WorldEvent.create(
+            timestamp=state.t, force_deltas={"fear": 0.25, "collective": 0.2},
+            region_pattern="*", decay_half_life=60.0))
+        state.t += 1.0
+        after = client.get(f"/ask?q={qid}").json()["yes_pct"]
+        deps.reset_civ()
+        assert abs(after - before) > 1e-4, \
+            "/ask is event-blind — it reads the substrate, not the world"

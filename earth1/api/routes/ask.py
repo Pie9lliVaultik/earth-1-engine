@@ -4,7 +4,7 @@ from earth1.api.schemas import (
     RunResultSchema, CohortCellSchema, FreetextRequest, FreetextResponse,
     GatewaySchema, MindRequest, MindResponse,
 )
-from earth1.api.deps import get_civ, get_db
+from earth1.api.deps import get_civ, get_db, get_world_state
 from earth1.engine import run_question, run_segment, run_freetext
 from earth1.central_mind import think
 from earth1.questions import question_by_id, QUESTIONS
@@ -23,8 +23,12 @@ def ask(
     question = question_by_id(q)
     if not question:
         raise HTTPException(404, f"Unknown question: {q}")
-    civ = get_civ()
-    result = run_question(question, civ, epsilon=epsilon, layers=layers)
+    # Civilization is the population substrate; WorldState is Earth-1.
+    # Every read consults the event log at world time (re-audit P0:
+    # event-blind /ask diverged 24.5pp from the event-aware world read).
+    state = get_world_state()
+    result = run_question(question, state.civ, epsilon=epsilon, layers=layers,
+                          event_log=state.event_log, t=state.t)
     return serialize_result(result)
 
 
@@ -38,20 +42,23 @@ def segment(
     question = question_by_id(q)
     if not question:
         raise HTTPException(404, f"Unknown question: {q}")
-    civ = get_civ()
-    cells = run_segment(question, civ, split_by=split_by, epsilon=epsilon, layers=layers)
+    state = get_world_state()
+    cells = run_segment(question, state.civ, split_by=split_by,
+                        epsilon=epsilon, layers=layers,
+                        event_log=state.event_log, t=state.t)
     return [serialize_cohort(c) for c in cells]
 
 
 @router.post("/freetext", response_model=FreetextResponse)
 def ask_freetext(req: FreetextRequest):
     """Ask any question in natural language. The LLM estimates force weights; the engine runs the math."""
-    civ = get_civ()
+    state = get_world_state()
     try:
         out = run_freetext(
-            req.question, civ,
+            req.question, state.civ,
             epsilon=req.epsilon, layers=req.layers,
             provider=req.provider, model=req.model,
+            event_log=state.event_log, t=state.t,
         )
     except RuntimeError as e:
         raise HTTPException(503, str(e))
@@ -92,14 +99,15 @@ def _get_corpus():
 @router.post("/mind", response_model=MindResponse)
 def ask_mind(req: MindRequest, db=Depends(get_db)):
     """G3 Central Mind — full pipeline with narration and confidence scoring."""
-    civ = get_civ()
+    state = get_world_state()
     try:
         mind = think(
-            req.question, civ,
+            req.question, state.civ,
             epsilon=req.epsilon, layers=req.layers,
             provider=req.provider, model=req.model,
             skip_narration=req.skip_narration,
             corpus=_get_corpus(),
+            event_log=state.event_log, t=state.t,
         )
     except RuntimeError as e:
         raise HTTPException(503, str(e))

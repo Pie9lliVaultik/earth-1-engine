@@ -164,3 +164,26 @@ class TestDetectEmergentEvents:
         for a, b in zip(e1, e2):
             assert a.source == b.source
             assert a.force_deltas == b.force_deltas
+
+
+def test_polarization_detector_can_fire():
+    """Audit finding: the old detector fed [yes_pct, 1-yes_pct] (n=2)
+    into _bimodality which returns 0 below n=10 — it could NEVER fire.
+    A genuinely bimodal per-agent distribution must trigger it."""
+    import numpy as np
+    from earth1.event_generation import detect_polarization
+    from earth1.types import RunResult, Question, Force, NUM_FORCES
+
+    stances = np.concatenate([np.full(500, 0.05), np.full(500, 0.95)])
+    q = Question(id="pz", text="t", domain="belief_causal",
+                 baseline=0.5, weights=np.ones(NUM_FORCES))
+    r = RunResult(
+        question=q, n=1000, yes_pct=0.5, frac_yes=0.5, regime="settled",
+        distribution_by_layer=[], final_distribution=np.zeros(20, dtype=int),
+        force_anatomy=np.ones(NUM_FORCES), dominant=Force.FEAR,
+        conviction=0.2, fragility=0.9, camps={"yes": None, "no": None},
+        params={}, settled_stances=stances,
+    )
+    events = detect_polarization(None, [{"pz": r}])
+    assert events, "bimodal 50/50 split at high fragility must fire"
+    assert events[0].source.startswith("emergent:polarization")

@@ -119,6 +119,8 @@ def think(
     corpus: Optional["QuestionCorpus"] = None,
     corpus_min_sim: float = 0.85,
     attention_frac: Optional[float] = None,
+    event_log=None,
+    t: float = 0.0,
 ) -> MindResult:
     # Perception is retrieval-first (bible §19.1): a near-neighbour in the
     # corpus supplies the solved loadings and no LLM call happens. The LLM
@@ -181,9 +183,11 @@ def think(
         )
 
     result = run_question(gw.question, civ, epsilon=epsilon, layers=layers,
-                          attention_frac=attention_frac)
+                          attention_frac=attention_frac,
+                          event_log=event_log, t=t)
     country_splits = run_segment(gw.question, civ, "country",
-                                 epsilon=epsilon, layers=layers)
+                                 epsilon=epsilon, layers=layers,
+                                 event_log=event_log, t=t)
 
     # Scope the headline: a question about Italians is answered BY the
     # Italian cohort, not by the planet with an Italian footnote. The

@@ -160,11 +160,16 @@ def run_segment(
     split_by: str,
     epsilon: float = DEFAULT_EPSILON,
     layers: int = DEFAULT_LAYERS,
+    event_log=None,
+    t: float = 0.0,
 ) -> List[CohortCell]:
     if q.domain == "external_substrate":
         return []
 
-    s0 = project_all(civ, q)
+    field_shift = None
+    if event_log is not None and len(event_log) > 0:
+        field_shift = event_log.effective_deltas_vectorized(t, civ)
+    s0 = project_all(civ, q, field_shift=field_shift)
     snaps = diffuse(s0, civ.alpha, civ.adj, epsilon, layers)
     settled = snaps[-1]
 
@@ -255,6 +260,8 @@ def run_freetext(
     layers: int = DEFAULT_LAYERS,
     provider: Optional[str] = None,
     model: Optional[str] = None,
+    event_log=None,
+    t: float = 0.0,
 ) -> dict:
     """Full pipeline: free-text → LLM weight estimation → engine forward pass → result.
 
@@ -276,7 +283,8 @@ def run_freetext(
         )
         return {"gateway": gw, "result": result}
 
-    result = run_question(gw.question, civ, epsilon=epsilon, layers=layers)
+    result = run_question(gw.question, civ, epsilon=epsilon, layers=layers,
+                          event_log=event_log, t=t)
     return {"gateway": gw, "result": result}
 
 

@@ -57,7 +57,11 @@ def detect_polarization(
 
     for qid, r in latest.items():
         if r.fragility > 0.6 and r.conviction < 0.4:
-            bim = _bimodality(np.array([r.yes_pct, 1 - r.yes_pct]))
+            # per-AGENT stances — the old [yes_pct, 1-yes_pct] input had
+            # n=2 < 10, so this detector could never fire (audit finding)
+            if r.settled_stances is None:
+                continue
+            bim = _bimodality(r.settled_stances)
             if bim > threshold:
                 events.append(WorldEvent.create(
                     timestamp=t,
