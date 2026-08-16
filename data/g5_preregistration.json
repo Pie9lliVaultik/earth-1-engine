@@ -1,13 +1,13 @@
 {
-  "gate": "G5 — The world is alive (bible v2 §21)",
+  "gate": "G5 \u2014 The world is alive (bible v2 \u00a721)",
   "registered": "2026-08-13",
-  "status": "PRE-REGISTERED — committed before any results run. Results that follow a protocol change require a new registration entry; the old entry is never edited.",
+  "status": "PRE-REGISTERED \u2014 committed before any results run. Results that follow a protocol change require a new registration entry; the old entry is never edited.",
   "claim": "The living core's opinion trajectory validates against historical opinion time-series; a real injected event yields a simulated reaction matching the measured one; demography matches UN-derived census projections.",
-  "on_failure": "Fix the physics or narrow the domain — never let the LLM decide (bible v2 §7 risk table).",
+  "on_failure": "Fix the physics or narrow the domain \u2014 never let the LLM decide (bible v2 \u00a77 risk table).",
   "legs": {
     "temporal": {
-      "protocol": "Calibrate per-question force weights on WVS Wave 6 country targets only (Wave 7 never touched during calibration — held out in time). Snapshot t0 force means. Evolve the living world through the W6->W7 interval (default 7 years, 30-day steps) with all endogenous mechanisms on (feedback, coupling, thresholds, rewiring, generational replacement) and zero hand-authored cohort drift; receiver off (no historical signal replay in v1). Re-predict per country at t1 with the SAME weights, feature-centered on the t0 means anchor so global secular drift is not silently subtracted. Score predicted deltas against observed W7-W6 deltas.",
-      "dataset": "earth1/wvs_paired.py — 15 questions, WVS Wave 6 (2010-2014) vs Wave 7 (2017-2022), compiled from published aggregates.",
+      "protocol": "Calibrate per-question force weights on WVS Wave 6 country targets only (Wave 7 never touched during calibration \u2014 held out in time). Snapshot t0 force means. Evolve the living world through the W6->W7 interval (default 7 years, 30-day steps) with all endogenous mechanisms on (feedback, coupling, thresholds, rewiring, generational replacement) and zero hand-authored cohort drift; receiver off (no historical signal replay in v1). Re-predict per country at t1 with the SAME weights, feature-centered on the t0 means anchor so global secular drift is not silently subtracted. Score predicted deltas against observed W7-W6 deltas.",
+      "dataset": "earth1/wvs_paired.py \u2014 15 questions, WVS Wave 6 (2010-2014) vs Wave 7 (2017-2022), compiled from published aggregates.",
       "metrics": {
         "mae_engine": "mean |predicted_delta - observed_delta| over all (question, country) pairs",
         "mae_nochange": "mean |observed_delta| (the no-change baseline: predicted delta = 0)",
@@ -47,6 +47,32 @@
   },
   "amendments": [
     {
+      "id": "A5",
+      "date": "2026-08-16",
+      "after_run": 9,
+      "leg": "temporal",
+      "what": "The temporal leg's PASS criteria were to apply to an EVENT-RESPONSIVE question subset produced by a blind partition: one Haiku call per question, temperature 0, question TEXT ONLY (no run results, no country data, no deltas), prompt and partition committed in data/temporal_partition.json BEFORE run #8. Binding rule accepted at design time: the blind partition WINS over the inspected 2026-08-16 screen if they disagree \u2014 no manual overrides, no prompt re-shopping.",
+      "outcome_at_registration": "The blind partition classified ALL 15 questions SECULAR (0 EVENT). The event subset is therefore EMPTY and the narrowed gate is vacuous BY THE PROCEDURE'S OWN VERDICT. Interpretation registered here: the event-vs-secular regime boundary is a TIMESCALE boundary, not a question-subset boundary \u2014 quarter-scale reactions are the event regime (validated by the event_reaction leg, run #7, ratio 1.01); decade-scale WVS deltas are the secular regime entirely, and become the sole registered target of the secular leg (A6). Run #8 (A4) still executes when its data lands, recorded as a confirmation run; its aggregate result is expected to fail for the now-understood reason.",
+      "contamination_note": "The screening events were curated with outcome knowledge and per-question W6->W7 results were inspected before this registration. The partition procedure is blind by construction but was DESIGNED after the diagnosis. The 15/15 SECULAR outcome is the anti-favorable case \u2014 the procedure prevented carving a favorable subset, which is evidence the blindness is real.",
+      "on_failure": "No further partitioning of the WVS temporal set is permitted under any prompt variation; the decade-scale temporal claim lives or dies with A6."
+    },
+    {
+      "id": "A6",
+      "date": "2026-08-16",
+      "after_run": 9,
+      "leg": "secular",
+      "what": "NEW LEG. Claim: decade-scale value change on the WVS paired questions (ALL 15, per A5's blind partition) is predictable from national development trajectories (Inglehart modernization: development shifts societies toward secular-rational and self-expression values). Mechanism: per country, a development-change vector D over the wave interval \u2014 delta log(GDP per capita PPP), delta tertiary enrollment (pp), delta urban share (pp), from data/wdi_tide.json, ALIGNED TO PER-COUNTRY WVS FIELDWORK YEARS where published (nominal wave midpoints otherwise; the alignment table is committed with the fit). Per question q, predicted drift = beta_q . D with SIGN-CONSTRAINED ridge: the Inglehart direction (development up -> traditional-religious down, self-expression up) is imposed per question as a constraint, only magnitudes are fit \u2014 the same claim shape as RESPONSE_GAIN. Betas fit on W5->W6 observed deltas ONLY, then frozen to data/secular_betas.json. Scored on W6->W7 (betas never touch W7). The secular drift term composes ADDITIVELY with the A4 event term for full-world readouts. Placebo: shuffled-development control (country D vectors permuted, same frozen betas).",
+      "metrics": {
+        "primary": "MAE vs no-change on W6->W7 deltas, LOO-country",
+        "placebo": "real MAE < shuffled-development MAE",
+        "secondary_contaminated": "sign accuracy \u2014 REPORTED but flagged CONTAMINATED: per-question W6->W7 directions were inspected 2026-08-16 before this registration and cannot count as blind evidence."
+      },
+      "blind_validation_path": "Genuinely blind confirmation deferred to structure never inspected: (a) WVS Wave 8 deltas when published, and/or (b) EVS 2017 cross-check countries outside the inspected W6->W7 set \u2014 both scoreable under the same frozen betas without re-registration.",
+      "data_dependency": "WVS Wave 5 (2005-2009) published aggregates for the 15 questions, compiled into earth1/wvs_paired.py with the same verify-against-official-database caveat as W6/W7.",
+      "rationale": "The 2026-08-16 screen isolated the failing regime; A5's blind partition then classified the ENTIRE decade-scale set as that regime. Modernization theory supplies the functional form (imposed, not searched); W5->W6 supplies a fitting interval disjoint in time from scoring. Contamination is at the sign level of W6->W7 only; magnitudes and LOO-country structure were never inspected.",
+      "on_failure": "If the secular leg fails, G5 records: event regime validated (run #7), demography validated, decade-scale drift honestly open. No fallback fitting on W7 under any registration."
+    },
+    {
       "id": "A4",
       "date": "2026-08-16",
       "after_run": 7,
@@ -60,8 +86,8 @@
       "date": "2026-08-16",
       "after_run": 6,
       "leg": "event_reaction",
-      "what": "The event leg runs under the TEMPORAL RESPONSE LAW: d_logit = RESPONSE_GAIN x (perceived_shock . question_response_profile). Perceived shocks are LLM-authored from documented headlines (cached in data/perceived_cases.json, authored blind to outcomes); the question's signed response profile is LLM-authored from question text alone (data/question_profiles.json, blind to outcomes); RESPONSE_GAIN = 3.1 is the leave-COVID-out fit over the other five reaction cases — the tested case never touched the constant. Events propagate through the engine (event log, ticks, decay) exactly as in the original protocol; measurement uses the anchored predictor with the response path. PASS criteria unchanged from the original registration: sign match AND magnitude ratio in [0.25, 4.0].",
-      "rationale": "Run #6 and the perceived-shock test isolated the failure to the shock->opinion transduction: cross-sectional weights carry the wrong (even opposite) signs for temporal response — COVID fear RAISED trust while fearful societies trust less. The response law was validated out-of-sample at case level (10/12 signs, parameter-free; LOO gain stable 2.0-3.1) before this registration.",
+      "what": "The event leg runs under the TEMPORAL RESPONSE LAW: d_logit = RESPONSE_GAIN x (perceived_shock . question_response_profile). Perceived shocks are LLM-authored from documented headlines (cached in data/perceived_cases.json, authored blind to outcomes); the question's signed response profile is LLM-authored from question text alone (data/question_profiles.json, blind to outcomes); RESPONSE_GAIN = 3.1 is the leave-COVID-out fit over the other five reaction cases \u2014 the tested case never touched the constant. Events propagate through the engine (event log, ticks, decay) exactly as in the original protocol; measurement uses the anchored predictor with the response path. PASS criteria unchanged from the original registration: sign match AND magnitude ratio in [0.25, 4.0].",
+      "rationale": "Run #6 and the perceived-shock test isolated the failure to the shock->opinion transduction: cross-sectional weights carry the wrong (even opposite) signs for temporal response \u2014 COVID fear RAISED trust while fearful societies trust less. The response law was validated out-of-sample at case level (10/12 signs, parameter-free; LOO gain stable 2.0-3.1) before this registration.",
       "unchanged": "Measured EB92->93 values, 90-day window, per-country event injection, decay machinery, pass thresholds."
     },
     {
@@ -69,8 +95,8 @@
       "date": "2026-08-14",
       "after_run": 5,
       "leg": "temporal",
-      "what": "The temporal leg gains exogenous historical forcing: GDELT monthly tone/volume timelines (2017-2022, fetched once from the DOC 2.0 API, cached in data/gdelt_history.json) are replayed through the SAME adapter force-mapping and gain path the live receiver uses, with Welford baselines warmed on a full-period climatology pass. Evolution window shrinks to the replay window (~6y, the API's historical floor is Jan 2017). Three conditions run with identical seeds: endogenous (A1-era reference), real geography, and shuffled geography (country labels permuted — the inline §14 placebo control). PASS: real beats no-change on MAE AND real beats shuffled on MAE AND real sign accuracy > 0.5 at p < 0.05.",
-      "rationale": "Runs #3-#5 established the physics arc: 63.7% sign accuracy on the broken v1 pyramid, 39.7% on cohort entry without trait aging, 44.3% (~parity) on correct stationary physics. Endogenous dynamics alone cannot track history — secular drift requires exogenous signal, exactly as the §14 grounding stack intends. The shuffled-geography control ensures a pass cannot come from global-average forcing alone: the signal must carry country-specific information.",
+      "what": "The temporal leg gains exogenous historical forcing: GDELT monthly tone/volume timelines (2017-2022, fetched once from the DOC 2.0 API, cached in data/gdelt_history.json) are replayed through the SAME adapter force-mapping and gain path the live receiver uses, with Welford baselines warmed on a full-period climatology pass. Evolution window shrinks to the replay window (~6y, the API's historical floor is Jan 2017). Three conditions run with identical seeds: endogenous (A1-era reference), real geography, and shuffled geography (country labels permuted \u2014 the inline \u00a714 placebo control). PASS: real beats no-change on MAE AND real beats shuffled on MAE AND real sign accuracy > 0.5 at p < 0.05.",
+      "rationale": "Runs #3-#5 established the physics arc: 63.7% sign accuracy on the broken v1 pyramid, 39.7% on cohort entry without trait aging, 44.3% (~parity) on correct stationary physics. Endogenous dynamics alone cannot track history \u2014 secular drift requires exogenous signal, exactly as the \u00a714 grounding stack intends. The shuffled-geography control ensures a pass cannot come from global-average forcing alone: the signal must carry country-specific information.",
       "unchanged": "Calibration remains Wave-6-only; W7 stays held out. The A1-era endogenous criterion remains recorded per run for reference but no longer gates."
     },
     {
@@ -78,8 +104,8 @@
       "date": "2026-08-13",
       "after_run": 2,
       "leg": "demography",
-      "what": "The le_tracking metric changes from period mean-age-at-death vs LE to a cohort simulation: per distinct census LE value, a synthetic cohort is stepped from age 18 through the SAME hazard code path and dt-scaling the generational tick uses, until extinction; the cohort's mean age at death must be within +/- 6 years of census LE for >= 90% of LE values. Rationale: run #2 exposed (a) a genuine physics bug — the Gompertz calibration pinned the MODAL age at death to LE, leaving mid-life hazard several times life-table rates (fixed in earth1/generational.py, commit follows this amendment); and (b) a metric design error — period mean-age-at-death in a young standing population sits far below cohort LE even under correct physics, so the registered metric could not pass regardless. The cohort metric tests the implementation (dt scaling, age encoding, clipping), not the analytic calibration, and is not satisfiable by construction: bugs in the tick path fail it.",
-      "unchanged": "The world_adult_cdr band [6,15] stays as registered — it is an external anchor (UN-derived adult mortality). Run #2 plus the hazard fix shows it will fail for a now-diagnosed reason: the genesis age structure under-represents the elderly (all-ages census median used as adult mean, thin-tailed normal). That failure is the leg doing its job; fixing genesis age sampling alters the frozen manifold and is a founder decision, not a harness tweak."
+      "what": "The le_tracking metric changes from period mean-age-at-death vs LE to a cohort simulation: per distinct census LE value, a synthetic cohort is stepped from age 18 through the SAME hazard code path and dt-scaling the generational tick uses, until extinction; the cohort's mean age at death must be within +/- 6 years of census LE for >= 90% of LE values. Rationale: run #2 exposed (a) a genuine physics bug \u2014 the Gompertz calibration pinned the MODAL age at death to LE, leaving mid-life hazard several times life-table rates (fixed in earth1/generational.py, commit follows this amendment); and (b) a metric design error \u2014 period mean-age-at-death in a young standing population sits far below cohort LE even under correct physics, so the registered metric could not pass regardless. The cohort metric tests the implementation (dt scaling, age encoding, clipping), not the analytic calibration, and is not satisfiable by construction: bugs in the tick path fail it.",
+      "unchanged": "The world_adult_cdr band [6,15] stays as registered \u2014 it is an external anchor (UN-derived adult mortality). Run #2 plus the hazard fix shows it will fail for a now-diagnosed reason: the genesis age structure under-represents the elderly (all-ages census median used as adult mean, thin-tailed normal). That failure is the leg doing its job; fixing genesis age sampling alters the frozen manifold and is a founder decision, not a harness tweak."
     }
   ],
   "defaults": {

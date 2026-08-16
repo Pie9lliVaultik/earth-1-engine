@@ -1,0 +1,25 @@
+{
+  "registered_under": "A5",
+  "authored": "2026-08-16T19:49:02.954059+00:00",
+  "model": "claude-haiku-4-5-20251001",
+  "temperature": 0,
+  "prompt": "Does aggregate opinion on this survey question change primarily through discrete news-visible events (crises, rulings, attacks, policy shocks) or through slow generational/developmental drift? Reply with exactly one token: EVENT or SECULAR.\n\nQuestion: {text}",
+  "inputs": "question text ONLY \u2014 no run results, no country data, no deltas",
+  "partition": {
+    "t_homosexuality": "SECULAR",
+    "t_abortion": "SECULAR",
+    "t_divorce": "SECULAR",
+    "t_religion": "SECULAR",
+    "t_trust": "SECULAR",
+    "t_democracy": "SECULAR",
+    "t_army_rule": "SECULAR",
+    "t_life_sat": "SECULAR",
+    "t_men_leaders": "SECULAR",
+    "t_pride": "SECULAR",
+    "t_two_parent": "SECULAR",
+    "t_tech_good": "SECULAR",
+    "t_death_penalty": "SECULAR",
+    "t_environment": "SECULAR",
+    "t_hard_work": "SECULAR"
+  }
+}
