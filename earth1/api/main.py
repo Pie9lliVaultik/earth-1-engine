@@ -57,11 +57,15 @@ app.include_router(world.router)
 from earth1.api.middleware import RateLimitMiddleware, PauseSwitchMiddleware
 from earth1.api.auth import APIKeyMiddleware
 
+# All control middlewares mount unconditionally and self-gate on env
+# flags PER REQUEST (2026-08-16 audit: conditional mounting froze the
+# flags at startup — toggling EARTH1_PAUSED later did nothing, and
+# BudgetMiddleware existed but was never mounted at all).
 app.add_middleware(RateLimitMiddleware)
-if os.environ.get("EARTH1_PAUSED"):
-    app.add_middleware(PauseSwitchMiddleware)
-if os.environ.get("EARTH1_AUTH_REQUIRED"):
-    app.add_middleware(APIKeyMiddleware)
+app.add_middleware(PauseSwitchMiddleware)
+app.add_middleware(APIKeyMiddleware)
+from earth1.api.metering import BudgetMiddleware
+app.add_middleware(BudgetMiddleware)
 
 
 @app.get("/health", response_model=HealthSchema)

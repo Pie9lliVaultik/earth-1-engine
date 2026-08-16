@@ -70,6 +70,22 @@ def ask_freetext(req: FreetextRequest):
     }
 
 
+_corpus = None
+
+
+def _get_corpus():
+    """The retrieval-first corpus (G3 §19.1) — production was skipping
+    it entirely, sending every question to the LLM (2026-08-16 audit)."""
+    global _corpus
+    if _corpus is None:
+        import os
+        from earth1.corpus import QuestionCorpus
+        path = os.environ.get("EARTH1_CORPUS_PATH", "data/corpus/goqa_seed")
+        if os.path.exists(path):
+            _corpus = QuestionCorpus.load(path)
+    return _corpus
+
+
 @router.post("/mind", response_model=MindResponse)
 def ask_mind(req: MindRequest, db=Depends(get_db)):
     """G3 Central Mind — full pipeline with narration and confidence scoring."""
@@ -80,6 +96,7 @@ def ask_mind(req: MindRequest, db=Depends(get_db)):
             epsilon=req.epsilon, layers=req.layers,
             provider=req.provider, model=req.model,
             skip_narration=req.skip_narration,
+            corpus=_get_corpus(),
         )
     except RuntimeError as e:
         raise HTTPException(503, str(e))

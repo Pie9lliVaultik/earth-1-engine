@@ -19,7 +19,12 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 
 from earth1.types import Civilization, Question, Force, NUM_FORCES
-from earth1.population import COUNTRIES, COUNTRY_CODES
+# ONE country registry (2026-08-16 audit): the legacy 50-country list
+# shared 50 codes with the genesis 194-country ordering but ZERO at the
+# same index — agents could be claimed under the wrong country.
+from earth1.genesis import GENESIS_COUNTRIES
+COUNTRY_CODES = [c["iso2"] for c in GENESIS_COUNTRIES]
+COUNTRIES = {c["iso2"]: c.get("name", c["iso2"]) for c in GENESIS_COUNTRIES}
 from earth1.rng import sigmoid, logit
 from earth1.forces import project_all
 from earth1.engine import run_question

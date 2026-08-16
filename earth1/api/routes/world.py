@@ -10,15 +10,11 @@ from earth1.types import Force
 
 router = APIRouter(prefix="/world", tags=["world"])
 
-_world_state = None
-
-
-def _get_or_create_state(pop: int = 100_000, seed: int = 42):
-    global _world_state
-    if _world_state is None:
-        from earth1.tick import WorldState
-        _world_state = WorldState.create(pop=pop, seed=seed, min_per_country=100)
-    return _world_state
+# "There is only one Earth-1" (2026-08-16 audit): the old module-global
+# _world_state here was a SECOND world — /ask answered from one Earth
+# while /world ticked another. All routes now share deps.get_world_state.
+from earth1.api.deps import get_world_state as _get_or_create_state
+from earth1.api.deps import get_living_world, reset_civ
 
 
 class TickRequest(BaseModel):
@@ -64,11 +60,16 @@ def advance_world(req: TickRequest):
             "graph_stats": tick_result.graph_stats,
         })
 
+    living = get_living_world()
+    if living is not None:
+        living.save()          # ticks on the living world persist
+
     return {
         "ticks_run": req.n_ticks,
         "current_tick": state.tick_count,
         "current_t": round(state.t, 1),
         "total_events": len(state.event_log),
+        "persisted": living is not None,
         "results": results,
     }
 
@@ -189,8 +190,7 @@ def inject_event(req: InjectEventRequest):
 
 @router.post("/reset")
 def reset_world(pop: int = Query(100_000), seed: int = Query(42)):
-    """Reset the world to genesis state."""
-    global _world_state
-    from earth1.tick import WorldState
-    _world_state = WorldState.create(pop=pop, seed=seed, min_per_country=100)
+    """Reset THE world singleton to genesis state (frozen path only —
+    a persisted living world on disk is never destroyed by this)."""
+    reset_civ(pop=pop, seed=seed)
     return {"status": "reset", "population": pop, "seed": seed}

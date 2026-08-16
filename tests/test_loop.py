@@ -15,17 +15,17 @@ from earth1.loop import (
     _recompute_agent_forces,
     REGION_LEARNING_RATE, SIMILARITY_THRESHOLD,
 )
-from earth1.engine import build_civilization, run_question
+from earth1.engine import build_genesis_civilization, run_question
 from earth1.questions import question_by_id, QUESTIONS
 from earth1.forces import project_all
-from earth1.population import COUNTRIES, COUNTRY_CODES
+from earth1.loop import COUNTRIES, COUNTRY_CODES
 from earth1.types import Force, NUM_FORCES
 from earth1.rng import sigmoid, logit
 from earth1.dynamics import _deep_copy_civ
 
 
 POP = 10_000
-civ = build_civilization(POP, seed=42)
+civ = build_genesis_civilization(POP, seed=42)
 
 
 class TestFindNearest:
@@ -45,7 +45,10 @@ class TestFindNearest:
             urban=bool(civ.urban[sample]),
             openness=float(civ.openness[sample]),
         )
-        assert score > 0.9
+        # genesis civs spread 10K agents over 194 countries (~50 each)
+        # vs the legacy 50 — the best demographic match is naturally
+        # looser than the old 0.9 bar
+        assert score > 0.75
 
     def test_unknown_country_raises(self):
         with pytest.raises(ValueError, match="Unknown"):
