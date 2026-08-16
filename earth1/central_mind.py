@@ -22,7 +22,6 @@ from earth1.scenarios import EVENT_CATALOG, Event, ScenarioBranch, BranchStep
 from earth1.engine import run_question, run_segment
 from earth1.confidence import ConfidenceScore, score_confidence
 from earth1.narration import narrate
-from earth1.population import COUNTRY_CODES
 
 # demonym -> ISO2 for cheap LLM-free scope extraction (corpus-hit path).
 # Country NAMES are matched from GENESIS_COUNTRY_NAMES; this map covers

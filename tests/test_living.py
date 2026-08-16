@@ -107,3 +107,45 @@ def test_re_anchor_pulls_back_drifted_cell(tmp_path):
     assert abs(after) <= 0.06  # back inside tolerance (clip slack)
     # variance preserved: agents not collapsed to a point
     assert civ.openness[mask].std() > 0.05
+
+
+def test_question_history_survives_reload(tmp_path):
+    """Re-audit: reload dropped question_history, giving the endogenous
+    detectors amnesia. The scalar skeleton must survive."""
+    w = LivingWorld.create(tmp_path / "world", pop=POP, seed=SEED)
+    from earth1.questions import QUESTIONS
+    qs = [q for q in QUESTIONS if q.domain != "external_substrate"][:2]
+    w.tick(qs, days=2)
+    assert len(w.state.question_history) >= 2
+    w2 = LivingWorld.load(tmp_path / "world")
+    assert len(w2.state.question_history) >= 2
+    latest = list(w2.state.question_history[-1].values())[0]
+    assert 0.0 <= latest.yes_pct <= 1.0
+
+
+def test_coupling_matrix_rebuilt_at_tick(tmp_path):
+    """Re-audit: the persistent world ran with coupling permanently
+    empty. Ticking with 2+ coupled questions must populate it."""
+    w = LivingWorld.create(tmp_path / "world", pop=POP, seed=SEED)
+    from earth1.questions import QUESTIONS
+    qs = [q for q in QUESTIONS if q.domain != "external_substrate"][:4]
+    assert w.state.coupling_matrix == {}
+    w.tick(qs, days=1)
+    assert len(w.state.coupling_matrix) > 0, \
+        "coupling matrix still empty after ticking coupled questions"
+
+
+def test_pop_hash_full_sees_alpha_and_graph(tmp_path):
+    """Re-audit: v1 hash (forces only) was blind to alpha and edge
+    changes that alter output. v2 must see both."""
+    from earth1.living import pop_hash, pop_hash_full
+    w = LivingWorld.create(tmp_path / "world", pop=POP, seed=SEED)
+    civ = w.state.civ
+    h1_before, h2_before = pop_hash(civ), pop_hash_full(civ)
+    civ.alpha[0] += 0.1
+    assert pop_hash(civ) == h1_before          # v1 blindness, documented
+    assert pop_hash_full(civ) != h2_before     # v2 sees it
+    h2_alpha = pop_hash_full(civ)
+    civ.adj = civ.adj.tolil()
+    civ.adj[0, 1] = 0.5
+    assert pop_hash_full(civ) != h2_alpha      # v2 sees graph changes

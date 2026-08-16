@@ -43,7 +43,36 @@ _DRIFT_TRAITS = (
 
 
 def pop_hash(civ: Civilization) -> str:
+    """v1 hash — forces only. Kept for continuity with stored worlds."""
     return hashlib.sha256(civ.forces.tobytes()).hexdigest()
+
+
+def pop_hash_full(civ: Civilization) -> str:
+    """v2 hash — every forward-relevant array (re-audit: v1 missed
+    alpha, traits and graph changes that alter Earth-1's output, so it
+    did not uniquely identify the model state behind a prediction)."""
+    h = hashlib.sha256()
+    for name in sorted(civ.__dataclass_fields__):
+        v = getattr(civ, name)
+        if isinstance(v, np.ndarray):
+            h.update(name.encode())
+            h.update(v.tobytes())
+    adj = civ.adj.tocsr()
+    h.update(adj.indices.tobytes())
+    h.update(adj.indptr.tobytes())
+    h.update(adj.data.tobytes())
+    return h.hexdigest()
+
+
+@dataclass
+class _HistResult:
+    """Persisted skeleton of a tick's RunResult — enough for the
+    reversal/consensus detectors; stances are never persisted (the
+    polarization detector reads fresh in-tick results only)."""
+    yes_pct: float
+    fragility: float = 0.0
+    conviction: float = 0.0
+    settled_stances = None
 
 
 def _civ_arrays(civ: Civilization) -> Dict[str, np.ndarray]:
@@ -126,6 +155,7 @@ class LivingWorld:
         self.meta["n"] = int(self.state.civ.n)
         self.meta["civ_seed"] = int(self.state.civ.seed)
         self.meta["living_pop_hash"] = pop_hash(self.state.civ)
+        self.meta["living_pop_hash_v2"] = pop_hash_full(self.state.civ)
         self.meta["last_fired"] = self.state.last_fired
         if self.state.receiver_config is not None:
             rc = self.state.receiver_config
@@ -141,6 +171,13 @@ class LivingWorld:
             }
         else:
             self.meta.pop("receiver_config", None)
+        self.meta["question_history_light"] = [
+            {qid: {"yes_pct": round(float(r.yes_pct), 6),
+                   "fragility": round(float(getattr(r, "fragility", 0.0)), 6),
+                   "conviction": round(float(getattr(r, "conviction", 0.0)), 6)}
+             for qid, r in tick_results.items()}
+            for tick_results in self.state.question_history[-30:]
+        ]
         self.meta["rng_state"] = json.loads(
             json.dumps(self.state.rng.bit_generator.state))
         self.meta["events"] = [
@@ -198,10 +235,15 @@ class LivingWorld:
                 ],
             )
 
+        history = [
+            {qid: _HistResult(**vals) for qid, vals in tick_results.items()}
+            for tick_results in meta.get("question_history_light", [])
+        ]
+
         state = WorldState(
             civ=civ, event_log=log,
             t=meta["t"], tick_count=meta["ticks"],
-            question_history=[], coupling_matrix={},
+            question_history=history, coupling_matrix={},
             last_fired=meta.get("last_fired", {}),
             rng=rng,
             receiver_config=rc,
@@ -231,6 +273,13 @@ class LivingWorld:
         events — but only sources that passed the §14 placebo gate.
         """
         from earth1.generational import generational_tick
+        from earth1.coupling import build_coupling_matrix
+
+        # cross-question coupling is deterministic in the day's question
+        # set — rebuild it every tick (re-audit: the persistent world ran
+        # with a permanently empty coupling matrix, so the mechanism the
+        # docstring promises was silently off)
+        self.state.coupling_matrix = build_coupling_matrix(questions)
 
         stats = {"deaths": 0}
         for _ in range(days):
@@ -272,6 +321,8 @@ class LivingWorld:
         their within-cell variation (their lived history); the cell as a
         whole stops misrepresenting its demographic weight.
         """
+        from earth1.feedback import apply_trait_delta
+
         civ = self.state.civ
         fixed = 0
         for c_str, anchor in self.meta["anchors"].items():
@@ -283,6 +334,10 @@ class LivingWorld:
                 drift = float(arr[mask].mean()) - anchor[t]
                 if abs(drift) > tolerance:
                     excess = drift - np.sign(drift) * tolerance
-                    arr[mask] = np.clip(arr[mask] - excess, 0, 1)
+                    # canonical trait->force propagation (re-audit: the
+                    # direct write left forces stale against traits)
+                    apply_trait_delta(civ, mask, t, -excess)
                     fixed += 1
+        if fixed:
+            civ.means[:] = civ.forces.mean(axis=0)
         return fixed

@@ -75,7 +75,7 @@ def layer_scrub_endpoint(
 
     country_idx = None
     if country:
-        from earth1.population import COUNTRY_CODES
+        from earth1.genesis import GENESIS_COUNTRY_CODES as COUNTRY_CODES
         if country.upper() not in COUNTRY_CODES:
             raise HTTPException(400, f"Unknown country: {country}")
         country_idx = COUNTRY_CODES.index(country.upper())
