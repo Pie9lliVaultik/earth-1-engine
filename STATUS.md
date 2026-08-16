@@ -1,6 +1,15 @@
 # Earth-1 — Program State of Truth
 
-*Updated 2026-08-16 (evening) · maintained alongside every milestone commit*
+*Updated 2026-08-16 (night) · maintained alongside every milestone commit*
+
+**Build 29 "One Earth" (external-audit remediation) — LANDED.** Critical event-injection
+bug fixed (runs #3–#6 event legs were no-ops — erratum recorded; run #7's pass verified
+safe). Sign-aware reinforcement; prior-preserving trait propagation (global rebuild
+retired); one WorldState for all API routes; one 194-country registry; corpus wired into
+production; all control middlewares mounted. Run #9 on the fixed engine: demography
+PASSES (LE 100%, CDR 12.8), legacy cross-sectional event path honestly measured for the
+first time (ratio −0.027, wrong sign) — confirming the response law (A3) is the physics
+that works. 865 tests green. See PLAN.md.
 
 ---
 

@@ -4348,5 +4348,26 @@
     "affects": "event_reaction leg of runs recorded before A3 (runs #3-#6)",
     "finding": "External review: COVID_RALLY.force_deltas used integer enum keys; _event_force_vector resolved only string names, so the injected shock was a ZERO vector. Those event-leg results measured endogenous drift against a no-op event, not the engine's response physics. The 'magnitude_ratio 0.02 / 50x too weak' interpretation is retired. Run #7 (A3, ratio 1.01) is unaffected: verified to inject string-keyed deltas. Fix: canonicalization at WorldEvent.create + semantic injection tests (commit 819e9f8).",
     "rows_unmodified": "prior run rows left exactly as recorded (append-only)"
+  },
+  {
+    "run": 9,
+    "timestamp": "2026-08-16T15:46:00.877579+00:00",
+    "pop": 50000,
+    "seed": 42,
+    "note": "Build 29 re-measurement on the consistency-fixed engine. Event leg via the ORIGINAL harness with the injection bug fixed (first true measurement of the legacy cross-sectional path \u2014 historical record; A3 remains the registered passing physics). Demography on prior-preserving trait propagation.",
+    "event": {
+      "case_id": "covid_rally_2020",
+      "simulated": -0.00213,
+      "measured": 0.079,
+      "ratio": -0.027,
+      "sign_match": false,
+      "passes": false,
+      "physics": "legacy cross-sectional (pre-A3), injection fixed"
+    },
+    "demography": {
+      "le_tracking": 1.0,
+      "cdr": 12.78,
+      "passes": true
+    }
   }
 ]
