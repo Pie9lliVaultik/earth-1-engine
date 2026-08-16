@@ -14,7 +14,7 @@ from earth1.types import Civilization, Question, RunResult, Force, NUM_FORCES
 from earth1.genesis import genesis
 from earth1.engine import run_question
 from earth1.event_log import EventLog, WorldEvent
-from earth1.feedback import opinion_feedback, _recompute_forces
+from earth1.feedback import opinion_feedback
 from earth1.coupling import build_coupling_matrix, compute_all_shifts
 from earth1.thresholds import detect_and_append
 from earth1.graph_dynamics import update_graph, graph_stats

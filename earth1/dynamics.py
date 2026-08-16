@@ -17,7 +17,7 @@ import numpy as np
 from scipy import sparse
 
 from earth1.types import Civilization, Question, Force, NUM_FORCES
-from earth1.feedback import FORCE_TO_TRAITS, _recompute_forces
+from earth1.feedback import FORCE_TO_TRAITS, apply_trait_delta
 
 
 # ---------------------------------------------------------------------------
@@ -239,6 +239,7 @@ def apply_residues(
     """
     total_nudge = 0.0
     n_traits_changed = 0
+    _ALL = np.ones(civ.n, dtype=bool)
 
     for force_idx in range(NUM_FORCES):
         force = Force(force_idx)
@@ -263,12 +264,13 @@ def apply_residues(
                 regression = regression_rate * deviation * np.abs(deviation) * 2.0
                 nudge = nudge - regression
 
-            arr[:] = np.clip(arr + nudge, 0, 1)
+            # canonical trait->force propagation: only nudged agents'
+            # affected channels move; genesis/regional priors survive
+            apply_trait_delta(civ, _ALL, trait_name, nudge)
             total_nudge += float(np.abs(nudge).sum())
             n_traits_changed += 1
 
-    # Recompute forces from updated traits
-    _recompute_forces(civ)
+    civ.means[:] = civ.forces.mean(axis=0)
 
     return {
         "total_nudge": total_nudge,

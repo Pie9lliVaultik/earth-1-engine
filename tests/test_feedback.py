@@ -100,10 +100,8 @@ class TestOpinionFeedback:
 
     def test_alpha_reinforcement(self):
         civ = _mutable_civ()
-        # Set openness high so computed alpha > 0.6
-        civ.openness[:] = 0.9
-        _recompute_forces(civ)
-        assert civ.alpha.mean() > 0.6
+        # High-alpha agents in the majority get conviction reinforcement
+        civ.alpha[:] = 0.7
         settled = np.full(civ.n, 0.8)  # all agree (majority = yes)
         q = QUESTIONS[0]
         r = run_question(q, civ)
@@ -112,21 +110,92 @@ class TestOpinionFeedback:
         assert civ.alpha.mean() > alpha_before
 
 
-class TestRecomputeForces:
-    def test_forces_match_formulas(self):
+class TestRecomputeForcesRetired:
+    def test_global_rebuild_raises(self):
+        """2026-08-16 audit: the global rebuild erased genesis/regional
+        priors for ~84% of agents with zero trait changes. Retirement is
+        pinned — reviving it must fail loudly."""
+        import pytest
         civ = _mutable_civ()
-        _recompute_forces(civ)
-        expected_fear = np.clip(
-            (civ.doubt + (1.0 - civ.risk_appetite) + civ.neuroticism * 0.3) / 2.3, 0, 1)
-        assert np.allclose(civ.forces[:, Force.FEAR], expected_fear, atol=1e-10)
+        with pytest.raises(RuntimeError, match="retired"):
+            _recompute_forces(civ)
 
-    def test_experience_is_age(self):
-        civ = _mutable_civ()
-        _recompute_forces(civ)
-        assert np.allclose(civ.forces[:, Force.EXPERIENCE], civ.age)
 
-    def test_means_updated(self):
-        civ = _mutable_civ()
-        civ.openness[:] = 0.9
-        _recompute_forces(civ)
-        assert civ.means[Force.IDENTITY] > 0.6
+class TestAuditSemantics:
+    """External audit (2026-08-16): sign-aware reinforcement + prior
+    preservation. These are semantic tests — they check the physics
+    means what it claims, not just that shapes line up."""
+
+    def _civ(self):
+        from earth1.genesis import genesis
+        from earth1.tick import _make_mutable
+        return _make_mutable(genesis(4000, seed=11))
+
+    def test_no_strong_agents_is_identity_on_forces(self):
+        import numpy as np
+        from earth1.feedback import opinion_feedback
+        from earth1.types import Question
+        civ = self._civ()
+        before = civ.forces.copy()
+        settled = np.full(civ.n, 0.7)          # nobody strong, nobody ambivalent
+        q = Question(id="t", text="t", domain="belief_causal",
+                     baseline=0.5, weights=np.ones(8))
+        opinion_feedback(civ, settled, q, np.ones(8))
+        assert np.allclose(civ.forces, before), \
+            "feedback with no eligible agents must not touch forces"
+
+    def _reinforcement_helps(self, weight_sign):
+        """Strong-YES agents' predicted stance must not DECREASE after
+        reinforcement — for BOTH weight polarities."""
+        import numpy as np
+        from earth1.feedback import opinion_feedback
+        from earth1.forces import project_all
+        from earth1.types import Question, Force
+        civ = self._civ()
+        weights = np.zeros(8)
+        weights[int(Force.FEAR)] = 6.0 * weight_sign
+        q = Question(id="t", text="t", domain="belief_causal",
+                     baseline=0.5, weights=weights)
+        stance = project_all(civ, q)
+        strong_yes = stance > 0.8
+        if strong_yes.sum() < 10:
+            # engineer some strong-yes agents by construction
+            settled = np.where(np.arange(civ.n) % 3 == 0, 0.95, 0.5)
+        else:
+            settled = stance
+        anatomy = np.zeros(8); anatomy[int(Force.FEAR)] = 1.0
+        yes_mask = settled > 0.8
+        before = project_all(civ, q)[yes_mask].mean()
+        opinion_feedback(civ, settled, q, anatomy, learning_rate=0.05)
+        after = project_all(civ, q)[yes_mask].mean()
+        assert after >= before - 1e-9, (
+            f"reinforcement moved strong-YES agents AWAY from YES "
+            f"(weight_sign={weight_sign}: {before:.4f} -> {after:.4f})")
+
+    def test_reinforcement_positive_weight(self):
+        self._reinforcement_helps(+1.0)
+
+    def test_reinforcement_negative_weight(self):
+        """The audit's measured bug: negative-weight dominant force made
+        'reinforced' agents LESS aligned with their own stance."""
+        self._reinforcement_helps(-1.0)
+
+    def test_regional_priors_survive_feedback(self):
+        """Only nudged agents' affected channels change — the ~84%-of-
+        agents force rewrite from the retired global rebuild is gone."""
+        import numpy as np
+        from earth1.feedback import opinion_feedback
+        from earth1.types import Question, Force
+        civ = self._civ()
+        before = civ.forces.copy()
+        settled = np.full(civ.n, 0.5)
+        settled[:100] = 0.95                    # only 100 strong-yes agents
+        settled[100:] = 0.7                     # rest untouched (not ambivalent)
+        weights = np.zeros(8); weights[int(Force.FEAR)] = 3.0
+        anatomy = np.zeros(8); anatomy[int(Force.FEAR)] = 1.0
+        q = Question(id="t", text="t", domain="belief_causal",
+                     baseline=0.5, weights=weights)
+        opinion_feedback(civ, settled, q, anatomy)
+        untouched = np.arange(civ.n) >= 100
+        assert np.allclose(civ.forces[untouched], before[untouched]), \
+            "agents outside the nudged set had their forces rewritten"

@@ -26,9 +26,50 @@ from typing import Dict, Optional
 
 import numpy as np
 
-from earth1.types import Civilization
+from earth1.types import Civilization, Force
 from earth1.genesis import GENESIS_COUNTRIES
-from earth1.feedback import _recompute_forces
+from earth1.feedback import apply_trait_delta
+
+
+def _trait_formula_forces(civ: Civilization, idx: np.ndarray) -> np.ndarray:
+    """The trait->force formula for selected agents only. Used solely to
+    construct NEWBORN forces (plus the country residual); never applied
+    to living agents, whose forces evolve incrementally."""
+    out = np.zeros((len(idx), 8))
+    out[:, int(Force.FEAR)] = (civ.doubt[idx] + (1.0 - civ.risk_appetite[idx])
+                               + civ.neuroticism[idx] * 0.3) / 2.3
+    out[:, int(Force.DESIRE)] = civ.desire_intensity[idx]
+    out[:, int(Force.ECONOMICS)] = civ.economic_field[idx]
+    out[:, int(Force.COLLECTIVE)] = ((1.0 - civ.openness[idx]) * 0.6
+                                     + civ.power_distance[idx] * 0.4)
+    out[:, int(Force.IDENTITY)] = (civ.openness[idx] * 0.5
+                                   + civ.individualism[idx] * 0.5)
+    out[:, int(Force.CULTURE)] = (0.5 + civ.culture_offset[idx]
+                                  + civ.long_term_orientation[idx] * 0.1)
+    out[:, int(Force.EXPERIENCE)] = civ.age[idx]
+    out[:, int(Force.TEMPERAMENT)] = (civ.risk_appetite[idx] * 0.7
+                                      + civ.extraversion[idx] * 0.3)
+    return np.clip(out, 0.0, 1.0)
+
+
+def _build_newborn_forces(civ: Civilization, slots: np.ndarray,
+                          dead: np.ndarray) -> None:
+    """Forces for newborn slots = trait formula + country residual.
+
+    The residual (survivors' actual forces minus their formula forces,
+    per country) carries the genesis conditioning — Hofstede, Inglehart,
+    regional deltas — that a bare trait formula would erase."""
+    for c in np.unique(civ.country[slots]):
+        c_slots = slots[civ.country[slots] == c]
+        base = _trait_formula_forces(civ, c_slots)
+        survivors = np.flatnonzero((civ.country == c) & ~dead)
+        if len(survivors) >= 20:
+            resid = (civ.forces[survivors]
+                     - _trait_formula_forces(civ, survivors)).mean(axis=0)
+        else:
+            resid = 0.0
+        civ.forces[c_slots] = np.clip(base + resid, 0.0, 1.0)
+        civ.forces[c_slots, int(Force.EXPERIENCE)] = civ.age[c_slots]
 
 # Gompertz slope: adult human mortality doubles roughly every 8 years.
 GOMPERTZ_B = 0.085
@@ -124,10 +165,14 @@ def generational_tick(
     age_years = _age_years(civ)
     civ.age_bucket = np.digitize(age_years, [30, 45, 60, 75])
 
-    # traits age along the genesis gradients (see _AGE_GRADIENTS)
+    # traits age along the genesis gradients (see _AGE_GRADIENTS),
+    # propagating into forces through the canonical sensitivities —
+    # never a global rebuild (2026-08-16 audit: rebuilds erased priors)
+    _all = np.ones(civ.n, dtype=bool)
     for t, g in _AGE_GRADIENTS.items():
-        arr = getattr(civ, t)
-        arr[:] = np.clip(arr + g * d_age, 0.0, 1.0)
+        apply_trait_delta(civ, _all, t, g * d_age)
+    # experience IS age — identity map, no prior to erase
+    civ.forces[:, int(Force.EXPERIENCE)] = civ.age
 
     # ── mortality: per-country Gompertz ──
     le_by_country = np.array([c.get("le", 72.0) for c in GENESIS_COUNTRIES])
@@ -196,8 +241,12 @@ def generational_tick(
             0.28 + 0.5 * civ.openness[slots]
             - 0.12 * (1.0 - civ.openness[slots]), 0, 1)
 
-    # newborn (and everyone's) forces follow from current traits
-    _recompute_forces(civ)
+    # newborn forces: trait formula + the country's genesis residual
+    # (survivors' actual forces minus their trait-formula forces), so
+    # regional/genesis conditioning is inherited instead of erased.
+    # Everyone else's forces are untouched — aging already propagated.
+    if n_dead > 0:
+        _build_newborn_forces(civ, dead_idx, dead)
     civ.means = civ.forces.mean(axis=0)
 
     if return_details:
