@@ -247,13 +247,48 @@ Question: if a force RISES in a society, does agreement with the survey question
 Output signed sensitivities in [-1,1] only for forces with a real mechanism; 0 otherwise. You author structure; you never predict opinion values."""
 
 
+def _perceive_question_response_openai(question_text: str) -> Optional[np.ndarray]:
+    """OpenAI fallback for profile authoring — same blind discipline,
+    same output contract."""
+    import json as _json
+    try:
+        from openai import OpenAI
+        client = OpenAI()
+        resp = client.chat.completions.create(
+            model=os.environ.get("EARTH1_OPENAI_MODEL", "gpt-4o-mini"),
+            temperature=0,
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "system", "content": RESPONSE_SYSTEM
+                 + ' Reply as JSON: {"response": {"<force>": <number>, ...}}'},
+                {"role": "user", "content": question_text},
+            ],
+        )
+        data = _json.loads(resp.choices[0].message.content)
+    except Exception:
+        return None
+    name_to_val = {f.name.lower(): f.value for f in Force}
+    out = np.zeros(NUM_FORCES)
+    for name, v in (data.get("response") or {}).items():
+        if name in name_to_val:
+            try:
+                out[name_to_val[name]] = float(np.clip(float(v), -1, 1))
+            except (TypeError, ValueError):
+                continue
+    return out
+
+
 def perceive_question_response(
     question_text: str,
     model: str = "claude-haiku-4-5-20251001",
 ) -> Optional[np.ndarray]:
     """LLM authors the question's signed force-response profile —
-    blind to any outcome data. None when the channel is off (no key)."""
+    blind to any outcome data. Provider-independent (audit round 6: an
+    OpenAI-only deployment could solve a question's cross-sectional
+    representation but left it event-inert). None when no key at all."""
     if not os.environ.get("ANTHROPIC_API_KEY"):
+        if os.environ.get("OPENAI_API_KEY"):
+            return _perceive_question_response_openai(question_text)
         return None
     import anthropic
     client = anthropic.Anthropic()

@@ -85,6 +85,8 @@ def rehearse(
     epsilon: float = 0.18,
     layers: int = 8,
     attention_frac: Optional[float] = None,
+    event_log=None,
+    t: float = 0.0,
 ) -> Rehearsal:
     """Run the multiverse: one forward pass per authored branch.
 
@@ -93,8 +95,13 @@ def rehearse(
     convicted present discounts them. Branch weights are
     exp(-contortion / fragility-scaled temperature), normalized.
     """
+    # ONE LAW: the present is the LIVING present — active events enter
+    # via the response operator; branch counterfactual fields ride their
+    # own channel and compose cleanly (audit round 6: the multiverse
+    # present was event-blind while /ask had moved 7pp)
     present = run_question(q, civ, epsilon=epsilon, layers=layers,
-                           attention_frac=attention_frac)
+                           attention_frac=attention_frac,
+                           event_log=event_log, t=t)
 
     out: List[Branch] = []
     is_future: List[bool] = []
@@ -102,7 +109,8 @@ def rehearse(
         shift = _field_shift(sb)
         if np.any(shift):
             r = run_question(q, civ, epsilon=epsilon, layers=layers,
-                             field_shift=shift, attention_frac=attention_frac)
+                             field_shift=shift, attention_frac=attention_frac,
+                             event_log=event_log, t=t)
             anatomy = _shifted_anatomy(civ, q, shift)
             is_future.append(True)
         else:
@@ -143,10 +151,12 @@ def rehearse_question(
     epsilon: float = 0.18,
     layers: int = 8,
     attention_frac: Optional[float] = None,
+    event_log=None,
+    t: float = 0.0,
 ) -> Rehearsal:
     """Author-then-rehearse: Phase 3's mind authors the branches (§19.2),
     Phase 4 rehearses them (§20.1). One call from question to multiverse."""
     from earth1.central_mind import author
     branches = author(q, k=k, catalog=catalog)
     return rehearse(q, civ, branches, epsilon=epsilon, layers=layers,
-                    attention_frac=attention_frac)
+                    attention_frac=attention_frac, event_log=event_log, t=t)

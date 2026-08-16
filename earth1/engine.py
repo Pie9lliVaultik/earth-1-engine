@@ -223,8 +223,12 @@ def run_multiverse(
     civ: Civilization,
     epsilon: float = DEFAULT_EPSILON,
     layers: int = DEFAULT_LAYERS,
+    event_log=None,
+    t: float = 0.0,
 ) -> dict:
-    present = run_question(q, civ, epsilon, layers)
+    # ONE LAW: the multiverse's present is the LIVING present
+    present = run_question(q, civ, epsilon, layers,
+                           event_log=event_log, t=t)
 
     branch_defs = [
         {"id": "A", "label": "It happened (shock)",
@@ -238,7 +242,8 @@ def run_multiverse(
         shift = np.zeros(NUM_FORCES)
         for f, v in bd["shift"].items():
             shift[f.value] = v
-        r = run_question(q, civ, epsilon, layers, field_shift=shift)
+        r = run_question(q, civ, epsilon, layers, field_shift=shift,
+                         event_log=event_log, t=t)
         contortion = float(np.linalg.norm(r.force_anatomy - present.force_anatomy))
         branches.append(Branch(
             id=bd["id"], label=bd["label"],

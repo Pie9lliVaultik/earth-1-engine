@@ -150,7 +150,9 @@ def think(
                 id=f"llm_{len(corpus)}", text=gw.binary_question or text,
                 baseline=gw.question.baseline, weights=gw.question.weights,
                 domain=gw.question.domain, lens=gw.question.lens, source="llm",
+                response_profile=gw.question.response_profile,
             )
+            corpus.save_in_place()   # learned entries survive restart
 
     if not gw.premise_valid:
         empty_result = RunResult(

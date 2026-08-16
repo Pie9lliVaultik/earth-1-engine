@@ -60,6 +60,7 @@ def perceive(
                     source="llm",
                     response_profile=gw.question.response_profile,
                 )
+                corpus.save_in_place()
             return gw.question
         return None
     return None

@@ -31,7 +31,8 @@ def multiverse(
         raise HTTPException(404, f"Unknown question: {q}")
     state = get_world_state()
     civ = state.civ
-    mv = run_multiverse(question, civ, epsilon=epsilon, layers=layers)
+    mv = run_multiverse(question, civ, epsilon=epsilon, layers=layers,
+                        event_log=state.event_log, t=state.t)
     return {
         "present": serialize_result(mv["present"]),
         "branches": [serialize_branch(b) for b in mv["branches"]],
@@ -99,6 +100,20 @@ def _parse_shocks(shock_defs) -> list:
     return shocks
 
 
+
+
+# ── LEGACY PHYSICS NOTICE (One Law, audit round 6) ─────────────────────
+# /timeline, /scenarios and /tree run earth1/temporal.py, which applies
+# shocks by mutating question WEIGHTS over time — a pre-One-Law
+# transduction model, NOT the validated response operator (E1-0.4).
+# They are retained as clearly-labeled legacy surfaces until rebuilt on
+# the canonical law; every response carries the physics tag below so no
+# consumer can mistake them for validated outputs.
+LEGACY_TEMPORAL_TAG = {
+    "physics": "legacy-temporal (weight-mutation shocks) — NOT the "
+               "validated E1-0.4 response operator; replacement queued",
+}
+
 @router.post("/timeline", response_model=TimelineSchema)
 def timeline(req: TimelineRequest):
     """Simulate opinion evolution over time with optional shocks."""
@@ -116,7 +131,10 @@ def timeline(req: TimelineRequest):
         epsilon=req.epsilon,
         layers=req.layers,
     )
-    return _serialize_timeline(tl)
+    out = _serialize_timeline(tl)
+    if isinstance(out, dict):
+        out.update(LEGACY_TEMPORAL_TAG)
+    return out
 
 
 @router.post("/scenarios")
@@ -148,7 +166,9 @@ def scenarios(req: ScenarioRequest):
         epsilon=req.epsilon,
         layers=req.layers,
     )
-    return {name: _serialize_timeline(tl) for name, tl in results.items()}
+    return {"scenarios": {name: _serialize_timeline(tl)
+                          for name, tl in results.items()},
+            **LEGACY_TEMPORAL_TAG}
 
 
 @router.get("/events", response_model=list[EventSchema])
@@ -212,6 +232,7 @@ def tree(req: TreeRequest):
 
     analysis = result.analysis
     return {
+        **LEGACY_TEMPORAL_TAG,
         "question_id": result.question.id,
         "question_text": result.question.text,
         "branches": branches_data,

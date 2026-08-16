@@ -295,4 +295,15 @@ class QuestionCorpus:
                       else np.full((len(c.ids), NUM_FORCES), np.nan))
         c.vectorizer = _Vectorizer(idf=meta["idf"])
         c.vectorizer.n_docs = meta["n_docs"]
+        c._path = str(path)
         return c
+
+    def save_in_place(self) -> bool:
+        """Persist to the path this corpus was loaded from. Production
+        growth (novelty-frontier solves) must survive restart — the
+        audit found learned entries evaporated with the process."""
+        path = getattr(self, "_path", None)
+        if not path:
+            return False
+        self.save(path)
+        return True
