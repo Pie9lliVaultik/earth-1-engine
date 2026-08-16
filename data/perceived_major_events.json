@@ -1,0 +1,312 @@
+{
+  "US|2017-01-20": {
+    "title": "Donald Trump inaugurated as US President amid mass protests",
+    "force_deltas": {
+      "3": -0.12,
+      "4": 0.15,
+      "0": 0.1,
+      "1": 0.08,
+      "7": -0.08,
+      "5": -0.06
+    },
+    "confidence": 0.9,
+    "decay": 60.0
+  },
+  "US|2017-10-15": {
+    "title": "#MeToo movement erupts: millions share stories of sexual harassment",
+    "force_deltas": {
+      "4": 0.12,
+      "3": 0.1,
+      "0": -0.08,
+      "5": 0.07,
+      "6": 0.15
+    },
+    "confidence": 0.92,
+    "decay": 90.0
+  },
+  "DE|2017-09-24": {
+    "title": "AfD enters German parliament as third-largest party",
+    "force_deltas": {
+      "4": 0.15,
+      "0": 0.12,
+      "3": -0.1,
+      "5": 0.08,
+      "7": 0.1,
+      "1": 0.05
+    },
+    "confidence": 0.92,
+    "decay": 90.0
+  },
+  "ES|2017-10-01": {
+    "title": "Catalonia holds independence referendum; Spain cracks down",
+    "force_deltas": {
+      "0": 0.12,
+      "4": 0.15,
+      "3": -0.14,
+      "5": 0.08,
+      "7": -0.1,
+      "6": 0.13
+    },
+    "confidence": 0.92,
+    "decay": 90.0
+  },
+  "US|2018-03-24": {
+    "title": "March for Our Lives: millions rally against gun violence",
+    "force_deltas": {
+      "3": 0.08,
+      "1": 0.05,
+      "0": -0.1,
+      "4": 0.07,
+      "5": 0.06
+    },
+    "confidence": 0.78,
+    "decay": 45.0
+  },
+  "US|2018-07-06": {
+    "title": "US-China trade war escalates with tariffs on $34B of goods",
+    "force_deltas": {
+      "2": -0.12,
+      "0": 0.08,
+      "1": -0.05,
+      "3": 0.06,
+      "7": -0.07
+    },
+    "confidence": 0.78,
+    "decay": 45.0
+  },
+  "BR|2018-10-28": {
+    "title": "Bolsonaro wins Brazil presidency on far-right platform",
+    "force_deltas": {
+      "0": 0.12,
+      "1": 0.08,
+      "4": 0.15,
+      "3": -0.1,
+      "5": 0.1,
+      "7": 0.14,
+      "2": 0.05
+    },
+    "confidence": 0.92,
+    "decay": 90.0
+  },
+  "SE|2018-09-09": {
+    "title": "Sweden Democrats surge to 18% in election on immigration backlash",
+    "force_deltas": {
+      "0": 0.08,
+      "4": 0.12,
+      "3": 0.06,
+      "5": 0.07,
+      "6": 0.04
+    },
+    "confidence": 0.85,
+    "decay": 60.0
+  },
+  "SE|2019-09-23": {
+    "title": "Greta Thunberg addresses UN: 'How dare you' speech goes viral",
+    "force_deltas": {
+      "0": 0.12,
+      "1": 0.08,
+      "3": 0.1,
+      "5": 0.06,
+      "4": 0.14,
+      "7": -0.1
+    },
+    "confidence": 0.85,
+    "decay": 45.0
+  },
+  "US|2019-06-15": {
+    "title": "Global Pride Month: record turnout as 30+ countries march",
+    "force_deltas": {
+      "4": 0.12,
+      "3": 0.08,
+      "5": 0.06,
+      "1": 0.04
+    },
+    "confidence": 0.75,
+    "decay": 45.0
+  },
+  "NL|2019-12-20": {
+    "title": "Dutch Supreme Court orders government to cut emissions",
+    "force_deltas": {
+      "2": -0.08,
+      "3": 0.12,
+      "5": 0.1,
+      "0": -0.06,
+      "1": 0.05
+    },
+    "confidence": 0.85,
+    "decay": 60.0
+  },
+  "IN|2019-12-11": {
+    "title": "India passes Citizenship Amendment Act; massive protests erupt",
+    "force_deltas": {
+      "3": -0.12,
+      "4": -0.13,
+      "0": 0.1,
+      "5": 0.08,
+      "1": -0.06,
+      "2": -0.04
+    },
+    "confidence": 0.88,
+    "decay": 60.0
+  },
+  "US|2020-05-25": {
+    "title": "George Floyd killed by police; Black Lives Matter protests sweep globe",
+    "force_deltas": {
+      "0": 0.15,
+      "1": -0.08,
+      "2": -0.1,
+      "3": -0.12,
+      "4": 0.18,
+      "5": -0.1,
+      "6": 0.2,
+      "7": -0.14
+    },
+    "confidence": 0.95,
+    "decay": 90.0
+  },
+  "US|2020-11-03": {
+    "title": "US presidential election: record turnout amid deep polarization",
+    "force_deltas": {
+      "3": -0.15,
+      "0": 0.12,
+      "1": 0.08,
+      "4": 0.1,
+      "7": -0.08,
+      "6": 0.15
+    },
+    "confidence": 0.92,
+    "decay": 60.0
+  },
+  "PL|2020-10-22": {
+    "title": "Poland near-total abortion ban triggers mass street protests",
+    "force_deltas": {
+      "0": 0.12,
+      "1": -0.08,
+      "4": 0.15,
+      "5": -0.1,
+      "3": -0.12,
+      "7": -0.1
+    },
+    "confidence": 0.92,
+    "decay": 45.0
+  },
+  "US|2021-01-06": {
+    "title": "Pro-Trump mob storms US Capitol in attempt to overturn election",
+    "force_deltas": {
+      "0": 0.18,
+      "3": -0.16,
+      "4": 0.12,
+      "7": -0.14,
+      "5": -0.1,
+      "6": 0.15
+    },
+    "confidence": 0.95,
+    "decay": 90.0
+  },
+  "US|2021-08-15": {
+    "title": "Afghanistan falls to Taliban; chaotic US withdrawal",
+    "force_deltas": {
+      "0": 0.12,
+      "1": -0.08,
+      "2": -0.06,
+      "3": -0.1,
+      "4": -0.14,
+      "5": 0.04,
+      "6": 0.15,
+      "7": -0.16
+    },
+    "confidence": 0.92,
+    "decay": 90.0
+  },
+  "DE|2021-09-26": {
+    "title": "German election ends Merkel era; SPD-Green-FDP coalition forms",
+    "force_deltas": {
+      "3": 0.12,
+      "5": 0.08,
+      "4": 0.1,
+      "6": 0.15,
+      "7": -0.08,
+      "2": 0.05
+    },
+    "confidence": 0.92,
+    "decay": 60.0
+  },
+  "JP|2021-07-23": {
+    "title": "Tokyo Olympics held without spectators amid COVID surge",
+    "force_deltas": {
+      "0": 0.12,
+      "1": -0.08,
+      "2": -0.1,
+      "3": -0.06,
+      "4": 0.05,
+      "5": -0.04,
+      "6": -0.09,
+      "7": -0.1
+    },
+    "confidence": 0.82,
+    "decay": 45.0
+  },
+  "US|2022-06-24": {
+    "title": "US Supreme Court overturns Roe v. Wade; abortion no longer constitutional right",
+    "force_deltas": {
+      "0": 0.12,
+      "1": -0.08,
+      "4": 0.14,
+      "5": 0.1,
+      "3": -0.11,
+      "2": -0.05,
+      "6": 0.13,
+      "7": -0.09
+    },
+    "confidence": 0.94,
+    "decay": 90.0
+  },
+  "US|2022-11-08": {
+    "title": "US midterms: expected red wave fails; democracy concerns animate voters",
+    "force_deltas": {
+      "0": -0.08,
+      "3": 0.12,
+      "4": 0.06,
+      "7": 0.1,
+      "5": 0.05
+    },
+    "confidence": 0.82,
+    "decay": 45.0
+  },
+  "TR|2022-06-28": {
+    "title": "Turkey drops opposition to Finland and Sweden joining NATO",
+    "force_deltas": {
+      "3": 0.12,
+      "0": -0.08,
+      "4": 0.06,
+      "5": 0.04
+    },
+    "confidence": 0.82,
+    "decay": 45.0
+  },
+  "DE|2022-02-27": {
+    "title": "Germany announces massive defense spending increase, reversing decades of policy",
+    "force_deltas": {
+      "0": 0.12,
+      "2": -0.08,
+      "3": 0.1,
+      "7": -0.06,
+      "4": 0.08
+    },
+    "confidence": 0.92,
+    "decay": 90.0
+  },
+  "PH|2022-05-09": {
+    "title": "Ferdinand Marcos Jr wins Philippine presidency in landslide",
+    "force_deltas": {
+      "4": 0.15,
+      "3": 0.12,
+      "1": 0.08,
+      "6": 0.1,
+      "0": -0.05,
+      "5": 0.06
+    },
+    "confidence": 0.85,
+    "decay": 60.0
+  }
+}

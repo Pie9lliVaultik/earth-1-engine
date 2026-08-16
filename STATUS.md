@@ -1,6 +1,6 @@
 # Earth-1 — Program State of Truth
 
-*Updated 2026-08-16 · maintained alongside every milestone commit*
+*Updated 2026-08-16 (evening) · maintained alongside every milestone commit*
 
 ---
 
@@ -11,16 +11,16 @@
 | **G1–G2** (Phases 0–2: foundation, decomposition) | Manifold reproduces survey ground truth | ✅ **Passed, then honestly reopened** | v1 numbers accepted 2026-08-12; Manifold v2.1 (age-physics fix) reopened them by necessity. New honest numbers below. |
 | **G3** (Phase 3: perception sovereign) | LLM only at novelty frontier; honesty guard in code | ✅ **Passed** | Corpus retrieval-first, G3 audit in CI (12 tests every build) |
 | **G4** (Phase 4: foresight) | Armed predictions beat market prices retrospectively | ⏳ **Machinery complete, blocked on time-in-market** | Multiverse, arming, sha256 record, resolution loop all built. Needs: daily cron, non-Italian IP (Polymarket), calendar time. Cannot be backfilled. |
-| **G5** (Phase 5: the world is alive) | Three legs, pre-registered | 🔶 **1 of 3 legs passing** | See detailed table below |
+| **G5** (Phase 5: the world is alive) | Three legs, pre-registered | 🔶 **2 of 3 legs passing** | See detailed table below |
 | **G6** (Phase 6: participation) | Human corrections improve accuracy | ⬜ Not started (deferred by design) | Claim flow exists from earlier builds |
 | **G7** (Phase 7: public proof & revenue) | Paid API + public benchmark bundle | 🔶 Infra exists (billing, metering, keys), no public bundle, no customers | |
 
-### G5 in detail — the existential gate (6 recorded runs, append-only)
+### G5 in detail — the existential gate (7 recorded runs, append-only)
 
 | Leg | Status | The story |
 |-----|--------|-----------|
-| **Demography** | ✅ **PASSING** (runs #5, #6) | LE tracking 100% of 130 countries; adult CDR 12.8/1000 in band. Passed only after we found and fixed real physics bugs (see §3). |
-| **Temporal** | ❌ Failing — *and we now know exactly why* | Endogenous dynamics ≈ no-change parity (proven via 3-run arc). News statistics carry no signal (proven twice, pre-registered). The fix candidate exists: response physics + perceived history replay (§3, §4). |
+| **Demography** | ✅ **PASSING** (runs #5, #6, #7) | LE tracking 100% of 130 countries; adult CDR 12.8/1000 in band. Passed only after we found and fixed real physics bugs (see §3). |
+| **Temporal** | 🔶 **A4 registered, run #8 pending — screening predicts partial fail** | Endogenous dynamics ≈ no-change parity (proven via 3-run arc). News statistics carry no signal (proven twice, pre-registered). Response law validated for events (10/12 signs). A4 registered, replay machinery built, headlines fetching. **2026-08-16 evening screen: 38 perceived events through the response law score 44% sign accuracy on W6→W7 — event-driven questions work (environment 86%, abortion 83%, divorce 71%, army_rule 67%), secular-trend questions fail (religion 0%, hard_work 0%, men_leaders 12%). The missing physics is secular drift, not event response. Founder decision pending (see §4).** |
 | **Event reaction** | ✅ **PASSING** (run #7, A3, 2026-08-16) | Simulated +0.0572 vs measured +0.0567 — **ratio 1.01** (was 0.02). LLM-read headlines → blind-authored response law → engine. Gain leave-COVID-out; criteria unchanged from original registration. |
 
 ### Current honest benchmark numbers (Manifold v2.1, 200K agents, GOQA 40×66)
@@ -69,6 +69,8 @@ These came from gate failures — each one found by a pre-registered test, fixed
 
 8. **Anatomy-backwards finding.** Temporal failure concentrates in high-weight questions (6/7 losses above |w|=1.0) — drift noise amplifies through large weights. Shrinkage fix designed, queued.
 
+9. **The secular-trend gap** (2026-08-16 evening screen). Value change decomposes into two regimes: EVENT-DRIVEN (environment, abortion, divorce, army rule — the response law predicts these at 67–86% sign accuracy) and SECULAR (religion, hard work, men-as-leaders, democracy, pride — slow societal drift the response law scores 0–33% on, because no headline stream contains "secularization events"). The event leg passes because it tests the first regime; the temporal leg spans both. Caveats stated honestly: the 24 screening events were curated with outcome knowledge (bias favors success — the negative result is therefore strong), and per-question results have now been inspected, so any secular-drift physics built next is calibration, not blind prediction, until validated on held-out structure.
+
 ---
 
 ## 3b. The emergence stack — built vs. validated (the honest gap)
@@ -100,13 +102,17 @@ becomes possible exactly when the event leg starts passing.
 
 ## 4. What is missing for the full model — the critical path
 
-In order; each unblocks the next:
+Items 1–3 are DONE. The remaining path:
 
-1. **Wire the response law into the engine** (event-response path alongside diffusion/feedback) — *in progress, next build*
-2. **Expand the reaction-case library** 6 → 15–20 cases — converts p=0.019 into confirmation or honest bust; sharpens the gain constant
-3. **A3 registration + G5 event leg run #7** — first gate attempt with validated response physics
-4. **Historical perception replay** — perceive ~3 headlines/country/month 2017–2022 (~8K Haiku calls, a few dollars), replay *understood history*, re-fight the temporal leg. **If this passes, G5 falls and the world is alive by its own pre-registered standard.**
-5. **G4 record accumulation** — needs the always-on cron (Hetzner or any VPS) + calendar time; every day not running is record lost
+1. ~~**Wire the response law into the engine**~~ — ✅ DONE (commit 10285f6)
+2. ~~**A3 registration + G5 event leg run #7**~~ — ✅ DONE (commit 63b1b78, ratio 1.01)
+3. **Historical perceived-headline replay (A4) → G5 run #8** — machinery built and tested (862 tests pass), A4 registered, headlines fetching (~3h remaining). **The evening screen predicts run #8 will fail on secular-trend questions** — the founder decision that now gates the path:
+   - **Option A — narrow the temporal claim**: re-register the leg on event-driven windows (quarter-scale reactions) where the validated physics applies. Honest, fast, matches what the engine demonstrably does.
+   - **Option B — build secular-drift physics**: development-driven value change (Inglehart modernization axis: countries that develop shift toward secular/self-expression values). New physics, needs development indicators, must be validated on held-out structure since per-question results have been inspected.
+   - **Option C — accept 2/3 legs**: demography PASS, event PASS, temporal honest-fail with the gap precisely diagnosed. Move to G4/scale with the limitation documented.
+   Run #8 fires when headlines land regardless — a recorded confirmation of the prediction either way.
+4. **Expand reaction-case library** 6 → 15–20 cases — sharpens confidence in response law (p=0.019 → p<0.001 or honest bust)
+5. **G4 record accumulation** — needs always-on cron (Hetzner or any VPS) + calendar time; every day not running is record lost
 6. **Scale ladder Stage A** — shard refactor, 10M on one box (design done, build not started)
 7. **G6 participation kernel** — after G5
 8. **G7 public benchmark bundle** — packaging what §1 already contains

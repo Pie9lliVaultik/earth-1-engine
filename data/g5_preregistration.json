@@ -47,6 +47,15 @@
   },
   "amendments": [
     {
+      "id": "A4",
+      "date": "2026-08-16",
+      "after_run": 7,
+      "leg": "temporal",
+      "what": "The temporal leg replaces GDELT tone/volume replay (A2, which FAILED its placebo control in run #6) with PERCEIVED-HEADLINE replay: real historical headlines (GDELT DOC artlist, top 3 per country per quarter 2017-2022, cached in data/headlines_2017_2022.json) are perceived by one-call-per-item LLM perception (Haiku, cached in data/perceived_headlines.json) into force events scoped to the headline's country. At prediction time, active event-log deltas route through the TEMPORAL RESPONSE LAW (d_logit = RESPONSE_GAIN x (event_deltas . question_response_profile)) using LLM-authored signed response profiles per question (data/question_profiles.json, authored blind to outcomes). RESPONSE_GAIN = 3.1 unchanged from A3. Three conditions run with identical seeds: endogenous (no events), real geography (perceived headlines on correct countries), shuffled geography (same perceived events, country scopes permuted). Evolution window = the headline range (~6y). PASS: real MAE < no-change AND real MAE < shuffled MAE AND real sign accuracy > 0.5 at p < 0.05.",
+      "rationale": "Run #6 proved GDELT tone statistics carry no value-change signal (real = shuffled to 4 decimals). Run #7 proved the response law reproduces measured event reactions (ratio 1.01). The gap is between STATISTICS (no signal) and HAND-AUTHORED shocks (proven signal): can LLM-perceived headlines from real history carry enough semantic information to drive the temporal leg? Perception was validated independently: Italy lockdown perception converged on the hand-authored COVID rally signature; 10/12 historical reaction directions predicted correctly out-of-sample.",
+      "unchanged": "Calibration remains Wave-6-only; W7 held out. The endogenous condition is recorded for reference. Shuffled-geography control is identical in structure to A2. PASS criteria identical to A2."
+    },
+    {
       "id": "A3",
       "date": "2026-08-16",
       "after_run": 6,

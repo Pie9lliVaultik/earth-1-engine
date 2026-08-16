@@ -104,14 +104,19 @@ def g5_temporal(
     questions: Optional[List[WVSPairedQuestion]] = None,
     progress: bool = False,
     replay_events: Optional[Dict[int, List]] = None,
+    response_profiles: Optional[Dict[str, np.ndarray]] = None,
 ) -> TemporalLegResult:
     """The temporal leg: does the evolved world track observed deltas
     better than no-change?
 
-    replay_events (amendment A2): {step_index: [WorldEvent, ...]} of
+    replay_events (amendment A2/A4): {step_index: [WorldEvent, ...]} of
     historical exogenous signal, injected into the event log as the
-    world reaches each step. Requires dt_days to match the replay's
-    monthly grid (events are stamped t = month_index * 30)."""
+    world reaches each step.
+
+    response_profiles (amendment A4): {question_id: (NUM_FORCES,) array}
+    — the signed response profile for each question. When provided,
+    prediction at t1 includes active event-log deltas routed through the
+    temporal response law (gain × shock · profile)."""
     questions = questions if questions is not None else WVS_PAIRED
     civ = _make_mutable(genesis(pop, seed))
     cmap = _country_index_map()
@@ -143,7 +148,9 @@ def g5_temporal(
     # receiver off (no historical replay in v1)
     tick_questions = [
         Question(id=pq.id, text=pq.text, domain="belief_causal",
-                 baseline=baseline, weights=weights, lens="wvs")
+                 baseline=baseline, weights=weights, lens="wvs",
+                 response_profile=(response_profiles.get(pq.id)
+                                   if response_profiles else None))
         for pq, baseline, weights in calibrated
     ]
     state = WorldState(
@@ -162,15 +169,26 @@ def g5_temporal(
             print(f"  temporal: {(step + 1) * dt_days / 365.0:.1f}y / {years:.0f}y")
 
     # t1 predictions with the SAME weights, t0-anchored centering
+    # With replay events: include active event-log deltas at prediction
+    # time, routed through response profiles when available (A4).
+    event_deltas = None
+    if replay_events:
+        event_deltas = state.event_log.effective_deltas_vectorized(
+            state.t, state.civ)
+
     per_question = []
     pred_deltas, obs_deltas = [], []
     for pq, baseline, weights in calibrated:
+        profile = (response_profiles.get(pq.id)
+                   if response_profiles else None)
         q_pred, q_obs = [], []
         for cc in pq.overlapping_countries:
             if cc not in t0_pred[pq.id]:
                 continue
             p1 = _predict_country_anchored(
-                state.civ, baseline, weights, cmap[cc], t0_means)
+                state.civ, baseline, weights, cmap[cc], t0_means,
+                extra_shift=event_deltas,
+                response_profile=profile)
             if p1 is None:
                 continue
             q_pred.append(p1 - t0_pred[pq.id][cc])
@@ -289,6 +307,73 @@ def g5_temporal_replay(
     return TemporalReplayResult(
         endogenous=endo, real=real, shuffled=shuffled, passes=passes,
     )
+
+
+# ── leg 1c: temporal with perceived-headline replay (amendment A4) ────
+
+def g5_temporal_perceived_replay(
+    perceived: Dict,
+    response_profiles: Dict[str, np.ndarray],
+    pop: int = 50_000,
+    seed: int = 42,
+    dt_days: float = 30.0,
+    progress: bool = False,
+) -> TemporalReplayResult:
+    """Amendment A4: temporal leg with perceived-headline forcing and the
+    response law. Same three-condition structure as A2 but with semantic
+    events instead of tone statistics.
+
+    perceived: output of perceived_replay.perceive_all_headlines()
+    response_profiles: {question_id: (8,) array} from question_profiles.json
+    """
+    from earth1.perceived_replay import (
+        build_perceived_replay_events,
+        shuffle_perceived_geography,
+    )
+
+    n_quarters = max(
+        _key_to_quarter_index(k) for k in perceived
+    ) + 1
+    n_steps = n_quarters * 3  # quarterly windows → ~monthly steps
+    years = max(1.0, n_steps * dt_days / 365.0)
+
+    if progress:
+        n_events = sum(len(v) for v in perceived.values())
+        print(f"  perceived replay: {n_events} events over "
+              f"{n_quarters} quarters ({years:.1f}y)")
+        print("  condition 1/3: endogenous (no events)...")
+
+    endo = g5_temporal(pop=pop, seed=seed, years=years, dt_days=dt_days,
+                       progress=progress, response_profiles=response_profiles)
+
+    if progress:
+        print("  condition 2/3: real geography (perceived headlines)...")
+    real_events = build_perceived_replay_events(perceived, dt_days)
+    real = g5_temporal(pop=pop, seed=seed, years=years, dt_days=dt_days,
+                       progress=progress, replay_events=real_events,
+                       response_profiles=response_profiles)
+
+    if progress:
+        print("  condition 3/3: shuffled geography (§14 control)...")
+    shuf_rng = np.random.default_rng(seed + 1)
+    shuf_perceived = shuffle_perceived_geography(perceived, shuf_rng)
+    shuf_events = build_perceived_replay_events(shuf_perceived, dt_days)
+    shuffled = g5_temporal(pop=pop, seed=seed, years=years, dt_days=dt_days,
+                           progress=progress, replay_events=shuf_events,
+                           response_profiles=response_profiles)
+
+    passes = (real.mae_engine < real.mae_nochange
+              and real.mae_engine < shuffled.mae_engine
+              and real.sign_accuracy > 0.5 and real.sign_p < 0.05)
+
+    return TemporalReplayResult(
+        endogenous=endo, real=real, shuffled=shuffled, passes=passes,
+    )
+
+
+def _key_to_quarter_index(key: str, base_year: int = 2017) -> int:
+    _, yq = key.split("|")
+    return (int(yq[:4]) - base_year) * 4 + (int(yq[-1]) - 1)
 
 
 # ── leg 2: event reaction ───────────────────────────────────────────────
