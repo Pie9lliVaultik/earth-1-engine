@@ -167,13 +167,24 @@ def main():
     init_db()
     session = get_session()
 
+    from earth1.markets import horizon_days
+
     markets = fetch_open_markets()
     existing = {p.question_text for p in
                 session.query(Prediction).filter_by(armed=True).all()}
-    fresh = [m for m in markets if m.question not in existing][:25]
+    fresh_all = sorted((m for m in markets if m.question not in existing),
+                       key=horizon_days)
+    # FAST LANE: markets resolving within 7 days arm first — resolutions
+    # flow back daily, so the G4 record accumulates at market speed
+    # instead of waiting on long-dated questions. Standing lane keeps
+    # breadth. Lanes stay separable via Prediction.horizon_days.
+    fast = [m for m in fresh_all if horizon_days(m) <= 7][:60]
+    slow = [m for m in fresh_all if horizon_days(m) > 7][:40]
+    fresh = fast + slow
     outcomes = arm_all(session, world.state.civ, fresh)
     armed = sum(1 for o in outcomes if o.status == "armed")
-    print(f"Record: {len(markets)} live markets, {len(fresh)} new, "
+    print(f"Record: {len(markets)} live markets, {len(fresh_all)} new "
+          f"({len(fast)} fast-lane <=7d, {len(slow)} standing), "
           f"{armed} armed, {len(fresh) - armed} abstained (ledgered)")
 
     resolved = [o for o in resolve_armed(session) if o.status == "resolved"]
@@ -185,6 +196,24 @@ def main():
         if report["market_brier"] is not None:
             line += f" vs market {report['market_brier']:.4f}"
         print(line)
+        fl = report.get("fast_lane")
+        if fl:
+            print(f"  fast lane (<=7d): n={fl['n_resolved']} "
+                  f"engine {fl['engine_brier']:.4f}"
+                  + (f" vs market {fl['market_brier']:.4f}"
+                     if fl['market_brier'] is not None else ""))
+        # anatomy backwards: what force fields WORKED on resolved
+        # readings — the learning loop that must inform forward arming
+        from earth1.resolving import anatomy_backwards
+        anat = anatomy_backwards(session)
+        if anat["n_resolved"]:
+            for force, d in sorted(anat["by_force"].items(),
+                                   key=lambda kv: kv[1]["brier"]):
+                print(f"  anatomy {force}: n={d['n']} "
+                      f"brier={d['brier']:.4f} hit={d['hit_rate']:.0%}")
+            if anat["advisory_abstain"]:
+                print(f"  ADVISORY ABSTAIN (proven-bad anatomies): "
+                      f"{anat['advisory_abstain']}")
     session.close()
 
 

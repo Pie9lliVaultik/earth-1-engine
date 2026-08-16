@@ -166,6 +166,7 @@ def atlas_report(session) -> dict:
         return {"n_resolved": 0}
 
     engine_brier, market_brier = [], []
+    fast_engine, fast_market = [], []
     frag_err = []
     for fo in rows:
         pred = session.query(Prediction).filter_by(id=fo.prediction_id).first()
@@ -173,9 +174,18 @@ def atlas_report(session) -> dict:
         price = ((run.gateway_raw or {}).get("price_at_arming")
                  if run else None)
         outcome = fo.actual_yes_pct
-        engine_brier.append((fo.predicted_yes_pct - outcome) ** 2)
-        if price is not None:
-            market_brier.append((float(price) - outcome) ** 2)
+        eb = (fo.predicted_yes_pct - outcome) ** 2
+        engine_brier.append(eb)
+        mb = (float(price) - outcome) ** 2 if price is not None else None
+        if mb is not None:
+            market_brier.append(mb)
+        # fast lane: armed within 7 days of resolution target — the
+        # daily-accumulating record; reported separately, never pooled
+        if pred is not None and pred.horizon_days is not None \
+                and pred.horizon_days <= 7:
+            fast_engine.append(eb)
+            if mb is not None:
+                fast_market.append(mb)
         frag_err.append((fo.fragility_at_prediction, fo.error))
 
     report = {
@@ -188,6 +198,17 @@ def atlas_report(session) -> dict:
             sum(market_brier) / len(market_brier)
             if market_brier else None),
     }
+    if fast_engine:
+        report["fast_lane"] = {
+            "n_resolved": len(fast_engine),
+            "engine_brier": sum(fast_engine) / len(fast_engine),
+            "market_brier": (sum(fast_market) / len(fast_market)
+                             if fast_market else None),
+            "engine_beats_price": (
+                sum(fast_engine) / len(fast_engine) <
+                sum(fast_market) / len(fast_market)
+                if fast_market else None),
+        }
 
     if len(frag_err) >= 4:
         frags = sorted(f for f, _ in frag_err)
@@ -202,3 +223,51 @@ def atlas_report(session) -> dict:
                 "fragility_predicts_error": sum(hi) / len(hi) > sum(lo) / len(lo),
             }
     return report
+
+
+def anatomy_backwards(session, min_n: int = 5) -> dict:
+    """Learn from the Atlas: which force anatomies predict well?
+
+    Pietro's law (2026-08-16): before trusting forward predictions,
+    understand what force fields worked on RESOLVED ones. Groups every
+    resolved outcome by dominant force and scores each anatomy's track
+    record. Anatomies with enough history (min_n) and Brier clearly
+    worse than the overall record are flagged as advisory abstentions —
+    the arming pipeline reads this to know where the engine has proven
+    it should keep quiet.
+
+    Empty until resolutions accumulate — the fast lane feeds it daily.
+    """
+    from earth1.db.models import ForceOutcome
+
+    rows = [fo for fo in session.query(ForceOutcome).all()
+            if fo.actual_yes_pct is not None]
+    if not rows:
+        return {"n_resolved": 0, "by_force": {}, "advisory_abstain": []}
+
+    overall_brier = sum((fo.predicted_yes_pct - fo.actual_yes_pct) ** 2
+                        for fo in rows) / len(rows)
+
+    by_force: dict = {}
+    for fo in rows:
+        d = by_force.setdefault(fo.dominant_force, {
+            "n": 0, "brier_sum": 0.0, "hits": 0})
+        d["n"] += 1
+        d["brier_sum"] += (fo.predicted_yes_pct - fo.actual_yes_pct) ** 2
+        d["hits"] += int((fo.predicted_yes_pct > 0.5)
+                         == (fo.actual_yes_pct > 0.5))
+
+    advisory = []
+    for force, d in by_force.items():
+        d["brier"] = round(d.pop("brier_sum") / d["n"], 5)
+        d["hit_rate"] = round(d["hits"] / d["n"], 3)
+        # proven-bad anatomy: enough history AND 50%+ worse than overall
+        if d["n"] >= min_n and d["brier"] > overall_brier * 1.5:
+            advisory.append(force)
+
+    return {
+        "n_resolved": len(rows),
+        "overall_brier": round(overall_brier, 5),
+        "by_force": by_force,
+        "advisory_abstain": sorted(advisory),
+    }

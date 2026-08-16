@@ -126,3 +126,43 @@ def test_atlas_report_scoreboard(db, civ, corpus):
 
 def test_empty_atlas_report(db):
     assert atlas_report(db) == {"n_resolved": 0}
+
+
+def test_anatomy_backwards_empty_atlas():
+    from earth1.resolving import anatomy_backwards
+    from earth1.db import init_db, get_session
+    import os
+    os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+    init_db()
+    session = get_session()
+    out = anatomy_backwards(session)
+    assert out["n_resolved"] == 0
+    assert out["advisory_abstain"] == []
+    session.close()
+
+
+def test_anatomy_backwards_flags_bad_force():
+    from earth1.resolving import anatomy_backwards
+    from earth1.db.models import ForceOutcome
+    from earth1.db import init_db, get_session
+    import os
+    os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+    init_db()
+    session = get_session()
+    # FEAR anatomy: 6 accurate readings; DESIRE anatomy: 6 bad ones
+    for i in range(6):
+        session.add(ForceOutcome(
+            prediction_id=f"good{i}", dominant_force="fear",
+            force_signature={}, fragility_at_prediction=0.1,
+            predicted_yes_pct=0.9, actual_yes_pct=1.0, error=0.1))
+        session.add(ForceOutcome(
+            prediction_id=f"bad{i}", dominant_force="desire",
+            force_signature={}, fragility_at_prediction=0.1,
+            predicted_yes_pct=0.9, actual_yes_pct=0.0, error=0.9))
+    session.commit()
+    out = anatomy_backwards(session, min_n=5)
+    assert out["n_resolved"] == 12
+    assert out["by_force"]["fear"]["hit_rate"] == 1.0
+    assert out["by_force"]["desire"]["hit_rate"] == 0.0
+    assert out["advisory_abstain"] == ["desire"]
+    session.close()
