@@ -1,12 +1,9 @@
 # Phase 5.7 verdict — theme salience (2026-08-16)
 
 Pre-specified pooled test (Stouffer z over per-theme trend rhos,
-declared in ce5d809 with 3/7 themes visible): **z = 0.341, one-sided
-p = 0.37 across 6 themes — NOT SIGNIFICANT.** Per-theme rhos flip sign
+declared in ce5d809 with 3/7 themes visible): FINAL over all 7 themes: **z = 0.898, one-sided p = 0.18 — NOT SIGNIFICANT.** (Interim at 6 themes: z = 0.341, p = 0.37.) Per-theme rhos flip sign
 randomly (LGBT +0.32 level, military -0.26, climate -0.08); each new
-block pulled the pooled statistic toward zero. The 7th block
-(ECON_INFLATION, still fetching) cannot change the verdict: it would
-need rho ~ +0.9 at n~15.
+block pulled the pooled statistic toward zero. The 7th block (ECON_INFLATION, 11 countries) was the strongest single contributor (inflation coverage vs life-satisfaction decline) yet the pooled test still fails; one theme cannot rescue a pooled verdict.
 
 ## Conclusion (with 5.6's tone result)
 News coverage STATISTICS — mood (5.6) and topic salience (5.7) — carry
