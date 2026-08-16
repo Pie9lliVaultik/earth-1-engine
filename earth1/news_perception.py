@@ -205,10 +205,12 @@ def events_from_news(
             continue
         deltas = {force_names[i]: float(v * gain)
                   for i, v in ev.force_deltas.items()}
+        scope = ev.scope or item.country
+        region = "*" if scope == "GLOBAL" else f"{scope}-*"
         events.append(WorldEvent.create(
             timestamp=t,
             force_deltas=deltas,
-            region_pattern=f"{item.country}-*",
+            region_pattern=region,
             decay_half_life=ev.decay_half_life,
             source=("perception:stub" if ev.rationale == "STUB"
                     else "perception:llm"),

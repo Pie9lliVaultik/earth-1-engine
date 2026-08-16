@@ -106,3 +106,19 @@ def test_hit_to_question():
     q = hit.to_question(qid="custom")
     assert q.id == "custom"
     assert q.weights.shape == (NUM_FORCES,)
+
+
+def test_build_then_add_profile_alignment():
+    """Audit round 7 (reproduced): add() after build() misaligned the
+    profile matrix — the third question's profile landed at index 0."""
+    import numpy as np
+    from earth1.corpus import QuestionCorpus
+    c = QuestionCorpus()
+    c.build(ids=["a", "b"], texts=["question a text", "question b text"],
+            baselines=np.array([0.0, 0.1]), weights=np.zeros((2, 8)))
+    prof = np.arange(8, dtype=float) / 10
+    c.add(id="c", text="question c text", baseline=0.2,
+          weights=np.zeros(8), response_profile=prof)
+    assert np.isnan(c.profiles[0]).all()
+    assert np.isnan(c.profiles[1]).all()
+    assert np.allclose(c.profiles[2], prof)

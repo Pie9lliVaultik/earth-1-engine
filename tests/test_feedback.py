@@ -199,3 +199,17 @@ class TestAuditSemantics:
         untouched = np.arange(civ.n) >= 100
         assert np.allclose(civ.forces[untouched], before[untouched]), \
             "agents outside the nudged set had their forces rewritten"
+
+
+def test_culture_offset_keeps_signed_range():
+    """Audit round 7: clipping the SIGNED culture_offset to [0,1]
+    snapped negative agents to 0 — a +0.01 nudge became +0.096."""
+    civ = _mutable_civ()
+    from earth1.feedback import apply_trait_delta
+    mask = np.zeros(civ.n, dtype=bool); mask[:50] = True
+    civ.culture_offset[:50] = -0.096
+    before_force = civ.forces[:50].copy()
+    apply_trait_delta(civ, mask, "culture_offset", 0.01)
+    moved = civ.culture_offset[:50] - (-0.096)
+    assert np.allclose(moved, 0.01, atol=1e-9), \
+        f"nudge distorted by bounds: {moved[:3]}"

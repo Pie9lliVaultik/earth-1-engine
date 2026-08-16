@@ -12,7 +12,7 @@ from earth1.api.schemas import (
     CorrectRequest, CorrectionResultSchema,
     CalibrationRequest, CalibrationReportSchema,
 )
-from earth1.api.deps import get_civ, get_db
+from earth1.api.deps import get_civ
 from earth1.loop import (
     claim_earthling, reveal_profile, apply_corrections,
     measure_calibration, Correction,
@@ -39,7 +39,8 @@ def claim(req: ClaimRequest):
         raise HTTPException(400, str(e))
 
     claim_id = ""
-    db = get_db()
+    from earth1.db import get_session
+    db = get_session()
     if db:
         from earth1.db.store import save_claim
         record = save_claim(
@@ -92,7 +93,8 @@ def correct(req: CorrectRequest):
     except ValueError as e:
         raise HTTPException(400, str(e))
 
-    db = get_db()
+    from earth1.db import get_session
+    db = get_session()
     if db:
         from earth1.db.store import save_correction_record
         for corr in req.corrections:

@@ -40,8 +40,12 @@ class WorldEvent:
         decay_half_life: float = 30.0,
         source: str = "manual",
     ) -> WorldEvent:
+        # bare ISO2 ("IT") silently matched zero agents; canonicalize
+        if (len(region_pattern) == 2 and region_pattern.isalpha()
+                and region_pattern.isupper()):
+            region_pattern = f"{region_pattern}-*"
         return WorldEvent(
-            id=str(uuid.uuid4())[:8],
+            id=str(uuid.uuid4()),
             timestamp=timestamp,
             region_pattern=region_pattern,
             demographic_filter=demographic_filter or {},

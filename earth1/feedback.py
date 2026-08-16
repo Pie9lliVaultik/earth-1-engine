@@ -58,6 +58,12 @@ TRAIT_FORCE_SENSITIVITY = {
 }
 
 
+# Per-trait bounds. Most traits live in [0,1]; culture_offset is a
+# SIGNED deviation (audit round 7: clipping it to [0,1] snapped every
+# negative-offset agent to 0 — a +0.01 nudge became a +0.096 jump).
+TRAIT_BOUNDS = {"culture_offset": (-0.5, 0.5)}
+
+
 def apply_trait_delta(
     civ: Civilization,
     mask: np.ndarray,
@@ -67,9 +73,10 @@ def apply_trait_delta(
     """Nudge one trait for masked agents and propagate the ACTUAL change
     (post-clip) into the affected force channels. The only sanctioned way
     for living dynamics to modify traits."""
+    lo, hi = TRAIT_BOUNDS.get(trait_name, (0.0, 1.0))
     arr = getattr(civ, trait_name)
     before = arr[mask].copy()
-    arr[mask] = np.clip(before + delta, 0.0, 1.0)
+    arr[mask] = np.clip(before + delta, lo, hi)
     actual = arr[mask] - before
     for force, coeff in TRAIT_FORCE_SENSITIVITY.get(trait_name, []):
         fi = int(force)

@@ -46,6 +46,7 @@ def detect_polarization(
     civ: Civilization,
     recent_results: List[Dict[str, RunResult]],
     threshold: float = 0.18,
+    t: float = 0.0,
 ) -> List[WorldEvent]:
     """Detect bimodality surges — two camps pulling apart."""
     events = []
@@ -53,7 +54,9 @@ def detect_polarization(
         return events
 
     latest = recent_results[-1]
-    t = len(recent_results) * 1.0
+    # authoritative world time (audit round 7: len(history) with a
+    # 30-entry cap timestamped day-500 events at ~day 30)
+    t = max(t, len(recent_results) * 1.0)
 
     for qid, r in latest.items():
         if r.fragility > 0.6 and r.conviction < 0.4:
@@ -112,13 +115,14 @@ def detect_opinion_reversal(
     recent_results: List[Dict[str, RunResult]],
     window: int = 5,
     min_swing: float = 0.08,
+    t: float = 0.0,
 ) -> List[WorldEvent]:
     """Detect when a question's yes_pct reverses direction significantly."""
     events = []
     if len(recent_results) < window:
         return events
 
-    t = len(recent_results) * 1.0
+    t = max(t, len(recent_results) * 1.0)
     recent = recent_results[-window:]
 
     all_qids = set()
@@ -189,8 +193,8 @@ def detect_emergent_events(
 ) -> List[WorldEvent]:
     """Scan population state + recent history for all emergent phenomena."""
     all_events = []
-    all_events.extend(detect_polarization(civ, recent_results))
+    all_events.extend(detect_polarization(civ, recent_results, t=t))
     all_events.extend(detect_consensus(civ, recent_results, event_log=event_log, t=t))
-    all_events.extend(detect_opinion_reversal(recent_results, window=window))
+    all_events.extend(detect_opinion_reversal(recent_results, window=window, t=t))
     all_events.extend(detect_cascade(event_log, t))
     return all_events

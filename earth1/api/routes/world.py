@@ -1,7 +1,7 @@
 """API routes for the living world — tick, state, emergence, receiver control."""
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 from typing import Optional, List
 from pydantic import BaseModel
 
@@ -9,6 +9,21 @@ from earth1.questions import QUESTIONS
 from earth1.types import Force
 
 router = APIRouter(prefix="/world", tags=["world"])
+
+
+def _require_admin(request):
+    """World-mutating endpoints need the admin key when auth is on —
+    an ordinary API key must not be able to alter the planet (audit
+    round 7). No auth configured (dev) -> open, as before."""
+    import os
+    from fastapi import HTTPException
+    admin = os.environ.get("EARTH1_ADMIN_KEY")
+    if not os.environ.get("EARTH1_AUTH_REQUIRED") and not admin:
+        return
+    provided = (request.headers.get("X-Admin-Key", "")
+                if request is not None else "")
+    if not admin or provided != admin:
+        raise HTTPException(403, "world mutation requires the admin key")
 
 # "There is only one Earth-1" (2026-08-16 audit): the old module-global
 # _world_state here was a SECOND world — /ask answered from one Earth
@@ -41,7 +56,8 @@ class InjectEventRequest(BaseModel):
 
 
 @router.post("/tick")
-def advance_world(req: TickRequest):
+def advance_world(req: TickRequest, request: Request = None):
+    _require_admin(request)
     """Advance the world by N ticks."""
     from earth1.tick import world_tick, run_world
 
@@ -149,7 +165,8 @@ def emergence_metrics():
 
 
 @router.post("/receiver/enable")
-def enable_receiver(req: ReceiverToggleRequest):
+def enable_receiver(req: ReceiverToggleRequest, request: Request = None):
+    _require_admin(request)
     """Enable or disable live source polling."""
     state = _get_or_create_state()
 
@@ -169,7 +186,8 @@ def enable_receiver(req: ReceiverToggleRequest):
 
 
 @router.post("/inject")
-def inject_event(req: InjectEventRequest):
+def inject_event(req: InjectEventRequest, request: Request = None):
+    _require_admin(request)
     """Manually inject a world event."""
     state = _get_or_create_state()
 
@@ -192,7 +210,8 @@ def inject_event(req: InjectEventRequest):
 
 
 @router.post("/reset")
-def reset_world(pop: int = Query(100_000), seed: int = Query(42)):
+def reset_world(request: Request = None, pop: int = Query(100_000), seed: int = Query(42)):
+    _require_admin(request)
     """Reset THE world singleton to genesis state (frozen path only —
     a persisted living world on disk is never destroyed by this)."""
     reset_civ(pop=pop, seed=seed)

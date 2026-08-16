@@ -140,6 +140,9 @@ class QuestionCorpus:
         self.domains = list(domains) if domains else ["belief_causal"] * n
         self.lenses = list(lenses) if lenses else ["wvs"] * n
         self.sources = list(sources) if sources else ["corpus"] * n
+        # profiles matrix must track n rows from build time — appending
+        # into an empty matrix misaligned later adds (audit round 7)
+        self.profiles = np.full((n, NUM_FORCES), np.nan)
         self.vectorizer.fit(self.texts)
         self.matrix = np.stack([self.vectorizer.embed(t) for t in self.texts])
 

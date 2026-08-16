@@ -25,7 +25,7 @@ class TestWorldEvent:
         assert e.timestamp == 0.0
         assert e.force_deltas["fear"] == 0.1
         assert e.source == "manual"
-        assert len(e.id) == 8
+        assert len(e.id) == 36   # full UUID (8-hex invited collisions)
 
     def test_frozen(self):
         e = WorldEvent.create(timestamp=0.0, force_deltas={"fear": 0.1})
@@ -201,3 +201,21 @@ class TestSemanticEventInjection:
         deltas = log.effective_deltas_vectorized(1.0, civ)
         assert abs(deltas[:, int(Force.FEAR)]).max() > 0.01, \
             "injected event was a no-op on the force field"
+
+
+def test_bare_iso2_region_canonicalized():
+    """Audit round 7: region_pattern='IT' silently matched ZERO agents;
+    bare ISO2 codes canonicalize to 'IT-*'."""
+    ev = WorldEvent.create(timestamp=0.0, force_deltas={"fear": 0.1},
+                           region_pattern="IT")
+    assert ev.region_pattern == "IT-*"
+    ev2 = WorldEvent.create(timestamp=0.0, force_deltas={"fear": 0.1},
+                            region_pattern="IT-01")
+    assert ev2.region_pattern == "IT-01"
+
+
+def test_event_ids_full_uuid():
+    """8-hex ids (~32 bits) invite birthday collisions in a news-fed
+    world; ids are full UUIDs now."""
+    ev = WorldEvent.create(timestamp=0.0, force_deltas={"fear": 0.1})
+    assert len(ev.id) == 36
