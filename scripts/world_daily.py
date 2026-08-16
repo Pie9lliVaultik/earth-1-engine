@@ -36,6 +36,9 @@ def main():
                     help="activate grounding stack (§14 placebo gate enforced)")
     ap.add_argument("--skip-placebo", action="store_true",
                     help="skip placebo gate (trust cached passport)")
+    ap.add_argument("--read-news", action="store_true",
+                    help="the world reads today's headlines through the "
+                         "validated perception channel (needs LLM key)")
     args = ap.parse_args()
 
     os.environ.setdefault("DATABASE_URL", args.db)
@@ -114,6 +117,23 @@ def main():
         else:
             receiver_active = True
             print("Receiver activated (placebo gate skipped)")
+
+    # ── 2c. the world reads today's news (validated perception channel) ──
+    if args.read_news:
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            print("News read SKIPPED: no ANTHROPIC_API_KEY "
+                  "(channel off, never silent)")
+        else:
+            from earth1.daily_news import read_todays_news
+            print("The world reads today's news...")
+            news_events = read_todays_news(
+                day=world.state.tick_count,
+                t=world.state.t,
+                ledger_path=WORLD_PATH / "abstentions.jsonl",
+            )
+            for ev in news_events:
+                world.state.event_log.append(ev)
+            print(f"  {len(news_events)} perceived events entered the world")
 
     stats = world.tick(
         questions, days=args.days,
