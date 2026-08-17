@@ -31,5 +31,13 @@
     "log": "/opt/earth1/rung10m.log",
     "launch": "cd /opt/earth1 && RUNG_POP=10000000 RUNG_NAME=10m .venv/bin/python3 scripts/rung_1m.py > rung10m.log 2>&1",
     "max_retries": 2
+  },
+  {
+    "name": "ridge_quality",
+    "pgrep": "[r]idge_quality_check.py",
+    "done_check": "test -f /opt/earth1/data/ridge_quality.json",
+    "log": "/tmp/ridge_quality.log",
+    "launch": "cd /opt/earth1 && RQC_POP=200000 .venv/bin/python3 scripts/ridge_quality_check.py > /tmp/ridge_quality.log 2>&1",
+    "max_retries": 2
   }
 ]
