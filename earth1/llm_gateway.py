@@ -59,14 +59,22 @@ EXAMPLES OF WELL-CALIBRATED QUESTIONS:
 DOMAIN CLASSIFICATION:
   - "belief_causal": opinion is shaped by internal beliefs, values, identity, or social forces.
     Most political, social, cultural, economic questions are belief-causal.
-  - "external_substrate": the answer depends on physical/empirical reality, not belief.
-    Weather, sports scores, factual measurements.  The engine CANNOT answer these.
+  - "outcome_forecast": the question asks about an EXTERNAL OUTCOME the population
+    does not cause but forms collective beliefs/expectations about — elections
+    resolving, recessions, wars starting, asteroid impacts, rate decisions.
+    The engine reports the CIVILIZATION'S collective probability of the outcome,
+    never a claim about physical ground truth. Estimate weights for the belief.
+  - "external_substrate": the answer is a factual measurement with no meaningful
+    collective-belief layer (arithmetic, a physical constant, tomorrow's exact
+    temperature reading). The engine CANNOT answer these.
 
 PREMISE CHECK:
   Before estimating weights, determine if the question is:
   1. belief_causal → estimate weights normally
-  2. external_substrate → set premise_valid=false, explain why belief is not the cause
-  3. incoherent/unanswerable → set premise_valid=false, explain
+  2. outcome_forecast → estimate weights normally; the answer is interpreted
+     as collective expectation, not truth
+  3. external_substrate → set premise_valid=false, explain why belief is not the cause
+  4. incoherent/unanswerable → set premise_valid=false, explain
 
 COUNTRY SCOPING:
   The engine models 194 countries — every UN member state plus major
@@ -114,7 +122,7 @@ WEIGHT_TOOL = {
             "temperament": {"type": "number", "description": "Weight for temperament force."},
             "domain": {
                 "type": "string",
-                "enum": ["belief_causal", "external_substrate"],
+                "enum": ["belief_causal", "outcome_forecast", "external_substrate"],
                 "description": "Is this a belief-causal question or external substrate?",
             },
             "premise_valid": {

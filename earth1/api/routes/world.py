@@ -56,27 +56,29 @@ class InjectEventRequest(BaseModel):
 
 
 @router.post("/tick")
-def advance_world(req: TickRequest, request: Request = None):
+def advance_world_route(req: TickRequest, request: Request = None):
+    """Advance THE world — same canonical passage of time as the
+    daily heartbeat (audit round 8: the API previously ran a second,
+    coupling-less, ageless tick path)."""
     _require_admin(request)
-    """Advance the world by N ticks."""
-    from earth1.tick import world_tick, run_world
+    from earth1.advance import advance_world
 
     state = _get_or_create_state()
     qs = [q for q in QUESTIONS if q.domain != "external_substrate"]
 
     results = []
-    for tick_result in run_world(
-        state, n_ticks=req.n_ticks, questions=qs,
-        dt=req.dt, batch_size=req.batch_size,
-        use_force_dynamics=req.use_force_dynamics,
-        enable_receiver=req.enable_receiver,
-    ):
+    for _ in range(req.n_ticks):
+        advance_world(
+            state, qs, days=1, dt=req.dt,
+            batch_size=req.batch_size,
+            use_force_dynamics=req.use_force_dynamics,
+            enable_receiver=req.enable_receiver,
+        )
         results.append({
-            "tick": tick_result.tick,
-            "t": round(tick_result.t, 1),
-            "questions_run": tick_result.questions_run,
-            "events_fired": tick_result.events_fired,
-            "graph_stats": tick_result.graph_stats,
+            "tick": state.tick_count,
+            "t": round(state.t, 1),
+            "questions_run": len(qs),
+            "events_fired": len(state.event_log),
         })
 
     living = get_living_world()

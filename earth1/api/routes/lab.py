@@ -86,6 +86,11 @@ def layer_scrub_endpoint(
 
 @router.post("/evolve", response_model=EvolveResponse)
 def evolve_population(req: EvolveRequest):
+    # audit round 7/8: this endpoint imported functions removed from
+    # dynamics.py and raised ImportError at call time. Retired.
+    raise HTTPException(
+        410, "retired: pre-One-Law evolution path; use /world/tick "
+             "(canonical advance_world) instead")
     """Evolve the population forward in time and optionally track opinion drift on a question."""
     from earth1.dynamics import evolve, project_opinion_drift
 

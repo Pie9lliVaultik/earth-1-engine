@@ -64,10 +64,14 @@ def main():
     corpus = QuestionCorpus.load(corpus_path)
     day = world.state.tick_count
     idx = [(day * args.batch + i) % len(corpus) for i in range(args.batch)]
+    # ONE canonical corpus->Question constructor — a hand-rolled
+    # Question here dropped the response profile, leaving the living
+    # world's daily questions event-inert (audit round 8)
     questions = [
         Question(id=corpus.ids[i], text=corpus.texts[i], domain="belief_causal",
                  baseline=float(corpus.baselines[i]),
-                 weights=corpus.weights[i], lens="wvs")
+                 weights=corpus.weights[i], lens="wvs",
+                 response_profile=corpus._profile(i))
         for i in idx
     ]
 

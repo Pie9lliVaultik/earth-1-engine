@@ -272,28 +272,17 @@ class LivingWorld:
         source signals (GDELT/ACLED/FRED) are polled and injected as
         events — but only sources that passed the §14 placebo gate.
         """
-        from earth1.generational import generational_tick
-        from earth1.coupling import build_coupling_matrix
+        from earth1.advance import advance_world
 
-        # cross-question coupling is deterministic in the day's question
-        # set — rebuild it every tick (re-audit: the persistent world ran
-        # with a permanently empty coupling matrix, so the mechanism the
-        # docstring promises was silently off)
-        self.state.coupling_matrix = build_coupling_matrix(questions)
-
-        stats = {"deaths": 0}
-        for _ in range(days):
-            world_tick(
-                self.state, questions=questions, dt=1.0,
-                enable_receiver=enable_receiver,
-                **tick_kwargs,
-            )
-            if enable_generational:
-                day = generational_tick(
-                    self.state.civ, self.state.rng, dt_days=1.0,
-                    cohort_drift=cohort_drift,
-                )
-                stats["deaths"] += day["deaths"]
+        # ONE passage of time (audit round 8): LivingWorld.tick is a
+        # thin persistence wrapper around the canonical advance_world
+        stats = advance_world(
+            self.state, questions, days=days, dt=1.0,
+            enable_generational=enable_generational,
+            enable_receiver=enable_receiver,
+            cohort_drift=cohort_drift,
+            **tick_kwargs,
+        )
         if save:
             self.save()
         return stats

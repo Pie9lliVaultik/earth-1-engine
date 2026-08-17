@@ -81,6 +81,9 @@ def relevance_matrix():
 
 @router.post("/field-shift", response_model=FieldShiftSchema)
 def field_shift(req: FieldShiftRequest):
+    """LEGACY PHYSICS: exposes the raw field-shift path. The canonical
+    living receiver converts observations into EVENTS which enter
+    opinion via the response law (One Law). Response carries the tag."""
     q = question_by_id(req.question_id)
     if not q or q.domain != "belief_causal":
         raise HTTPException(400, f"Unknown or non-causal question: {req.question_id}")
@@ -96,6 +99,9 @@ def field_shift(req: FieldShiftRequest):
 
     return {
         "question_id": req.question_id,
+        "physics": "legacy-field-shift — NOT the validated E1-0.4 "
+                   "response operator; canonical path is events via "
+                   "the living receiver",
         "field_shift": {f: float(shift[i]) for i, f in enumerate(
             ["fear", "desire", "economics", "collective", "identity", "culture", "experience", "temperament"]
         )},

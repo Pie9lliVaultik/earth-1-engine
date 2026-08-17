@@ -246,3 +246,28 @@ def test_all_surfaces_see_the_same_changed_earth():
         else:
             os.environ["EARTH1_POP"] = prev_pop
         deps.reset_civ()
+
+
+def test_outcome_forecast_domain_computes():
+    """Audit rounds 7-8 (the asteroid correction): the civilization may
+    form beliefs about outcomes it does not cause. outcome_forecast
+    questions compute normally — the INTERPRETATION (collective
+    expectation, not truth) changes, never the permission. Pure
+    external_substrate still abstains."""
+    import numpy as np
+    from earth1.engine import run_question, build_genesis_civilization
+    from earth1.types import Question
+    civ = build_genesis_civilization(3000, seed=5)
+    q = Question(id="asteroid", text="Will an asteroid hit Earth next Tuesday?",
+                 domain="outcome_forecast", baseline=-2.0,
+                 weights=np.array([1.5, 0, 0, 0, 0, 0, 0.5, -0.5]))
+    r = run_question(q, civ)
+    assert r.abstained is None or r.abstained == "", \
+        "outcome_forecast must compute, not abstain"
+    assert 0.0 <= r.yes_pct <= 1.0
+
+    q2 = Question(id="temp", text="What is 2+2?",
+                  domain="external_substrate", baseline=0.0,
+                  weights=np.zeros(8))
+    r2 = run_question(q2, civ)
+    assert r2.abstained, "external_substrate must still abstain"
