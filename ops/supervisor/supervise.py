@@ -32,6 +32,16 @@ def sh(cmd: str) -> subprocess.CompletedProcess:
                           text=True, timeout=120)
 
 
+def sh_launch(cmd: str) -> None:
+    """Fire-and-forget launcher. No pipes: a backgrounded child that
+    inherits a captured pipe keeps subprocess.run blocked until timeout
+    (first supervisor run, journal 2026-08-17T12:22). setsid detaches
+    the job from the supervisor's own lifetime."""
+    subprocess.run(["setsid", "bash", "-lc", cmd],
+                   stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                   stderr=subprocess.DEVNULL, timeout=30)
+
+
 def jlog(rec: dict) -> None:
     rec["ts"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     with open(os.path.join(BASE, "journal.jsonl"), "a") as f:
@@ -69,7 +79,7 @@ def main() -> None:
             st["retries"] += 1
             jlog({"job": name, "event": "relaunch",
                   "retry": st["retries"], "tail": tail})
-            sh(job["launch"])
+            sh_launch(job["launch"])
             status[name] = f"relaunched({st['retries']})"
         except Exception as e:  # a broken job spec must not kill the loop
             status[name] = f"supervisor_error: {e}"
