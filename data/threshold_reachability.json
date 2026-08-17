@@ -1,0 +1,31 @@
+{
+ "pop": 200000,
+ "seed": 42,
+ "n_countries": 194,
+ "force_mean_max": {
+  "FEAR": 0.6020389715184506,
+  "DESIRE": 0.6235824962627217,
+  "ECONOMICS": 0.6747009103640814,
+  "COLLECTIVE": 0.7923007165627487,
+  "IDENTITY": 0.8267087028742907,
+  "CULTURE": 0.8345978782541609,
+  "EXPERIENCE": 0.4750068756875686,
+  "TEMPERAMENT": 0.5572268398448017
+ },
+ "force_mean_min": {
+  "FEAR": 0.4645985213246622,
+  "DESIRE": 0.4889746106417929,
+  "ECONOMICS": 0.5361783370745603,
+  "COLLECTIVE": 0.28253638468555226,
+  "IDENTITY": 0.21982883509158024,
+  "CULTURE": 0.3777781356747197,
+  "EXPERIENCE": 0.22529149519890268,
+  "TEMPERAMENT": 0.40684956176303577
+ },
+ "reachable_at_genesis": {
+  "identity_collapse (fear>0.7 & collective>0.6)": false,
+  "panic_cascade (economics<0.3 & fear>0.5)": false,
+  "fear>0.7 alone": false,
+  "economics<0.3 alone": false
+ }
+}
