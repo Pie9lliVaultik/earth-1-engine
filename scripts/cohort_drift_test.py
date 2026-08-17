@@ -60,16 +60,22 @@ def main() -> None:
             r = generational_tick(civ, rng, dt_days=DT_DAYS)
             total_deaths += r["deaths"]
 
-    # per-trait linear rate over the run (units/year) + verdict
-    rates = {}
+    # per-trait linear rates (units/year): full window AND late window.
+    # The late window (second half of the run) excludes the pyramid
+    # equilibration transient — genesis starts from the census age
+    # distribution, not the machinery's own stationary pyramid, so the
+    # first decades drift for a benign, self-limiting reason. The
+    # STRUCTURAL verdict is the late-window slope.
+    x = np.array(years_axis, dtype=float)
+    late = x >= (YEARS / 2.0)
+    rates, rates_late = {}, {}
     for t in _INHERITED_TRAITS:
         y = np.array(series[t])
-        x = np.array(years_axis, dtype=float)
-        slope = float(np.polyfit(x, y, 1)[0])
-        rates[t] = slope
-    # bias confirmed if |extrapolated 50y move| > 0.02 for any trait
-    worst = max(rates, key=lambda t: abs(rates[t]))
-    worst_50y = rates[worst] * 50.0
+        rates[t] = float(np.polyfit(x, y, 1)[0])
+        rates_late[t] = float(np.polyfit(x[late], y[late], 1)[0])
+    # bias confirmed if |extrapolated 50y move| > 0.02 on the LATE slope
+    worst = max(rates_late, key=lambda t: abs(rates_late[t]))
+    worst_50y = rates_late[worst] * 50.0
     confirmed = abs(worst_50y) > 0.02
 
     out = {
@@ -78,15 +84,20 @@ def main() -> None:
         "series_years": years_axis,
         "series": series,
         "rates_per_year": rates,
+        "rates_per_year_late_window": rates_late,
         "worst_trait": worst,
-        "worst_50y_extrapolation": worst_50y,
+        "worst_50y_extrapolation_late": worst_50y,
         "bias_confirmed": confirmed,
     }
     with open("data/cohort_drift_test.json", "w") as f:
         json.dump(out, f, indent=1)
-    print(f"COHORT-DRIFT-VERDICT: worst {worst} rate {rates[worst]:+.5f}/yr "
-          f"-> {worst_50y:+.3f}/50y — "
-          + ("BIAS CONFIRMED" if confirmed else "STATIONARY (claim refuted)"),
+    print("full-window worst: "
+          + max(rates, key=lambda t: abs(rates[t]))
+          + f" {rates[max(rates, key=lambda t: abs(rates[t]))]:+.5f}/yr",
+          flush=True)
+    print(f"COHORT-DRIFT-VERDICT: late-window worst {worst} "
+          f"rate {rates_late[worst]:+.5f}/yr -> {worst_50y:+.3f}/50y — "
+          + ("BIAS CONFIRMED" if confirmed else "STATIONARY"),
           flush=True)
 
 

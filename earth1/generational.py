@@ -191,6 +191,21 @@ def generational_tick(
     dead_ages = age_years[dead_idx].copy()
     dead_countries = civ.country[dead_idx].copy()
 
+    # cohort-entry basis (E1-0.5): parents and cohort anchors contribute
+    # the trait value they ENTERED adulthood with, not the value they
+    # have aged to. Mixing age-drifted values injected a conservative
+    # bias every replacement cycle — measured as monotone zero-forcing
+    # drift over 200y (openness -0.0011/yr, data/cohort_drift_test.json),
+    # violating the stationarity invariant. De-aging is exact under the
+    # linear age gradients: entry = current - gradient * age. Learned
+    # components (feedback, events) are preserved — only the aging term
+    # is removed.
+    entry_basis = {
+        t: (getattr(civ, t) - _AGE_GRADIENTS[t] * civ.age
+            if t in _AGE_GRADIENTS else getattr(civ, t))
+        for t in _INHERITED_TRAITS
+    }
+
     # ── birth into the freed slots, same country ──
     # parent pool: adults 30-60 in the same country (weighted by presence)
     parent_ok = (age_years >= 30) & (age_years <= 60) & ~dead
@@ -211,14 +226,15 @@ def generational_tick(
 
         for t in _INHERITED_TRAITS:
             arr = getattr(civ, t)
+            eb = entry_basis[t]
             ymask = cmask & ~dead & young
             if ymask.sum() >= 20:
-                c_mean = float(arr[ymask].mean())
+                c_mean = float(eb[ymask].mean())
             elif (~dead & cmask).any():
-                c_mean = float(arr[cmask & ~dead].mean())
+                c_mean = float(eb[cmask & ~dead].mean())
             else:
-                c_mean = float(arr[cmask].mean())
-            base = (heritability * arr[parents] + (1 - heritability) * c_mean
+                c_mean = float(eb[cmask].mean())
+            base = (heritability * eb[parents] + (1 - heritability) * c_mean
                     if parents is not None else np.full(len(slots), c_mean))
             drift = float(cohort_drift.get(t, 0.0))
             arr[slots] = np.clip(

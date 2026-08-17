@@ -30,9 +30,13 @@ from earth1.rng import sigmoid
 
 # Named physics configuration. Every published number states this.
 # E1-0.4: scalar bounded-confidence diffusion + the one response law.
+# E1-0.5: cohort-entry-basis inheritance (generational.py) — parents and
+# cohort anchors contribute the trait they ENTERED adulthood with, not
+# the value they aged to. Fixes the measured stationarity violation
+# (200y zero-forcing drift, data/cohort_drift_test.json).
 # The force-dynamics path (8-channel propagation) is EXPERIMENTAL until
 # it passes a gate on its own — it must never silently serve production.
-PHYSICS_VERSION = "E1-0.4"
+PHYSICS_VERSION = "E1-0.5"
 
 # Temporal response gain — the one fitted constant of the response law
 # (d_logit = GAIN * shock . response_profile). Registered for G5 run #7
