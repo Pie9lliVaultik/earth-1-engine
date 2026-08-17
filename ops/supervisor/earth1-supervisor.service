@@ -1,0 +1,7 @@
+[Unit]
+Description=Earth-1 job supervisor (check + self-heal all tracked jobs)
+
+[Service]
+Type=oneshot
+ExecStart=/opt/earth1/.venv/bin/python3 /opt/earth1/supervisor/supervise.py
+WorkingDirectory=/opt/earth1

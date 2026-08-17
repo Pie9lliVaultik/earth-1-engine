@@ -52,21 +52,12 @@ def run_arm(basis: str) -> dict:
     }
 
 
-def main() -> None:
-    results = {}
-    for basis in ("current", "entry"):
-        print(f"arm {basis}: pop {POP}, {YEARS:.0f}y ...", flush=True)
-        results[basis] = run_arm(basis)
-        a = results[basis]
-        print(f"  mae_engine {a['mae_engine']:.4f} "
-              f"vs nochange {a['mae_nochange']:.4f} | "
-              f"sign {a['sign_accuracy']:.3f} (p={a['sign_p']:.3f})",
-              flush=True)
-
-    a, b = results["current"], results["entry"]
+def _merge() -> None:
+    a = json.load(open("data/inheritance_ab_current.json"))
+    b = json.load(open("data/inheritance_ab_entry.json"))
     out = {
         "pop": POP, "years": YEARS, "seed": SEED,
-        "arms": results,
+        "arms": {"current": a, "entry": b},
         "delta_mae_A_minus_B": a["mae_engine"] - b["mae_engine"],
         "delta_sign_A_minus_B": a["sign_accuracy"] - b["sign_accuracy"],
     }
@@ -78,6 +69,33 @@ def main() -> None:
           f"B {b['mae_engine']:.4f} | sign A {a['sign_accuracy']:.3f} "
           f"B {b['sign_accuracy']:.3f} | lower-MAE arm: {better}",
           flush=True)
+
+
+def main() -> None:
+    """Modes: 'current' | 'entry' — run ONE arm as its own process
+    (parallel wall-clock, supervisor-relaunchable) and write
+    data/inheritance_ab_<arm>.json; 'merge' — combine both arm files
+    into data/inheritance_ab.json + verdict; 'both' (default) — serial
+    legacy mode."""
+    mode = sys.argv[1] if len(sys.argv) > 1 else "both"
+    if mode == "merge":
+        _merge()
+        return
+    arms = ("current", "entry") if mode == "both" else (mode,)
+    results = {}
+    for basis in arms:
+        print(f"arm {basis}: pop {POP}, {YEARS:.0f}y ...", flush=True)
+        results[basis] = run_arm(basis)
+        a = results[basis]
+        print(f"  mae_engine {a['mae_engine']:.4f} "
+              f"vs nochange {a['mae_nochange']:.4f} | "
+              f"sign {a['sign_accuracy']:.3f} (p={a['sign_p']:.3f})",
+              flush=True)
+        with open(f"data/inheritance_ab_{basis}.json", "w") as f:
+            json.dump(results[basis], f, indent=1, default=str)
+        print(f"ARM-DONE: {basis}", flush=True)
+    if mode == "both":
+        _merge()
 
 
 if __name__ == "__main__":
