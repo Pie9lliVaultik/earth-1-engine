@@ -1431,6 +1431,97 @@ ISO3_TO_ISO2 = {
 }
 
 
+def _goqa_prepare_tasks(civ, goqa_data, e1_codes, cv_holdout, cv_seed):
+    """Phase A (serial, cheap): country targets + CV folds per question.
+    The fold shuffles consume the shared RandomState in EXACTLY the
+    order the legacy serial loop did — parallel results stay
+    bit-identical to every recorded number."""
+    rng = np.random.RandomState(cv_seed)
+    tasks = []
+    for q in goqa_data:
+        ct = {}
+        for iso3, dist in q['countries'].items():
+            iso2 = ISO3_TO_ISO2.get(iso3)
+            if iso2 and iso2 in e1_codes:
+                ct[iso2] = dist['yes']
+        if len(ct) < 3:
+            continue
+        test_codes = None
+        if len(ct) >= cv_holdout + 3:
+            codes = list(ct.keys())
+            rng.shuffle(codes)
+            test_codes = codes[:cv_holdout]
+        tasks.append({"id": q['id'], "text": q['text'],
+                      "global_yes": q['global_yes_popweighted'],
+                      "ct": ct, "test_codes": test_codes})
+    return tasks
+
+
+# worker context shared via fork copy-on-write (Linux); set before Pool
+_GOQA_CTX = {}
+
+
+def _goqa_worker(task):
+    """Phase B: one question's full computation — calibration,
+    predictions, CV — independent of every other question."""
+    import os
+    os.environ.setdefault("OMP_NUM_THREADS", "2")
+    from earth1.calibration import calibrate_single
+    from earth1.rng import logit as _logit, sigmoid as _sigmoid
+
+    civ = _GOQA_CTX["civ"]
+    features = _GOQA_CTX["features"]
+    code_to_idx = _GOQA_CTX["code_to_idx"]
+    ridge_alpha = _GOQA_CTX["ridge_alpha"]
+    extended = _GOQA_CTX["extended"]
+
+    ct = task["ct"]
+    global_yes = task["global_yes"]
+    baseline = float(global_yes)
+    baseline_logit = _logit(np.array([baseline]))[0]
+
+    w = calibrate_single(civ, baseline, ct, ridge_alpha=ridge_alpha,
+                         extended=extended)
+    eng_errs, naive_errs, all_e, all_n = [], [], [], []
+    for code, target in ct.items():
+        if code not in code_to_idx:
+            continue
+        mask = civ.country == code_to_idx[code]
+        if mask.sum() < 10:
+            continue
+        pred = float(_sigmoid(baseline_logit + features[mask] @ w).mean())
+        eng_errs.append(abs(pred - target))
+        naive_errs.append(abs(global_yes - target))
+        all_e.append(abs(pred - target))
+        all_n.append(abs(global_yes - target))
+
+    cv_e, cv_n = [], []
+    if task["test_codes"] is not None:
+        test_codes = task["test_codes"]
+        train_ct = {c: v for c, v in ct.items() if c not in set(test_codes)}
+        w_cv = calibrate_single(civ, baseline, train_ct,
+                                ridge_alpha=ridge_alpha, extended=extended)
+        for code in test_codes:
+            if code not in code_to_idx:
+                continue
+            mask = civ.country == code_to_idx[code]
+            if mask.sum() < 10:
+                continue
+            pred = float(_sigmoid(baseline_logit + features[mask] @ w_cv).mean())
+            cv_e.append(abs(pred - ct[code]))
+            cv_n.append(abs(global_yes - ct[code]))
+
+    e_mae = np.mean(eng_errs) if eng_errs else 0.0
+    n_mae = np.mean(naive_errs) if naive_errs else 0.0
+    winner = ('engine' if e_mae < n_mae - 0.005
+              else 'naive' if n_mae < e_mae - 0.005 else 'tie')
+    return {"result": {'id': task["id"], 'text': task["text"][:60],
+                       'n_countries': len(eng_errs),
+                       'engine': round(e_mae, 4), 'naive': round(n_mae, 4),
+                       'winner': winner},
+            "all_e": all_e, "all_n": all_n, "cv_e": cv_e, "cv_n": cv_n}
+
+
 def run_goqa_benchmark(
     civ: Civilization,
     goqa_data: List[Dict],
@@ -1443,87 +1534,36 @@ def run_goqa_benchmark(
 
     Uses extended calibration (forces + traits, 18 features) by default.
     Computes both in-sample MAE and leave-k-out cross-validation.
+
+    EARTH1_GOQA_WORKERS > 1 parallelizes per-question across processes
+    (fork/copy-on-write). Fold assignment is drawn serially first, so
+    parallel output is BIT-IDENTICAL to the legacy serial path.
     """
-    from earth1.calibration import calibrate_single, _build_features, _get_country_index
+    import os
+    from earth1.calibration import _build_features, _get_country_index
 
     code_to_idx, country_codes = _get_country_index(civ)
     e1_codes = set(country_codes)
     features = _build_features(civ, extended=extended)
-    n_feat = features.shape[1]
 
-    rng = np.random.RandomState(cv_seed)
+    tasks = _goqa_prepare_tasks(civ, goqa_data, e1_codes, cv_holdout, cv_seed)
 
-    all_e = []
-    all_n = []
-    cv_e = []
-    cv_n = []
-    results = []
+    _GOQA_CTX.update(civ=civ, features=features, code_to_idx=code_to_idx,
+                     ridge_alpha=ridge_alpha, extended=extended)
 
-    for q in goqa_data:
-        qid = q['id']
-        text = q['text']
-        global_yes = q['global_yes_popweighted']
+    workers = int(os.environ.get("EARTH1_GOQA_WORKERS", "1"))
+    if workers > 1 and hasattr(os, "fork"):
+        import multiprocessing as mp
+        with mp.get_context("fork").Pool(workers) as pool:
+            outs = pool.map(_goqa_worker, tasks)
+    else:
+        outs = [_goqa_worker(t) for t in tasks]
 
-        ct = {}
-        for iso3, dist in q['countries'].items():
-            iso2 = ISO3_TO_ISO2.get(iso3)
-            if iso2 and iso2 in e1_codes:
-                ct[iso2] = dist['yes']
-
-        if len(ct) < 3:
-            continue
-
-        baseline = float(global_yes)
-        from earth1.rng import logit as _logit, sigmoid as _sigmoid
-        baseline_logit = _logit(np.array([baseline]))[0]
-
-        w = calibrate_single(civ, baseline, ct, ridge_alpha=ridge_alpha,
-                             extended=extended)
-
-        eng_errs = []
-        naive_errs = []
-        for code, target in ct.items():
-            if code not in code_to_idx:
-                continue
-            mask = civ.country == code_to_idx[code]
-            if mask.sum() < 10:
-                continue
-            pred = float(_sigmoid(baseline_logit + features[mask] @ w).mean())
-            eng_errs.append(abs(pred - target))
-            naive_errs.append(abs(global_yes - target))
-            all_e.append(abs(pred - target))
-            all_n.append(abs(global_yes - target))
-
-        # Cross-validation
-        if len(ct) >= cv_holdout + 3:
-            codes = list(ct.keys())
-            rng.shuffle(codes)
-            test_codes = codes[:cv_holdout]
-            train_ct = {c: ct[c] for c in codes[cv_holdout:]}
-
-            w_cv = calibrate_single(civ, baseline, train_ct,
-                                    ridge_alpha=ridge_alpha, extended=extended)
-            for code in test_codes:
-                if code not in code_to_idx:
-                    continue
-                mask = civ.country == code_to_idx[code]
-                if mask.sum() < 10:
-                    continue
-                pred = float(_sigmoid(baseline_logit + features[mask] @ w_cv).mean())
-                cv_e.append(abs(pred - ct[code]))
-                cv_n.append(abs(global_yes - ct[code]))
-
-        e_mae = np.mean(eng_errs) if eng_errs else 0.0
-        n_mae = np.mean(naive_errs) if naive_errs else 0.0
-        winner = ('engine' if e_mae < n_mae - 0.005
-                  else 'naive' if n_mae < e_mae - 0.005 else 'tie')
-
-        results.append({
-            'id': qid, 'text': text[:60],
-            'n_countries': len(eng_errs),
-            'engine': round(e_mae, 4), 'naive': round(n_mae, 4),
-            'winner': winner,
-        })
+    all_e, all_n, cv_e, cv_n, results = [], [], [], [], []
+    for o in outs:
+        results.append(o["result"])
+        all_e.extend(o["all_e"]); all_n.extend(o["all_n"])
+        cv_e.extend(o["cv_e"]); cv_n.extend(o["cv_n"])
 
     return GOQAResult(
         n_questions=len(results),
