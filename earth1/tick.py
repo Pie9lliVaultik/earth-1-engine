@@ -115,6 +115,7 @@ def world_tick(
     use_force_dynamics: bool = False,
     residue_rate: float = 0.0005,
     susceptibility_gain: float = 4.0,
+    diffusion_layers: int = 8,
 ) -> TickResult:
     """One heartbeat of the civilization.
 
@@ -189,6 +190,7 @@ def world_tick(
         else:
             r = run_question(
                 q, state.civ,
+                layers=diffusion_layers,
                 event_log=state.event_log,
                 t=state.t,
                 field_shift=extra_shift,

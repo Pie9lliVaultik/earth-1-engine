@@ -105,6 +105,7 @@ def g5_temporal(
     progress: bool = False,
     replay_events: Optional[Dict[int, List]] = None,
     response_profiles: Optional[Dict[str, np.ndarray]] = None,
+    tick_kwargs: Optional[Dict] = None,
 ) -> TemporalLegResult:
     """The temporal leg: does the evolved world track observed deltas
     better than no-change?
@@ -170,7 +171,8 @@ def g5_temporal(
         if replay_events:
             for ev in replay_events.get(step, []):
                 state.event_log.append(ev)
-        advance_world(state, tick_questions, days=1, dt=dt_days)
+        advance_world(state, tick_questions, days=1, dt=dt_days,
+                      **(tick_kwargs or {}))
         if progress and (step + 1) % 12 == 0:
             print(f"  temporal: {(step + 1) * dt_days / 365.0:.1f}y / {years:.0f}y")
 
@@ -475,6 +477,7 @@ def g5_event_reaction(
     pop: int = 50_000,
     seed: int = 42,
     dt_days: float = 30.0,
+    tick_kwargs: Optional[Dict] = None,
 ) -> EventLegResult:
     """The event leg UNDER A3 — the one law, in the official court.
 
@@ -535,9 +538,12 @@ def g5_event_reaction(
     from earth1.advance import advance_world
 
     n_steps = max(1, int(round(case.window_days / dt_days)))
+    # the leg's own enable_event_generation=False is part of its
+    # registration and always wins over experiment tick_kwargs
+    tk = dict(tick_kwargs or {})
+    tk["enable_event_generation"] = False
     for _ in range(n_steps):
-        advance_world(state, [q], days=1, dt=dt_days,
-                      enable_event_generation=False)
+        advance_world(state, [q], days=1, dt=dt_days, **tk)
 
     # measure at the end of the window WITH the still-active event field
     event_deltas = state.event_log.effective_deltas_vectorized(
