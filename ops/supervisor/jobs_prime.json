@@ -55,5 +55,14 @@
     "log": "/tmp/envelope_nofb.log",
     "launch": "cd /opt/earth1 && TE_MODE=nofb TE_POP=50000 .venv/bin/python3 scripts/threshold_envelope.py > /tmp/envelope_nofb.log 2>&1",
     "max_retries": 2
+  },
+  {
+    "name": "pv_grid",
+    "pgrep": "[g]rid_driver.py",
+    "done_check": "test -f /opt/earth1/experiments/predictive_value/frozen/GRID_DONE",
+    "requires": "test -f /opt/earth1/experiments/predictive_value/frozen/spec.json",
+    "log": "/tmp/pv_grid.log",
+    "launch": "cd /opt/earth1 && PV_WORKERS=20 .venv/bin/python3 experiments/predictive_value/grid_driver.py > /tmp/pv_grid.log 2>&1",
+    "max_retries": 5
   }
 ]

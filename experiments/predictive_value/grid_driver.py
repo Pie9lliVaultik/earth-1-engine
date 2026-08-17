@@ -69,13 +69,15 @@ def run_combo(combo):
                        sign_accuracy=r.sign_accuracy, sign_p=r.sign_p,
                        n_pairs=r.n_pairs)
         else:  # event_a3
-            from earth1.g5 import g5_event_reaction
-            from earth1.reaction_cases import COVID_RALLY
+            from earth1.g5 import g5_event_reaction, COVID_RALLY
             r = g5_event_reaction(case=COVID_RALLY, pop=_POP,
                                   seed=combo["seed"],
                                   tick_kwargs=tick_kwargs)
-            rec.update(ratio=r.ratio, sim_delta=r.sim_delta,
-                       real_delta=r.real_delta, passes=r.passes)
+            rec.update(ratio=r.magnitude_ratio,
+                       sim_delta=r.simulated_mean_shift,
+                       real_delta=r.measured_mean_shift,
+                       sign_match=r.sign_match, passes=r.passes,
+                       per_country_n=r.n_countries)
         rec["ok"] = True
     except Exception:
         rec["ok"] = False
