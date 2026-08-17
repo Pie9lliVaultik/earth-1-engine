@@ -1,5 +1,23 @@
 # Earth-1 — Program State of Truth
 
+## ❄️ ARCHITECTURE FREEZE — 2026-08-17
+
+The behavioral physics of Earth-1 is FROZEN at this commit. Nine external
+audit rounds converged: One Earth (one WorldState, one country registry,
+one heartbeat — advance_world()), One Law (events enter humans through
+the response operator only; E1-0.4 scalar canonical), all 1,591 questions
+(27 built-in + 1,564 corpus) carrying blind temporal response profiles,
+outcome_forecast domain live, deterioration-checked bit-identical (GOQA
+10.24pp across three engine generations). The world lives on Hetzner
+(167.233.77.48), single-writer, systemd heartbeat, Polymarket armed.
+
+STANDING RULE from here: NO new mechanisms. Measurement only — G5 rerun
+on the served binary with distribution metrics, the benchmark battery,
+heterogeneity/ablation program, and the compounding standing record.
+Physics changes require a new registered build with the same audit
+discipline that produced this freeze.
+
+
 *Updated 2026-08-16 (night) · maintained alongside every milestone commit*
 
 **Build 29 "One Earth" (external-audit remediation) — LANDED.** Critical event-injection
