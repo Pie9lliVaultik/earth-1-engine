@@ -271,6 +271,12 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     h_uai = np.array([n["uai"] / 100.0 for n in norms_per_country])[country]
     h_lto = np.array([n["lto"] / 100.0 for n in norms_per_country])[country]
     h_ind = np.array([n["ind"] / 100.0 for n in norms_per_country])[country]
+    # ABLATION (EARTH1_NO_HOFSTEDE=1): neutralize the Hofstede channel
+    # (0.5 = no modulation) for the feature-attribution table
+    import os as _os2
+    if _os2.environ.get("EARTH1_NO_HOFSTEDE", "0") == "1":
+        for _a in (h_pdi, h_idv, h_mas, h_uai, h_lto, h_ind):
+            _a[:] = 0.5
 
     power_distance = np.clip(rng.normal(h_pdi, 0.12), 0, 1)
     individualism = np.clip(rng.normal(h_idv, 0.12), 0, 1)
