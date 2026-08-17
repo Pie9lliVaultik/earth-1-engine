@@ -47,5 +47,13 @@
     "log": "/tmp/threshold_envelope.log",
     "launch": "cd /opt/earth1 && TE_POP=50000 .venv/bin/python3 scripts/threshold_envelope.py > /tmp/threshold_envelope.log 2>&1",
     "max_retries": 2
+  },
+  {
+    "name": "envelope_nofb",
+    "pgrep": "TE_MODE=nofb",
+    "done_check": "test -f /opt/earth1/data/threshold_envelope_nofb.json",
+    "log": "/tmp/envelope_nofb.log",
+    "launch": "cd /opt/earth1 && TE_MODE=nofb TE_POP=50000 .venv/bin/python3 scripts/threshold_envelope.py > /tmp/envelope_nofb.log 2>&1",
+    "max_retries": 2
   }
 ]

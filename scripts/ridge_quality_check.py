@@ -32,7 +32,10 @@ from earth1.rng import logit, sigmoid
 
 POP = int(os.environ.get("RQC_POP", "200000"))
 SEED = 42
-ALPHA_GRID = [0.001, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]
+# extended past 30 after the 200K run pegged 31/40 questions at the old
+# grid max — production's effective standardized-space alpha is ~0.1/sd^2
+# with sd~0.05, i.e. ~40+, outside the original grid entirely
+ALPHA_GRID = [0.01, 0.1, 1.0, 3.0, 10.0, 30.0, 100.0, 300.0, 1000.0, 3000.0]
 
 
 def _fit(X, y, alpha, standardize):

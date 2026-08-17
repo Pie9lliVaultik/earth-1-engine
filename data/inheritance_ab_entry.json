@@ -1,0 +1,130 @@
+{
+ "basis": "entry",
+ "n_pairs": 410,
+ "mae_engine": 0.032,
+ "mae_nochange": 0.02905,
+ "sign_accuracy": 0.5067,
+ "sign_p": 0.43126,
+ "per_question": [
+  {
+   "question_id": "t_homosexuality",
+   "n_countries": 37,
+   "mae_engine": 0.07811,
+   "mae_nochange": 0.04135,
+   "mean_pred_delta": -0.03676,
+   "mean_obs_delta": 0.04135
+  },
+  {
+   "question_id": "t_abortion",
+   "n_countries": 27,
+   "mae_engine": 0.02636,
+   "mae_nochange": 0.0237,
+   "mean_pred_delta": -0.00403,
+   "mean_obs_delta": 0.02074
+  },
+  {
+   "question_id": "t_divorce",
+   "n_countries": 27,
+   "mae_engine": 0.04076,
+   "mae_nochange": 0.03593,
+   "mean_pred_delta": -0.00483,
+   "mean_obs_delta": 0.03593
+  },
+  {
+   "question_id": "t_religion",
+   "n_countries": 27,
+   "mae_engine": 0.03161,
+   "mae_nochange": 0.02407,
+   "mean_pred_delta": 0.00745,
+   "mean_obs_delta": -0.02407
+  },
+  {
+   "question_id": "t_trust",
+   "n_countries": 27,
+   "mae_engine": 0.01654,
+   "mae_nochange": 0.01296,
+   "mean_pred_delta": 0.00416,
+   "mean_obs_delta": -0.00852
+  },
+  {
+   "question_id": "t_democracy",
+   "n_countries": 27,
+   "mae_engine": 0.02742,
+   "mae_nochange": 0.0337,
+   "mean_pred_delta": -0.00675,
+   "mean_obs_delta": -0.0337
+  },
+  {
+   "question_id": "t_army_rule",
+   "n_countries": 27,
+   "mae_engine": 0.01842,
+   "mae_nochange": 0.02222,
+   "mean_pred_delta": 0.0074,
+   "mean_obs_delta": 0.01481
+  },
+  {
+   "question_id": "t_life_sat",
+   "n_countries": 27,
+   "mae_engine": 0.02512,
+   "mae_nochange": 0.03444,
+   "mean_pred_delta": -0.01764,
+   "mean_obs_delta": -0.02407
+  },
+  {
+   "question_id": "t_men_leaders",
+   "n_countries": 27,
+   "mae_engine": 0.04587,
+   "mae_nochange": 0.03704,
+   "mean_pred_delta": 0.00884,
+   "mean_obs_delta": -0.03704
+  },
+  {
+   "question_id": "t_pride",
+   "n_countries": 27,
+   "mae_engine": 0.02986,
+   "mae_nochange": 0.03556,
+   "mean_pred_delta": -0.00659,
+   "mean_obs_delta": -0.03556
+  },
+  {
+   "question_id": "t_two_parent",
+   "n_countries": 27,
+   "mae_engine": 0.03198,
+   "mae_nochange": 0.03148,
+   "mean_pred_delta": -0.00114,
+   "mean_obs_delta": -0.03148
+  },
+  {
+   "question_id": "t_tech_good",
+   "n_countries": 26,
+   "mae_engine": 0.01363,
+   "mae_nochange": 0.02115,
+   "mean_pred_delta": -0.00837,
+   "mean_obs_delta": -0.02115
+  },
+  {
+   "question_id": "t_death_penalty",
+   "n_countries": 25,
+   "mae_engine": 0.0217,
+   "mae_nochange": 0.0252,
+   "mean_pred_delta": -0.00395,
+   "mean_obs_delta": -0.022
+  },
+  {
+   "question_id": "t_environment",
+   "n_countries": 26,
+   "mae_engine": 0.04102,
+   "mae_nochange": 0.03115,
+   "mean_pred_delta": -0.00987,
+   "mean_obs_delta": 0.03115
+  },
+  {
+   "question_id": "t_hard_work",
+   "n_countries": 26,
+   "mae_engine": 0.01263,
+   "mae_nochange": 0.02038,
+   "mean_pred_delta": -0.01372,
+   "mean_obs_delta": -0.01962
+  }
+ ]
+}

@@ -66,7 +66,7 @@ def _questions(civ):
     return qs
 
 
-def _run(forced: bool):
+def _run(forced: bool, feedback: bool = True):
     civ = _make_mutable(genesis(POP, SEED))
     qs = _questions(civ)
     shocks = _load_case_perceived_shocks(CASE)
@@ -82,11 +82,33 @@ def _run(forced: bool):
                         timestamp=state.t, force_deltas=deltas,
                         region_pattern=f"{cc}-*", decay_half_life=decay,
                         source="envelope:forced"))
-        advance_world(state, qs, days=1, dt=DT)
+        advance_world(state, qs, days=1, dt=DT, enable_feedback=feedback)
     return t0, _national_means(civ)
 
 
+def _run_attribution() -> None:
+    """TE_MODE=nofb: the 50K envelope run found the ORDINARY tick (no
+    events) moves a national FEAR mean 0.16/yr — suspect: the feedback
+    ring compounding over 15 questions x 12 ticks in countries with
+    uniformly extreme stances. One control world with feedback OFF
+    attributes it: drift vanishes -> feedback ring; persists -> deeper."""
+    t0, end = _run(False, feedback=False)
+    common = sorted(set(t0) & set(end))
+    tot = np.array([end[c] - t0[c] for c in common])
+    per_force = {f.name: float(np.abs(tot[:, int(f)]).max()) for f in Force}
+    out = {"pop": POP, "seed": SEED, "mode": "control_feedback_off",
+           "max_abs_vs_t0_per_force": per_force}
+    with open("data/threshold_envelope_nofb.json", "w") as f:
+        json.dump(out, f, indent=1)
+    print(f"ENVELOPE-NOFB: max national move vs t0 with feedback OFF: "
+          f"{max(per_force.values()):.4f} (FEAR {per_force['FEAR']:.4f})",
+          flush=True)
+
+
 def main() -> None:
+    if os.environ.get("TE_MODE") == "nofb":
+        _run_attribution()
+        return
     t0, control = _run(False)
     _, forced = _run(True)
     common = sorted(set(control) & set(forced) & set(t0))

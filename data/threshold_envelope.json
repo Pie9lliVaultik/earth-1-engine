@@ -1,0 +1,59 @@
+{
+ "pop": 50000,
+ "seed": 42,
+ "case": "crisis_us_2008",
+ "steps": 12,
+ "dt_days": 30.0,
+ "per_force": {
+  "FEAR": {
+   "max_abs_forced_vs_control": 0.008908056840137957,
+   "max_abs_forced_vs_t0": 0.16237688693191077,
+   "max_national_mean_reached": 0.7519131418938391,
+   "min_national_mean_reached": 0.5513904767473795
+  },
+  "DESIRE": {
+   "max_abs_forced_vs_control": 0.004145967590522659,
+   "max_abs_forced_vs_t0": 0.010896313667920987,
+   "max_national_mean_reached": 0.6453921626262562,
+   "min_national_mean_reached": 0.49890998619787585
+  },
+  "ECONOMICS": {
+   "max_abs_forced_vs_control": 0.0003010521838597846,
+   "max_abs_forced_vs_t0": 0.001117387644690493,
+   "max_national_mean_reached": 0.6811625288661624,
+   "min_national_mean_reached": 0.5156511378909926
+  },
+  "COLLECTIVE": {
+   "max_abs_forced_vs_control": 0.01157438702504443,
+   "max_abs_forced_vs_t0": 0.02384099613087426,
+   "max_national_mean_reached": 0.7865432606537252,
+   "min_national_mean_reached": 0.2545033303547254
+  },
+  "IDENTITY": {
+   "max_abs_forced_vs_control": 0.008200782412559171,
+   "max_abs_forced_vs_t0": 0.008715584787040043,
+   "max_national_mean_reached": 0.8282976676429775,
+   "min_national_mean_reached": 0.21877556438978307
+  },
+  "CULTURE": {
+   "max_abs_forced_vs_control": 0.00022859084180637534,
+   "max_abs_forced_vs_t0": 0.0012483624908264934,
+   "max_national_mean_reached": 0.8351262217262218,
+   "min_national_mean_reached": 0.3743034885011049
+  },
+  "EXPERIENCE": {
+   "max_abs_forced_vs_control": 0.010120373464008736,
+   "max_abs_forced_vs_t0": 0.017472714110702836,
+   "max_national_mean_reached": 0.4839848535471657,
+   "min_national_mean_reached": 0.2293244422170247
+  },
+  "TEMPERAMENT": {
+   "max_abs_forced_vs_control": 0.0034515374579728864,
+   "max_abs_forced_vs_t0": 0.06625785159971381,
+   "max_national_mean_reached": 0.5014632719232992,
+   "min_national_mean_reached": 0.36265149925512835
+  }
+ },
+ "gap_to_fear_trigger": -0.05191314189383911,
+ "gap_to_econ_trigger": 0.2156511378909926
+}
