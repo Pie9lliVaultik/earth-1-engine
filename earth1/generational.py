@@ -22,6 +22,7 @@ prior. The parameter exists for controlled experiments.
 """
 from __future__ import annotations
 
+import os
 from typing import Dict, Optional
 
 import numpy as np
@@ -150,13 +151,31 @@ def generational_tick(
     cohort_drift: Optional[Dict[str, float]] = None,
     mobility: float = 0.3,
     return_details: bool = False,
+    inheritance_basis: Optional[str] = None,
 ) -> Dict[str, int]:
     """One generational step: age, die, be born. Returns {'deaths': n}.
 
     return_details=True adds 'dead_ages' (years) and 'dead_countries'
     (country indices) arrays — needed by the G5 demography leg.
+
+    inheritance_basis — the ontology of what parents transmit, UNDER
+    ADJUDICATION (2026-08-17, A/B vs longitudinal reality):
+      "current" (A, incumbent default): children inherit the parent's
+        present state, age drift included. Cultural transmission of the
+        lived self. Produces slow endogenous conservative drift
+        (~ -0.001/yr openness, measured over 200y zero-forcing).
+      "entry" (B, registered candidate E1-0.5): parents and cohort
+        anchors are de-aged to their cohort-entry values before mixing
+        (entry = current - gradient * age). Age effects stay life-cycle,
+        never becoming heritable cohort effects. Stationary by design.
+    Resolution order: explicit arg > EARTH1_INHERITANCE_BASIS env >
+    "current". Whichever arm better reproduces real longitudinal cohort
+    behavior becomes the default via a registered build; the loser is
+    kept as an experiment flag.
     """
     cohort_drift = cohort_drift or {}
+    basis = (inheritance_basis
+             or os.environ.get("EARTH1_INHERITANCE_BASIS", "current"))
     dt_years = dt_days / 365.0
 
     # ── aging ──
@@ -191,20 +210,18 @@ def generational_tick(
     dead_ages = age_years[dead_idx].copy()
     dead_countries = civ.country[dead_idx].copy()
 
-    # cohort-entry basis (E1-0.5): parents and cohort anchors contribute
-    # the trait value they ENTERED adulthood with, not the value they
-    # have aged to. Mixing age-drifted values injected a conservative
-    # bias every replacement cycle — measured as monotone zero-forcing
-    # drift over 200y (openness -0.0011/yr, data/cohort_drift_test.json),
-    # violating the stationarity invariant. De-aging is exact under the
-    # linear age gradients: entry = current - gradient * age. Learned
-    # components (feedback, events) are preserved — only the aging term
-    # is removed.
-    entry_basis = {
-        t: (getattr(civ, t) - _AGE_GRADIENTS[t] * civ.age
-            if t in _AGE_GRADIENTS else getattr(civ, t))
-        for t in _INHERITED_TRAITS
-    }
+    # Inheritance basis per the ontology under adjudication (see
+    # docstring). "entry" de-ages the aging term only — learned
+    # components (feedback, events) are always preserved. "current" is
+    # a snapshot of present state (identical to pre-parameter behavior).
+    if basis == "entry":
+        entry_basis = {
+            t: (getattr(civ, t) - _AGE_GRADIENTS[t] * civ.age
+                if t in _AGE_GRADIENTS else getattr(civ, t))
+            for t in _INHERITED_TRAITS
+        }
+    else:
+        entry_basis = {t: getattr(civ, t) for t in _INHERITED_TRAITS}
 
     # ── birth into the freed slots, same country ──
     # parent pool: adults 30-60 in the same country (weighted by presence)

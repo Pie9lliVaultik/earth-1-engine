@@ -27,6 +27,7 @@ from earth1.generational import generational_tick, _INHERITED_TRAITS
 
 POP = int(os.environ.get("DRIFT_POP", "50000"))
 YEARS = int(os.environ.get("DRIFT_YEARS", "200"))
+BASIS = os.environ.get("DRIFT_BASIS", "current")  # "current" (A) | "entry" (B)
 SEED = 42
 DT_DAYS = 30.4375  # 12 ticks per year
 
@@ -57,7 +58,8 @@ def main() -> None:
         if year == YEARS:
             break
         for _ in range(12):
-            r = generational_tick(civ, rng, dt_days=DT_DAYS)
+            r = generational_tick(civ, rng, dt_days=DT_DAYS,
+                                  inheritance_basis=BASIS)
             total_deaths += r["deaths"]
 
     # per-trait linear rates (units/year): full window AND late window.
@@ -80,6 +82,7 @@ def main() -> None:
 
     out = {
         "pop": POP, "years": YEARS, "seed": SEED,
+        "inheritance_basis": BASIS,
         "turnover_deaths": total_deaths,
         "series_years": years_axis,
         "series": series,
@@ -89,15 +92,15 @@ def main() -> None:
         "worst_50y_extrapolation_late": worst_50y,
         "bias_confirmed": confirmed,
     }
-    with open("data/cohort_drift_test.json", "w") as f:
+    with open(f"data/cohort_drift_{BASIS}.json", "w") as f:
         json.dump(out, f, indent=1)
     print("full-window worst: "
           + max(rates, key=lambda t: abs(rates[t]))
           + f" {rates[max(rates, key=lambda t: abs(rates[t]))]:+.5f}/yr",
           flush=True)
-    print(f"COHORT-DRIFT-VERDICT: late-window worst {worst} "
+    print(f"COHORT-DRIFT-VERDICT[{BASIS}]: late-window worst {worst} "
           f"rate {rates_late[worst]:+.5f}/yr -> {worst_50y:+.3f}/50y — "
-          + ("BIAS CONFIRMED" if confirmed else "STATIONARY"),
+          + ("DRIFTS" if confirmed else "STATIONARY"),
           flush=True)
 
 
