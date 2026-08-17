@@ -19,8 +19,10 @@ from earth1.genesis import genesis
 from earth1.living import pop_hash_full
 from earth1.forces import PHYSICS_VERSION
 
-POP = 1_000_000
-out = {"rung": "1M", "pop": POP, "physics": PHYSICS_VERSION,
+import os
+POP = int(os.environ.get("RUNG_POP", "1000000"))
+RUNG_NAME = os.environ.get("RUNG_NAME", "1M")
+out = {"rung": RUNG_NAME, "pop": POP, "physics": PHYSICS_VERSION,
        "started": datetime.now(timezone.utc).isoformat()}
 
 print(f"[1/4] genesis determinism at {POP:,}...")
@@ -59,5 +61,5 @@ out["finished"] = datetime.now(timezone.utc).isoformat()
 out["rung_earned"] = (out["deterministic"] and out["demography"]["passes"]
                       and out["event"]["passes"]
                       and out["goqa"]["engine_cv_mae"] < out["goqa"]["naive_cv_mae"])
-(ROOT / "data/rung_1m.json").write_text(json.dumps(out, indent=2))
-print(f"\nRUNG 1M EARNED: {out['rung_earned']}")
+(ROOT / f"data/rung_{RUNG_NAME.lower()}.json").write_text(json.dumps(out, indent=2))
+print(f"\nRUNG {RUNG_NAME} EARNED: {out['rung_earned']}")
