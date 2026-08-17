@@ -279,10 +279,21 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
 
     # Inglehart-Welzel dimensions (wider cross-country range than Hofstede)
     _ING_DEFAULT = {"trad_sec": 0.45, "surv_self": 0.45}
+    # LEAKAGE ABLATION (EARTH1_NO_INGLEHART=1): Inglehart coordinates
+    # derive from WVS answers to the very items GOQA benchmarks (God,
+    # religion, abortion, homosexuality, pride, trust). LOO-country CV
+    # cannot remove information already baked into the held country's
+    # coordinates. This flag neutralizes the channel (0.5 = no
+    # modulation) so the benchmark can be run leakage-clean.
+    import os as _os
+    _no_ing = _os.environ.get("EARTH1_NO_INGLEHART", "0") == "1"
     ing_trad_sec = np.array([INGLEHART.get(c["iso2"], _ING_DEFAULT)["trad_sec"]
                              for c in GENESIS_COUNTRIES])[country]
     ing_surv_self = np.array([INGLEHART.get(c["iso2"], _ING_DEFAULT)["surv_self"]
                               for c in GENESIS_COUNTRIES])[country]
+    if _no_ing:
+        ing_trad_sec = np.full_like(ing_trad_sec, 0.5)
+        ing_surv_self = np.full_like(ing_surv_self, 0.5)
 
     # Culture offset: derived from Hofstede IND (indulgence) centered at 0.5
     culture_offset = (h_ind - 0.5) * 0.4 + region_culture_delta
