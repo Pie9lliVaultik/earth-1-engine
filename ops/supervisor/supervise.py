@@ -32,12 +32,19 @@ def sh(cmd: str) -> subprocess.CompletedProcess:
                           text=True, timeout=120)
 
 
-def sh_launch(cmd: str) -> None:
-    """Fire-and-forget launcher. No pipes: a backgrounded child that
-    inherits a captured pipe keeps subprocess.run blocked until timeout
-    (first supervisor run, journal 2026-08-17T12:22). setsid detaches
-    the job from the supervisor's own lifetime."""
-    subprocess.run(["setsid", "bash", "-lc", cmd],
+def sh_launch(name: str, cmd: str) -> None:
+    """Launch a job as an INDEPENDENT transient systemd unit.
+
+    Hard-won (journal 2026-08-17): nohup/setsid do NOT survive the
+    supervisor — systemd kills everything left in a oneshot service's
+    cgroup when the run ends, which silently reaped jobs at cycle end.
+    systemd-run puts the job in its own unit/cgroup, immune to the
+    supervisor's lifetime. Launch commands must be FOREGROUND (no '&',
+    no nohup) — inside the transient unit the same cgroup rule applies.
+    --collect garbage-collects the unit even if the job fails."""
+    unit = f"e1-{name}-{int(__import__('time').time())}"
+    subprocess.run(["systemd-run", "-q", "--collect", f"--unit={unit}",
+                    "bash", "-lc", cmd],
                    stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                    stderr=subprocess.DEVNULL, timeout=30)
 
@@ -79,7 +86,7 @@ def main() -> None:
             st["retries"] += 1
             jlog({"job": name, "event": "relaunch",
                   "retry": st["retries"], "tail": tail})
-            sh_launch(job["launch"])
+            sh_launch(name, job["launch"])
             status[name] = f"relaunched({st['retries']})"
         except Exception as e:  # a broken job spec must not kill the loop
             status[name] = f"supervisor_error: {e}"
