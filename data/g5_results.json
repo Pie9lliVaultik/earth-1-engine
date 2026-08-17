@@ -4369,5 +4369,38 @@
       "cdr": 12.78,
       "passes": true
     }
+  },
+  {
+    "run": 10,
+    "timestamp": "2026-08-17T08:30:01.239029+00:00",
+    "pop": 50000,
+    "seed": 42,
+    "physics_version": "E1-0.4",
+    "frozen_commit": "4147de4",
+    "note": "First measurement-era run: full gate on the frozen architecture, canonical heartbeat, served binary, on the Hetzner server.",
+    "temporal": {
+      "mae_engine": 0.03201,
+      "mae_nochange": 0.02905,
+      "sign_accuracy": 0.5033,
+      "sign_p": 0.47699,
+      "passes": false
+    },
+    "event": {
+      "ratio": 0.9708,
+      "sign_match": true,
+      "passes": true,
+      "distribution": {
+        "per_country_mae_engine": 0.05828,
+        "per_country_mae_uniform_shift": 0.05333,
+        "variance_ratio_sim_over_real": 0.1627,
+        "rank_correlation": -0.4058
+      }
+    },
+    "demography": {
+      "le_tracking": 1.0,
+      "cdr": 12.78,
+      "passes": true
+    },
+    "all_pass": false
   }
 ]
