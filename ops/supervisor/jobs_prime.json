@@ -39,5 +39,13 @@
     "log": "/tmp/ridge_quality.log",
     "launch": "cd /opt/earth1 && RQC_POP=200000 .venv/bin/python3 scripts/ridge_quality_check.py > /tmp/ridge_quality.log 2>&1",
     "max_retries": 2
+  },
+  {
+    "name": "threshold_envelope",
+    "pgrep": "[t]hreshold_envelope.py",
+    "done_check": "test -f /opt/earth1/data/threshold_envelope.json",
+    "log": "/tmp/threshold_envelope.log",
+    "launch": "cd /opt/earth1 && TE_POP=50000 .venv/bin/python3 scripts/threshold_envelope.py > /tmp/threshold_envelope.log 2>&1",
+    "max_retries": 2
   }
 ]
