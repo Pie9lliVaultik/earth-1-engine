@@ -70,6 +70,18 @@ earth1-prime. Verdicts, plainly:
    (15/15 SECULAR) this is the stationarity design's own prediction;
    the decade-scale claim lives or dies with A6 (development-driven
    drift, preregistered, fit W5→W6 only).
+10. **THE GRID VERDICT (same-day, 80 combos, 5 seeds, spec frozen
+   pre-W5): B > A-0 > C.** Earth-1 Individual (demography +
+   generational + response law, social machinery OFF) BEATS no-change
+   on W6→W7 MAE (0.02707 vs 0.02905, ±0.0001 across seeds). The full
+   civilization LOSES to no-change (0.03146) — and per-mechanism
+   ablation attributes the entire 0.44pp damage to ONE ring:
+   opinion→trait feedback (C−feedback = 0.02702 ≈ B; all other Δm ≈ 0;
+   endogenous events never fired — "not exercised"). Event class: all
+   eight variants identical to 4 decimals — the response law does all
+   the work. The feedback ring is now owed the same
+   artifact-vs-intended-vs-valid adjudication the cohort case got.
+   Full tables: experiments/predictive_value/REPORT.md.
 
 
 *Updated 2026-08-16 (night) · maintained alongside every milestone commit*
