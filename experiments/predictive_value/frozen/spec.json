@@ -1,0 +1,132 @@
+{
+ "frozen_at_commit": "5036ad938d8eb255b003b1eb52df19804cc80f5a",
+ "physics_version": "E1-0.4",
+ "dataset_sha256": {
+  "earth1/wvs_paired.py": "d360ed7ad6845e8de029ebc2feb95f5f7dae9fda72ba77d9774a456a41eea260",
+  "data/wdi_tide.json": "3671eccc8861edeae95b188b2133b080dd5e8c4df67b674b599e85f6176c3c0c",
+  "data/perceived_cases.json": "2fbe32230b15515863d593c8ab7e83bee8c3bbf522cd685bc33a61c2a564d206",
+  "data/question_profiles.json": "ad3324d195a601be7a8af2cc18cb6c2956247bd975ff25f7ff729083badb888a",
+  "data/temporal_partition.json": "afa639b1f7c7dbdfe3c9fd35d55877cc555bfa4bb015077f015a56e996dfa05a",
+  "data/g5_preregistration.json": "7b7e58b7d93ba684183577aeaf7a2a3f49a49d1f89e154a4e7cb3ad40733cc3d"
+ },
+ "seeds": [
+  42,
+  43,
+  44,
+  45,
+  46
+ ],
+ "pop": 50000,
+ "temporal": {
+  "years": 7.0,
+  "dt_days": 30.0
+ },
+ "variants": {
+  "B_individual": {
+   "enable_feedback": false,
+   "enable_coupling": false,
+   "enable_thresholds": false,
+   "enable_rewire": false,
+   "enable_event_generation": false,
+   "diffusion_layers": 0
+  },
+  "C_full": {},
+  "C_no_diffusion": {
+   "diffusion_layers": 0
+  },
+  "C_no_feedback": {
+   "enable_feedback": false
+  },
+  "C_no_rewire": {
+   "enable_rewire": false
+  },
+  "C_no_coupling": {
+   "enable_coupling": false
+  },
+  "C_no_thresholds": {
+   "enable_thresholds": false
+  },
+  "C_no_eventgen": {
+   "enable_event_generation": false
+  }
+ },
+ "benchmarks": [
+  "temporal_w6w7",
+  "event_a3"
+ ],
+ "metrics": [
+  "mae_delta",
+  "sign_accuracy_CONTAMINATED",
+  "heterogeneity_r",
+  "pooled_r",
+  "calibration_slope"
+ ],
+ "countries_all": [
+  "AR",
+  "AU",
+  "BR",
+  "CL",
+  "CO",
+  "CY",
+  "DE",
+  "EC",
+  "EG",
+  "GH",
+  "HK",
+  "IN",
+  "IQ",
+  "JO",
+  "JP",
+  "KG",
+  "KR",
+  "KZ",
+  "LB",
+  "MA",
+  "MX",
+  "MY",
+  "NG",
+  "NL",
+  "NZ",
+  "PE",
+  "PH",
+  "PK",
+  "RO",
+  "RU",
+  "SG",
+  "TH",
+  "TN",
+  "TR",
+  "UA",
+  "US",
+  "ZW"
+ ],
+ "countries_guard_holdout": [
+  "CL",
+  "GH",
+  "HK",
+  "IN",
+  "KG",
+  "KR",
+  "KZ",
+  "LB",
+  "MX",
+  "SG",
+  "US",
+  "ZW"
+ ],
+ "honesty": {
+  "w6w7_label": "development/diagnostic \u2014 NOT blind (per-question outcomes inspected before design)",
+  "untouched_test": "WVS Wave 8 when published; EVS 2017 out-of-set countries; frozen betas, no re-registration",
+  "w5_status": "NOT in repo at freeze time \u2014 spec cannot have been shaped by training data"
+ },
+ "conclusions_space": [
+  "C>B>A",
+  "B>A,C~B",
+  "B~C~A"
+ ],
+ "registered_prediction": {
+  "event_class": "C>B>A0",
+  "secular_no_dev_channel": "B~C~A0",
+  "secular_with_dev_channel": "open \u2014 the experiment's question"
+ }
+}
