@@ -61,5 +61,12 @@ out["finished"] = datetime.now(timezone.utc).isoformat()
 out["rung_earned"] = (out["deterministic"] and out["demography"]["passes"]
                       and out["event"]["passes"]
                       and out["goqa"]["engine_cv_mae"] < out["goqa"]["naive_cv_mae"])
-(ROOT / f"data/rung_{RUNG_NAME.lower()}.json").write_text(json.dumps(out, indent=2))
+def _np_safe(o):
+    import numpy as _np
+    if isinstance(o, (_np.bool_,)): return bool(o)
+    if isinstance(o, _np.integer): return int(o)
+    if isinstance(o, _np.floating): return float(o)
+    raise TypeError(str(type(o)))
+(ROOT / f"data/rung_{RUNG_NAME.lower()}.json").write_text(
+    json.dumps(out, indent=2, default=_np_safe))
 print(f"\nRUNG {RUNG_NAME} EARNED: {out['rung_earned']}")
