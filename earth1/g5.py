@@ -158,13 +158,19 @@ def g5_temporal(
         question_history=[], coupling_matrix={}, last_fired={},
         rng=np.random.default_rng(seed),
     )
+    # THE canonical heartbeat (audit round 9): the scientific court
+    # advances Earth exactly the way production does — coupling rebuilt
+    # from the run's questions, opinion tick, generational tick. The
+    # registered "all endogenous mechanisms on" is now literally true
+    # (the old direct world_tick loop ran with coupling_matrix={}).
+    from earth1.advance import advance_world
+
     n_steps = int(round(years * 365.0 / dt_days))
     for step in range(n_steps):
         if replay_events:
             for ev in replay_events.get(step, []):
                 state.event_log.append(ev)
-        world_tick(state, questions=tick_questions, dt=dt_days)
-        generational_tick(state.civ, state.rng, dt_days=dt_days)
+        advance_world(state, tick_questions, days=1, dt=dt_days)
         if progress and (step + 1) % 12 == 0:
             print(f"  temporal: {(step + 1) * dt_days / 365.0:.1f}y / {years:.0f}y")
 
@@ -526,11 +532,12 @@ def g5_event_reaction(
                 source=f"g5:{case.id}",
             ))
 
+    from earth1.advance import advance_world
+
     n_steps = max(1, int(round(case.window_days / dt_days)))
     for _ in range(n_steps):
-        world_tick(state, questions=[q], dt=dt_days,
-                   enable_event_generation=False)
-        generational_tick(state.civ, state.rng, dt_days=dt_days)
+        advance_world(state, [q], days=1, dt=dt_days,
+                      enable_event_generation=False)
 
     # measure at the end of the window WITH the still-active event field
     event_deltas = state.event_log.effective_deltas_vectorized(

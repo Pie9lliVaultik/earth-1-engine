@@ -110,8 +110,16 @@ def field_shift(req: FieldShiftRequest):
     }
 
 
-@router.post("/run", response_model=RunResultSchema)
+@router.post("/run", response_model=RunResultSchema, deprecated=True)
 def run_with_field(req: FieldShiftRunRequest):
+    """LEGACY PHYSICS (410): this endpoint executed the retired
+    field-shift event pathway. The canonical path is the living
+    receiver converting observations into EVENTS, which enter opinion
+    via the E1-0.4 response law. Retired per audit round 9."""
+    raise HTTPException(
+        410, "retired: legacy field-shift event pathway; observations "
+             "enter via the living receiver as events (One Law). "
+             "Use /ask against the living world instead.")
     q = question_by_id(req.question_id)
     if not q or q.domain != "belief_causal":
         raise HTTPException(400, f"Unknown or non-causal question: {req.question_id}")
