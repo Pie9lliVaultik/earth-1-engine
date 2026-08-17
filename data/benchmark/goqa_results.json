@@ -63,5 +63,19 @@
     "naive_mae": 0.1264,
     "n_pairs": 2598,
     "note": "leakage-free lookup: global-mean-excl-c + offset-excl-q"
+  },
+  {
+    "timestamp": "2026-08-17T06:53:15.015549+00:00",
+    "manifold": "v2-age-fixed",
+    "pop": 200000,
+    "seed": 42,
+    "engine_mae": 0.1017,
+    "naive_mae": 0.1321,
+    "engine_cv_mae": 0.1024,
+    "naive_cv_mae": 0.1225,
+    "engine_wins": 33,
+    "naive_wins": 2,
+    "n_questions": 40,
+    "n_country_pairs": 2479
   }
 ]
