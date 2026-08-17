@@ -1,0 +1,20 @@
+{
+  "census_only": {
+    "engine_cv": 0.1142,
+    "naive_cv": 0.1225,
+    "wins": 24,
+    "n": 40
+  },
+  "census_hofstede": {
+    "engine_cv": 0.1057,
+    "naive_cv": 0.1225,
+    "wins": 33,
+    "n": 40
+  },
+  "full_inglehart": {
+    "engine_cv": 0.1024,
+    "naive_cv": 0.1225,
+    "wins": 33,
+    "n": 40
+  }
+}
