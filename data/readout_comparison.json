@@ -1,0 +1,22 @@
+{
+ "pop": 30000,
+ "cell_w1": {
+  "mean": 0.12768620156238003,
+  "count": 0.596607286571805,
+  "born": 0.12590015477686983
+ },
+ "country_mae": {
+  "mean": 0.109348799117811,
+  "count": 0.2906392759301653,
+  "born": 0.1273361134033837,
+  "naive": 0.126388231915934
+ },
+ "n_cells": 15,
+ "n_country": 200,
+ "regimes": {
+  "grounding_dependent": 18,
+  "degenerate": 15,
+  "mixed": 6,
+  "manifold_native": 1
+ }
+}
