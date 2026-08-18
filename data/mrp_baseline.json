@@ -4,5 +4,21 @@
  "n_test_cells": 200,
  "mrsp_cv_mae": 0.08562338232841843,
  "naive_cv_mae": 0.126388231915934,
- "earth1_cv_mae_reference": 0.1059
+ "earth1_cv_mae_reference": 0.1059,
+ "NESTING_AUDIT": {
+  "checked": "2026-08-18, in response to the leak-risk caution",
+  "verdict": "CLEAN \u2014 fully nested",
+  "evidence": [
+   "scripts/mrp_baseline.py:113 train = countries NOT in the pinned test fold",
+   "lines 121-123 standardization mu/sd computed on TRAIN countries only (no standardization leak)",
+   "lines 124-137 lambda and tau selected by inner leave-one-country-out INSIDE train; held-out countries never touch selection",
+   "line 137 final refit on train only; line 138+ scored on held-out"
+  ],
+  "why_it_matters": "multilevel partial pooling can leak across folds if the pooling variance is tuned on all countries. It was not. Stated explicitly because it is the first thing an opponent checks when the result is against us, and the first thing a quant checks when it is for us."
+ },
+ "ESTIMATION_NOT_DATA": {
+  "finding": "MrsP with 3 census covariates (0.0856) beats MrsP with WDI GDP/urban/tertiary added (0.0903)",
+  "reading": "the binding constraint on cross-sectional accuracy is ESTIMATION, not data. Third independent confirmation: (1) the injected 5-variable set overfit ~60 country rows, (2) nested-alpha ridge tuning moved little, (3) now extra covariates cost 0.47pp.",
+  "consequence": "Hofstede/Inglehart may carry less than their attributed ablation margin; regularization quality matters more than adding channels."
+ }
 }

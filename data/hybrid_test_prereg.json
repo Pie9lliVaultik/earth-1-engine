@@ -1,0 +1,7 @@
+{
+ "registered": "2026-08-18, BEFORE the hybrid is written or run",
+ "test": "MrsP alone vs MrsP + Earth-1 cell-structure predictor (engine cell means entered as an additional covariate), identical pinned folds, identical nesting.",
+ "REGISTERED EXPECTATION": "NO GAIN. Prior evidence: cube ties no-cube (0.3785 vs 0.3776), mean-agent equals full population under a correct objective (F1-under-B -0.08pp), clean gated features gave no MAE movement (0.1094 -> 0.1095).",
+ "if_positive": "BE SUSPICIOUS BEFORE PLEASED \u2014 the engine's cell predictions are built from calibrated weights fitted on country targets; check for target information smuggled through the calibration the way religiosity smuggled Q164. Required check before any claim: refit the engine covariate using ONLY train-fold targets, and run the adjacency logic on it.",
+ "if_null": "the cross-sectional case for agents is CLOSED; the pitch rests entirely on dynamics (event response, susceptibility, perishability) which the field lacks."
+}
