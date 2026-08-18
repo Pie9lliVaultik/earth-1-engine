@@ -292,3 +292,64 @@ def calibrate_single_aggregated(
         if float(np.linalg.norm(step)) < 1e-8:
             break
     return w
+
+
+# ── grounding port, step 4: cohort-level solver + condition gate ──
+
+def calibrate_cohort(
+    civ,
+    baseline: float,
+    cohort_targets: dict,
+    cohort_masks: dict,
+    ridge_alpha: float = 0.1,
+    extended: bool = True,
+    cond_max: float = 20_000.0,
+):
+    """Solve weights from COHORT targets (age x education cells), not
+    country means — the form Path A's real seeds carry.
+
+    Ported behaviour from the old inverse solver:
+      * rows are cohort cells, weighted by sqrt(n) when n is known
+      * the condition number is computed and the solve is REJECTED when
+        it exceeds cond_max (the old engine's quality gate for
+        live-grounded seeds; an ill-conditioned solve is not a
+        calibration, it is noise with a number attached)
+
+    Returns (weights, info) where info carries condition_number,
+    residual_rms, n_rows and accepted:bool. Weights are zeros when
+    rejected — callers must check `accepted`.
+    """
+    import numpy as _np
+    feats = _build_features(civ, extended=extended)
+    bl = logit(_np.array([baseline]))[0]
+    X, y, wt = [], [], []
+    for key, target in cohort_targets.items():
+        m = cohort_masks.get(key)
+        if m is None or m.sum() < 10:
+            continue
+        X.append(feats[m].mean(axis=0))
+        y.append(logit(_np.array([min(max(float(target), 1e-3),
+                                      1 - 1e-3)]))[0] - bl)
+        wt.append(_np.sqrt(max(int(m.sum()), 1)))
+    n_feat = feats.shape[1]
+    info = {"n_rows": len(y), "condition_number": None,
+            "residual_rms": None, "accepted": False}
+    if len(y) < 4:
+        info["reason"] = "too few cohort rows"
+        return _np.zeros(n_feat), info
+    X = _np.asarray(X)
+    y = _np.asarray(y)
+    w_sqrt = _np.asarray(wt)[:, None]
+    Xw, yw = X * w_sqrt, y * w_sqrt.ravel()
+    s = _np.linalg.svd(Xw, compute_uv=False)
+    cond = float(s[0] / max(s[-1], 1e-12))
+    info["condition_number"] = cond
+    if cond > cond_max:
+        info["reason"] = f"ill-conditioned ({cond:.0f} > {cond_max:.0f})"
+        return _np.zeros(n_feat), info
+    beta = _np.linalg.solve(Xw.T @ Xw + ridge_alpha * _np.eye(n_feat),
+                            Xw.T @ yw)
+    resid = yw - Xw @ beta
+    info["residual_rms"] = float(_np.sqrt(_np.mean(resid ** 2)))
+    info["accepted"] = True
+    return beta, info

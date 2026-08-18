@@ -1,0 +1,16 @@
+{
+ "ruler": "GSS verified microdata (US only)",
+ "pop": 200000,
+ "path_a": {
+  "national_mae": 0.15568624707888495,
+  "cell_mae": 0.16056292400770467,
+  "gradient_acc": 0.8253968253968254,
+  "n_scored": 441
+ },
+ "path_c": {
+  "national_mae": 0.12139721091885444,
+  "cell_mae": 0.1366956946564729,
+  "gradient_acc": 0.7573696145124716,
+  "n_scored": 441
+ }
+}
