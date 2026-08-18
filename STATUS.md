@@ -138,7 +138,8 @@ serve physics G5 never validated. Sign-conflict regression pinned.
 
 | Method | CV MAE | Note |
 |--------|--------|------|
-| **Earth-1 calibration model, full** | **10.24pp** | LOO-country folds; produced by the ridge calibration layer, NOT the dynamics stack (see Measurement Era §1) |
+| **Earth-1 calibration model, corrected truth** | **10.59pp** | vs naive 12.64, 34/40 — ground truth polarity-corrected 2026-08-18 (Q222/Q65 binarization errors found via VNF v2 audit); pinned folds |
+| Earth-1, pre-correction (historical) | 10.24pp | the number all pre-2026-08-18 records cite; same protocol, v1 truth |
 | **Earth-1, leakage-clean** | **10.57pp** | Inglehart channel neutralized — the number that survives the leakage attack; 33/40 wins |
 | Earth-1, census-only features | 11.42pp | Demographics alone beat naive (24/40) |
 | Earth-1 at 1M agents | 10.03pp | Scale helps, mildly (rung 1M earned) |
