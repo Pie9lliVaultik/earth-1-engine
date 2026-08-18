@@ -1,0 +1,17 @@
+{
+ "registered": "2026-08-18, BEFORE extracting cell histograms or fitting any dispersion",
+ "why": "cell-MAE is a MEAN-based ruler: blurring always reduces it, so it cannot discriminate superposition-as-physics from superposition-as-smoother. Measured 2026-08-18: widening blur improved MAE monotonically (0.2808->0.2704) while between-cell spread COLLAPSED (0.71->0.51).",
+ "new_ruler": {
+   "metric": "Wasserstein-1 between the engine's within-cell stance density and the REAL within-cell answer density (WVS7 individual responses, survey-weighted, ordinal scale binned identically)",
+   "unit": "per (question, country, age-bucket, education) cell",
+   "why_it_discriminates": "a density that flattens toward uniform pays an immediate penalty; a density that reproduces real bimodality wins. Blurring is no longer free."
+ },
+ "readouts_compared": ["HARD point agents", "SOFT+ per-agent answer distribution (dispersion FITTED from data, not swept)", "BORN coherence readout P=R_yes^2/(R_yes^2+R_no^2) recovered from the old TS engine (cannot be won by blurring: collapsing spread drives both camps' R together and P toward 0.5, which the distributional scorer punishes)"],
+ "REGISTERED PREDICTIONS": {
+   "primary": "SOFT+ with data-fitted dispersion beats HARD on Wasserstein-1 AND matches observed within-cell spread (ratio 0.8-1.2).",
+   "failure_branch_1": "matches spread but loses on distance => the shape is wrong even at the right width",
+   "failure_branch_2": "wins on distance by collapsing spread => still a smoother; superposition rejected on this substrate",
+   "born_readout": "no registered expectation — first measurement of it on real cell densities"
+ },
+ "discipline": "dispersion is FIT from real within-cell disagreement, never swept to taste; all cell coordinates (age, education) are gate-clean non-benchmark variables."
+}
