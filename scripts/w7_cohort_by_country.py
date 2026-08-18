@@ -31,10 +31,12 @@ def predicate(col: str, rule: str) -> str:
 
 
 con = duckdb.connect()
-con.execute(
-    f"CREATE VIEW w AS SELECT * FROM read_csv('{RAW}', header=true, "
-    f"delim=',', quote='\"', escape='\"', sample_size=200000, "
-    f"ignore_errors=true)")
+con.execute(f"""
+    CREATE VIEW w AS SELECT * FROM read_csv('{RAW}',
+      header=true, delim=',', quote='"', escape='"',
+      strict_mode=false, ignore_errors=true,
+      max_line_size=10000000, null_padding=true)
+""")
 out = open("data/wvs_w7_cohort_by_country.csv", "w")
 out.write("qcode,country,age_bucket,yes_weighted,n_weighted\n")
 n_cells = 0
