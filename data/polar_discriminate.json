@@ -1,0 +1,27 @@
+{
+ "pop": 50000,
+ "n_free_parameters": 6,
+ "cfg_fit_raw": [
+  0.2,
+  0.5,
+  0.8,
+  0.3,
+  0.35
+ ],
+ "cfg_fit_corrected": [
+  0.2,
+  0.5,
+  0.8,
+  0.3,
+  0.35
+ ],
+ "arm_A_cross_country_r": -0.3695398701020374,
+ "arm_A_n_countries": 5,
+ "arm_A_threshold": 0.4,
+ "arm_A_pass": false,
+ "arm_B_question_spearman": -0.6785714285714287,
+ "arm_B_n_questions": 7,
+ "arm_B_threshold": 0.74,
+ "arm_B_pass": false,
+ "arm_C_metric_ers_robust": true
+}
