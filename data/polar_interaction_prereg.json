@@ -1,19 +1,33 @@
 {
  "registered": "2026-08-18, BEFORE the operator is written or run",
  "measured_motivation": {
-   "reality_extreme_mass": 0.647,
-   "engine_extreme_mass_no_interaction": 0.036,
-   "gap": "18x",
-   "why_current_diffusion_cannot_close_it": "bounded-confidence diffusion is an AVERAGING operator; every layers/epsilon setting REDUCED extreme mass (0.036 -> 0.026) and worsened W1 (0.3499 -> 0.3600). Averaging cannot manufacture extremes."
+  "reality_extreme_mass": 0.647,
+  "engine_extreme_mass_no_interaction": 0.036,
+  "gap": "18x",
+  "why_current_diffusion_cannot_close_it": "bounded-confidence diffusion is an AVERAGING operator; every layers/epsilon setting REDUCED extreme mass (0.036 -> 0.026) and worsened W1 (0.3499 -> 0.3600). Averaging cannot manufacture extremes."
  },
  "mechanism": "POLAR interaction: discrete influence events from high-degree hubs push targets TOWARD A POLE (attraction to the source's side), with repulsion when disagreement exceeds a threshold (backfire). Not toward a neighbourhood mean.",
- "parameters_fit_not_authored": ["hub_fraction", "fire_rate", "attraction", "repulsion_threshold", "repulsion_strength", "rounds"],
+ "parameters_fit_not_authored": [
+  "hub_fraction",
+  "fire_rate",
+  "attraction",
+  "repulsion_threshold",
+  "repulsion_strength",
+  "rounds"
+ ],
  "protocol": "Parameters fit by minimizing Wasserstein-1 on TRAIN countries (2/3, seeded split); every reported number is on HELD-OUT countries. Cell coordinates (age, education) are gate-clean non-benchmark variables.",
  "REGISTERED PREDICTIONS": {
-   "success": "held-out W1 < 0.3499 AND extreme mass rises from 0.036 materially toward 0.647",
-   "failure_branch_1": "extreme mass rises but held-out W1 worsens => poles are in the wrong places",
-   "failure_branch_2": "neither moves => polar interaction rejected on this substrate; the constraint is the state space (effective rank 14.6 vs 41.9), not the operator",
-   "overfit_guard": "train-vs-heldout W1 gap > 0.03 => parameters are fitting country idiosyncrasy, report as such"
+  "success": "held-out W1 < 0.3499 AND extreme mass rises from 0.036 materially toward 0.647",
+  "failure_branch_1": "extreme mass rises but held-out W1 worsens => poles are in the wrong places",
+  "failure_branch_2": "neither moves => polar interaction rejected on this substrate; the constraint is the state space (effective rank 14.6 vs 41.9), not the operator",
+  "overfit_guard": "train-vs-heldout W1 gap > 0.03 => parameters are fitting country idiosyncrasy, report as such"
  },
- "production_impact": "NONE. Flag-gated experiment; production physics untouched; adoption would require a registered build."
+ "production_impact": "NONE. Flag-gated experiment; production physics untouched; adoption would require a registered build.",
+ "AMENDMENT_2026-08-18_ERS": {
+  "registered": "AFTER the 50K run returned, BEFORE any adoption decision or discriminating test \u2014 stated plainly so the timing is on the record",
+  "finding": "country response STYLE explains R2 0.441 of cross-cell extreme-mass variation (ERS mean 0.447, range 0.195-0.666 across 65 countries). Raw target 0.647 decomposes into ~0.259 style + ~0.329 true polarization.",
+  "third_failure_branch": "WINS ON BOTH BUT ONLY BY MATCHING AN ARTIFACT \u2014 any operator fitted to raw densities may be reproducing response style rather than polarization. Guard: refit on data/cell_densities_ers.json (style-corrected) and require the win to survive.",
+  "discriminating_test_binding": "shape-matching vs mechanism is decided by predicting quantities NOT fitted: (a) cross-country variation in extreme mass on held-out countries, (b) the ordering of which QUESTIONS are more bimodal. A knob fails both; a mechanism should get the ordering right.",
+  "note_on_this_run": "the 50K operator was fitted on RAW densities. Its selected config landed at extreme mass 0.363 while the independently-derived polarization target is 0.329 \u2014 suggestive, not sufficient. Interpreted under the original two branches until the discriminating test runs."
+ }
 }
