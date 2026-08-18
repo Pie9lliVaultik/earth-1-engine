@@ -380,16 +380,23 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     # measured P(religious | country, age bucket, education) — the first
     # agent property that carries information no country mean contains.
     # Flag off (default) => None => every existing number unchanged.
-    religiosity = None
+    # ── C2 genesis-v3: REAL within-country structure from WVS7 ──
+    # EARTH1_RELIGIOSITY=1 injects per-agent properties drawn from the
+    # measured P(property | country, age bucket, education) — the first
+    # agent information no country mean contains. Binary vars are drawn
+    # Bernoulli; continuous vars take the cell value plus small noise.
+    # Flag off (default) => all None => every existing number unchanged.
+    religiosity = marital = employed = ideology = social_class = None
     if os.environ.get("EARTH1_RELIGIOSITY") == "1":
         import json as _json
         from pathlib import Path as _Path
-        _p = _Path(__file__).resolve().parents[1] / "data" / "religiosity_priors.json"
-        if _p.exists():
-            _pri = _json.loads(_p.read_text())
-            p_vec = np.full(actual_pop, 0.5)
+        _root = _Path(__file__).resolve().parents[1] / "data"
+        _rng_inj = np.random.default_rng(seed + 99)
+
+        def _draw(prior: dict, binary: bool):
+            p_vec = np.full(actual_pop, np.nan)
             for _ci, _code in enumerate(GENESIS_COUNTRY_CODES):
-                _e = _pri.get(_code)
+                _e = prior.get(_code)
                 if _e is None:
                     continue
                 _cm = country == _ci
@@ -400,10 +407,35 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
                     _a, _ed = _key.split("_")
                     _ab = int(_a)
                     _mask = _cm & (education == int(_ed)) & (
-                        (age_bucket == _ab) if _ab < 3 else (age_bucket >= 3))
+                        (age_bucket == _ab) if _ab < 3
+                        else (age_bucket >= 3))
                     p_vec[_mask] = _p
-            religiosity = (np.random.default_rng(seed + 99).random(actual_pop)
-                           < p_vec).astype(np.float64)
+            # fallback for the 130 countries WVS7 never surveyed:
+            # 'neutral' (0.5) measured better than 'globalmean' — an
+            # uninformative default beats importing survey-sample bias
+            _fb = os.environ.get("EARTH1_INJECT_FALLBACK", "neutral")
+            _glob = (0.5 if _fb == "neutral"
+                     else (np.nanmean(p_vec) if np.isfinite(p_vec).any()
+                           else 0.5))
+            p_vec = np.where(np.isnan(p_vec), _glob, p_vec)
+            if binary:
+                return (_rng_inj.random(actual_pop) < p_vec).astype(np.float64)
+            return np.clip(p_vec + _rng_inj.normal(0, 0.08, actual_pop), 0, 1)
+
+        _rp = _root / "religiosity_priors.json"
+        if _rp.exists():
+            religiosity = _draw(_json.loads(_rp.read_text()), True)
+        _jp = _root / "joint_priors.json"
+        if _jp.exists():
+            _pri = _json.loads(_jp.read_text())
+            if "marital" in _pri:
+                marital = _draw(_pri["marital"], True)
+            if "employed" in _pri:
+                employed = _draw(_pri["employed"], True)
+            if "ideology" in _pri:
+                ideology = _draw(_pri["ideology"], False)
+            if "social_class" in _pri:
+                social_class = _draw(_pri["social_class"], False)
 
     return Civilization(
         n=actual_pop, seed=seed,
@@ -418,7 +450,9 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
         uncertainty_avoidance=uncertainty_avoidance,
         long_term_orientation=long_term_orientation,
         forces=forces, alpha=alpha, means=means, adj=adj,
-        religiosity=religiosity,
+        religiosity=religiosity, marital=marital,
+        employed=employed, ideology=ideology,
+        social_class=social_class,
     )
 
 

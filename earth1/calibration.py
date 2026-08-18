@@ -22,8 +22,23 @@ _EXTENDED_TRAITS = [
     # C2: real within-country structure from WVS7 microdata. Absent
     # (None) unless EARTH1_RELIGIOSITY=1 at genesis -> no feature, no
     # change to any recorded number.
-    'religiosity',
+    'religiosity', 'marital', 'employed', 'ideology',
+    'social_class',
 ]
+
+# EARTH1_INJECT selects WHICH injected variables enter the feature
+# matrix (default: religiosity only — the subset measured to win;
+# 23-feature all-in overfits ~60 country rows: GOQA 9.33 -> 10.32).
+_INJECTED = ('religiosity', 'marital', 'employed', 'ideology',
+             'social_class')
+
+
+def _active_traits():
+    import os
+    sel = os.environ.get("EARTH1_INJECT", "religiosity")
+    keep = set(x.strip() for x in sel.split(",") if x.strip())
+    return [t for t in _EXTENDED_TRAITS
+            if t not in _INJECTED or t in keep]
 
 
 def _build_features(civ: Civilization, extended: bool = False) -> np.ndarray:
@@ -37,7 +52,7 @@ def _build_features(civ: Civilization, extended: bool = False) -> np.ndarray:
         return forces_centered
 
     trait_arrays = []
-    for name in _EXTENDED_TRAITS:
+    for name in _active_traits():
         arr = getattr(civ, name, None)
         if arr is not None:
             trait_arrays.append(arr)

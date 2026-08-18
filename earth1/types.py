@@ -74,6 +74,10 @@ class Civilization:
     # religiosity drawn from WVS7 P(religious | country, age, edu).
     # None => absent => every downstream path bit-identical.
     religiosity: 'np.ndarray | None' = None
+    marital: 'np.ndarray | None' = None
+    employed: 'np.ndarray | None' = None
+    ideology: 'np.ndarray | None' = None
+    social_class: 'np.ndarray | None' = None
 
 
 @dataclass
