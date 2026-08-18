@@ -18,7 +18,7 @@ os.environ.setdefault("EARTH1_PINNED_FOLDS", "data/cv_folds.json")
 def main() -> None:
     civ = genesis(int(os.environ.get("GTC_POP", "200000")), 42)
     out = {}
-    for name, path in (("v1", "data/benchmark/goqa_ground_truth.json"),
+    for name, path in (("v1", "data/benchmark/goqa_ground_truth_v1_archived.json"),
                        ("corrected",
                         "data/benchmark/goqa_ground_truth_corrected.json")):
         gt = json.load(open(path))

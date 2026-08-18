@@ -1447,6 +1447,10 @@ def _goqa_prepare_tasks(civ, goqa_data, e1_codes, cv_holdout, cv_seed):
     import os as _os
     pinned = None
     pin_path = _os.environ.get("EARTH1_PINNED_FOLDS", "")
+    if not pin_path and _os.path.exists("data/cv_folds.json"):
+        pin_path = "data/cv_folds.json"  # DEFAULT since 2026-08-18 (F2)
+    if pin_path in ("off", "0"):
+        pin_path = ""
     if pin_path:
         import json as _json
         pinned = _json.load(open(pin_path))["folds"].get(str(cv_seed))
