@@ -37,6 +37,11 @@ SOURCES = {
     "employed": "Q279",
     "ideology": "Q240",
     "social_class": "Q287",
+    "household_size": "Q270",
+    "children": "Q274",
+    "town_size": "G_TOWNSIZE",
+    "immigrant": "Q263",
+    "income_scale": "Q288",
 }
 
 
