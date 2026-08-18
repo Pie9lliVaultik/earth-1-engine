@@ -69,6 +69,19 @@ def main() -> None:
     print(f"US agents {int(us.sum()):,} in {len(masks)} cohort cells",
           flush=True)
 
+    # aged populations depend ONLY on the year gap, not on the variable:
+    # precompute once per gap (was: a fresh 1M genesis per transition,
+    # ~450 of them — the reason the first run produced nothing in 50 min)
+    aged = {}
+    for gap in range(1, MAX_GAP + 1):
+        c2 = _make_mutable(genesis(POP, 42))
+        rng = np.random.default_rng(42)
+        for _ in range(int(gap) * 4):
+            generational_tick(c2, rng, dt_days=91.3)
+        aged[gap] = (_build_features(c2, extended=True),
+                     c2.country == c2i["US"])
+        print(f"  aged population for gap={gap}y ready", flush=True)
+
     rows = []
     for var, rec in truth.items():
         years = sorted(int(y) for y in rec["national"])
@@ -95,13 +108,7 @@ def main() -> None:
             yy = np.array([logit(np.array([v]))[0] - bl for v in yv])
             w = np.linalg.solve(X.T @ X + LAM * np.eye(X.shape[1]), X.T @ yy)
             pred_y1 = float(sigmoid(bl + feats[us] @ w).mean())
-            # age the population forward by the gap
-            civ2 = _make_mutable(genesis(POP, 42))
-            rng = np.random.default_rng(42)
-            for _ in range(int(gap) * 4):
-                generational_tick(civ2, rng, dt_days=91.3)
-            f2 = _build_features(civ2, extended=True)
-            us2 = civ2.country == c2i["US"]
+            f2, us2 = aged[gap]
             pred_y2 = float(sigmoid(bl + f2[us2] @ w).mean())
             rows.append({"var": var, "y1": a, "y2": b, "gap": gap,
                          "obs_change": y2 - y1,
