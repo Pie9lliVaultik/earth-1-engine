@@ -1,0 +1,8 @@
+{
+ "ruler": "GSS verified microdata (US)",
+ "pop": 200000,
+ "n": 168,
+ "cohort_fit_mae": 0.1705853756153804,
+ "country_fit_mae_reference": 0.1557,
+ "fair_anchor_mae": 0.1096065476190476
+}
