@@ -1,0 +1,39 @@
+{
+ "fitted_from": "wvs_w7_cohort_by_country.csv (official microdata)",
+ "form": "delta_logit = beta * (age - 45.125)/10",
+ "held_out_validation": "data/c1_age_slope_fit.json: 2.75pp, 80% directions",
+ "slopes": {
+  "Q57": {
+   "beta_age_per_decade": 0.002918583138978739,
+   "n_cells": 172
+  },
+  "Q65": {
+   "beta_age_per_decade": 0.1360448345887895,
+   "n_cells": 160
+  },
+  "Q71": {
+   "beta_age_per_decade": 0.08581856240316488,
+   "n_cells": 168
+  },
+  "Q164": {
+   "beta_age_per_decade": 0.12639423443944042,
+   "n_cells": 172
+  },
+  "Q180": {
+   "beta_age_per_decade": -0.14095699707533357,
+   "n_cells": 172
+  },
+  "Q182": {
+   "beta_age_per_decade": -0.19328297315182208,
+   "n_cells": 168
+  },
+  "Q184": {
+   "beta_age_per_decade": -0.1290103528096663,
+   "n_cells": 172
+  },
+  "Q185": {
+   "beta_age_per_decade": -0.09765562239947975,
+   "n_cells": 172
+  }
+ }
+}
