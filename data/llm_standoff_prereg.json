@@ -41,5 +41,12 @@
   "interpretation_if_split_appears": "reconciliation closed; 'frontier models are Western-anchored' line earned"
  },
  "amendment": "2026-08-18: western_set converted ISO2->ISO3 to match truth keys (classification fix, pre-results for sonnet; haiku 2-q smoke discarded)",
- "amendment2": "2026-08-18: temperature=0 impossible for claude-sonnet-5 (API: 'deprecated for this model') \u2014 sonnet calls run at model default sampling, one draw per question, cached. Haiku keeps temp 0. Registered before sonnet results."
+ "amendment2": "2026-08-18: temperature=0 impossible for claude-sonnet-5 (API: 'deprecated for this model') \u2014 sonnet calls run at model default sampling, one draw per question, cached. Haiku keeps temp 0. Registered before sonnet results.",
+ "hardening_record": {
+  "scored_misses_kept": "advisor band 8-15pp: MISS low (16.6); split 2:1: MISS (raw inverted; skill-adjusted 1.18W/1.27NW mild same-direction)",
+  "claim_scope": "Claude Sonnet 5, live, batched protocol, corrected truth, MAE at country resolution \u2014 NOT a category claim about frontier LLMs until GPT-5/Gemini slots run (same-family caveat: tester and tested share an author)",
+  "framing_guard": "finding = country-level adjustments worse than useless AT THIS RESOLUTION UNDER MAE; rank check run: mean Spearman 0.243 \u2014 ordering also unreliable at 66-country granularity",
+  "protocol_evidence": "exact prompt + parse path = scripts/llm_standoff.py ask(); batched 66/call, disclosed; single-call control = scripts/llm_singlecall_control.py",
+  "parse_integrity": "0 partial responses, 0 out-of-range values"
+ }
 }
