@@ -1,0 +1,20 @@
+{
+ "registered": "2026-08-18, BEFORE the cascade or the test is written",
+ "test": "15 GSS questions Earth-1 has never been calibrated against, scored under two calibration sources",
+ "arms": {
+  "PATH_C": "current Earth-1 behaviour \u2014 LLM-authored/ridge weights fitted WITHOUT the scored question's own real cohort targets (cross-question calibration only)",
+  "PATH_A": "survey-matched \u2014 calibrate from the question's REAL GSS cohort targets at year Y1 (never Y2, never the scored quantity)"
+ },
+ "ruler": "GSS 1972-2024 verified microdata (data/gss_truth.json). US-only: grades MECHANISM, not scope.",
+ "metrics": [
+  "national share MAE at held-out years",
+  "cohort cell MAE",
+  "age-gradient direction accuracy"
+ ],
+ "REGISTERED EXPECTATIONS": {
+  "primary": "PATH A beats PATH C on all three metrics. If real cohort targets do NOT beat authored weights, the grounding pipeline's central premise fails on our substrate and the port stops.",
+  "magnitude_guess": "large on cohort metrics (authored weights have never seen a cohort target), smaller on national share",
+  "failure_branch": "PATH A wins only on the questions used to fit it => leakage; every scored quantity must be held out"
+ },
+ "leak_guard": "the scored year's national share and the scored cells never enter the fit; Path A calibrates on year Y1 cells and is scored on later years."
+}
