@@ -76,3 +76,66 @@ country means (F1-under-B). Scale flat for country means (corrected
 ladder). Feedback ring damages prediction as authored (grid).
 Aggregate event response works (0.97) and is the one earned-constant
 channel. Demography is the only validated temporal mechanism.
+
+## AMENDMENT 1 (2026-08-18, same day): the cube as substrate, and the
+## superposition ontology — Build 31 candidate, registered before design
+
+The cube's demotion history is accepted as recorded: load-bearing in
+the SQL engine, reduced to a dormant O(cells) cache when numpy made
+aggregate reads free — the conceptual substrate silently discarded
+with the performance problem. Restoring it as a CACHE would change
+nothing (rank-18 occupancy: a tesseract-shaped container holding a
+rank-18 object). It returns, if it returns, as SUBSTRATE:
+
+- cells are the natural home of per-cell→per-agent susceptibility
+  (differential exposure = a SHEAR of cube occupancy; the current
+  uniform response is a TRANSLATION — which is why variance ratio
+  0.16 and why one mean agent suffices);
+- cell-to-cell coupling is the natural form of live nonlinearity;
+- anisotropic relaxation (fear un-deforms in weeks, identity in
+  generations) is the fittable form of perishability;
+- CELLS ARE COHORTS: the cohort instrument (step 1) grades exactly
+  the object the cube represents.
+
+### The superposition ontology — what it must predict to exist
+
+Honest status first: the point-agent representation was CHOSEN in both
+codebases; superposition has never been implemented in Earth-1 (the
+old SQL cube stored mean embeddings per cell — aggregation, not
+amplitudes). This is new physics, not restoration.
+
+REGISTERED PREDICTIONS a superposed engine makes that a point engine
+cannot (each with published human benchmarks — the test must exist
+before the mechanism):
+
+1. **Question-order effects with QQ-equality structure.** A point
+   engine is order-invariant by construction. A superposed engine
+   predicts p(A-then-B) ≠ p(B-then-A), AND the parameter-free
+   Quantum Question equality (Wang–Busemeyer): the sum of same-answer
+   probabilities is order-invariant even when the marginals are not.
+   Benchmark: published randomized-order survey experiments (e.g.
+   Gallup order-effect corpora). If Earth-1's order effects violate
+   QQ equality, the quantum form is FALSIFIED specifically.
+2. **Framing sensitivity as a rate, not a bug** — the same agent
+   answers differently under pre-specified framings, with the
+   disagreement rate a fitted-then-frozen prediction vs panel data.
+3. **Conjunction/disjunction error rates** at population level.
+4. **Mean-degenerate discrimination**: two populations with identical
+   mean force vectors but different amplitude structure must yield
+   measurably different aggregates on a pre-specified question set —
+   the one capability that escapes the rank-18/mean-agent objection,
+   because the information lives WITHIN agents, not in their count.
+
+### Constraints (binding)
+- Amplitude structure must be sourced from MICRODATA (within-person
+  inconsistency traces, panel test-retest), never generated from the
+  same 18 national numbers — else the bottleneck is recreated one
+  level down.
+- The collapse rule (question embedding → measurement basis →
+  projection) is specified and frozen BEFORE any result.
+- Every evaluation includes a point-engine control tuned to the same
+  data; the old repo's own honesty clause is adopted verbatim: "if it
+  doesn't beat the classic on human order-effect data, it's a cosine
+  with an elegant name."
+- Sequencing unchanged: ruler (0) and instrument (1) precede this as
+  they precede all step-2 physics. Nothing here modifies E1-0.4.
