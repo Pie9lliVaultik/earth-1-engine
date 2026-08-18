@@ -1,0 +1,8 @@
+        pop  per country     day1     day5      max    final  home ctry
+     20,000        103.1    0.0%   99.5%  100.0%   81.3%     86.5%
+     60,000        309.3    0.0%  100.0%  100.0%   99.6%    100.0%
+    200,000       1030.9    0.0%  100.0%  100.0%   99.1%     94.7%
+    600,000       3092.8    0.0%  100.0%  100.0%   41.6%     30.6%
+
+SCALE VERDICT: max reach 100.0% at 20K -> 100.0% at 600K
+  reach holds as the world grows: propagation is genuinely global

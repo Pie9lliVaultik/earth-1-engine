@@ -1,0 +1,182 @@
+{
+ "pop": 200000,
+ "days": 20,
+ "countries": [
+  {
+   "country": "NE",
+   "tfr": 6.8,
+   "n_agents": 538,
+   "days_to_half_of_home": 2,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.1415,
+   "day3_home": 1.0
+  },
+  {
+   "country": "NG",
+   "tfr": 4.5,
+   "n_agents": 4639,
+   "days_to_half_of_home": 3,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.1553,
+   "day3_home": 1.0
+  },
+  {
+   "country": "IN",
+   "tfr": 2,
+   "n_agents": 28918,
+   "days_to_half_of_home": 3,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.5179,
+   "day3_home": 1.0
+  },
+  {
+   "country": "US",
+   "tfr": 1.6,
+   "n_agents": 6885,
+   "days_to_half_of_home": 3,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.2026,
+   "day3_home": 1.0
+  },
+  {
+   "country": "SE",
+   "tfr": 1.5,
+   "n_agents": 404,
+   "days_to_half_of_home": 2,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.3019,
+   "day3_home": 1.0
+  },
+  {
+   "country": "JP",
+   "tfr": 1.2,
+   "n_agents": 2468,
+   "days_to_half_of_home": 2,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.6035,
+   "day3_home": 1.0
+  }
+ ],
+ "ablation_NG": [
+  {
+   "country": "NG",
+   "tfr": 4.5,
+   "n_agents": 4639,
+   "days_to_half_of_home": 3,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.1553,
+   "day3_home": 1.0,
+   "only": "all channels"
+  },
+  {
+   "country": "NG",
+   "tfr": 4.5,
+   "n_agents": 4639,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.0011,
+   "max_world_reach": 0.0,
+   "day3_home": 0.0011,
+   "only": "household"
+  },
+  {
+   "country": "NG",
+   "tfr": 4.5,
+   "n_agents": 4639,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.1134,
+   "max_world_reach": 0.0026,
+   "day3_home": 0.1134,
+   "only": "colleagues"
+  },
+  {
+   "country": "NG",
+   "tfr": 4.5,
+   "n_agents": 4639,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.0466,
+   "max_world_reach": 0.0011,
+   "day3_home": 0.0466,
+   "only": "neighbours"
+  },
+  {
+   "country": "NG",
+   "tfr": 4.5,
+   "n_agents": 4639,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.1513,
+   "max_world_reach": 0.0035,
+   "day3_home": 0.1513,
+   "only": "friends"
+  },
+  {
+   "country": "NG",
+   "tfr": 4.5,
+   "n_agents": 4639,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.0002,
+   "max_world_reach": 0.0,
+   "day3_home": 0.0002,
+   "only": "weak"
+  },
+  {
+   "country": "SE",
+   "tfr": 1.5,
+   "n_agents": 404,
+   "days_to_half_of_home": 2,
+   "max_home_reach": 1.0,
+   "max_world_reach": 0.3019,
+   "day3_home": 1.0,
+   "only": "all channels"
+  },
+  {
+   "country": "SE",
+   "tfr": 1.5,
+   "n_agents": 404,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.005,
+   "max_world_reach": 0.0,
+   "day3_home": 0.005,
+   "only": "household"
+  },
+  {
+   "country": "SE",
+   "tfr": 1.5,
+   "n_agents": 404,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.1584,
+   "max_world_reach": 0.0003,
+   "day3_home": 0.1584,
+   "only": "colleagues"
+  },
+  {
+   "country": "SE",
+   "tfr": 1.5,
+   "n_agents": 404,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.0272,
+   "max_world_reach": 0.0001,
+   "day3_home": 0.0272,
+   "only": "neighbours"
+  },
+  {
+   "country": "SE",
+   "tfr": 1.5,
+   "n_agents": 404,
+   "days_to_half_of_home": 9,
+   "max_home_reach": 0.9802,
+   "max_world_reach": 0.002,
+   "day3_home": 0.1361,
+   "only": "friends"
+  },
+  {
+   "country": "SE",
+   "tfr": 1.5,
+   "n_agents": 404,
+   "days_to_half_of_home": null,
+   "max_home_reach": 0.0025,
+   "max_world_reach": 0.0,
+   "day3_home": 0.0025,
+   "only": "weak"
+  }
+ ]
+}

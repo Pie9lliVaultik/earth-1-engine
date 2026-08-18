@@ -62,27 +62,57 @@ def world_step(civ, life, rng, *, beta: float = 1.0,
     civ.forces = np.clip(civ.forces + relax * (target - civ.forces), 0.0, 1.0)
     civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj)
 
-    # ── cascade: local thresholds fire and KICK the population ───────
+    # ── cascade: LOCAL thresholds fire and kick their own locality ───
+    # Firing on whole countries made every within-country shock instant
+    # and total: one national broadcast per tick, and the social fabric
+    # became irrelevant inside a border (ablating every tie type changed
+    # nothing). A cascade belongs to a PLACE. It starts in a locality,
+    # and it reaches the rest of the country only by travelling through
+    # the people who connect those localities — which is the whole point
+    # of having a fabric.
+    loc = (civ.country.astype(np.int64) * 1000
+           + civ.region.astype(np.int64) * 2 + civ.urban.astype(np.int64))
+    _, loc_idx = np.unique(loc, return_inverse=True)
+    n_loc = int(loc_idx.max()) + 1
+    pop_per_loc = np.bincount(loc_idx, minlength=n_loc).astype(np.float64)
     fired = 0
     for rule in TRANSITION_RULES:
         if rule.region_scope != "regional":
             continue
-        for ci in np.unique(civ.country):
-            m = civ.country == ci
-            if m.sum() < 10:
-                continue
-            if _participation(civ, m, rule) >= critical_fraction:
-                fired += 1
-                for fname, delta in rule.effects.items():
-                    k = getattr(Force, fname.upper(), None)
-                    if k is not None:
-                        civ.forces[m, k] = np.clip(
-                            civ.forces[m, k] + delta, 0.0, 1.0)
+        # per-agent satisfaction of the WHOLE rule, then the fraction of
+        # each locality that satisfies it — vectorized with bincount
+        # rather than a Python loop over thousands of places
+        met = np.ones(civ.n, dtype=bool)
+        for force, op, thresh in rule.conditions:
+            col = civ.forces[:, force.value]
+            met &= (col > thresh) if op == ">" else (col < thresh)
+        frac = np.bincount(loc_idx, weights=met.astype(np.float64),
+                           minlength=n_loc) / np.maximum(pop_per_loc, 1.0)
+        hot = (frac >= critical_fraction) & (pop_per_loc >= 10)
+        if not hot.any():
+            continue
+        fired += int(hot.sum())
+        m = hot[loc_idx]
+        for fname, delta in rule.effects.items():
+            k = getattr(Force, fname.upper(), None)
+            if k is not None:
+                civ.forces[m, k] = np.clip(civ.forces[m, k] + delta, 0.0, 1.0)
 
     # ── feedback: absorbed force leaves a mark on the person ─────────
     # Traits are what an agent brings to the next question, so a world
     # where force never touches trait is a world with no memory.
-    dev = civ.forces - civ.forces.mean(axis=0, keepdims=True)
+    # LOCAL deviation, not global. Using the population mean here was a
+    # global broadcast channel: one agent's change moved the planetary
+    # average and therefore touched every other agent in the same tick,
+    # regardless of whether they were connected to anything. It made
+    # propagation look instant and total, and it made the social fabric
+    # irrelevant — ablating every tie type changed nothing, because the
+    # shock was never travelling through ties in the first place.
+    #
+    # What matters to a person is how they differ from the people AROUND
+    # them. Same class of error as the national-mean threshold.
+    _deg = np.maximum(np.asarray(civ.adj.sum(axis=1)).ravel(), 1.0)
+    dev = civ.forces - (civ.adj @ civ.forces) / _deg[:, None]
     civ.openness = np.clip(
         civ.openness + residue * dev[:, Force.CULTURE], 0.0, 1.0)
     civ.doubt = np.clip(
