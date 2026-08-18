@@ -197,3 +197,61 @@ def calibrate_weights(
         })
 
     return results
+
+
+def calibrate_single_aggregated(
+    civ: Civilization,
+    baseline: float,
+    country_targets: dict,
+    ridge_alpha: float = 0.1,
+    extended: bool = True,
+    max_iter: int = 60,
+) -> np.ndarray:
+    """Estimator B — fit w against the AGGREGATED prediction.
+
+    Minimizes  sum_c ( mean_i sigmoid(bl + x_ci . w) - target_c )^2
+               + ridge_alpha * ||w||^2
+    by Gauss-Newton with the analytic jacobian through the aggregation.
+
+    This is a RESTORATION, not an invention: the original TypeScript
+    engine (_shared/sim_solver.ts, vaultik-x) fitted exactly this loss
+    with backprop through mean-of-sigmoids. The numpy migration swapped
+    it for closed-form ridge in logit space on mean features — fast,
+    but objective != metric: Jensen compression toward 0.5 measured at
+    0.44pp on the GOQA headline (external aggregation audit,
+    2026-08-18). Warm-started from the production ridge solution.
+    """
+    code_to_idx, _ = _get_country_index(civ)
+    features = _build_features(civ, extended=extended)
+    bl = logit(np.array([baseline]))[0]
+    groups, targets = [], []
+    for code, t in country_targets.items():
+        if code not in code_to_idx:
+            continue
+        mask = civ.country == code_to_idx[code]
+        if mask.sum() < 10:
+            continue
+        groups.append(features[mask])
+        targets.append(float(t))
+    n_feat = features.shape[1]
+    if len(targets) < 3:
+        return np.zeros(n_feat)
+    y = np.array(targets)
+    w = calibrate_single(civ, baseline, country_targets,
+                         ridge_alpha=ridge_alpha, extended=extended)
+    lam = ridge_alpha
+    for _ in range(max_iter):
+        preds = np.empty(len(groups))
+        J = np.empty((len(groups), n_feat))
+        for i, X in enumerate(groups):
+            s = sigmoid(bl + X @ w)
+            preds[i] = s.mean()
+            J[i] = ((s * (1.0 - s))[:, None] * X).mean(axis=0)
+        r = y - preds
+        A = J.T @ J + lam * np.eye(n_feat)
+        g = J.T @ r - lam * w
+        step = np.linalg.solve(A, g)
+        w = w + step
+        if float(np.linalg.norm(step)) < 1e-8:
+            break
+    return w

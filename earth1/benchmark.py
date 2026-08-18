@@ -1435,7 +1435,23 @@ def _goqa_prepare_tasks(civ, goqa_data, e1_codes, cv_holdout, cv_seed):
     """Phase A (serial, cheap): country targets + CV folds per question.
     The fold shuffles consume the shared RandomState in EXACTLY the
     order the legacy serial loop did — parallel results stay
-    bit-identical to every recorded number."""
+    bit-identical to every recorded number.
+
+    EARTH1_PINNED_FOLDS=<path> (F2 fix, external aggregation audit
+    2026-08-18: fold noise 0.72pp dominates all claimed scale effects):
+    load the partition for this cv_seed from a committed JSON instead
+    of using the live draw. Pinned partitions are GENERATED from this
+    same draw at the reference config, so pinned-vs-live at the same
+    cv_seed and pop is identical by construction; at other pops the pin
+    is what makes rungs comparable."""
+    import os as _os
+    pinned = None
+    pin_path = _os.environ.get("EARTH1_PINNED_FOLDS", "")
+    if pin_path:
+        import json as _json
+        pinned = _json.load(open(pin_path))["folds"].get(str(cv_seed))
+        if pinned is None:
+            raise ValueError(f"cv_seed {cv_seed} not in {pin_path}")
     rng = np.random.RandomState(cv_seed)
     tasks = []
     for q in goqa_data:
@@ -1449,8 +1465,10 @@ def _goqa_prepare_tasks(civ, goqa_data, e1_codes, cv_holdout, cv_seed):
         test_codes = None
         if len(ct) >= cv_holdout + 3:
             codes = list(ct.keys())
-            rng.shuffle(codes)
+            rng.shuffle(codes)  # always consume RNG (state parity)
             test_codes = codes[:cv_holdout]
+        if pinned is not None:
+            test_codes = pinned.get(q['id'], test_codes)
         tasks.append({"id": q['id'], "text": q['text'],
                       "global_yes": q['global_yes_popweighted'],
                       "ct": ct, "test_codes": test_codes})
@@ -1474,6 +1492,11 @@ def _goqa_worker(task):
     code_to_idx = _GOQA_CTX["code_to_idx"]
     ridge_alpha = _GOQA_CTX["ridge_alpha"]
     extended = _GOQA_CTX["extended"]
+    # EARTH1_ESTIMATOR=aggregated -> estimator B (sim_solver objective
+    # restored; F1 fix). Default: production ridge, bit-identical.
+    if os.environ.get("EARTH1_ESTIMATOR", "") == "aggregated":
+        from earth1.calibration import calibrate_single_aggregated
+        calibrate_single = calibrate_single_aggregated
 
     ct = task["ct"]
     global_yes = task["global_yes"]
