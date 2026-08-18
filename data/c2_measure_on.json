@@ -27,7 +27,7 @@
    "corr": 0.7454636202846376
   }
  ],
- "goqa_cv_mae": 0.0933,
+ "goqa_cv_mae": 0.1095,
  "goqa_naive": 0.1264,
- "goqa_wins": 36
+ "goqa_wins": 35
 }

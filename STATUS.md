@@ -17,6 +17,18 @@ heterogeneity/ablation program, and the compounding standing record.
 Physics changes require a new registered build with the same audit
 discipline that produced this freeze.
 
+## ⛔ ERRATUM 2026-08-18 — religiosity injection VOID (target leakage)
+
+The 2026-08-18 "GOQA 10.59 → 9.42pp" result is WITHDRAWN. The injected
+religiosity feature was Q164 ≥ 6; Q164 is a GOQA benchmark item; the
+prior correlated +0.983 with its own target and >0.5 with 16 of 40.
+Ideology (Q240) was a second leak. Clean re-measure (employed +
+social_class): no MAE gain. Standing headline is unchanged at
+**10.59pp vs naive 12.64, 34/40**. Permanent fix: mandatory
+feature-adjacency gate before any genesis input is measured, with
+fail-closed enforcement in calibration. Full account:
+LEAKAGE_ERRATUM_2026-08-18.md.
+
 ## 📏 THE MEASUREMENT ERA — first battery (2026-08-17, all same-day)
 
 An external review (the eleventh) attacked the frozen engine. Every

@@ -7,9 +7,15 @@ is a whitepaper demonstrating a model that WORKS.*
 
 Every negative in the record is a teaching gap, not a machine limit:
 
+**GATE (2026-08-18, after the religiosity leakage erratum): every
+candidate genesis input MUST pass scripts/feature_adjacency_gate.py —
+correlation table vs all 40 targets committed — BEFORE it is measured.
+Injection sourced from benchmark items is not teaching, it is
+cheating.**
+
 | "The machine doesn't..." | The teacher that exists |
 |---|---|
-| population not load-bearing (rank-18) | INJECT real within-country structure: WVS7 microdata has ~290 variables × 97K respondents; GSS 50 years; ANES. Genesis learns per-country JOINT distributions (age × education × religiosity × values), not 18 means. |
+| population not load-bearing (rank-18) | INJECT real within-country structure — GATED, NON-BENCHMARK VARIABLES ONLY (first attempt was leakage; clean attempt gave no MAE gain — the honest open question): WVS7 microdata has ~290 variables × 97K respondents; GSS 50 years; ANES. Genesis learns per-country JOINT distributions (age × education × religiosity × values), not 18 means. |
 | cohort gradients backwards (6/24) | FIT age-conditioning from the 1,860 official cells (already improving: 6→11/24 in the first hour) |
 | event heterogeneity flat (rank −0.41) | FIT per-agent susceptibility on the six measured reaction cases + run-#8 data |
 | temporal ≈ no-change | VERIFIED W6 truth (Pietro) + fitted cohort replacement + A6.2 on real data |

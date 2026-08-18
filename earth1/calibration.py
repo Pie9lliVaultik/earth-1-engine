@@ -33,10 +33,28 @@ _INJECTED = ('religiosity', 'marital', 'employed', 'ideology',
              'social_class')
 
 
+def _banned_features():
+    """Features the adjacency gate has convicted of target leakage.
+    Read from data/feature_adjacency.json (scripts/feature_adjacency_gate.py).
+    A banned feature CANNOT enter the design matrix, whatever EARTH1_INJECT
+    says — 2026-08-18: religiosity (Q164) correlated 0.983 with its own
+    benchmark target and produced a fake 1.2pp gain."""
+    import json as _json
+    import os as _os
+    from pathlib import Path as _Path
+    p = _Path(__file__).resolve().parents[1] / "data" / "feature_adjacency.json"
+    if not p.exists():
+        return set(_INJECTED)  # fail CLOSED: no gate report => no injection
+    rep = _json.loads(p.read_text())["features"]
+    return {f for f, v in rep.items() if v["verdict"] == "BANNED"}
+
+
 def _active_traits():
     import os
-    sel = os.environ.get("EARTH1_INJECT", "religiosity")
+    sel = os.environ.get("EARTH1_INJECT", "")
     keep = set(x.strip() for x in sel.split(",") if x.strip())
+    banned = _banned_features()
+    keep -= banned
     return [t for t in _EXTENDED_TRAITS
             if t not in _INJECTED or t in keep]
 
