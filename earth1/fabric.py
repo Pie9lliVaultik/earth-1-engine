@@ -47,7 +47,19 @@ TIE_SPEC = {
     "neighbours": (0.40, 5),
     "friends": (0.70, 5),
     "weak": (0.15, 2),
+    # ── the planet ───────────────────────────────────────────────────
+    # Without these, Earth-1 is 194 disconnected villages: the phi-proxy
+    # measured 0.0028 because severing the world changed nothing, and
+    # nothing can be severed that was never joined. These are what make
+    # it one world.
+    "diaspora": (0.55, 1),   # migration corridors: you keep your people
+    "media": (0.30, 3),      # global hubs — celebrities, scientists
 }
+
+# Share of the population who are global hub nodes: the people whose
+# reach is not bounded by geography. Broadcasters, athletes, musicians,
+# scientists, heads of state. Vanishingly few, enormously connected.
+HUB_SHARE = 0.0002
 
 
 @dataclass
@@ -164,6 +176,31 @@ def build_fabric(civ, life, seed: int = 0) -> Fabric:
     intl = rng.random(rr.size) < 0.02
     keep = same | intl
     mats["weak"] = (rr[keep], cc[keep])
+
+    # ── diaspora: you moved, and you kept your people ────────────────
+    # Corridors follow cultural and regional proximity, which is how
+    # real migration runs. A shock in the destination country reaches
+    # the origin country through the people who left.
+    k = TIE_SPEC["diaspora"][1]
+    rr = np.tile(np.arange(n), k)
+    # partner drawn from a country in the same broad region where
+    # possible, so corridors are structured rather than uniform noise
+    cc = rng.integers(0, n, n * k)
+    cross = civ.country[rr] != civ.country[cc]
+    same_region = civ.region[rr] == civ.region[cc]
+    # migrants are a minority: only a slice of the population has ties
+    # abroad at all
+    is_migrant = rng.random(n) < 0.14
+    keep = cross & same_region & is_migrant[rr]
+    mats["diaspora"] = (rr[keep], cc[keep])
+
+    # ── media: the few who reach everyone ────────────────────────────
+    n_hub = max(1, int(n * HUB_SHARE))
+    hubs = rng.choice(n, n_hub, replace=False)
+    k = TIE_SPEC["media"][1]
+    audience = rng.integers(0, n, n_hub * k * 40)
+    speakers = np.repeat(hubs, k * 40)
+    mats["media"] = (speakers, audience)
 
     by_type, total = {}, None
     for name, (r, c) in mats.items():

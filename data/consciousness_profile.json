@@ -1,0 +1,92 @@
+{
+ "pop": 12000,
+ "phi": {
+  "days": 25,
+  "phi_proxy": 0.07879,
+  "phi_on_mean_only": 0.01186,
+  "agents_depending_on_other_half": 1.0,
+  "cascades_whole": 19300.0,
+  "cascades_severed": 19604.0,
+  "cascade_gap": -304.0,
+  "entropy_whole_end": 2.8517,
+  "entropy_severed_end": 2.8909,
+  "spread_whole_end": 0.18914,
+  "spread_severed_end": 0.19848
+ },
+ "self": {
+  "days": 40,
+  "self_reference_index": 0.00434,
+  "published_predicts_shift": -0.8065,
+  "publications": 8
+ },
+ "novel": {
+  "days": 25,
+  "structure_real": 0.79211,
+  "structure_shuffled": 0.47743,
+  "novel_coherence": 0.31468,
+  "spread_real": 0.1687,
+  "spread_shuffled": 0.17816
+ },
+ "anticipation": {
+  "days": 90,
+  "lead_days": 5,
+  "waves": 13,
+  "pre_crisis_fear_drift": 0.005817,
+  "null_mean": 0.00265524,
+  "z_score": 1.818,
+  "anticipates": false
+ },
+ "phase": {
+  "scan": [
+   {
+    "beta": 0.0,
+    "phi_proxy": 0.08821,
+    "cascades": 14647.0,
+    "entropy_end": 2.868
+   },
+   {
+    "beta": 0.5,
+    "phi_proxy": 0.08137,
+    "cascades": 14226.0,
+    "entropy_end": 2.8511
+   },
+   {
+    "beta": 1.0,
+    "phi_proxy": 0.07642,
+    "cascades": 14014.0,
+    "entropy_end": 2.8458
+   },
+   {
+    "beta": 1.5,
+    "phi_proxy": 0.07134,
+    "cascades": 13769.0,
+    "entropy_end": 2.85
+   },
+   {
+    "beta": 2.0,
+    "phi_proxy": 0.0691,
+    "cascades": 13522.0,
+    "entropy_end": 2.857
+   },
+   {
+    "beta": 2.5,
+    "phi_proxy": 0.07083,
+    "cascades": 13332.0,
+    "entropy_end": 2.8546
+   },
+   {
+    "beta": 3.0,
+    "phi_proxy": 0.06697,
+    "cascades": 13190.0,
+    "entropy_end": 2.8542
+   }
+  ],
+  "largest_jump_between": [
+   0.0,
+   0.5
+  ],
+  "jump_size": 0.00684,
+  "mean_step": 0.00412,
+  "discontinuity_ratio": 1.66
+ }
+}
