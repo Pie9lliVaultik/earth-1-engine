@@ -1,0 +1,27 @@
+{
+  "rung": "10m_corrected",
+  "pop": 10000000,
+  "seed": 42,
+  "physics": "E1-0.4",
+  "started": "2026-08-18T08:13:30.309472+00:00",
+  "genesis_seconds": 29.1,
+  "deterministic": true,
+  "demography": {
+    "le_tracking": 1.0,
+    "cdr": 12.65,
+    "passes": true
+  },
+  "event": {
+    "ratio": 0.9703,
+    "sign": true,
+    "passes": true
+  },
+  "goqa": {
+    "engine_cv_mae": 0.1053,
+    "naive_cv_mae": 0.1264,
+    "engine_wins": 33,
+    "n_questions": 40
+  },
+  "finished": "2026-08-18T08:31:39.829153+00:00",
+  "rung_earned": true
+}
