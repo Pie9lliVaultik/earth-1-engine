@@ -1,0 +1,117 @@
+{
+ "registered_under": "A6+A6.1",
+ "years_ref": 7.0,
+ "inglehart_signs": {
+  "t_homosexuality": 1,
+  "t_abortion": 1,
+  "t_divorce": 1,
+  "t_religion": -1,
+  "t_trust": 1,
+  "t_democracy": 1,
+  "t_army_rule": -1,
+  "t_life_sat": 1,
+  "t_men_leaders": -1,
+  "t_pride": -1,
+  "t_two_parent": -1,
+  "t_tech_good": 1,
+  "t_death_penalty": -1,
+  "t_environment": 1,
+  "t_hard_work": -1
+ },
+ "lambdas": {
+  "t_homosexuality": 0.1,
+  "t_abortion": 0.1,
+  "t_divorce": 0.1,
+  "t_religion": 0.1,
+  "t_trust": 10.0,
+  "t_democracy": 0.1,
+  "t_army_rule": 1.0,
+  "t_life_sat": 10.0,
+  "t_men_leaders": 0.3,
+  "t_pride": 0.3,
+  "t_two_parent": 0.3,
+  "t_tech_good": 0.3,
+  "t_death_penalty": 0.3,
+  "t_environment": 0.3,
+  "t_hard_work": 1.0
+ },
+ "betas": {
+  "t_homosexuality": [
+   0.044536788658582224,
+   0.16492248480419722,
+   0.0
+  ],
+  "t_abortion": [
+   0.07350464965494927,
+   0.09109973400007365,
+   0.027777369024942496
+  ],
+  "t_divorce": [
+   0.09670042228302739,
+   0.2063888747473041,
+   0.13890136625684465
+  ],
+  "t_religion": [
+   -0.078901929805153,
+   -0.10847666431261489,
+   -0.1590848111181311
+  ],
+  "t_trust": [
+   0.0,
+   0.002174365941959896,
+   0.0
+  ],
+  "t_democracy": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "t_army_rule": [
+   -0.0,
+   -0.0,
+   -0.0
+  ],
+  "t_life_sat": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "t_men_leaders": [
+   -0.302701151809487,
+   -0.1749430505592371,
+   -0.07224452271012437
+  ],
+  "t_pride": [
+   -0.2721752050553095,
+   -0.29193405909671705,
+   -0.08904868690755476
+  ],
+  "t_two_parent": [
+   -0.3357407844704845,
+   -0.394546571766768,
+   -0.11882029144952037
+  ],
+  "t_tech_good": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "t_death_penalty": [
+   -0.1025647714157189,
+   -0.15838227440430083,
+   -0.061935061221376465
+  ],
+  "t_environment": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "t_hard_work": [
+   -0.05020736659819516,
+   -0.0,
+   -0.0027440838870966154
+  ]
+ },
+ "training": "W5->W6 only, 3y-nearest WDI matching",
+ "placebo_seed": 202608
+}

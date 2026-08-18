@@ -1,0 +1,85 @@
+{
+ "n_pairs": 366,
+ "mae_engine": 0.029974573110888258,
+ "mae_nochange": 0.029289617486338796,
+ "mae_placebo": 0.028617865722504517,
+ "sign_accuracy_CONTAMINATED": 0.5092936802973977,
+ "n_sign_pairs": 269,
+ "per_question": {
+  "t_homosexuality": {
+   "mae_engine": 0.0399571586920024,
+   "mae_nochange": 0.04393939393939393,
+   "n": 33
+  },
+  "t_abortion": {
+   "mae_engine": 0.025715532473809755,
+   "mae_nochange": 0.025833333333333337,
+   "n": 24
+  },
+  "t_divorce": {
+   "mae_engine": 0.030634093439135812,
+   "mae_nochange": 0.036666666666666674,
+   "n": 24
+  },
+  "t_religion": {
+   "mae_engine": 0.023919293052884576,
+   "mae_nochange": 0.024999999999999994,
+   "n": 24
+  },
+  "t_trust": {
+   "mae_engine": 0.01382423391416592,
+   "mae_nochange": 0.013750000000000004,
+   "n": 24
+  },
+  "t_democracy": {
+   "mae_engine": 0.031249999999999986,
+   "mae_nochange": 0.031249999999999986,
+   "n": 24
+  },
+  "t_army_rule": {
+   "mae_engine": 0.02208333333333333,
+   "mae_nochange": 0.02208333333333333,
+   "n": 24
+  },
+  "t_life_sat": {
+   "mae_engine": 0.03333338914620745,
+   "mae_nochange": 0.03333333333333333,
+   "n": 24
+  },
+  "t_men_leaders": {
+   "mae_engine": 0.035213397593079954,
+   "mae_nochange": 0.035833333333333335,
+   "n": 24
+  },
+  "t_pride": {
+   "mae_engine": 0.041219713229593315,
+   "mae_nochange": 0.034999999999999996,
+   "n": 24
+  },
+  "t_two_parent": {
+   "mae_engine": 0.0535259953979381,
+   "mae_nochange": 0.03208333333333332,
+   "n": 24
+  },
+  "t_tech_good": {
+   "mae_engine": 0.02043478260869564,
+   "mae_nochange": 0.02043478260869564,
+   "n": 23
+  },
+  "t_death_penalty": {
+   "mae_engine": 0.023360600211182393,
+   "mae_nochange": 0.024782608695652165,
+   "n": 23
+  },
+  "t_environment": {
+   "mae_engine": 0.032083333333333346,
+   "mae_nochange": 0.032083333333333346,
+   "n": 24
+  },
+  "t_hard_work": {
+   "mae_engine": 0.018154702563837947,
+   "mae_nochange": 0.02086956521739131,
+   "n": 23
+  }
+ }
+}
