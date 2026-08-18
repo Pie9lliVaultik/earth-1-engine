@@ -11,6 +11,7 @@ Output is the same Civilization dataclass — all downstream code works unchange
 
 from __future__ import annotations
 
+import os
 import numpy as np
 from scipy import sparse
 from earth1.types import Civilization, Force, NUM_FORCES
@@ -374,6 +375,36 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     adj = _build_graph(actual_pop, openness, forces, culture_offset,
                        region_idx, country, seed + 1)
 
+    # ── C2 genesis-v3: real within-country religiosity structure ──
+    # EARTH1_RELIGIOSITY=1 draws each agent's religiosity from the WVS7
+    # measured P(religious | country, age bucket, education) — the first
+    # agent property that carries information no country mean contains.
+    # Flag off (default) => None => every existing number unchanged.
+    religiosity = None
+    if os.environ.get("EARTH1_RELIGIOSITY") == "1":
+        import json as _json
+        from pathlib import Path as _Path
+        _p = _Path(__file__).resolve().parents[1] / "data" / "religiosity_priors.json"
+        if _p.exists():
+            _pri = _json.loads(_p.read_text())
+            p_vec = np.full(actual_pop, 0.5)
+            for _ci, _code in enumerate(GENESIS_COUNTRY_CODES):
+                _e = _pri.get(_code)
+                if _e is None:
+                    continue
+                _cm = country == _ci
+                if not _cm.any():
+                    continue
+                p_vec[_cm] = _e["marginal"]
+                for _key, _p in _e["cells"].items():
+                    _a, _ed = _key.split("_")
+                    _ab = int(_a)
+                    _mask = _cm & (education == int(_ed)) & (
+                        (age_bucket == _ab) if _ab < 3 else (age_bucket >= 3))
+                    p_vec[_mask] = _p
+            religiosity = (np.random.default_rng(seed + 99).random(actual_pop)
+                           < p_vec).astype(np.float64)
+
     return Civilization(
         n=actual_pop, seed=seed,
         country=country, region=region_idx, age_bucket=age_bucket, age=age,
@@ -387,6 +418,7 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
         uncertainty_avoidance=uncertainty_avoidance,
         long_term_orientation=long_term_orientation,
         forces=forces, alpha=alpha, means=means, adj=adj,
+        religiosity=religiosity,
     )
 
 

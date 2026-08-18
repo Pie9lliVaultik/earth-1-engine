@@ -19,6 +19,10 @@ _EXTENDED_TRAITS = [
     'openness', 'risk_appetite', 'doubt', 'empathy', 'desire_intensity',
     'agreeableness', 'extraversion', 'neuroticism',
     'individualism', 'power_distance',
+    # C2: real within-country structure from WVS7 microdata. Absent
+    # (None) unless EARTH1_RELIGIOSITY=1 at genesis -> no feature, no
+    # change to any recorded number.
+    'religiosity',
 ]
 
 

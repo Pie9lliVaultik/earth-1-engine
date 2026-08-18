@@ -70,6 +70,10 @@ class Civilization:
     means: np.ndarray
     # social graph — scipy sparse CSR (N, N)
     adj: object  # scipy.sparse.csr_matrix
+    # C2 genesis-v3 (flag-gated EARTH1_RELIGIOSITY=1): per-agent
+    # religiosity drawn from WVS7 P(religious | country, age, edu).
+    # None => absent => every downstream path bit-identical.
+    religiosity: 'np.ndarray | None' = None
 
 
 @dataclass

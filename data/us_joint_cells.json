@@ -1,0 +1,146 @@
+[
+ {
+  "age_b": 0,
+  "edu": 1,
+  "relig": 0,
+  "n": 158.7,
+  "trust": 0.2735,
+  "homosex": 0.6556,
+  "abortion": 0.5019
+ },
+ {
+  "age_b": 0,
+  "edu": 1,
+  "relig": 1,
+  "n": 211.6,
+  "trust": 0.252,
+  "homosex": 0.5032,
+  "abortion": 0.2889
+ },
+ {
+  "age_b": 0,
+  "edu": 2,
+  "relig": 0,
+  "n": 70.8,
+  "trust": 0.5177,
+  "homosex": 0.8645,
+  "abortion": 0.7921
+ },
+ {
+  "age_b": 0,
+  "edu": 2,
+  "relig": 1,
+  "n": 84.9,
+  "trust": 0.4923,
+  "homosex": 0.5297,
+  "abortion": 0.4148
+ },
+ {
+  "age_b": 1,
+  "edu": 1,
+  "relig": 0,
+  "n": 115.0,
+  "trust": 0.2459,
+  "homosex": 0.6402,
+  "abortion": 0.4074
+ },
+ {
+  "age_b": 1,
+  "edu": 1,
+  "relig": 1,
+  "n": 242.0,
+  "trust": 0.233,
+  "homosex": 0.4541,
+  "abortion": 0.3627
+ },
+ {
+  "age_b": 1,
+  "edu": 2,
+  "relig": 0,
+  "n": 109.4,
+  "trust": 0.5669,
+  "homosex": 0.8765,
+  "abortion": 0.721
+ },
+ {
+  "age_b": 1,
+  "edu": 2,
+  "relig": 1,
+  "n": 118.4,
+  "trust": 0.3923,
+  "homosex": 0.5622,
+  "abortion": 0.2909
+ },
+ {
+  "age_b": 2,
+  "edu": 1,
+  "relig": 0,
+  "n": 118.9,
+  "trust": 0.3695,
+  "homosex": 0.6275,
+  "abortion": 0.5004
+ },
+ {
+  "age_b": 2,
+  "edu": 1,
+  "relig": 1,
+  "n": 355.9,
+  "trust": 0.2866,
+  "homosex": 0.4121,
+  "abortion": 0.2699
+ },
+ {
+  "age_b": 2,
+  "edu": 2,
+  "relig": 0,
+  "n": 80.0,
+  "trust": 0.5718,
+  "homosex": 0.8967,
+  "abortion": 0.8162
+ },
+ {
+  "age_b": 2,
+  "edu": 2,
+  "relig": 1,
+  "n": 129.8,
+  "trust": 0.4185,
+  "homosex": 0.4667,
+  "abortion": 0.2757
+ },
+ {
+  "age_b": 3,
+  "edu": 1,
+  "relig": 0,
+  "n": 83.5,
+  "trust": 0.3878,
+  "homosex": 0.4452,
+  "abortion": 0.3718
+ },
+ {
+  "age_b": 3,
+  "edu": 1,
+  "relig": 1,
+  "n": 357.3,
+  "trust": 0.4259,
+  "homosex": 0.3908,
+  "abortion": 0.1858
+ },
+ {
+  "age_b": 3,
+  "edu": 2,
+  "relig": 0,
+  "n": 77.4,
+  "trust": 0.5991,
+  "homosex": 0.7676,
+  "abortion": 0.7488
+ },
+ {
+  "age_b": 3,
+  "edu": 2,
+  "relig": 1,
+  "n": 165.2,
+  "trust": 0.5722,
+  "homosex": 0.4574,
+  "abortion": 0.3084
+ }
+]
