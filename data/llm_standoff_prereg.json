@@ -14,30 +14,31 @@
   "gpt5_slot": "RESERVED \u2014 runs under this same prereg when a key lands"
  },
  "western_set": [
-  "US",
-  "CA",
-  "GB",
-  "IE",
-  "DE",
-  "FR",
-  "NL",
-  "BE",
-  "CH",
-  "AT",
-  "IT",
-  "ES",
-  "PT",
-  "SE",
-  "NO",
-  "DK",
-  "FI",
-  "AU",
-  "NZ",
-  "GR"
+  "USA",
+  "CAN",
+  "GBR",
+  "IRL",
+  "DEU",
+  "FRA",
+  "NLD",
+  "BEL",
+  "CHE",
+  "AUT",
+  "ITA",
+  "ESP",
+  "PRT",
+  "SWE",
+  "NOR",
+  "DNK",
+  "FIN",
+  "AUS",
+  "NZL",
+  "GRC"
  ],
  "registered_predictions": {
   "advisor": "frontier LLM lands 8-15pp overall, Western/non-Western split ~2:1",
   "alarm_threshold": "under 6pp across all 66 countries = real competitive problem",
   "interpretation_if_split_appears": "reconciliation closed; 'frontier models are Western-anchored' line earned"
- }
+ },
+ "amendment": "2026-08-18: western_set converted ISO2->ISO3 to match truth keys (classification fix, pre-results for sonnet; haiku 2-q smoke discarded)"
 }
