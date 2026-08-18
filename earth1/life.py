@@ -124,6 +124,22 @@ RENT_SHARE = {"HIC": 0.34, "UMIC": 0.30, "LMIC": 0.26, "LIC": 0.22}
 OWNER_SHARE = {"HIC": 0.62, "UMIC": 0.60, "LMIC": 0.68, "LIC": 0.74}
 ARREARS_TO_EVICTION = 90.0     # days behind before you lose the home
 
+# ── DURABLES ─────────────────────────────────────────────────────────
+# Furniture, appliances, a bed that is not a mattress on the floor.
+# These earn their place for a reason that has nothing to do with
+# scenery: durable goods are the FIRST thing a household stops buying
+# when it is frightened, which is why furniture and appliance orders are
+# a classic leading recession indicator. They lead precisely because
+# they are deferrable — you can eat next month's dinner but you cannot
+# defer it, whereas a sofa waits forever.
+#
+# So durables are in on two channels: a discretionary spend that
+# collapses on fear before income has even fallen (the leading
+# indicator), and a stock that quietly carries dignity — a home with
+# nothing in it is a different place to live than a furnished one.
+DURABLE_SHARE = 0.06           # of a comfortable budget
+DURABLE_DECAY_YR = 0.10        # things wear out
+
 DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 
 # How strongly accumulated trait change moves the force baseline. This
@@ -192,6 +208,8 @@ class Life:
     # what just happened to this person, as a code and a day. Kept as
     # arrays rather than per-agent lists so 8.3B stays affordable.
     policy_net: np.ndarray = None    # welfare generosity, set by government
+    durables: np.ndarray = None      # stock of household goods, 0..1
+    durable_spend: np.ndarray = None # today's discretionary purchase
     owns_home: np.ndarray = None     # no rent, but no flexibility either
     rent: np.ndarray = None          # daily housing cost
     arrears: np.ndarray = None       # days of unpaid housing
@@ -302,6 +320,11 @@ def birth_life(civ: Civilization, seed: int = 0) -> Life:
                 force_baseline=civ.forces.copy(),
                 trait_baseline=np.stack([civ.openness, civ.doubt,
                                          civ.desire_intensity], axis=1),
+                durables=np.clip(rng.beta(3.0, 2.2, n)
+                                 * (0.4 + 0.6 * np.clip(
+                                     wage / max(float(np.median(wage)), 1e-9),
+                                     0, 2)), 0, 1),
+                durable_spend=np.zeros(n),
                 owns_home=_owns, rent=_rent, arrears=np.zeros(n),
                 evicted=np.zeros(n, dtype=bool),
                 mental_setpoint=_msp, relationship_setpoint=_rsp,
@@ -441,6 +464,25 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
         life.arrears[newly_evicted] = 0.0
     surplus = np.maximum(income - life.cost, 0.0)
     shortfall = np.minimum(income - life.cost, 0.0)
+    # ── DURABLES: the first thing to go, and it goes BEFORE income does ──
+    # This is why furniture and appliance orders lead a recession. A
+    # household that is frightened stops buying the deferrable thing
+    # while its paycheque is still arriving, so the signal shows up in
+    # the data before the job losses do.
+    if life.durables is not None:
+        from earth1.types import Force
+        frightened = np.clip(civ.forces[:, Force.FEAR], 0, 1)
+        can_afford = np.clip(surplus / np.maximum(life.cost, 1e-9), 0, 1)
+        # confidence, not income, gates the purchase
+        life.durable_spend = (DURABLE_SHARE * can_afford
+                              * np.clip(1.0 - 1.6 * (frightened - 0.5), 0, 1)
+                              * (1.0 - np.clip(life.deprivation, 0, 1)))
+        life.durables = np.clip(
+            life.durables
+            + (life.durable_spend * 0.02
+               - DURABLE_DECAY_YR / 365.0) * dt_days, 0.0, 1.0)
+        surplus = np.maximum(surplus - life.durable_spend * life.cost, 0.0)
+
     saved = SAVE_RATE * surplus + shortfall
     life.wealth += saved * dt_days / np.maximum(life.cost, 1e-9)
     life.wealth = np.clip(life.wealth, -400.0, 1e6)

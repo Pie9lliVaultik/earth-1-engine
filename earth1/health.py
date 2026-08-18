@@ -35,6 +35,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from earth1.life import OCC_NAMES
+
 # ── the Armitage-Doll exponent ───────────────────────────────────────
 # k = number of mutational hits required. ~6 for most solid tumours,
 # fitted to registry incidence curves; the model uses k-1 as the power.
@@ -56,22 +58,49 @@ INJURY_BASE = {"HIC": 0.0004, "UMIC": 0.0007, "LMIC": 0.0011, "LIC": 0.0016}
 TREATMENT_ACCESS = {"HIC": 0.92, "UMIC": 0.72, "LMIC": 0.45, "LIC": 0.22}
 # survival given treatment, and given none
 SURVIVE_TREATED = {"cancer": 0.68, "cvd": 0.82, "infection": 0.95,
-                   "injury": 0.90}
+                   "injury": 0.90, "fall": 0.93}
 SURVIVE_UNTREATED = {"cancer": 0.18, "cvd": 0.42, "infection": 0.60,
-                     "injury": 0.65}
+                     "injury": 0.65, "fall": 0.72}
 
-DISEASES = ("cancer", "cvd", "infection", "injury")
+# ── FALLS ────────────────────────────────────────────────────────────
+# Gravity is a constant, so it contributes no variance and cannot on its
+# own differentiate two people. FALLING is not a constant. Roughly
+# 684,000 people die from falls each year — the second leading cause of
+# unintentional injury death — and the risk is steeply graded by age,
+# frailty, alcohol and occupation. A roofer and an accountant live under
+# the same gravitational constant with completely different fall risk.
+#
+# That distinction is what licences falls and excludes quarks: the
+# question is never whether a quantity varies, it is whether the
+# quantity's INTERACTION with a person varies.
+FALL_DEATHS_PER_100K = {"HIC": 9.0, "UMIC": 8.0, "LMIC": 11.0, "LIC": 13.0}
+# a fall at 80 is not a fall at 25 — the hazard roughly doubles every
+# decade past 65, which is one of the steepest age gradients in medicine
+FALL_AGE_DOUBLING_YEARS = 10.0
+# occupations that work at height
+FALL_RISK_OCCUPATIONS = ("manual_labour", "trades")
+# For an older person a fall is frequently the START OF DECLINE rather
+# than a discrete event: loss of independence, then isolation, then
+# mortality. That cascade is one of the most common real trajectories
+# into a nursing home and it was entirely absent.
+FALL_DECLINE_AGE = 0.60        # normalised age above which a fall cascades
+
+DISEASES = ("cancer", "cvd", "infection", "injury", "fall")
 TIERS = ["HIC", "UMIC", "LMIC", "LIC"]
 
 
 @dataclass
 class Health:
-    condition: np.ndarray      # 0 none, 1 cancer, 2 cvd, 3 infection, 4 injury
+    condition: np.ndarray      # 0 none, 1 cancer, 2 cvd, 3 infect, 4 injury, 5 fall
     diagnosed_day: np.ndarray  # world-day of onset, -1 if well
     in_treatment: np.ndarray   # bool
     alive: np.ndarray          # bool
     cause_of_death: np.ndarray # int, 0 = still alive
     lifetime_illnesses: np.ndarray
+    # once an older person falls they often never fully return. This is
+    # a permanent multiplier on frailty, not a temporary condition.
+    declining: np.ndarray = None
+    falls: np.ndarray = None
 
 
 def birth_health(n: int) -> Health:
@@ -80,7 +109,9 @@ def birth_health(n: int) -> Health:
                   in_treatment=np.zeros(n, dtype=bool),
                   alive=np.ones(n, dtype=bool),
                   cause_of_death=np.zeros(n, dtype=np.int8),
-                  lifetime_illnesses=np.zeros(n, dtype=np.int16))
+                  lifetime_illnesses=np.zeros(n, dtype=np.int16),
+                  declining=np.zeros(n),
+                  falls=np.zeros(n, dtype=np.int16))
 
 
 def _tier_idx(civ) -> np.ndarray:
@@ -120,7 +151,7 @@ def health_tick(civ, life, health: Health, rng, day: float,
     age_years = 18.0 + civ.age * 72.0
     well = health.alive & (health.condition == 0)
 
-    u = rng.random((5, n))
+    u = rng.random((len(DISEASES) + 1, n))
 
     dep = np.clip(life.deprivation, 0, 1) if life is not None else 0.0
     add = life.addiction if (life is not None and life.addiction is not None) \
@@ -138,15 +169,58 @@ def health_tick(civ, life, health: Health, rng, day: float,
                       * (1.0 + 0.8 * (age_years > 65))),
         "injury": (np.array([INJURY_BASE[t] for t in TIERS])[tier]
                    * (1.0 + 1.5 * add) * (1.0 + 0.7 * dep)),
+        # FALLS. Gravity is constant; the interaction is not. Doubling
+        # every decade past 65 is one of the steepest age gradients in
+        # medicine, and working at height is its own exposure.
+        "fall": (np.array([FALL_DEATHS_PER_100K[t] for t in TIERS])[tier]
+                 / 1e5 * 365.0
+                 * 2.0 ** (np.maximum(age_years - 65.0, 0.0)
+                           / FALL_AGE_DOUBLING_YEARS)
+                 * (1.0 + 2.0 * add)                     # alcohol
+                 * (1.0 + 1.5 * (1.0 - life.physical
+                                 if life is not None
+                                 and life.physical is not None else 0.3))
+                 * (1.0 + 0.8 * np.isin(
+                     life.occupation,
+                     [OCC_NAMES.index(o) for o in FALL_RISK_OCCUPATIONS
+                      if o in OCC_NAMES]).astype(float)
+                    if life is not None else 1.0)
+                 * (1.0 + 2.5 * health.declining
+                    if health.declining is not None else 1.0)),
     }
 
     onsets = {}
     for j, d in enumerate(DISEASES):
-        hit = well & (u[j] < haz[d] * dt_yr)
+        hit = well & (u[j % u.shape[0]] < haz[d] * dt_yr)
         onsets[d] = int(hit.sum())
         health.condition[hit] = j + 1
         health.diagnosed_day[hit] = day
         health.lifetime_illnesses[hit] += 1
+        if d == "fall" and health.falls is not None:
+            health.falls[hit] += 1
+            # THE CASCADE. For an older person a fall is usually not a
+            # discrete event — it is the beginning of decline. They lose
+            # confidence and mobility, then they stop going out, then
+            # the isolation does the rest. This is the most common real
+            # road into a nursing home and the model had no version of
+            # it: a fall was simply an injury that healed.
+            cascading = hit & (civ.age > FALL_DECLINE_AGE)
+            if cascading.any() and health.declining is not None:
+                health.declining[cascading] = np.clip(
+                    health.declining[cascading] + 0.35, 0.0, 1.0)
+                if life is not None:
+                    # they stop going out
+                    if life.social_need is not None:
+                        life.social_need[cascading] = np.clip(
+                            life.social_need[cascading] + 0.25, 0, 1)
+                    if life.relationship is not None:
+                        life.relationship[cascading] = np.clip(
+                            life.relationship[cascading] - 0.15, 0, 1)
+                    if life.physical is not None:
+                        life.physical[cascading] = np.clip(
+                            life.physical[cascading] - 0.20, 0, 1)
+                    if life.in_lf is not None:
+                        life.in_lf[cascading] = False   # out of work for good
         well = well & ~hit
 
     # ── treatment: can this person actually get care ─────────────────
@@ -195,6 +269,11 @@ def health_tick(civ, life, health: Health, rng, day: float,
         life.mental[touched] = np.clip(life.mental[touched] - 0.08, 0.0, 1.0)
 
     return {"onsets": onsets,
+            "falls_total": (int(health.falls.sum())
+                            if health.falls is not None else 0),
+            "in_decline_after_a_fall": (
+                float((health.declining[health.alive] > 0).mean())
+                if health.declining is not None and health.alive.any() else 0.0),
             "ill": int((health.alive & (health.condition > 0)).sum()),
             "in_treatment": int(health.in_treatment.sum()),
             "deaths": int(died.sum()),

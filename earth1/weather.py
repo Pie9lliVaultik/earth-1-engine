@@ -136,7 +136,13 @@ def weather_tick(civ, life, health, cl: Climate, rng, dt_days: float = 1.0,
     # the old, the ill and the poor die first, because they cannot leave
     frailty = (1.0 + 2.5 * civ.age
                + 1.5 * (health.condition > 0).astype(float)
-               + 1.2 * np.clip(life.deprivation, 0, 1))
+               + 1.2 * np.clip(life.deprivation, 0, 1)
+               # someone already in decline after a fall is far more
+               # fragile to everything that comes after it — which is
+               # how a heat wave finds the people a fall left behind
+               + 2.0 * (health.declining
+                        if getattr(health, "declining", None) is not None
+                        else 0.0))
     p_die = (HEAT_MORTALITY * over + COLD_MORTALITY * under) \
         * frailty * dt_days
     died = live & (rng.random(n) < p_die)

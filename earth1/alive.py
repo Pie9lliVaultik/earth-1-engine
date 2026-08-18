@@ -44,6 +44,8 @@ class World:
     feed: object = None
     climate: object = None
     flourishing: object = None
+    presence: object = None      # where bodies physically are
+    mobility: object = None      # cars, flights, roads
     day: int = 0
 
 
@@ -60,7 +62,9 @@ def birth_world(pop: int, seed: int = 42) -> World:
     life = birth_life(civ, seed=seed)
     fab = build_fabric(civ, life, seed=seed)
     civ.adj = fab.adj
+    from earth1.contagion import birth_presence
     from earth1.flourishing import birth_flourishing
+    from earth1.mobility import birth_mobility
     from earth1.weather import birth_climate
 
     gov, klass = birth_institutions(civ, seed=seed)
@@ -72,7 +76,9 @@ def birth_world(pop: int, seed: int = 42) -> World:
                  knowledge=kn,
                  gov=gov, klass=klass, chronicle=Chronicle(),
                  climate=birth_climate(seed=seed),
-                 flourishing=birth_flourishing(civ, life, seed=seed))
+                 flourishing=birth_flourishing(civ, life, seed=seed),
+                 presence=birth_presence(civ, seed=seed),
+                 mobility=birth_mobility(civ, life, seed=seed))
 
 
 def live_one_day(w: World, rng, *, beta: float = 2.0,
@@ -136,6 +142,27 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     sus = susceptibility_of(civ, life, w.flourishing)
     civ.forces = propagate(civ.forces, civ.alpha, civ.adj, beta=beta,
                            layers=layers, susceptibility=sus)
+    # ── BODIES IN THE SAME PLACE ─────────────────────────────────────
+    # Contagion runs AFTER the conviction kernel and before the feed,
+    # because that is the real order of a day: you are among people, you
+    # talk to the people you know, then you look at a screen. Three
+    # geometries, three timescales, three different things transmitted.
+    if w.presence is not None:
+        from earth1.contagion import contagion_tick, shared_attention
+        st.update(contagion_tick(civ, life, w.presence, rng,
+                                 susceptibility=sus, dt_days=dt_days,
+                                 alive=w.health.alive))
+        st.update(shared_attention(civ, w.presence, rng, dt_days,
+                                   alive=w.health.alive,
+                                   susceptibility=sus))
+
+    # ── MOVING AROUND: roads kill, flights mix and import disease ────
+    if w.mobility is not None:
+        from earth1.mobility import mobility_tick
+        st.update(mobility_tick(civ, life, w.mobility, w.health,
+                                w.flourishing, rng, dt_days,
+                                alive=w.health.alive))
+
     # THE FEED — a different physics, applied after conversation
     if w.feed is not None:
         from earth1.feed import feed_tick

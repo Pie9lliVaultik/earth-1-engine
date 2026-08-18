@@ -83,6 +83,11 @@ def save_world(w):
                      "life": w.life, "health": w.health,
                      "knowledge": w.knowledge, "gov": w.gov,
                      "klass": w.klass, "chronicle": w.chronicle,
+                     # climate and flourishing were absent here, so every
+                     # restart silently reset the weather and wiped
+                     # everyone's hunger, thirst and hope. Restart=always
+                     # means that was happening in production.
+                     "climate": w.climate, "flourishing": w.flourishing,
                      "day": w.day, "n": w.civ.n, "seed": w.civ.seed}, f)
     (HOME / "state.json").write_text(json.dumps(
         {"day": w.day, "pop": int(w.civ.n), "seed": int(w.civ.seed),
@@ -113,6 +118,10 @@ def load_world():
     w.life, w.health = d["life"], d["health"]
     w.knowledge, w.gov = d["knowledge"], d["gov"]
     w.klass, w.chronicle, w.day = d["klass"], d["chronicle"], d["day"]
+    if d.get("climate") is not None:
+        w.climate = d["climate"]
+    if d.get("flourishing") is not None:
+        w.flourishing = d["flourishing"]
     print(f"  woke up: day {w.day}, {int(w.health.alive.sum()):,} alive",
           flush=True)
     return w
@@ -157,7 +166,7 @@ def load_or_birth():
     return civ, life, fab, 0
 
 
-def read_the_news(civ, life):
+def read_the_news(civ, life, world=None):
     """LAYER 4 — what actually happened on Earth lands on these lives.
 
     Real-world stress does not reach an agent as an opinion. It reaches
@@ -202,6 +211,18 @@ def read_the_news(civ, life):
     stress = float(np.clip(-tone / 10.0 + vol / 200.0, -0.5, 0.5))
     if abs(stress) > 1e-6:
         life.firm_health = np.clip(life.firm_health - 0.02 * stress, 0.0, 1.0)
+    # THE NEWS BECOMES A THING THAT HAPPENED. Until now the chronicle
+    # ran its decay loop over an empty list forever, because nothing
+    # ever called remember(). A headline is an event in this world with
+    # a place, a day and people it happened to — and it fades.
+    if world is not None and world.chronicle is not None:
+        from earth1.memory import event_from_news
+        scope = np.ones(civ.n, dtype=bool)
+        if world.knowledge is not None:
+            scope = world.knowledge.connected.copy()   # you have to hear it
+        world.chronicle.remember(event_from_news(
+            f"world news, tone {tone:.2f}", tone, float(world.day), scope))
+
     return {"news": "read", "tone": round(tone, 3), "volume": round(vol, 1),
             "stress": round(stress, 4), "readings": len(tones) + len(vols),
             # marked on every tick where real-world news touched these
@@ -243,7 +264,7 @@ def main():
             if k in st:
                 line[k] = round(st[k], 5) if isinstance(st[k], float) else st[k]
         if day % NEWS_EVERY == 0:
-            line.update(read_the_news(civ, life))
+            line.update(read_the_news(civ, life, world=w))
         with open(JOURNAL, "a") as f:
             f.write(json.dumps(line) + "\n")
         if day % SAVE_EVERY == 0:

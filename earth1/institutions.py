@@ -49,6 +49,24 @@ WAR_END_YR = 1.10             # median war well under a year
 CONSCRIPT_SHARE = 0.06
 MIGRATION_RATE_YR = 0.008     # ~0.8%/yr, close to real gross flows
 
+# ── NUCLEAR WEAPONS ──────────────────────────────────────────────────
+# In only as a war-escalation term, which is the one thing they
+# demonstrably change. Two effects, opposite in sign, and both are
+# contested in the literature — which is why they are parameters here
+# rather than assumptions buried in code:
+#
+#   DETERRENCE   no two nuclear-armed states have fought a full
+#                interstate war. Whether that is causation or a
+#                seventy-year coincidence is genuinely disputed, so the
+#                strength of the effect is a knob, not a fact.
+#   CEILING      when a nuclear state fights a non-nuclear one, the
+#                escalation ceiling is higher, and use would be
+#                catastrophic rather than merely severe.
+NUCLEAR_STATES = ("US", "RU", "CN", "FR", "GB", "IN", "PK", "IL", "KP")
+DETERRENCE_FACTOR = 0.08      # war onset multiplier when BOTH are armed
+NUCLEAR_ESCALATION = 2.2      # damage multiplier when one side is armed
+NUCLEAR_USE_PER_WAR_YR = 0.004  # deliberately small; catastrophic if hit
+
 
 @dataclass
 class Governments:
@@ -101,6 +119,20 @@ def birth_institutions(civ, seed: int = 0):
                 crimes_committed=np.zeros(n, dtype=np.int32),
                 migrated=np.zeros(n, dtype=bool))
     return gov, cls
+
+
+_NUKE_CACHE = {}
+
+
+def _nuclear_mask(nc: int) -> np.ndarray:
+    """Which countries hold nuclear weapons."""
+    if nc in _NUKE_CACHE:
+        return _NUKE_CACHE[nc]
+    from earth1.genesis import GENESIS_COUNTRIES
+    m = np.array([c["iso2"] in NUCLEAR_STATES
+                  for c in GENESIS_COUNTRIES[:nc]])
+    _NUKE_CACHE[nc] = m
+    return m
 
 
 def govern(civ, life, gov: Governments, rng, dt_days: float = 1.0) -> dict:
@@ -166,6 +198,14 @@ def govern(civ, life, gov: Governments, rng, dt_days: float = 1.0) -> dict:
         if cand.size == 0:
             continue
         w = 1.0 / (0.1 + gov.legitimacy[cand])
+        # DETERRENCE. No two nuclear-armed states have fought a full
+        # interstate war. Whether that is causation or a seventy-year
+        # coincidence is genuinely disputed, so this is a weight rather
+        # than a prohibition — a nuclear state can still be attacked
+        # here, just far less often.
+        nuke = _nuclear_mask(nc)
+        if nuke[ci]:
+            w = w * np.where(nuke[cand], DETERRENCE_FACTOR, 1.0)
         target = int(rng.choice(cand, p=w / w.sum()))
         gov.at_war_with[ci] = target
         gov.at_war_with[target] = ci
@@ -206,6 +246,17 @@ def apply_policy_and_war(civ, life, gov: Governments, health, rng,
         firm_at_war = gov.at_war_with[life.firm_country] >= 0
         life.firm_health[firm_at_war] = np.clip(
             life.firm_health[firm_at_war] - 0.02 * dt_days, 0.0, 1.0)
+        # ESCALATION CEILING. When one side holds nuclear weapons the
+        # war is fought harder, and there is a small chance per year of
+        # actual use — which is catastrophic rather than merely severe.
+        nuke = _nuclear_mask(nc)
+        asymmetric = war_here & (
+            nuke[civ.country] ^ nuke[gov.at_war_with[civ.country].clip(0)])
+        if asymmetric.any():
+            firm_esc = asymmetric & (life.firm_country >= 0)
+            life.firm_health[firm_esc] = np.clip(
+                life.firm_health[firm_esc]
+                - 0.02 * (NUCLEAR_ESCALATION - 1.0) * dt_days, 0.0, 1.0)
         # war conscripts the young
         young = war_here & (civ.age < 0.35) & life.in_lf
         conscripted = int(young.sum())
