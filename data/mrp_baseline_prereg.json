@@ -1,0 +1,12 @@
+{
+ "registered": "2026-08-18, BEFORE the MRP baseline is written or run",
+ "why": "Earth-1's calibration is a hand-rolled unregularized MRP step 1. The mature method (MrsP/autoMrP) is the field standard for small-area estimation and must be beaten, or adopted, on identical terms.",
+ "input_budget_parity": "MRP gets EXACTLY what Earth-1's calibration gets: the same 40 questions' country targets on TRAIN folds only, plus census/context marginals. It does NOT get individual WVS respondents \u2014 using them would be data Earth-1 never sees and a win would mean nothing.",
+ "fairness": "autoMrP-style: context-level covariates selected and regularized by cross-validation, NOT hand-picked, since the published finding is that ML selection beats expert choice. A weak hand-built MRP that loses proves nothing.",
+ "protocol": "same pinned CV folds (data/cv_folds.json), same corrected truth (goqa_ground_truth.json), same LOO-country holdout, poststratified over the engine's own demographic cells.",
+ "PRE-REGISTERED READING OF BOTH OUTCOMES": {
+  "if_MRP_wins": "UPGRADE, not defeat \u2014 adopt mature machinery (MrsP genesis-from-marginals, EMRP uncertainty propagation, autoMrP selection) and redirect original research to the event-response operator, which the field does not have.",
+  "if_EARTH1_wins": "strongest claim available: beats the gold-standard small-area method in its own domain on identical inputs \u2014 verifiable by any quant in an afternoon.",
+  "if_tie": "Earth-1's cross-sectional layer is methodologically equivalent to the standard; the differentiator must be dynamics, and the pitch says so."
+ }
+}

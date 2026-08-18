@@ -23,5 +23,11 @@
  "arm_B_n_questions": 7,
  "arm_B_threshold": 0.74,
  "arm_B_pass": false,
- "arm_C_metric_ers_robust": true
+ "arm_C_metric_ers_robust": true,
+ "INVERSION_READING": {
+  "observation": "both arms are systematically NEGATIVE (r=-0.370, rho=-0.679), not noise around zero \u2014 the operator is anti-correlated with real polarization",
+  "most_likely_mechanism": "fire rate and hub fraction are UNIFORM across countries and questions, so the operator polarizes hardest where the initial stance distribution is WIDEST \u2014 i.e. where the population is most undecided. Reality is the opposite: questions become bimodal because people have SETTLED, not because they are churning.",
+  "diagnostic_value": "an inverted predictor is a partially-informative one with the sign backwards. A correct operator would condition polarization strength on CONVICTION (settledness), not on dispersion.",
+  "status": "recorded, not built \u2014 the corrected form is a future registered candidate, not a claim"
+ }
 }
