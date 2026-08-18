@@ -39,6 +39,12 @@ def main():
     ap.add_argument("--read-news", action="store_true",
                     help="the world reads today's headlines through the "
                          "validated perception channel (needs LLM key)")
+    ap.add_argument("--no-force-dynamics", dest="force_dynamics",
+                    action="store_false",
+                    help="run the old scalar-stance physics where agents "
+                         "never exchange force signatures")
+    ap.add_argument("--residue-rate", type=float, default=0.0005,
+                    help="trait learning per absorbed force layer")
     args = ap.parse_args()
 
     os.environ.setdefault("DATABASE_URL", args.db)
@@ -141,9 +147,17 @@ def main():
 
     stats = world.tick(
         questions, days=args.days,
-        # E1-0.4 canonical: the physics G5 validated is the physics the
-        # living world runs — never serve what you didn't validate
-        use_force_dynamics=False, residue_rate=0.0005,
+        # 2026-08-18: force dynamics ON by default. The prior setting ran
+        # a world whose agents age, die and are born but NEVER influence
+        # one another — scalar stances, no force-signature exchange. The
+        # old comment here said "never serve what you didn't validate";
+        # the honest correction is that the concept was never validated
+        # because the implementation had three named construction errors,
+        # so leaving it off preserved an untested null rather than a
+        # proven result. This is the switch between a society and a
+        # spreadsheet with 200K rows.
+        use_force_dynamics=args.force_dynamics,
+        residue_rate=args.residue_rate,
         enable_feedback=True, enable_coupling=True,
         enable_thresholds=True, enable_rewire=True,
         enable_event_generation=True,

@@ -78,14 +78,62 @@ def _check_condition(mean_val: float, op: str, threshold: float) -> bool:
     return False
 
 
+# ── FIX 1 (2026-08-18): LOCAL THRESHOLDS ──────────────────────────────
+# The construction error: a rule was evaluated against the national MEAN
+# of a force. A mean cannot cross a threshold that a minority has
+# crossed — averaging the 29.2% of agents already past collective_surge
+# with the 70.8% below it pulls the statistic back under the bar, so the
+# detector was structurally blind to precisely the phenomenon it exists
+# to detect.
+#
+# The fix: evaluate each condition PER AGENT, then fire when enough
+# agents personally satisfy the whole rule. A phase transition is
+# "enough people crossed", never "the average person crossed".
+#
+# MIN_PARTICIPATION is an external anchor, not a tuned value: the
+# committed-minority literature (Centola et al. 2018, Science) puts the
+# convention-flipping fraction near 25%, and Granovetter threshold
+# models put critical mass in the 10-25% band. Registered before the
+# run in data/fix1_local_thresholds_prereg.json, and swept.
+MIN_PARTICIPATION = 0.25
+
+
+def _participation(civ: Civilization, mask: np.ndarray,
+                   rule: "TransitionRule") -> float:
+    """Fraction of agents in `mask` who personally satisfy every condition.
+
+    This is the whole fix. `civ.forces` is (N, NUM_FORCES), so each
+    condition becomes a per-agent boolean column and the rule is their
+    AND — the same agent must satisfy all of them, which is stricter
+    than the mean test it replaces, not looser.
+    """
+    n = int(mask.sum())
+    if n == 0:
+        return 0.0
+    sub = civ.forces[mask]
+    met = np.ones(n, dtype=bool)
+    for force, op, thresh in rule.conditions:
+        col = sub[:, force.value]
+        met &= (col > thresh) if op == ">" else (col < thresh)
+    return float(met.mean())
+
+
 def detect_transitions(
     civ: Civilization,
     event_log: EventLog,
     t: float,
     last_fired: Optional[Dict[str, float]] = None,
     rules: Optional[List[TransitionRule]] = None,
+    mode: str = "local",
+    min_participation: float = MIN_PARTICIPATION,
 ) -> Tuple[List[WorldEvent], Dict[str, float]]:
     """Scan the population for threshold crossings.
+
+    mode='local'    fire when >= min_participation of agents personally
+                    satisfy every condition (FIX 1, the default)
+    mode='national' fire when the force MEAN satisfies them (the old
+                    behaviour, retained so it can be run head-to-head
+                    rather than deleted)
 
     Returns (new_events, updated_last_fired).
     """
@@ -110,11 +158,15 @@ def detect_transitions(
                 if t - last_t < rule.cooldown_days:
                     continue
 
-                forces_mean = civ.forces[country_mask].mean(axis=0)
-                all_met = all(
-                    _check_condition(forces_mean[force.value], op, thresh)
-                    for force, op, thresh in rule.conditions
-                )
+                if mode == "local":
+                    all_met = (_participation(civ, country_mask, rule)
+                               >= min_participation)
+                else:
+                    forces_mean = civ.forces[country_mask].mean(axis=0)
+                    all_met = all(
+                        _check_condition(forces_mean[force.value], op, thresh)
+                        for force, op, thresh in rule.conditions
+                    )
                 if all_met:
                     iso2 = GENESIS_COUNTRIES[ci]["iso2"]
                     event = WorldEvent.create(
@@ -132,11 +184,15 @@ def detect_transitions(
             if t - last_t < rule.cooldown_days:
                 continue
 
-            forces_mean = civ.forces.mean(axis=0)
-            all_met = all(
-                _check_condition(forces_mean[force.value], op, thresh)
-                for force, op, thresh in rule.conditions
-            )
+            if mode == "local":
+                all_met = (_participation(civ, np.ones(civ.n, dtype=bool),
+                                          rule) >= min_participation)
+            else:
+                forces_mean = civ.forces.mean(axis=0)
+                all_met = all(
+                    _check_condition(forces_mean[force.value], op, thresh)
+                    for force, op, thresh in rule.conditions
+                )
             if all_met:
                 event = WorldEvent.create(
                     timestamp=t,

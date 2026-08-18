@@ -1,0 +1,28 @@
+{
+ "fix": "1 of 3 — LOCAL THRESHOLDS",
+ "registered": "2026-08-18",
+ "status_when_registered": "specified, not yet written",
+
+ "the_construction_error": "detect_transitions evaluates civ.forces[country_mask].mean(axis=0) — the NATIONAL MEAN — and asks whether that mean crosses the rule. A mean cannot cross a threshold that a minority has crossed. Measured: 29.2% of agents in the strongest country already satisfy collective_surge and the detector fires nothing, because averaging them with the other 70.8% pulls the mean back under the bar. The detector is structurally blind to exactly the phenomenon it exists to detect.",
+
+ "the_fix": "evaluate every condition PER AGENT, producing a boolean mask of agents who personally satisfy the whole rule, then fire when the participation fraction of that country crosses MIN_PARTICIPATION. A transition becomes what it should always have been: enough people crossed, not the average person crossed.",
+
+ "free_parameter": {
+  "name": "MIN_PARTICIPATION",
+  "value": 0.25,
+  "why_this_value_and_not_one_chosen_after_seeing_results": "0.25 is taken from the committed-minority literature (Centola et al. 2018, Science: a committed minority near 25% flips an established social convention; Granovetter threshold models put critical mass in the 10-25% band). It is an external anchor fixed before the run, not a value tuned to make events appear.",
+  "sensitivity_will_be_reported": "the fire count is swept over 0.10 / 0.15 / 0.20 / 0.25 / 0.30 / 0.40 and the whole curve is reported, so it is visible whether the result is an artifact of the chosen value"
+ },
+
+ "pre_stated_expectation": "the local detector fires transitions where the national detector fires ZERO, on the identical population at t=0, with no other change. Specifically collective_surge in the countries where agent participation is already measured near 29%.",
+
+ "how_this_fix_can_FAIL_and_what_i_will_call_a_failure": [
+  "FIRES ON EVERYTHING: if more than ~50% of (rule, country) pairs fire at t=0, the detector is not detecting anything, it is a constant that happens to be on. That is a FAILURE and must be reported as one, not celebrated as 'emergence unlocked'.",
+  "FIRES ON NOTHING: if local participation never reaches 0.25 for any rule in any country, the fix is correct but inert, and the binding constraint is the force distribution rather than the detector.",
+  "KNIFE-EDGE: if the sweep shows fire count collapsing from everything to nothing across the 0.20-0.30 band, the result is an artifact of the parameter and cannot be leaned on."
+ ],
+
+ "what_this_fix_does_NOT_claim": "firing events is not the same as improving any prediction. This fix makes the detector capable of seeing what is in the population. Whether the resulting cascades carry predictive value is a separate question, tested separately, after fixes 2 and 3. No accuracy claim is attached to this build.",
+
+ "backward_compat": "mode='national' is retained so the old behaviour can be run head-to-head rather than deleted; default becomes 'local' because the national path is the error being fixed."
+}
