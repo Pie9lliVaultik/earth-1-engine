@@ -1,0 +1,8 @@
+{
+ "pop": 30000,
+ "n_questions": 40,
+ "n_test_cells": 200,
+ "mrsp_cv_mae": 0.08562338232841843,
+ "naive_cv_mae": 0.126388231915934,
+ "earth1_cv_mae_reference": 0.1059
+}
