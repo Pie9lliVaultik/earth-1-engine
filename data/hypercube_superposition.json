@@ -1,0 +1,23 @@
+{
+ "pop": 30000,
+ "sigma": 0.6,
+ "tau": 0.6,
+ "hard": {
+  "cell_mae": 0.2807703045078299,
+  "gradient": "26/79",
+  "gradient_acc": 0.3291139240506329,
+  "n_cells": 316
+ },
+ "soft": {
+  "cell_mae": 0.27956673897145484,
+  "gradient": "87/331",
+  "gradient_acc": 0.2628398791540785,
+  "n_cells": 1324
+ },
+ "soft+": {
+  "cell_mae": 0.2783597334049872,
+  "gradient": "87/331",
+  "gradient_acc": 0.2628398791540785,
+  "n_cells": 1324
+ }
+}
