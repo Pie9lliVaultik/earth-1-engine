@@ -1,0 +1,43 @@
+{
+ "registered": "2026-08-18, BEFORE any live call",
+ "purpose": "Resolve the VNF GPT-5 contradiction permanently: old 20-q standoff (memorization-friendly, approximate targets, MAE) vs Earth-1's 40q x 66-country GOQA. Advisor reading: no contradiction \u2014 different tasks.",
+ "protocol": {
+  "truth": "data/benchmark/goqa_ground_truth.json (polarity-corrected 2026-08-18)",
+  "questions": 40,
+  "cells": "~2598 country-question pairs",
+  "prompt": "one call per question, temperature 0, model returns JSON {ISO2: yes_percent} for the exact country list in truth",
+  "metric": "MAE per cell vs corrected truth; overall + Western/non-Western split + per-question wins vs engine 10.59 and naive 12.64",
+  "models": [
+   "claude-sonnet-5 (frontier proxy \u2014 no OpenAI key on fleet)",
+   "claude-haiku-4-5-20251001 (cheap control)"
+  ],
+  "gpt5_slot": "RESERVED \u2014 runs under this same prereg when a key lands"
+ },
+ "western_set": [
+  "US",
+  "CA",
+  "GB",
+  "IE",
+  "DE",
+  "FR",
+  "NL",
+  "BE",
+  "CH",
+  "AT",
+  "IT",
+  "ES",
+  "PT",
+  "SE",
+  "NO",
+  "DK",
+  "FI",
+  "AU",
+  "NZ",
+  "GR"
+ ],
+ "registered_predictions": {
+  "advisor": "frontier LLM lands 8-15pp overall, Western/non-Western split ~2:1",
+  "alarm_threshold": "under 6pp across all 66 countries = real competitive problem",
+  "interpretation_if_split_appears": "reconciliation closed; 'frontier models are Western-anchored' line earned"
+ }
+}
