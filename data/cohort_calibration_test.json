@@ -1,0 +1,14 @@
+{
+ "country_only": {
+  "country_mae": 0.14243882505955022,
+  "cohort_mae": 0.2170833760882335,
+  "gradient_acc": 0.25,
+  "n_gradient": 24
+ },
+ "with_cohorts": {
+  "country_mae": 0.1504798204835538,
+  "cohort_mae": 0.19859171207133786,
+  "gradient_acc": 0.4583333333333333,
+  "n_gradient": 24
+ }
+}
