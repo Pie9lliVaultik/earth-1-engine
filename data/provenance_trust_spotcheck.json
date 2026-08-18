@@ -1,0 +1,20 @@
+{
+ "experiment": "provenance spot-check, t_trust vs OWID (WVS-derived), 2026-08-18",
+ "source": "ourworldindata.org/grapher/self-reported-trust-attitudes (independent WVS aggregation)",
+ "n_comparisons": 58,
+ "mean_abs_diff": 0.036,
+ "median_abs_diff": 0.026,
+ "max_abs_diff": 0.159,
+ "gross_errors_over_8pp": 7,
+ "worst": {
+  "IN_W5": -0.159,
+  "NL_W5": -0.144,
+  "TR_W5": -0.105,
+  "RO_W5": 0.101,
+  "RO_W6": -0.098,
+  "CL_W5": -0.092,
+  "CO_W6": -0.093
+ },
+ "reading": "Authored values are right-shaped (median 2.6pp) but ~12% have gross errors >=8pp, concentrated in W5 (pure estimation). W6->W7 deltas average ~3pp true magnitude \u2014 comparable to the transcription noise. CONCLUSION: temporal deltas are noise-dominated at current provenance; full database verification REQUIRED before any temporal claim is published. Cross-sectional (GOQA) unaffected \u2014 real data.",
+ "caveat": "OWID year-matching tolerance +/-3y makes some W7 rows weak comparisons (matched 2014 points)."
+}
