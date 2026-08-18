@@ -1,0 +1,22 @@
+{
+ "pop": 30000,
+ "n": 6,
+ "truth_provenance": "AUTHORED pre/post values \u2014 suggestive only",
+ "engine": {
+  "movement_mae": 0.11499215126715627,
+  "sign_acc": 0.8333333333333334,
+  "aggregate_ratio": 2.239028060006386,
+  "rank_corr": -0.27696102762180974
+ },
+ "seeded": {
+  "movement_mae": 0.12022269460642614,
+  "sign_acc": 0.8333333333333334,
+  "aggregate_ratio": 2.3072525383446885,
+  "rank_corr": -0.2517354815234086
+ },
+ "persistence": {
+  "movement_mae": 0.07666666666666666,
+  "sign_acc": null,
+  "aggregate_ratio": 0.0
+ }
+}
