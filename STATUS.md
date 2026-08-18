@@ -64,10 +64,17 @@ earth1-prime. Verdicts, plainly:
    A/B runs vs W6→W7 decide which ontology reality supports
    (`scripts/inheritance_ab_test.py`, registered interpretation in
    docstring). The old stationarity axiom is itself on trial.
-7. **Phase-transition thresholds are unreachable — measured.** Max
-   national FEAR 0.602 vs trigger 0.7; ECONOMICS floor 0.536 vs 0.3
-   (`data/threshold_reachability.json`). Cascades are dead code in
-   current physics. Dynamic envelope under a year of continuous
+7. **~~Phase-transition thresholds are unreachable~~ — VOID
+   (2026-08-18). The detector evaluates rule conditions on the
+   NATIONAL MEAN (`thresholds.py:104`), so I measured the reachability
+   of averages and called it the reachability of the mechanism. At
+   agent level: FEAR individual max 0.973 with **6.4% of agents
+   already above the 0.7 trigger, unforced**; collective_surge is met
+   by 29.2% of agents in its strongest country, polarization_lock by
+   22.8% in one country while being 1.0% globally. Correct reading:
+   cascades were never TESTED. Fix (per-agent conditions + critical
+   fraction) and its mandatory before-the-fact test are registered in
+   `data/threshold_erratum_prereg.json`.** Dynamic envelope under a year of continuous
    2008-scale forcing: supervised 50K run pending
    (`data/threshold_envelope.json`). Repair is a design decision, not
    a constant-tweak.
