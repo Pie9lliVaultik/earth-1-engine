@@ -41,6 +41,7 @@ class World:
     gov: object
     klass: object
     chronicle: object
+    feed: object = None
     climate: object = None
     flourishing: object = None
     day: int = 0
@@ -63,9 +64,12 @@ def birth_world(pop: int, seed: int = 42) -> World:
     from earth1.weather import birth_climate
 
     gov, klass = birth_institutions(civ, seed=seed)
+    kn = birth_knowledge(civ, life, seed=seed)
+    from earth1.feed import build_feed
     return World(civ=civ, life=life, fabric=fab,
+                 feed=build_feed(civ, kn, seed=seed),
                  health=birth_health(pop),
-                 knowledge=birth_knowledge(civ, life, seed=seed),
+                 knowledge=kn,
                  gov=gov, klass=klass, chronicle=Chronicle(),
                  climate=birth_climate(seed=seed),
                  flourishing=birth_flourishing(civ, life, seed=seed))
@@ -128,8 +132,17 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
             target[hm, Force.COLLECTIVE] - 0.20, 0, 1)
 
     # 7 influence, 8 circumstance
+    from earth1.susceptibility import compute as susceptibility_of
+    sus = susceptibility_of(civ, life, w.flourishing)
     civ.forces = propagate(civ.forces, civ.alpha, civ.adj, beta=beta,
-                           layers=layers)
+                           layers=layers, susceptibility=sus)
+    # THE FEED — a different physics, applied after conversation
+    if w.feed is not None:
+        from earth1.feed import feed_tick
+        st.update(feed_tick(civ, w.feed, civ.alpha, susceptibility=sus,
+                            beta=beta, dt_days=dt_days))
+    st["mean_susceptibility_fear"] = float(sus[:, Force.FEAR].mean())
+    st["susceptibility_spread"] = float(sus.std())
     civ.forces = np.clip(civ.forces + relax * (target - civ.forces), 0.0, 1.0)
     civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj)
 

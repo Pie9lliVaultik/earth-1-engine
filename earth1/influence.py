@@ -45,7 +45,8 @@ CONVICTION_DECAY = 0.02   # how fast isolation softens it
 
 def propagate(forces: np.ndarray, alpha: np.ndarray, adj,
               beta: float = BETA, eta: float = ETA,
-              layers: int = 1) -> np.ndarray:
+              layers: int = 1,
+              susceptibility: np.ndarray | None = None) -> np.ndarray:
     """One or more layers of conviction-conditioned force propagation.
 
     forces (N, K), alpha (N,) conviction in [0, 1], adj sparse (N, N).
@@ -76,8 +77,14 @@ def propagate(forces: np.ndarray, alpha: np.ndarray, adj,
         pull_pole = align_num - f * align_den[:, None]
         pull_mean = avg_num - f * avg_den[:, None]
 
-        f = np.clip(f + eta * (pull_pole + pull_mean)
-                    / safe_deg[:, None], 0.0, 1.0)
+        move = eta * (pull_pole + pull_mean) / safe_deg[:, None]
+        # SUSCEPTIBILITY: the same push does not move two people the
+        # same distance. This is where mental health, addiction, age,
+        # conviction and hunger decide who is movable — see
+        # earth1/susceptibility.py.
+        if susceptibility is not None:
+            move = move * susceptibility
+        f = np.clip(f + move, 0.0, 1.0)
     return f
 
 
