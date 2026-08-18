@@ -116,6 +116,11 @@ SAVE_RATE = 0.12
 
 DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 
+# How strongly accumulated trait change moves the force baseline. This
+# is the gain on the return leg trait -> force, and it is what makes
+# experience permanent rather than a transient the world relaxes away.
+TRAIT_MEMORY = 1.0
+
 
 @dataclass
 class Life:
@@ -137,6 +142,13 @@ class Life:
     # into the force. Getting that wrong is what pinned 99% of agents to
     # a clip bound in the first run of this module.
     force_baseline: np.ndarray = None    # (N, 8)
+    # Traits as they were at birth. What an agent has LIVED THROUGH is
+    # the drift away from these, and that drift is fed back into the
+    # force baseline so experience leaves a permanent mark. Without this
+    # the ring is open — world_step writes force into trait, and nothing
+    # ever reads trait back into force, so memory goes to a dead end and
+    # two worlds always reconverge onto the same attractor.
+    trait_baseline: np.ndarray = None    # (N, 3): openness, doubt, desire
 
     @property
     def n_firms(self) -> int:
@@ -212,7 +224,9 @@ def birth_life(civ: Civilization, seed: int = 0) -> Life:
                 in_lf=in_lf, wage=wage, wealth=wealth, cost=cost, tenure=tenure,
                 deprivation=np.zeros(n), spells=np.zeros(n, dtype=np.int32),
                 firm_health=firm_health, firm_country=firm_country,
-                force_baseline=civ.forces.copy())
+                force_baseline=civ.forces.copy(),
+                trait_baseline=np.stack([civ.openness, civ.doubt,
+                                         civ.desire_intensity], axis=1))
 
 
 def _fast_categorical(p: np.ndarray, rng) -> np.ndarray:
@@ -235,12 +249,24 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     dt_yr = dt_days / 365.0
     tier = _tier(civ)
 
+    # DRAW ALIGNMENT. Every random quantity is drawn at FULL SIZE up
+    # front, so an agent's draws never depend on how many other agents
+    # happened to act this tick. Without this, perturbing one agent
+    # shifts the random stream for everyone after it and the butterfly
+    # test measures desynchronisation instead of causation.
+    u_sep = rng.random(n)
+    u_find = rng.random(n)
+    u_firmpick = rng.random(n)
+    u_fail = rng.random(life.n_firms)
+    z_health = rng.normal(0.0, 0.02, life.n_firms)
+    u_reseed = rng.uniform(0.4, 0.9, life.n_firms)
+
     # ── 1. firms fail, and take everyone inside with them ─────────────
     # Failure hazard falls with firm health, so weak firms go first and
     # a downturn (health pushed down globally) produces a WAVE rather
     # than a trickle.
     fail_p = FIRM_FAILURE_RATE_YR * dt_yr * (2.0 - life.firm_health)
-    failed = np.flatnonzero(rng.random(life.n_firms) < fail_p)
+    failed = np.flatnonzero(u_fail < fail_p)
     laid_off = np.zeros(n, dtype=bool)
     if failed.size:
         laid_off = np.isin(life.firm, failed) & life.employed
@@ -250,7 +276,7 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     # likely to lose the next one too, and how spells compound.
     sep_base = SEPARATION_RATE_YR * dt_yr * OCC_HAZARD[life.occupation]
     tenure_mult = 1.0 + 1.5 * np.exp(-life.tenure / 365.0)
-    sep = (rng.random(n) < sep_base * tenure_mult) & life.employed & ~laid_off
+    sep = (u_sep < sep_base * tenure_mult) & life.employed & ~laid_off
 
     lost = laid_off | sep
     life.employed[lost] = False
@@ -269,7 +295,7 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     # unemployed people do find work; they find it more slowly.
     scar = np.maximum(1.0 / (1.0 + 0.25 * life.spells), 0.35)
     find_p = FINDING_RATE_YR * dt_yr * scar
-    found = idle & (rng.random(n) < find_p)
+    found = idle & (u_find < find_p)
     if found.any():
         life.employed[found] = True
         idx = np.flatnonzero(found)
@@ -278,7 +304,9 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
             firms_here = np.flatnonzero((life.firm_country == ci)
                                         & (life.firm_health > 0.25))
             if firms_here.size:
-                life.firm[who] = rng.choice(firms_here, size=who.size)
+                pick = (u_firmpick[who] * firms_here.size).astype(np.int64)
+                life.firm[who] = firms_here[np.minimum(pick,
+                                                      firms_here.size - 1)]
 
     life.tenure[life.employed] += dt_days
 
@@ -320,10 +348,10 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
 
     # ── 6. firm health drifts, and recovers slowly ────────────────────
     life.firm_health = np.clip(
-        life.firm_health + rng.normal(0.0, 0.02, life.n_firms)
+        life.firm_health + z_health
         + 0.004 * (0.8 - life.firm_health), 0.0, 1.0)
     if failed.size:
-        life.firm_health[failed] = rng.uniform(0.4, 0.9, failed.size)
+        life.firm_health[failed] = u_reseed[failed]
 
     stats = {"laid_off": int(laid_off.sum()), "separated": int(sep.sum()),
              "found_work": int(found.sum()), "firms_failed": int(failed.size),
@@ -336,6 +364,55 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     if couple_forces:
         stats.update(couple_life_to_forces(civ, life))
     return stats
+
+
+def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
+    """The force state this agent's CIRCUMSTANCES imply, right now.
+
+    Returned rather than applied, because the social layer needs it as a
+    RESTORING TARGET rather than an overwrite. An agent is pushed around
+    by the people they know and pulled back by the life they actually
+    live; the tension between those two is where the interesting
+    dynamics are. A world with only the push saturates to the poles and
+    freezes. A world with only the pull is a spreadsheet.
+    """
+    dep = life.deprivation
+    base = life.force_baseline
+    if base is None:
+        return civ.forces.copy()
+
+    # EXPERIENCE MOVES THE BASELINE. An agent who has lived through
+    # something does not return to who they were; their circumstances
+    # now pull them toward a different place than they were born to.
+    # This is the return leg of the ring: trait -> force baseline.
+    if life.trait_baseline is not None:
+        cur = np.stack([civ.openness, civ.doubt, civ.desire_intensity],
+                       axis=1)
+        drift = cur - life.trait_baseline
+        base = base.copy()
+        base[:, Force.CULTURE] = np.clip(
+            base[:, Force.CULTURE] + TRAIT_MEMORY * drift[:, 0], 0.0, 1.0)
+        base[:, Force.FEAR] = np.clip(
+            base[:, Force.FEAR] + TRAIT_MEMORY * drift[:, 1], 0.0, 1.0)
+        base[:, Force.DESIRE] = np.clip(
+            base[:, Force.DESIRE] + TRAIT_MEMORY * drift[:, 2], 0.0, 1.0)
+    buffer_ok = np.clip(life.wealth / 90.0, 0.0, 1.0)
+    precarity = (~life.employed).astype(float) * 0.6 + \
+        np.clip(life.spells / 4.0, 0.0, 1.0) * 0.4
+    adj = civ.adj
+    deg = np.asarray(adj.sum(axis=1)).ravel()
+    shared = np.asarray(adj @ dep).ravel() / np.maximum(deg, 1.0)
+
+    t = base.copy()
+    t[:, Force.ECONOMICS] = np.clip(
+        base[:, Force.ECONOMICS] - 0.45 * dep + 0.20 * buffer_ok, 0.0, 1.0)
+    t[:, Force.FEAR] = np.clip(
+        base[:, Force.FEAR] + 0.35 * precarity + 0.25 * dep, 0.0, 1.0)
+    t[:, Force.DESIRE] = np.clip(
+        base[:, Force.DESIRE] - 0.30 * dep, 0.0, 1.0)
+    t[:, Force.COLLECTIVE] = np.clip(
+        base[:, Force.COLLECTIVE] + 0.40 * dep * shared, 0.0, 1.0)
+    return t
 
 
 def couple_life_to_forces(civ: Civilization, life: Life) -> dict:
@@ -374,13 +451,29 @@ def couple_life_to_forces(civ: Civilization, life: Life) -> dict:
     precarity = (~life.employed).astype(float) * 0.6 + \
         np.clip(life.spells / 4.0, 0.0, 1.0) * 0.4
 
-    # shared hardship: mean deprivation among this agent's own country,
-    # which is the coarsest honest proxy for "are the people around me
-    # also struggling". The graph-local version is the natural next step.
-    shared = np.zeros(civ.n)
-    for ci in np.unique(civ.country):
-        m = civ.country == ci
-        shared[m] = dep[m].mean()
+    # SHARED HARDSHIP, READ OFF THE GRAPH — not off the country.
+    #
+    # The first version averaged deprivation over the whole country.
+    # That is an averaging channel, and the butterfly test proved what
+    # averaging does: one agent losing their job perturbed 68 others at
+    # its peak and then the worlds RECONVERGED, Lyapunov -0.0265/day.
+    # A country mean over ~258 agents moves by 1/258 when one person
+    # falls, which is a contraction, not a transmission.
+    #
+    # Reading it off the social graph instead means hardship reaches the
+    # people who actually know you — colleagues, neighbours, friends —
+    # at full strength rather than diluted by everyone who does not.
+    # That is the difference between a statistic and a society.
+    adj = civ.adj
+    deg = np.asarray(adj.sum(axis=1)).ravel()
+    shared = np.asarray(adj @ dep).ravel() / np.maximum(deg, 1.0)
+    # agents with no ties fall back on the country, which is the only
+    # honest thing to say about someone with nobody around them
+    lonely = deg < 1
+    if lonely.any():
+        for ci in np.unique(civ.country[lonely]):
+            m = lonely & (civ.country == ci)
+            shared[m] = dep[civ.country == ci].mean()
 
     before = f[:, Force.ECONOMICS].std()
     f[:, Force.ECONOMICS] = np.clip(

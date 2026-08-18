@@ -1,0 +1,31 @@
+{
+ "pop": 20000,
+ "days": 120,
+ "rows": [
+  {
+   "beta": 0.0,
+   "relax": 0.0,
+   "residue": 0.0005,
+   "critical_fraction": 0.25,
+   "lyapunov": 0.0,
+   "final_frac_world": 0.0,
+   "max_frac_world": 0.0,
+   "entropy_start": 3.3973,
+   "entropy_end": 1.266,
+   "chaotic": false
+  },
+  {
+   "beta": 2.0,
+   "relax": 0.25,
+   "residue": 0.02,
+   "critical_fraction": 0.12,
+   "lyapunov": -0.00399,
+   "final_frac_world": 0.3906,
+   "max_frac_world": 0.9997,
+   "entropy_start": 3.3211,
+   "entropy_end": 2.5497,
+   "chaotic": false
+  }
+ ],
+ "chaotic_settings": []
+}

@@ -1,0 +1,30 @@
+{
+ "pop": 20000,
+ "steps": 240,
+ "rows": [
+  {
+   "config": "legacy (averaging kernel, dead feedback)",
+   "lyapunov": -1.3487711729567777e-10,
+   "intervals": 48,
+   "per_interval_mean": -6.743855864783889e-10,
+   "per_interval_std": 1.9172565537869637e-09,
+   "doubling_days": Infinity,
+   "beta": 0.0,
+   "residue": 0.0005,
+   "critical_fraction": 0.25,
+   "relax": 0.0
+  },
+  {
+   "config": "living world",
+   "lyapunov": 2.66531760494957e-09,
+   "intervals": 48,
+   "per_interval_mean": 1.3326588024747851e-08,
+   "per_interval_std": 8.594635417705804e-08,
+   "doubling_days": 260061757.47038603,
+   "beta": 2.0,
+   "residue": 0.02,
+   "critical_fraction": 0.12,
+   "relax": 0.25
+  }
+ ]
+}

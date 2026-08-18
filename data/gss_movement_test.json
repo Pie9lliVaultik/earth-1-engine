@@ -1,0 +1,13 @@
+{
+ "ruler": "GSS 1972-2024 verified microdata (US only \u2014 grades MECHANISM, not scope)",
+ "pop": 20000,
+ "n_transitions": 0,
+ "persistence_mae": NaN,
+ "engine_mae": NaN,
+ "drift_baseline_mae": NaN,
+ "engine_sign_acc": NaN,
+ "drift_sign_acc": NaN,
+ "engine_corr": NaN,
+ "drift_corr": NaN,
+ "mean_abs_observed_change": NaN
+}

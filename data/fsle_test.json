@@ -1,0 +1,21 @@
+{
+ "pop": 20000,
+ "days": 40,
+ "trials": 8,
+ "rows": [
+  {
+   "config": "legacy (averaging kernel, dead feedback)",
+   "fsle_per_day": 0.69315,
+   "mean_reach": 0.0,
+   "mean_doubling_days": 1.0,
+   "trials_that_doubled": "8/8"
+  },
+  {
+   "config": "living world (conviction kernel, closed ring)",
+   "fsle_per_day": 0.13213,
+   "mean_reach": 0.9998,
+   "mean_doubling_days": 5.38,
+   "trials_that_doubled": "8/8"
+  }
+ ]
+}
