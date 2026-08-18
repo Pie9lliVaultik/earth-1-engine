@@ -51,6 +51,12 @@ VARS = {
 }
 AGE_BINS = [(18, 29, "18_29"), (30, 44, "30_44"),
             (45, 59, "45_59"), (60, 200, "60_plus")]
+# POLITICAL cohorts (POLVIEWS 1-7) — where the bimodality actually
+# lives. Age x education gradients are shallow; the political axis is
+# where real populations split into camps with a valley between them.
+POL_BINS = [(1, 1, "far_left"), (2, 2, "left"), (3, 3, "lean_left"),
+            (4, 4, "centrist"), (5, 5, "lean_right"), (6, 6, "right"),
+            (7, 7, "far_right")]
 
 
 def edu_bucket(v):
@@ -95,6 +101,14 @@ def main() -> None:
             national[str(int(yr))] = {
                 "share": round(float(np.average(g["_y"], weights=g["_w"])), 5),
                 "n": int(len(g))}
+            if "polviews" in g.columns:
+                for lo, hi, tag in POL_BINS:
+                    pm = g[(g["polviews"] >= lo) & (g["polviews"] <= hi)]
+                    if len(pm) >= 30:
+                        cells[f"{int(yr)}|pol_{tag}"] = {
+                            "share": round(float(np.average(
+                                pm["_y"], weights=pm["_w"])), 5),
+                            "n": int(len(pm))}
             if "age" in g.columns and "educ" in g.columns:
                 for lo, hi, tag in AGE_BINS:
                     for eb in (0, 1, 2):
