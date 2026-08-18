@@ -19,5 +19,12 @@
   "T3": "engine fails without cohort-target calibration (established: 26% gradient direction), improves with it (80%)",
   "T4": "no prediction registered; this is the cleanest blind test available"
  },
- "discipline": "every claim states which ruler produced it. GSS = verified. WVS W6/W7 authored targets = suspended until official microdata lands."
+ "discipline": "every claim states which ruler produced it. GSS = verified. WVS W6/W7 authored targets = suspended until official microdata lands.",
+ "SCOPE_CAVEAT_REGISTERED_BEFORE_RESULTS": {
+  "fact": "GSS is US-only.",
+  "what_it_grades": "the MECHANISM \u2014 can the engine predict directional opinion movement at all, on real weighted respondents, over 50 years of measured change.",
+  "what_it_does_NOT_grade": "the SCOPE \u2014 whether that mechanism works across 66 countries. Earth-1's distinctive claim is cross-national; a US-only win does not establish it.",
+  "who_grades_scope": "WVS W5/W6/W7 official microdata (Pietro's registration). Both are needed. Tonight buys the first only.",
+  "binding": "no cross-national dynamics claim may cite GSS results as evidence of scope."
+ }
 }
