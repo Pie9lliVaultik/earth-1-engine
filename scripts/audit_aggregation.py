@@ -19,7 +19,7 @@ import numpy as np
 
 from earth1.benchmark import ISO3_TO_ISO2
 from earth1.calibration import (_build_features, _get_country_index,
-                                calibrate_single)
+                                calibrate_single, calibrate_single_aggregated)
 from earth1.genesis import genesis
 from earth1.rng import logit, sigmoid
 
@@ -35,7 +35,14 @@ def _targets(q, code_to_idx):
     return out
 
 
-def run(civ, gt, cv_seed, ridge_alpha=0.1, extended=True, min_agents=10):
+def run(civ, gt, cv_seed, ridge_alpha=0.1, extended=True, min_agents=10,
+        estimator="production"):
+    if estimator == "aggregated":
+        fit = lambda civ, g, tr: calibrate_single_aggregated(
+            civ, g, tr, ridge_alpha=0.01, extended=extended)
+    else:
+        fit = lambda civ, g, tr: calibrate_single(
+            civ, g, tr, ridge_alpha=ridge_alpha, extended=extended)
     code_to_idx, _ = _get_country_index(civ)
     feats = _build_features(civ, extended=extended)
     rng = np.random.RandomState(cv_seed)
@@ -58,8 +65,7 @@ def run(civ, gt, cv_seed, ridge_alpha=0.1, extended=True, min_agents=10):
         test = codes[:k]
         train = {c: ct[c] for c in codes if c not in test}
 
-        w = calibrate_single(civ, g, train, ridge_alpha=ridge_alpha,
-                             extended=extended)
+        w = fit(civ, g, train)
 
         for c in test:
             mask = civ.country == code_to_idx[c]
@@ -87,6 +93,7 @@ def main():
     ap.add_argument("--pop", type=int, default=200000)
     ap.add_argument("--genesis-seed", type=int, default=42)
     ap.add_argument("--cv-seeds", type=str, default="42,7,13")
+    ap.add_argument("--estimator", type=str, default="production")
     ap.add_argument("--out", type=str, default="data/audit_aggregation.json")
     args = ap.parse_args()
 
@@ -95,7 +102,7 @@ def main():
 
     rows = []
     for s in [int(x) for x in args.cv_seeds.split(",")]:
-        r = run(civ, gt, s)
+        r = run(civ, gt, s, estimator=args.estimator)
         r["cv_seed"] = s
         rows.append(r)
         print(f"cv_seed={s:>3}  agents {r['cv_mae_agents']:.4f}  "
