@@ -1,0 +1,40 @@
+{
+ "registered": "2026-08-18, BEFORE the detector is changed",
+ "erratum": {
+  "void_claim": "'Phase-transition thresholds are unreachable \u2014 cascades are dead code in current physics' (data/threshold_reachability.json, STATUS Measurement Era item 7)",
+  "why_it_was_wrong": "thresholds.py:104 evaluates rule conditions on civ.forces[country_mask].mean(axis=0) \u2014 the NATIONAL AVERAGE. I measured the reachability of national means and reported it as the reachability of the mechanism.",
+  "verified_agent_level_at_200K": {
+   "FEAR_national_mean_max": 0.602,
+   "FEAR_individual_max": 0.973,
+   "pct_agents_above_0.7": 6.4,
+   "identity_collapse": {
+    "global_pct": 5.0,
+    "max_country_pct": 15.2
+   },
+   "panic_cascade": {
+    "global_pct": 7.1,
+    "max_country_pct": 13.1
+   },
+   "collective_surge": {
+    "global_pct": 9.1,
+    "max_country_pct": 29.2
+   },
+   "polarization_lock": {
+    "global_pct": 1.0,
+    "max_country_pct": 22.8
+   }
+  },
+  "corrected_reading": "Cascades were never TESTED, not proven absent. Every rule is already satisfied by 1-29% of agents somewhere, today, with zero forcing. polarization_lock is 1.0% globally and 22.8% in one country \u2014 exactly the pocket structure national means erase.",
+  "also_void": "the threshold_envelope 0.0089 displacement figure measures how little NATIONAL MEANS move under forcing; it says nothing about whether local pockets tip."
+ },
+ "fix": "detect_transitions evaluates conditions PER AGENT, then fires when the FRACTION of agents in a region meeting them crosses a critical mass. Critical fraction is a natural, non-arbitrary parameter; a fired region raises neighbours' fractions, so contagion can propagate.",
+ "MANDATORY TEST REGISTERED BEFORE THE FIX": {
+  "warning_acknowledged": "cascades appearing after the detector is changed prove NOTHING on their own \u2014 the detector was changed to make them possible.",
+  "arm_A_which": "against real preference cascades with known timing (candidate set: Arab Spring 2011 by country, #MeToo 2017, same-sex-marriage tipping by country, Brexit/Trump 2016 polarization), does the fixed detector fire in the RIGHT regions? Threshold: precision AND recall > 0.5 on held-out regions.",
+  "arm_B_when": "does firing timing correlate with observed timing (rank correlation >= +0.3)?",
+  "arm_C_specificity": "does it stay QUIET where reality was quiet? False-positive rate on control country-years < 20%.",
+  "arm_D_not_a_knob": "critical fraction fitted on a subset of cases must transfer to held-out cases without refitting.",
+  "failure_reading": "fires everywhere = threshold too low, mechanism unfalsifiable, reject; fires nowhere = as before; fires but uncorrelated with reality = detector works, physics does not."
+ },
+ "status": "erratum recorded; detector fix and test to follow; production untouched until the test passes"
+}
