@@ -45,8 +45,10 @@ def ask(model: str, question: str, countries: list) -> dict:
                  "content-type": "application/json"})
     for attempt in range(6):
         try:
-            with urllib.request.urlopen(req, timeout=120) as r:
-                text = json.load(r)["content"][0]["text"]
+            with urllib.request.urlopen(req, timeout=300) as r:
+                blocks = json.load(r)["content"]
+                text = next(b["text"] for b in blocks
+                            if b.get("type") == "text")
             text = text.strip().strip("`").lstrip("json").strip()
             start, end = text.find("{"), text.rfind("}")
             return {k.upper(): float(v)
