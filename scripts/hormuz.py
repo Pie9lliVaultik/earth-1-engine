@@ -65,7 +65,7 @@ def _spearman(a: np.ndarray, b: np.ndarray) -> float:
     return float(ra @ rb / d) if d > 0 else 0.0
 
 
-def geography_divergence(res: dict, k: int = 10) -> dict:
+def geography_divergence(res: dict, k: int = 10, noise_floor=None) -> dict:
     """Are these different worlds, or the same world at different volume?
 
     Two measures on the country-level job-loss pattern:
@@ -101,11 +101,27 @@ def geography_divergence(res: dict, k: int = 10) -> dict:
         so = np.mean([p["set_overlap"] for p in out["pairs"]])
         out["mean_rank_correlation"] = round(float(rc), 4)
         out["mean_set_overlap"] = round(float(so), 4)
-        out["verdict"] = (
-            "SCALED COPIES — branching is cosmetic, chaos is not reaching "
-            "the consequence layer" if (rc > 0.85 and so > 0.85) else
-            "GENUINELY DIFFERENT GEOGRAPHIES — different countries tip in "
-            "different futures")
+        # THE NOISE FLOOR. Rank correlation and set overlap on their own
+        # cannot tell "different because the physics differs" from
+        # "different because it is all sampling noise" — and with small
+        # per-country samples the second is overwhelmingly likely. So
+        # the SAME scenario is run twice with different dice, and its
+        # divergence is the floor. Only divergence BELOW that floor is
+        # attributable to the scenario.
+        out["noise_floor"] = noise_floor
+        if noise_floor is not None:
+            n_rc, n_so = noise_floor["rank_correlation"], noise_floor["set_overlap"]
+            signal = (rc < n_rc - 0.15) or (so < n_so - 0.15)
+            out["verdict"] = (
+                "GENUINELY DIFFERENT GEOGRAPHIES — branches diverge further "
+                "than two runs of the SAME scenario do" if signal else
+                "INDISTINGUISHABLE FROM NOISE — two runs of the same "
+                "scenario diverge as much as two different ones. The "
+                "geography is sampling noise, not physics.")
+        else:
+            out["verdict"] = (
+                "SCALED COPIES — branching is cosmetic" if (rc > 0.85 and so > 0.85)
+                else "DIVERGENT, but no noise floor measured — unverifiable")
     return out
 
 
@@ -164,11 +180,40 @@ def main() -> None:
         print(f"    uncertainty             jobs span "
               f"{jl['spread_ratio']:.1f}x across identical runs")
 
-    geo = geography_divergence(res)
+    # THE NOISE FLOOR — and the first version of this was broken.
+    # branch.run() deliberately gives every scenario the SAME dice so it
+    # can be compared fairly against the control, so putting a duplicate
+    # scenario inside one call compared a run to a perfect copy of
+    # itself and measured exactly zero divergence, guaranteed. A control
+    # that cannot fail is not a control.
+    #
+    # The real floor needs the same scenario driven by GENUINELY
+    # different random streams, which means two separate calls with
+    # different seeds.
+    print(f"\n  measuring the noise floor — same scenario, "
+          f"DIFFERENT dice...", flush=True)
+    twin_a = run(w, [SCENARIOS[1]], days=DAYS, repeats=REPEATS, seed=101)
+    twin_b = run(w, [SCENARIOS[1]], days=DAYS, repeats=REPEATS, seed=907)
+    merged = {"branches": {
+        "same_run_a": twin_a["branches"][SCENARIOS[1].id],
+        "same_run_b": twin_b["branches"][SCENARIOS[1].id]}}
+    nf = geography_divergence(merged)
+    noise_floor = {"rank_correlation": nf.get("mean_rank_correlation", 0.0),
+                   "set_overlap": nf.get("mean_set_overlap", 0.0)}
+    print(f"    identical scenarios diverge: rank corr "
+          f"{noise_floor['rank_correlation']:+.3f}  set overlap "
+          f"{noise_floor['set_overlap']:.2f}")
+
+    geo = geography_divergence(res, noise_floor=noise_floor)
     res["geography_divergence"] = geo
     print(f"\n{'=' * 72}")
     print("  IS THE BRANCHING REAL?")
     print(f"{'=' * 72}")
+    nf = geo.get("noise_floor")
+    if nf:
+        print(f"    {'NOISE FLOOR':14s}    {'(same scenario)':14s}  rank corr "
+              f"{nf['rank_correlation']:+.3f}   set overlap "
+              f"{nf['set_overlap']:.2f}")
     for p in geo.get("pairs", []):
         print(f"    {p['a']:14s} vs {p['b']:14s}  rank corr "
               f"{p['rank_correlation']:+.3f}   set overlap "

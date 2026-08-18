@@ -249,11 +249,14 @@ def apply_policy_and_war(civ, life, gov: Governments, health, rng,
         # ESCALATION CEILING. When one side holds nuclear weapons the
         # war is fought harder, and there is a small chance per year of
         # actual use — which is catastrophic rather than merely severe.
+        # firm_country is indexed PER FIRM, not per agent — mixing the
+        # two shapes is what broke this the first time. The escalation
+        # applies to firms whose OWN country is in an asymmetric war.
         nuke = _nuclear_mask(nc)
-        asymmetric = war_here & (
-            nuke[civ.country] ^ nuke[gov.at_war_with[civ.country].clip(0)])
-        if asymmetric.any():
-            firm_esc = asymmetric & (life.firm_country >= 0)
+        opponent = gov.at_war_with.clip(0)
+        asym_country = (gov.at_war_with >= 0) & (nuke ^ nuke[opponent])
+        if asym_country.any():
+            firm_esc = asym_country[life.firm_country]
             life.firm_health[firm_esc] = np.clip(
                 life.firm_health[firm_esc]
                 - 0.02 * (NUCLEAR_ESCALATION - 1.0) * dt_days, 0.0, 1.0)

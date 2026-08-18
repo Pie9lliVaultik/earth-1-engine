@@ -1,0 +1,32 @@
+{
+ "build": "STRATIFIED ALLOCATION — fixing the country-level noise floor",
+ "registered": "2026-08-18",
+ "status_when_registered": "not yet written",
+
+ "the_measured_problem": "At 200,000 agents allocated by true population, two runs of the IDENTICAL scenario differing only in random dice produce a country-level job-loss rank correlation of -0.433 and a set overlap of 0.11. That is near-random. The country-level consequence map does not exist at this resolution — the 'worst hit' lists are sampling variance, which is why a Strait of Hormuz crisis reports Norway, Palau, Lesotho and Vietnam as its principal casualties.",
+
+ "why_stratification_is_the_right_fix": "Allocation by true population gives China and India tens of thousands of agents and Palau around sixty. A country's unemployment is then estimated from ~40 workers, and the smallest countries dominate every ranking through variance alone. Standard survey design solves exactly this: oversample small strata, then reweight by true population when aggregating. It buys stable per-country estimates at a fraction of the cost of brute-force scale, and it is the reason 8.3B agents is not the answer to this problem.",
+
+ "the_number_to_beat": -0.433,
+
+ "PRE-STATED THRESHOLDS, fixed before the build": {
+  "above_+0.5": "THE COUNTRY MAP IS A PRODUCT. Two identical scenarios produce similar country rankings, so a difference between two DIFFERENT scenarios is attributable to the scenario. Geography of consequence can be sold, mapped and acted on.",
+  "between_0.0_and_+0.5": "PARTIAL. Country detail is reportable only above a per-country sample-size gate, and must be suppressed below it. The headline product is global aggregates.",
+  "below_0.0": "THE PROBLEM IS NOT SAMPLING. Country-level consequences are genuinely chaotic and no quantity of agents will stabilise them. That is a real finding about what the product can claim, and the honest response is to ship global aggregates and refuse the country map entirely."
+ },
+
+ "what_is_being_measured": "the same noise-floor diagnostic, unchanged: the same scenario run twice with genuinely different random seeds, scored on country-level job-loss rank correlation and top-k set overlap. Nothing about the diagnostic changes so the before/after comparison is clean.",
+
+ "what_would_make_this_build_WRONG_even_if_the_number_improves": [
+  "WEIGHTS NOT APPLIED: if global aggregates stop matching reality after stratification, the population weights are not being carried through the consequence layer, and the country map would have been bought by breaking the totals.",
+  "SMALL COUNTRIES OVER-REPRESENTED IN GLOBAL FIGURES: a stratified sample without weights makes Palau count as much as India. Any global number must be weight-corrected and that must be verified, not assumed.",
+  "THE GRAPH BREAKS: agent allocation feeds the social fabric. If stratification distorts household sizes or firm sizes, the fix would have damaged the layer that produced the tails."
+ ],
+
+ "explicitly_not_claimed": "improving the noise floor does not validate any consequence figure against reality. It only establishes whether the country map carries signal at all. Validation against the real world is the backtest, which runs after this and after the two consequence bugs are fixed — in that order, and nothing before it.",
+
+ "known_bugs_to_fix_in_the_same_pass": [
+  "fragmentation branch reported jobs_lost 0 with range 0-0 while simultaneously reporting 193M pushed into destitution — internally inconsistent",
+  "the resolution branch reported hope RISING (+0.0144) during an oil crisis — sign error, probably in the consequence translator reading the wrong field"
+ ]
+}

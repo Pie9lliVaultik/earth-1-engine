@@ -53,33 +53,63 @@ def _by_country(civ, mask, nc: int) -> np.ndarray:
 
 
 def snapshot(w) -> dict:
-    """The raw quantities a consequence report is computed from."""
-    from earth1.genesis import GENESIS_COUNTRIES
+    """The raw quantities a consequence report is computed from.
+
+    EVERY GLOBAL FIGURE IS CENSUS-WEIGHTED. Agents are allocated with a
+    per-country floor so that small countries are estimable at all,
+    which means Palau holds as many agents as its floor allows while
+    India holds a share far below its true 17.9% of humanity. Counting
+    agents unweighted therefore does not describe humanity, it describes
+    the sampling frame — and the harder we stratify to fix the country
+    map, the more wrong those totals get.
+
+    genesis.census_weights() already carries the correction; it simply
+    was not being applied here.
+    """
+    from earth1.genesis import GENESIS_COUNTRIES, census_weights
     nc = len(GENESIS_COUNTRIES)
     civ, life, h = w.civ, w.life, w.health
     alive = h.alive
     fl = w.flourishing
 
+    cw = census_weights(civ)
+
+    def wcount(mask) -> float:
+        """Population-true count: agents weighted back to census shares."""
+        return float((cw * (mask & alive)).sum())
+
     return {
-        "population": int(alive.sum()),
-        "employed": int((life.employed & alive).sum()),
-        "unemployed": int((~life.employed & life.in_lf & alive).sum()),
-        "destitute": int(((life.deprivation > 0.99) & alive).sum()),
-        "hungry": int(((fl.hunger > 0.5) & alive).sum()) if fl else 0,
-        "homeless": int((w.klass.homeless & alive).sum()),
-        "evicted": int(life.evicted.sum()) if life.evicted is not None else 0,
-        "migrants": int(w.klass.migrated.sum()),
+        "population": wcount(np.ones(civ.n, dtype=bool)),
+        "employed": wcount(life.employed),
+        "unemployed": wcount(~life.employed & life.in_lf),
+        "destitute": wcount(life.deprivation > 0.99),
+        "hungry": wcount(fl.hunger > 0.5) if fl else 0.0,
+        "homeless": wcount(w.klass.homeless),
+        "evicted": float((cw * life.evicted).sum())
+        if life.evicted is not None else 0.0,
+        "migrants": float((cw * w.klass.migrated).sum()),
         "at_war": int((w.gov.at_war_with >= 0).sum()),
-        "dead": int((~alive).sum()),
+        "dead": float((cw * ~alive).sum()),
         "median_buffer": float(np.median(life.wealth[alive])) if alive.any() else 0.0,
-        "mean_hope": float(fl.hope[alive].mean()) if fl and alive.any() else None,
-        # per country, for the map
+        # weighted, like every other global read — an unweighted mean
+        # is the mood of the sampling frame, not of humanity
+        "mean_hope": (float(np.average(fl.hope[alive], weights=cw[alive]))
+                      if fl and alive.any() else None),
+        # Per country, for the map. These stay UNWEIGHTED on purpose:
+        # inside a country every agent represents the same number of
+        # real people, so a weight would cancel. The weights only matter
+        # when comparing or summing ACROSS countries.
         "jobless_by_country": _by_country(
             civ, (~life.employed & life.in_lf & alive), nc),
         "destitute_by_country": _by_country(
             civ, (life.deprivation > 0.99) & alive, nc),
         "workers_by_country": np.maximum(
             _by_country(civ, life.in_lf & alive, nc), 1.0),
+        # how many real people each agent stands for, per country —
+        # needed to turn a country rate back into a headcount
+        "people_per_agent_by_country": np.array([
+            (float(np.mean(cw[civ.country == i])) if (civ.country == i).any()
+             else 0.0) for i in range(nc)]),
         "legitimacy": w.gov.legitimacy.copy(),
         "fear_by_country": (np.bincount(
             civ.country, weights=civ.forces[:, Force.FEAR], minlength=nc)
@@ -125,8 +155,14 @@ def compare(baseline: dict, branch: dict, w_branch, days: int) -> dict:
     names = [c["name"] for c in GENESIS_COUNTRIES]
     iso = [c["iso2"] for c in GENESIS_COUNTRIES]
 
-    extra_jobless = branch["jobless_by_country"] - baseline["jobless_by_country"]
-    share = extra_jobless / baseline["workers_by_country"]
+    # A country's extra jobless in AGENTS becomes real people only after
+    # multiplying by what an agent there stands for. Skipping this made
+    # a small country's agent count directly comparable to a large one's
+    # — which is precisely how Palau ended up outranking India.
+    ppa = branch.get("people_per_agent_by_country")
+    raw_jobless = branch["jobless_by_country"] - baseline["jobless_by_country"]
+    extra_jobless = raw_jobless * ppa if ppa is not None else raw_jobless
+    share = raw_jobless / baseline["workers_by_country"]
     recession = np.flatnonzero(share >= RECESSION_JOB_LOSS)
 
     leg_fall = baseline["legitimacy"] - branch["legitimacy"]
@@ -147,7 +183,15 @@ def compare(baseline: dict, branch: dict, w_branch, days: int) -> dict:
 
     return {
         "horizon_days": days,
-        "jobs_lost": int(max(0, round(float(extra_jobless.sum())))),
+        # Only the countries that LOST jobs count. Summing signed
+        # changes across countries let hires in one place cancel losses
+        # in another, and max(0, ...) then floored the whole figure to
+        # zero — which is how a branch reported 0 jobs lost while
+        # pushing 193 million people into destitution. A person who lost
+        # a job in Vietnam is not un-lost by a hire in Brazil.
+        "jobs_lost": int(round(float(np.maximum(extra_jobless, 0).sum()))),
+        "jobs_gained_elsewhere": int(round(float(
+            np.maximum(-extra_jobless, 0).sum()))),
         "jobs_lost_where": top(extra_jobless),
         "countries_in_recession": [names[i] for i in recession],
         "people_pushed_into_destitution": max(0, extra_destitute),
