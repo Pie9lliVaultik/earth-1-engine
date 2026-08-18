@@ -65,8 +65,14 @@ HUNGER_PER_DAY = 0.16          # days, not hours — hunger is slow
 THIRST_PER_DAY = 0.85          # thirst is fast and it kills fast
 BREATH_TAX = 0.02              # continuous, invisible, always there
 
-STARVATION_DEATH = 0.020       # daily hazard at maximum hunger
-DEHYDRATION_DEATH = 0.090      # daily hazard at maximum thirst
+# Daily hazard at MAXIMUM hunger/thirst. The first values (0.020 and
+# 0.090) meant a maximally hungry person died with ~99.9% probability
+# within a year, which collapsed the population by half in five years.
+# Most hungry people do not starve to death — that is precisely why
+# hunger is politically potent rather than merely fatal. Famine
+# mortality even at its worst is a few percent per year of the affected.
+STARVATION_DEATH = 1.2e-4
+DEHYDRATION_DEATH = 6.0e-4
 
 
 @dataclass

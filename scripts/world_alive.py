@@ -79,6 +79,7 @@ def save_world(w):
     sparse.save_npz(HOME / "adj.npz", w.civ.adj.tocsr())
     with open(HOME / "world.pkl", "wb") as f:
         pickle.dump({"civ": {k: getattr(w.civ, k) for k in CIV_ARRAYS},
+                     "fabric": w.fabric, "feed": w.feed,
                      "life": w.life, "health": w.health,
                      "knowledge": w.knowledge, "gov": w.gov,
                      "klass": w.klass, "chronicle": w.chronicle,
@@ -101,6 +102,14 @@ def load_world():
     for k, v in d["civ"].items():
         setattr(w.civ, k, v)
     w.civ.adj = sparse.load_npz(HOME / "adj.npz")
+    # THE FABRIC MUST MATCH THE GRAPH IT DESCRIBES. birth_world builds a
+    # fresh fabric from a fresh population; overwriting civ.adj from disk
+    # afterwards left w.fabric.by_type describing a world that no longer
+    # exists, so any per-channel analysis on a resumed world was wrong.
+    if "fabric" in d and d["fabric"] is not None:
+        w.fabric = d["fabric"]
+    if "feed" in d and d["feed"] is not None:
+        w.feed = d["feed"]
     w.life, w.health = d["life"], d["health"]
     w.knowledge, w.gov = d["knowledge"], d["gov"]
     w.klass, w.chronicle, w.day = d["klass"], d["chronicle"], d["day"]

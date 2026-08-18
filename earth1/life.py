@@ -114,6 +114,16 @@ COST_SHARE = {"HIC": 0.72, "UMIC": 0.80, "LMIC": 0.88, "LIC": 0.94}
 # accumulates reserves forever.
 SAVE_RATE = 0.12
 
+# HOUSING. The largest line in almost every household budget, and the
+# main road to the street — which is why treating cost of living as one
+# undifferentiated number hid the single most important mechanism in
+# material life. Rent is a fixed claim that arrives whether or not you
+# earned anything, and losing it is what actually makes a person
+# homeless.
+RENT_SHARE = {"HIC": 0.34, "UMIC": 0.30, "LMIC": 0.26, "LIC": 0.22}
+OWNER_SHARE = {"HIC": 0.62, "UMIC": 0.60, "LMIC": 0.68, "LIC": 0.74}
+ARREARS_TO_EVICTION = 90.0     # days behind before you lose the home
+
 DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 
 # How strongly accumulated trait change moves the force baseline. This
@@ -182,6 +192,10 @@ class Life:
     # what just happened to this person, as a code and a day. Kept as
     # arrays rather than per-agent lists so 8.3B stays affordable.
     policy_net: np.ndarray = None    # welfare generosity, set by government
+    owns_home: np.ndarray = None     # no rent, but no flexibility either
+    rent: np.ndarray = None          # daily housing cost
+    arrears: np.ndarray = None       # days of unpaid housing
+    evicted: np.ndarray = None
     last_event: np.ndarray = None    # int code, see EVENT_CODES
     last_event_day: np.ndarray = None
     n_events: np.ndarray = None      # lifetime count of marks left
@@ -202,6 +216,7 @@ def _tier(civ: Civilization) -> np.ndarray:
 
 
 def birth_life(civ: Civilization, seed: int = 0) -> Life:
+    from earth1.genesis import GENESIS_COUNTRIES
     """Give a freshly created population its material starting point."""
     rng = np.random.default_rng(seed ^ 0x11FE)
     n = civ.n
@@ -266,6 +281,16 @@ def birth_life(civ: Civilization, seed: int = 0) -> Life:
     # income tier, and with what has happened to a person. Those fall
     # out of the dynamics and are what scripts/epi_gradient_test.py
     # checks against the published pattern.
+    _keys = ["HIC", "UMIC", "LMIC", "LIC"]
+    _owns = rng.random(n) < np.array([OWNER_SHARE[k] for k in _keys])[tier]
+    # rent is a share of the LOCAL median wage, not of your own — which
+    # is exactly why a low earner in an expensive city is crushed
+    _med = np.array([np.median(wage[civ.country == c]) if (civ.country == c).any()
+                     else 1.0 for c in range(len(GENESIS_COUNTRIES))])
+    _rent = np.array([RENT_SHARE[k] for k in _keys])[tier] * _med[civ.country]
+    _rent = np.where(_owns, _rent * 0.35, _rent)   # owners still pay upkeep
+    _rent = np.where(civ.urban, _rent * 1.35, _rent * 0.8)
+
     _msp = np.clip(rng.beta(8.0, 2.2, n), 0.0, 1.0)
     _rsp = np.where(rng.random(n) < PARTNERED_SHARE,
                     rng.uniform(0.60, 1.00, n), rng.uniform(0.15, 0.75, n))
@@ -277,6 +302,8 @@ def birth_life(civ: Civilization, seed: int = 0) -> Life:
                 force_baseline=civ.forces.copy(),
                 trait_baseline=np.stack([civ.openness, civ.doubt,
                                          civ.desire_intensity], axis=1),
+                owns_home=_owns, rent=_rent, arrears=np.zeros(n),
+                evicted=np.zeros(n, dtype=bool),
                 mental_setpoint=_msp, relationship_setpoint=_rsp,
                 mental=np.clip(_msp + rng.normal(0, 0.05, n), 0.0, 1.0),
                 physical=np.clip(rng.beta(7.0, 2.0, n)
@@ -396,6 +423,22 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     # every day made median reserves grow without bound (93 days after
     # one year) while a separate group starved — a bimodality that was
     # an artefact of nobody ever consuming above subsistence.
+    # Rent is CARVED OUT of the cost of living, not added to it. The
+    # first version stacked housing on top of a `cost` that already
+    # represented the whole budget, double-counting it and putting half
+    # the world into arrears. Housing is the largest SHARE of the
+    # budget, not an extra bill beside it.
+    housing = life.rent if life.rent is not None else 0.0
+    if life.rent is not None:
+        paid = income >= life.cost
+        # renters fall behind; owners cannot be evicted for arrears
+        behind = (~paid) & (~life.owns_home)
+        life.arrears = np.where(behind, life.arrears + dt_days,
+                                np.maximum(life.arrears - 2.0 * dt_days, 0.0))
+        newly_evicted = (life.arrears > ARREARS_TO_EVICTION) & ~life.evicted
+        life.evicted |= newly_evicted
+        # losing the home ends the rent and ends the arrears
+        life.arrears[newly_evicted] = 0.0
     surplus = np.maximum(income - life.cost, 0.0)
     shortfall = np.minimum(income - life.cost, 0.0)
     saved = SAVE_RATE * surplus + shortfall
@@ -500,6 +543,11 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
              "destitute": float((life.deprivation > 0.99).mean()),
              "deprived": float((life.deprivation > 0.5).mean()),
              "median_buffer_days": float(np.median(life.wealth))}
+    if life.rent is not None:
+        stats.update({"in_arrears": float((life.arrears > 14).mean()),
+                      "evicted_total": int(life.evicted.sum()),
+                      "rent_burden": float(np.median(
+                          life.rent / np.maximum(life.wage, 1e-6)))})
     if life.mental is not None:
         stats.update({
             "mental_ill": float((life.mental < 0.45).mean()),

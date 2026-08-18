@@ -199,19 +199,42 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
 
 
 def _be_born(w: World, rng, heritability: float = 0.45) -> dict:
-    """Fill the places the dead left. Inheritance, not cloning."""
+    """Children are CONCEIVED, not conjured to replace the dead.
+
+    Filling every empty slot each tick conserved the population exactly,
+    which is false of every real society — it can never grow and can
+    never collapse. Births now come from partnered people of fertile age
+    at a rate set by their country's fertility, and they occupy free
+    capacity. When births outrun deaths the population grows; when they
+    do not, it shrinks.
+    """
+    from earth1.genesis import GENESIS_COUNTRIES
     civ, life, h = w.civ, w.life, w.health
-    slots = np.flatnonzero(~h.alive)
-    if slots.size == 0:
-        return {"births": 0}
+    free = np.flatnonzero(~h.alive)
+    if free.size == 0:
+        return {"births": 0, "population": int(h.alive.sum())}
     living = np.flatnonzero(h.alive)
     if living.size < 10:
-        return {"births": 0}
+        return {"births": 0, "population": int(living.size)}
+
+    tfr = np.array([float(c.get("tfr", 2.0) or 2.0)
+                    for c in GENESIS_COUNTRIES])
+    # a woman has TFR children across ~25 fertile years; half the
+    # population bears them, so the per-capita daily hazard is small
+    fertile = (h.alive & (civ.age > 0.03) & (civ.age < 0.45)
+               & (life.relationship > 0.55)
+               & (np.clip(life.deprivation, 0, 1) < 0.6))
+    rate = tfr[civ.country] / (25.0 * 365.0) * 0.5
+    conceived = fertile & (rng.random(civ.n) < rate)
+    n_new = int(min(conceived.sum(), free.size))
+    if n_new == 0:
+        return {"births": 0, "population": int(h.alive.sum())}
+    slots = free[:n_new]
+    parents = np.flatnonzero(conceived)[:n_new]
 
     # a country's births are proportional to its living population, so
     # the world's composition follows its own demography rather than a
     # global average
-    parents = rng.choice(living, slots.size)
     civ.country[slots] = civ.country[parents]
     civ.region[slots] = civ.region[parents]
     civ.urban[slots] = civ.urban[parents]
@@ -266,4 +289,8 @@ def _be_born(w: World, rng, heritability: float = 0.45) -> dict:
     h.in_treatment[slots] = False
     h.diagnosed_day[slots] = -1.0
     h.lifetime_illnesses[slots] = 0
-    return {"births": int(slots.size)}
+    if life.rent is not None:
+        life.arrears[slots] = 0.0
+        life.evicted[slots] = False
+    return {"births": int(slots.size),
+            "population": int(h.alive.sum())}
