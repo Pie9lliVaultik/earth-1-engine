@@ -113,9 +113,27 @@ def ground(question_text: str, population: str | None = None,
     if not pool:
         pool = corpus
 
-    scored = sorted(
-        ((lexical_similarity(question_text, s["question_text"]), s)
-         for s in pool), key=lambda t: -t[0])
+    # STEP 1 of the ordering: similarity. Semantic when the embedder is
+    # present, lexical Jaccard as a conservative fallback. The stem
+    # guard (step 2) and the dampening cap (step 3) run AFTER this —
+    # embeddings score 'confidence in the press' vs '...in the army' at
+    # 0.85+, which is exactly what the guard exists to catch.
+    scored = None
+    try:
+        from earth1 import embedder
+        if embedder.available():
+            texts = [s["question_text"] for s in pool]
+            vecs = embedder.embed([question_text] + texts)
+            if vecs is not None:
+                sims = vecs[1:] @ vecs[0]
+                order = np.argsort(-sims)
+                scored = [(float(sims[i]), pool[i]) for i in order]
+    except Exception:
+        scored = None
+    if scored is None:
+        scored = sorted(
+            ((lexical_similarity(question_text, s["question_text"]), s)
+             for s in pool), key=lambda t: -t[0])
     if not scored:
         return Grounding("forward-estimate", "low",
                          note="empty corpus")
