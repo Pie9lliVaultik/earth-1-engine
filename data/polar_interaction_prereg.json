@@ -29,5 +29,27 @@
   "third_failure_branch": "WINS ON BOTH BUT ONLY BY MATCHING AN ARTIFACT \u2014 any operator fitted to raw densities may be reproducing response style rather than polarization. Guard: refit on data/cell_densities_ers.json (style-corrected) and require the win to survive.",
   "discriminating_test_binding": "shape-matching vs mechanism is decided by predicting quantities NOT fitted: (a) cross-country variation in extreme mass on held-out countries, (b) the ordering of which QUESTIONS are more bimodal. A knob fails both; a mechanism should get the ordering right.",
   "note_on_this_run": "the 50K operator was fitted on RAW densities. Its selected config landed at extreme mass 0.363 while the independently-derived polarization target is 0.329 \u2014 suggestive, not sufficient. Interpreted under the original two branches until the discriminating test runs."
+ },
+ "DISCRIMINATING_TEST_SPEC": {
+  "registered": "2026-08-18, BEFORE the test is written or run",
+  "free_parameters": 6,
+  "why_thresholds_are_pre-stated": "6 free parameters is above the 3-4 line at which flexibility alone can match a measured shape; only unfitted predictions discriminate.",
+  "arm_A_cross_country": {
+   "quantity": "per-country extreme mass, STYLE-CORRECTED (data/cell_densities_ers.json) \u2014 raw would hand the operator a free win via anything country-level that ERS also tracks (R2 0.441)",
+   "scored_on": "HELD-OUT countries only",
+   "statistic": "Pearson r between predicted and observed per-country corrected extreme mass",
+   "threshold": "r >= 0.40 counts as mechanism; below = flexibility"
+  },
+  "arm_B_question_ordering": {
+   "quantity": "per-question extreme mass (which questions are more bimodal)",
+   "statistic": "Spearman rho, n=8 questions",
+   "threshold": "rho >= 0.74 (two-tailed p<0.05 at n=8); anything less is NOT evidence"
+  },
+  "arm_C_metric_robustness": {
+   "hypothesis": "W1 may be implicitly ERS-robust: style inflates both endpoints symmetrically (location-neutral) while W1 is location-sensitive, so a W1-fitted operator has little incentive to chase style.",
+   "test": "refit the operator on style-corrected densities; if the selected parameters barely move from the raw-fitted ones, the metric was doing the correction",
+   "threshold": "same selected config, or attraction within 0.1 => metric is ERS-robust"
+  },
+  "caveats_on_record": "0.363 vs 0.329 is a two-point agreement with a ~10% relative gap and no propagated estimation error on either quantity. Suggestive only."
  }
 }
