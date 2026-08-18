@@ -1,0 +1,16 @@
+{
+ "registered": "2026-08-18, BEFORE the operator is written or fitted",
+ "name": "DIRECTION-VS-RATE susceptibility (candidate original physics)",
+ "why_it_is_new": "Every operator in the field \u2014 bounded confidence, kinetic collision kernels, Light Society's influence lookup \u2014 moves agents TOWARD something shared, and susceptibility (where it exists) sets HOW FAST. This operator makes per-agent susceptibility set WHERE the agent moves in force space, not how quickly.",
+ "mechanical_claim": "It explains the measured event-leg failure directly: a uniform-direction shove produces variance ratio 0.16 and rank correlation -0.41 by construction. Direction heterogeneity produces population variance without changing the aggregate.",
+ "design_constraint": "The per-agent susceptibility vectors are normalized so the POPULATION-MEAN response equals today's uniform response. The aggregate (ratio 0.97, the one thing that works) is preserved BY CONSTRUCTION; only the distribution of directions changes.",
+ "machinery_already_present": "dynamics.py has per-agent per-force susceptibility and trait residue; the build is connection and re-parameterization, not construction. Known levers measured: thresholds set above reachable range (0.602 vs 0.7), residue 0.0005/layer, averaging kernel differentiates rate but not direction.",
+ "DISCRIMINATING TEST (thresholds pre-stated, held-out cases)": {
+  "arm_A_who_reacts": "rank correlation between predicted and observed per-country reaction magnitude on HELD-OUT reaction cases. Baseline -0.41. Threshold: >= +0.30 to count.",
+  "arm_B_spread": "variance ratio (simulated/real) must move from 0.16 into [0.5, 1.5].",
+  "arm_C_aggregate_preserved": "aggregate magnitude ratio must stay >= 0.90 (currently 0.97). A win that breaks the aggregate is not a win.",
+  "arm_D_not_a_knob": "fitted susceptibility must correlate with an INDEPENDENT agent property (education, age, network degree) rather than being arbitrary per-country tuning; report the correlation.",
+  "failure_reading": "arms A+B pass but D fails => country-level tuning wearing an agent-level costume; arms fail => reject and record, as with polar."
+ },
+ "fitting_protocol": "parameters fit on a subset of the six historical reaction cases, scored on the held-out cases; no fitting on the scored cases; production untouched (flag-gated)."
+}

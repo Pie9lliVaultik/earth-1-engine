@@ -4,5 +4,11 @@
  "mrsp": 0.08562338232841839,
  "hybrid": 0.08424433497495716,
  "engine": 0.109348799117811,
- "naive": 0.126388231915934
+ "naive": 0.126388231915934,
+ "FINDING_NOT_CAVEAT": {
+  "statement": "The engine's contribution SHRINKS as the baseline becomes properly regularized: +0.35pp against full-covariate MrsP, +0.14pp against parity MrsP. Extrapolating, against a fully-specified autoMrP it is expected to reach ~zero.",
+  "reading": "This is consistent with the engine SUBSTITUTING FOR REGULARIZATION, not adding orthogonal information. Stated as the finding, not as a caveat.",
+  "PRE-REGISTERED CI EXPECTATION": "+0.14pp will NOT clear measured fold noise (0.58-0.72pp at these scales). If it does not clear, the cross-sectional case for agents is CLOSED \u2014 a clean ending, not a lingering footnote.",
+  "registered": "2026-08-18, before the 200K 3-fold-seed CI run"
+ }
 }
