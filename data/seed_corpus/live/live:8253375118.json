@@ -1,0 +1,20 @@
+{
+ "id": "live:8253375118",
+ "question_text": "Is homosexuality justifiable?",
+ "opinion_form": "Do people believe homosexuality is morally acceptable or justifiable?",
+ "source": "Gallup",
+ "source_url": "https://news.gallup.com/poll/710810/support-lgbtq-issues-remains-down-peak.aspx",
+ "date": "2026-05",
+ "population_targets": {
+  "US": 0.5933333333333334,
+  "LT": 0.44,
+  "LV": 0.44,
+  "EE": 0.52
+ },
+ "national_target": 0.5933333333333334,
+ "confidence": "medium",
+ "calibration_source": "live-grounded",
+ "fetched_at": "2026-08-18T13:39:22Z",
+ "freshness_hours": 168,
+ "excluded_from_grading": true
+}

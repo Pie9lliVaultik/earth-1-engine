@@ -1,0 +1,30 @@
+{
+ "id": "live:5238513522",
+ "question_text": "How important is God in your life?",
+ "opinion_form": "How important is God in your life?",
+ "source": "Pew Research Center",
+ "source_url": "https://www.pewresearch.org/global/2020/07/20/the-global-god-divide/",
+ "date": "2019-01",
+ "population_targets": {
+  "GLOBAL": 0.61,
+  "US": 0.51,
+  "AF": 0.97,
+  "AL": 0.39,
+  "DZ": 0.95,
+  "AR": 0.66,
+  "AM": 0.73,
+  "AZ": 0.5,
+  "BH": 0.94,
+  "BD": 0.99,
+  "BY": 0.34,
+  "BO": 0.89,
+  "BA": 0.77,
+  "BR": 0.87
+ },
+ "national_target": 0.51,
+ "confidence": "medium",
+ "calibration_source": "live-grounded",
+ "fetched_at": "2026-08-18T13:38:34Z",
+ "freshness_hours": 168,
+ "excluded_from_grading": true
+}

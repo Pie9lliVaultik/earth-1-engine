@@ -1,0 +1,17 @@
+{
+ "id": "live:1042215812",
+ "question_text": "How much confidence do you have in the churches?",
+ "opinion_form": "How much confidence do you have in the churches?",
+ "source": "Gallup",
+ "source_url": "https://news.gallup.com/poll/508169/historically-low-faith-institutions-continues.aspx",
+ "date": "2025-03",
+ "population_targets": {
+  "US": 0.33166666666666667
+ },
+ "national_target": 0.33166666666666667,
+ "confidence": "medium",
+ "calibration_source": "live-grounded",
+ "fetched_at": "2026-08-18T13:37:43Z",
+ "freshness_hours": 168,
+ "excluded_from_grading": true
+}

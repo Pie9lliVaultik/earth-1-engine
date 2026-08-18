@@ -1,0 +1,17 @@
+{
+ "id": "live:6614082481",
+ "question_text": "How much confidence do you have in the government?",
+ "opinion_form": "How much confidence do you have in the government?",
+ "source": "Pew Research Center",
+ "source_url": "https://www.pewresearch.org/politics/2025/12/04/public-trust-in-government-1958-2025/",
+ "date": "2025-09",
+ "population_targets": {
+  "US": 0.22000000000000003
+ },
+ "national_target": 0.22000000000000003,
+ "confidence": "medium",
+ "calibration_source": "live-grounded",
+ "fetched_at": "2026-08-18T13:38:11Z",
+ "freshness_hours": 168,
+ "excluded_from_grading": true
+}

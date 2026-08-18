@@ -1,0 +1,22 @@
+{
+ "id": "live:2600522262",
+ "question_text": "Generally speaking, would you say that most people can be trusted?",
+ "opinion_form": "Generally speaking, would you say that most people can be trusted?",
+ "source": "Pew Research Center",
+ "source_url": "https://www.pewresearch.org/short-reads/2025/12/01/where-most-people-trust-others-and-where-they-dont-around-the-world/",
+ "date": "2025-02",
+ "population_targets": {
+  "US": 0.5,
+  "SE": 0.83,
+  "TR": 0.14,
+  "GLOBAL": 0.3,
+  "CN": 0.56,
+  "IN": 0.56
+ },
+ "national_target": 0.5,
+ "confidence": "medium",
+ "calibration_source": "live-grounded",
+ "fetched_at": "2026-08-18T13:37:24Z",
+ "freshness_hours": 168,
+ "excluded_from_grading": true
+}

@@ -1,0 +1,32 @@
+{
+ "rung": "R5 LIVE",
+ "registered": "2026-08-18",
+ "what_is_being_tested": "the PRODUCT, not the engine. R1-R4 asked whether the synthetic population carries predictive information. R5 asks a different question: when a user brings a question we have never seen, can the grounding cascade go to the open web at runtime, find real published survey data, and return a number that is actually close to the truth?",
+
+ "design": {
+  "ruler": "WVS Wave 7 verified microdata (data/wvs_w7_cohort_by_country.csv), national share reconstructed as the n-weighted mean across age buckets",
+  "corpus": "DISABLED (corpus=[]). Path A and Path B cannot fire. The pipeline is forced onto Path D, the live web search. This is the whole point: the seed corpus already contains these items, so leaving it on would test lookup, not retrieval.",
+  "arms_on_identical_items": {
+   "LIVE": "Path D — two Sonnet calls, web_search (max 3 uses), credibility-regex filter, ISO2 population match",
+   "NAIVE": "the grand mean of that item across all WVS7 countries — the honest 'you know nothing about this country' baseline",
+   "ENGINE": "Path C forward-estimate — the synthetic population answering from its own structure with no grounding at all"
+  },
+  "scale": "SMALL FIRST (standing instruction). 6 country-item pairs on the first fire, ~$0.25. Scale only after the small run reports."
+ },
+
+ "pre_stated_expectation": "LIVE beats NAIVE. This is the arm I expect to win, and it is the first rung where I expect the product to win rather than merely to be honest about losing — because it is not asking the engine to know anything, it is asking the retrieval layer to find a number that a real survey organization already published. If LIVE does NOT beat NAIVE, the product claim is broken and that is the more important finding.",
+
+ "pass_bar_stated_before_running": {
+  "primary": "LIVE MAE < NAIVE MAE",
+  "retrieval_rate": ">= 60% of items must return at least one credible source; a pipeline that beats naive on 2 of 6 items and abstains on 4 has not passed",
+  "reported_regardless": "per-item source name and URL, so it is visible whether Path D found an INDEPENDENT organization or simply re-found the WVS"
+ },
+
+ "known_caveat_stated_before_running": "Path D may retrieve the WVS itself. That is the pipeline working correctly, not leakage — but it means a WVS hit measures retrieval-and-parse fidelity rather than independent corroboration. Both are real product capabilities and they are not the same capability, so the source of every hit is logged and they are scored separately in the report.",
+
+ "how_this_can_fail": [
+  "retrieval rate below 60% -> the cascade abstains too often to ship",
+  "LIVE loses to NAIVE -> retrieval finds sources but parses the wrong number, or matches the wrong population",
+  "all hits are WVS -> the pipeline can only re-find its own corpus and has no independent reach"
+ ]
+}
