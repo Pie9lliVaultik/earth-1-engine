@@ -75,6 +75,9 @@ class Answer:
     camp_cosine: float | None = None
     abstained: bool = False
     abstain_reason: str | None = None
+    # scope routing: which system actually produced the number
+    answer_from: str = "engine"
+    scope_note: str | None = None
     # SHAPE, measured rather than averaged (from the seed's real
     # cohort targets when the cascade found one)
     shape: dict | None = None
@@ -160,6 +163,30 @@ def answer(question_text: str,
         answered_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         note=TIER_MEANING.get(g.calibration_source),
     )
+
+    # ── SCOPE ROUTING (measured 2026-08-18, validation ladder) ──
+    # The 18 genesis features are COUNTRY-LEVEL: Hofstede, Inglehart,
+    # census. They differentiate Germany from Nigeria; they cannot
+    # differentiate a 25-year-old progressive American from a
+    # 60-year-old conservative American, because both carry the same 18
+    # numbers. Measured: R2 WVS7 0.1167 vs naive 0.1388 PASS and R4
+    # GOQA 0.1059 vs 0.1264 PASS (cross-national), against R1 GSS
+    # 0.1557 vs a fair year-1 anchor of 0.1158 FAIL (within-country).
+    # So on a SINGLE-COUNTRY question with real survey data, the
+    # engine's own prediction is not served — the measured cohort data
+    # is. This is a routing rule, not a caveat.
+    single_country = population is not None
+    has_real_cohorts = bool(getattr(g, "cohort_targets", None))
+    if single_country and has_real_cohorts and g.calibration_source in (
+            "survey-matched", "live-grounded"):
+        a.answer_from = "survey_data"
+        a.scope_note = (
+            "single-country question with measured cohort data: serving "
+            "the SURVEY, not the engine. The engine's features are "
+            "country-level and were measured to lose within-country "
+            "(R1 GSS: 0.1557 vs 0.1158 fair anchor).")
+        if g.national_target is not None:
+            a.yes_pct = float(g.national_target)
 
     # abstention: ONLY for a degenerate manifold, never for missing data
     if diag["regime"] == "degenerate":

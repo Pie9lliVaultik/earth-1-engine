@@ -1,0 +1,15 @@
+{
+ "registered": "2026-08-18, BEFORE the cohort-calibrated R1 is run",
+ "question": "R1 failed because the engine calibrates on COUNTRY means, which carry no within-country information. The ported cohort solver (calibration.calibrate_cohort) fits POLITICAL x AGE cells instead. Does that rescue within-country prediction, or are the 18 features structurally incapable of it?",
+ "arms": {
+  "R1_country": "current: fit the engine on the national share, score later years (measured 0.1557)",
+  "R1_cohort": "fit calibrate_cohort on POLITICAL cohort cells (pol_far_left .. pol_far_right) at the fit year, score the same later years",
+  "fair_anchor": "year-1 persistence, 0.1158 \u2014 the honest baseline the engine must beat"
+ },
+ "REGISTERED EXPECTATIONS": {
+  "primary": "cohort calibration IMPROVES on 0.1557 but still LOSES to the 0.1158 fair anchor \u2014 because the 18 features are identical for every American, so no fitting resolution can manufacture within-country variance that the features do not contain",
+  "surprise_branch": "if cohort calibration BEATS 0.1158, the features do carry within-country signal that country-mean fitting was discarding, and the within-country claim reopens",
+  "null_branch": "if cohort calibration is indistinguishable from country calibration, that is direct evidence the fitting resolution is irrelevant and the constraint is the feature set"
+ },
+ "why_it_matters": "this decides whether 'cross-national instrument only' is a permanent architectural boundary or an artifact of how we fit."
+}
