@@ -64,5 +64,21 @@
     "log": "/tmp/pv_grid.log",
     "launch": "cd /opt/earth1 && PV_WORKERS=20 .venv/bin/python3 experiments/predictive_value/grid_driver.py > /tmp/pv_grid.log 2>&1",
     "max_retries": 5
+  },
+  {
+    "name": "rung_10m_s43",
+    "pgrep": "[R]UNG_SEED=43",
+    "done_check": "test -f /opt/earth1/data/rung_10m_s43.json",
+    "log": "/tmp/rung10m_s43.log",
+    "launch": "cd /opt/earth1 && RUNG_POP=10000000 RUNG_NAME=10m_s43 RUNG_SEED=43 EARTH1_GOQA_WORKERS=24 .venv/bin/python3 scripts/rung_1m.py > /tmp/rung10m_s43.log 2>&1",
+    "max_retries": 2
+  },
+  {
+    "name": "rung_10m_s44",
+    "pgrep": "[R]UNG_SEED=44",
+    "done_check": "test -f /opt/earth1/data/rung_10m_s44.json",
+    "log": "/tmp/rung10m_s44.log",
+    "launch": "cd /opt/earth1 && RUNG_POP=10000000 RUNG_NAME=10m_s44 RUNG_SEED=44 EARTH1_GOQA_WORKERS=24 .venv/bin/python3 scripts/rung_1m.py > /tmp/rung10m_s44.log 2>&1",
+    "max_retries": 2
   }
 ]

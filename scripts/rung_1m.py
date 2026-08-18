@@ -22,27 +22,28 @@ from earth1.forces import PHYSICS_VERSION
 import os
 POP = int(os.environ.get("RUNG_POP", "1000000"))
 RUNG_NAME = os.environ.get("RUNG_NAME", "1M")
-out = {"rung": RUNG_NAME, "pop": POP, "physics": PHYSICS_VERSION,
+SEED = int(os.environ.get("RUNG_SEED", "42"))
+out = {"rung": RUNG_NAME, "pop": POP, "seed": SEED, "physics": PHYSICS_VERSION,
        "started": datetime.now(timezone.utc).isoformat()}
 
 print(f"[1/4] genesis determinism at {POP:,}...")
 t0 = time.time()
-h1 = pop_hash_full(genesis(POP, seed=42))
-h2 = pop_hash_full(genesis(POP, seed=42))
+h1 = pop_hash_full(genesis(POP, seed=SEED))
+h2 = pop_hash_full(genesis(POP, seed=SEED))
 out["genesis_seconds"] = round(time.time() - t0, 1)
 out["deterministic"] = h1 == h2
 print(f"  {out['genesis_seconds']}s, deterministic: {out['deterministic']}")
 
 print("[2/4] demography leg at 1M...")
 from earth1.g5 import g5_demography
-d = g5_demography(pop=POP, seed=42)
+d = g5_demography(pop=POP, seed=SEED)
 out["demography"] = {"le_tracking": d.le_tracking, "cdr": d.world_adult_cdr,
                      "passes": d.passes}
 print(f"  LE {d.le_tracking:.0%}, CDR {d.world_adult_cdr}, passes={d.passes}")
 
 print("[3/4] event leg at 1M...")
 from earth1.g5 import g5_event_reaction
-e = g5_event_reaction(pop=POP, seed=42)
+e = g5_event_reaction(pop=POP, seed=SEED)
 out["event"] = {"ratio": e.magnitude_ratio, "sign": e.sign_match,
                 "passes": e.passes}
 print(f"  ratio {e.magnitude_ratio:.3f}, passes={e.passes}")
@@ -50,7 +51,7 @@ print(f"  ratio {e.magnitude_ratio:.3f}, passes={e.passes}")
 print("[4/4] GOQA at 1M...")
 from earth1.benchmark import run_goqa_benchmark
 goqa_data = json.loads((ROOT / "data/benchmark/goqa_ground_truth.json").read_text())
-civ = genesis(POP, seed=42)
+civ = genesis(POP, seed=SEED)
 r = run_goqa_benchmark(civ, goqa_data)
 out["goqa"] = {"engine_cv_mae": r.engine_cv_mae, "naive_cv_mae": r.naive_cv_mae,
                "engine_wins": r.engine_wins, "n_questions": r.n_questions}
