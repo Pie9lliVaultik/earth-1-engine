@@ -1,0 +1,63 @@
+{
+ "who": {
+  "id": 1823,
+  "country": "Nigeria (NG)",
+  "age": 37.0,
+  "education": "low",
+  "urban": true,
+  "work": {
+   "occupation": "manual_labour",
+   "employed": true,
+   "in_labour_force": true,
+   "years_in_job": 0.82,
+   "times_lost_work": 0
+  },
+  "money": {
+   "wage_vs_survival_cost": 0.97,
+   "savings_days": 9.8,
+   "deprivation": 0.0
+  },
+  "forces": {
+   "fear": 0.709,
+   "desire": 0.377,
+   "economics": 0.78,
+   "collective": 0.882,
+   "identity": 0.0,
+   "culture": 0.627,
+   "experience": 0.139,
+   "temperament": 0.174
+  },
+  "conviction": 1.0,
+  "self": {
+   "mental_health": 0.925,
+   "physical_health": 1.0,
+   "addiction": 0.0,
+   "relationship": 0.467,
+   "unmet_social_need": 0.0,
+   "political_engagement": 0.227,
+   "last_thing_that_happened": "bereavement",
+   "marks_left_by_life": 1
+  }
+ },
+ "branches": 40,
+ "horizon_days": 120,
+ "P_employed_at_end": 0.85,
+ "P_ever_jobless": 0.225,
+ "P_ever_destitute": 0.2,
+ "P_destitute_at_end": 0.2,
+ "P_isolated_at_end": 0.0,
+ "savings_days": {
+  "p10": -20.1,
+  "median": 6.6,
+  "p90": 6.6
+ },
+ "fear": {
+  "median": 0.702,
+  "spread_p10_p90": [
+   0.702,
+   0.966
+  ]
+ },
+ "fear_if_destitute": 0.937,
+ "fear_if_not": 0.706
+}

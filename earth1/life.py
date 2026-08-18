@@ -121,6 +121,20 @@ DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 # experience permanent rather than a transient the world relaxes away.
 TRAIT_MEMORY = 1.0
 
+# ── prevalence anchors, from real epidemiology ───────────────────────
+# These are population base rates, not tuned values. Onset hazards below
+# are modulated by deprivation and isolation, both of which the model
+# computes — so the DISTRIBUTION is emergent even though the level is
+# anchored to reality.
+MENTAL_ILLNESS_PREV = 0.13        # GBD: ~13% any mental disorder
+SUBSTANCE_DEP_PREV = 0.023        # WHO: ~2.3% substance use disorder
+CRIME_VICTIM_YR = 0.045           # UN ICVS: ~4.5%/yr contact+property
+PARTNERED_SHARE = 0.55
+
+EVENT_CODES = {0: "nothing", 1: "job_loss", 2: "found_work",
+               3: "crime_victim", 4: "bereavement", 5: "new_child",
+               6: "addiction_onset", 7: "recovery", 8: "breakup"}
+
 
 @dataclass
 class Life:
@@ -149,6 +163,27 @@ class Life:
     # ever reads trait back into force, so memory goes to a dead end and
     # two worlds always reconverge onto the same attractor.
     trait_baseline: np.ndarray = None    # (N, 3): openness, doubt, desire
+    # ── the body and the self (Layer 1) ──────────────────────────────
+    mental: np.ndarray = None        # 0..1, modulates every susceptibility
+    physical: np.ndarray = None      # 0..1
+    addiction: np.ndarray = None     # 0..1, LOCKS the desire channel
+    relationship: np.ndarray = None  # 0=isolated .. 1=deeply connected
+    social_need: np.ndarray = None   # unmet connection, feeds COLLECTIVE
+    political: np.ndarray = None     # engagement, modulates COLLECTIVE
+    # Where this person's mental health and connectedness SIT when
+    # nothing is happening to them. Modelling these as purely
+    # circumstantial let everyone heal to the ceiling and put lifetime
+    # prevalence at 0.9% against GBD's 13%. Mental illness is ~40%
+    # heritable and social temperament is stable across the lifespan;
+    # circumstance moves a person AROUND their setpoint, it does not
+    # define it.
+    mental_setpoint: np.ndarray = None
+    relationship_setpoint: np.ndarray = None
+    # what just happened to this person, as a code and a day. Kept as
+    # arrays rather than per-agent lists so 8.3B stays affordable.
+    last_event: np.ndarray = None    # int code, see EVENT_CODES
+    last_event_day: np.ndarray = None
+    n_events: np.ndarray = None      # lifetime count of marks left
 
     @property
     def n_firms(self) -> int:
@@ -220,13 +255,39 @@ def birth_life(civ: Civilization, seed: int = 0) -> Life:
                      0.0, 4000.0)
     tenure = rng.exponential(700.0, n) * employed
 
+    # SETPOINTS ARE PARAMETERS, SET FROM DATA. The resting LEVEL of
+    # mental illness and isolation is an input to this model, calibrated
+    # so an untouched population sits at GBD's ~13% and the loneliness
+    # surveys' ~12%. That is parameterisation, not fitting.
+    #
+    # What is NOT set here, and therefore stays out of sample, is every
+    # GRADIENT: how these vary with deprivation, with age, with country
+    # income tier, and with what has happened to a person. Those fall
+    # out of the dynamics and are what scripts/epi_gradient_test.py
+    # checks against the published pattern.
+    _msp = np.clip(rng.beta(8.0, 2.2, n), 0.0, 1.0)
+    _rsp = np.where(rng.random(n) < PARTNERED_SHARE,
+                    rng.uniform(0.60, 1.00, n), rng.uniform(0.15, 0.75, n))
+
     return Life(occupation=occupation, firm=firm, employed=employed,
                 in_lf=in_lf, wage=wage, wealth=wealth, cost=cost, tenure=tenure,
                 deprivation=np.zeros(n), spells=np.zeros(n, dtype=np.int32),
                 firm_health=firm_health, firm_country=firm_country,
                 force_baseline=civ.forces.copy(),
                 trait_baseline=np.stack([civ.openness, civ.doubt,
-                                         civ.desire_intensity], axis=1))
+                                         civ.desire_intensity], axis=1),
+                mental_setpoint=_msp, relationship_setpoint=_rsp,
+                mental=np.clip(_msp + rng.normal(0, 0.05, n), 0.0, 1.0),
+                physical=np.clip(rng.beta(7.0, 2.0, n)
+                                 * (1.0 - 0.35 * civ.age), 0.0, 1.0),
+                addiction=np.where(rng.random(n) < SUBSTANCE_DEP_PREV,
+                                   rng.uniform(0.3, 0.9, n), 0.0),
+                relationship=np.clip(_rsp + rng.normal(0, 0.05, n), 0, 1),
+                social_need=np.clip(rng.beta(2.0, 5.0, n), 0.0, 1.0),
+                political=np.clip(rng.beta(2.0, 3.0, n), 0.0, 1.0),
+                last_event=np.zeros(n, dtype=np.int8),
+                last_event_day=np.full(n, -1.0),
+                n_events=np.zeros(n, dtype=np.int32))
 
 
 def _fast_categorical(p: np.ndarray, rng) -> np.ndarray:
@@ -353,6 +414,78 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     if failed.size:
         life.firm_health[failed] = u_reseed[failed]
 
+    # ── THE BODY AND THE SELF ─────────────────────────────────────────
+    # Everything below is stochastic, discrete and irreversible-ish, and
+    # every rate is modulated by a state the model already computes. That
+    # is what makes the DISTRIBUTION emergent even though the population
+    # LEVEL is anchored to real epidemiology.
+    if life.mental is not None:
+        u_crime = rng.random(n)
+        u_ber = rng.random(n)
+        u_child = rng.random(n)
+        u_addict = rng.random(n)
+        u_recover = rng.random(n)
+        u_split = rng.random(n)
+
+        pressure = (np.clip(life.deprivation, 0, 1) * 0.4
+                    + life.social_need * 0.3 + life.addiction * 0.3)
+
+        # crime: victimisation rises with deprivation, and it is LOCAL —
+        # it lands on a person, not on a country
+        crime_p = (CRIME_VICTIM_YR / 365.0) * dt_days * \
+            (1.0 + 2.0 * life.deprivation)
+        victim = u_crime < crime_p
+
+        # bereavement: the older you are, the more of your people die
+        ber_p = (0.012 / 365.0) * dt_days * (1.0 + 6.0 * civ.age ** 2)
+        bereaved = u_ber < ber_p
+
+        # a child arrives: partnered, of age, and not destitute
+        fertile = ((civ.age > 0.05) & (civ.age < 0.45)
+                   & (life.relationship > 0.6) & (life.deprivation < 0.5))
+        new_child = fertile & (u_child < (0.055 / 365.0) * dt_days)
+
+        # addiction: onset hazard rises as mental health falls
+        onset = ((u_addict < (0.004 / 365.0) * dt_days
+                  * (1.0 + 8.0 * (1.0 - life.mental)))
+                 & (life.addiction < 0.3))
+        recover = (u_recover < (0.09 / 365.0) * dt_days * life.mental) \
+            & (life.addiction > 0)
+
+        # relationships end under sustained pressure
+        split = ((u_split < (0.02 / 365.0) * dt_days * (1.0 + 4.0 * pressure))
+                 & (life.relationship > 0.5))
+
+        # apply
+        life.addiction = np.clip(life.addiction + 0.25 * onset
+                                 - 0.35 * recover, 0.0, 1.0)
+        life.relationship = np.clip(
+            life.relationship
+            + (life.relationship_setpoint - 0.18 * pressure
+               - life.relationship) * 0.02 * dt_days
+            - 0.55 * split + 0.05 * new_child, 0.0, 1.0)
+        life.social_need = np.clip(
+            life.social_need + (0.25 - life.relationship) * 0.02 * dt_days
+            + 0.20 * bereaved, 0.0, 1.0)
+        life.mental = np.clip(
+            life.mental
+            + (life.mental_setpoint - pressure * 0.5 - life.mental)
+            * 0.02 * dt_days
+            - 0.12 * victim - 0.16 * bereaved - 0.10 * split
+            - 0.06 * lost, 0.0, 1.0)
+        life.physical = np.clip(
+            life.physical - 0.0004 * dt_days - 0.05 * victim
+            - 0.02 * life.addiction * dt_days
+            + 0.02 * life.mental * dt_days, 0.0, 1.0)
+
+        # leave the mark: what happened to this person, and when
+        for code, m in ((2, found), (1, lost), (8, split), (7, recover),
+                        (6, onset), (5, new_child), (4, bereaved),
+                        (3, victim)):
+            if m.any():
+                life.last_event[m] = code
+                life.n_events[m] += 1
+
     stats = {"laid_off": int(laid_off.sum()), "separated": int(sep.sum()),
              "found_work": int(found.sum()), "firms_failed": int(failed.size),
              "unemployment": float((~life.employed & life.in_lf).sum()
@@ -360,6 +493,15 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
              "destitute": float((life.deprivation > 0.99).mean()),
              "deprived": float((life.deprivation > 0.5).mean()),
              "median_buffer_days": float(np.median(life.wealth))}
+    if life.mental is not None:
+        stats.update({
+            "mental_ill": float((life.mental < 0.45).mean()),
+            "addicted": float((life.addiction > 0.3).mean()),
+            "isolated": float((life.relationship < 0.25).mean()),
+            "crime_victims": int(victim.sum()),
+            "bereaved": int(bereaved.sum()),
+            "new_children": int(new_child.sum()),
+            "addiction_onsets": int(onset.sum())})
 
     if couple_forces:
         stats.update(couple_life_to_forces(civ, life))
@@ -412,6 +554,27 @@ def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
         base[:, Force.DESIRE] - 0.30 * dep, 0.0, 1.0)
     t[:, Force.COLLECTIVE] = np.clip(
         base[:, Force.COLLECTIVE] + 0.40 * dep * shared, 0.0, 1.0)
+
+    # THE BODY BECOMES OPINION.
+    #   mental health modulates how much fear a person carries at all
+    #   addiction LOCKS the desire channel — an addicted agent stops
+    #     responding to collective pressure, which is the clinical
+    #     picture and also a real dynamical consequence
+    #   isolation turns a person toward identity and away from others
+    if life.mental is not None:
+        t[:, Force.FEAR] = np.clip(
+            t[:, Force.FEAR] + 0.30 * (1.0 - life.mental), 0.0, 1.0)
+        t[:, Force.DESIRE] = np.clip(
+            t[:, Force.DESIRE] + 0.45 * life.addiction, 0.0, 1.0)
+        t[:, Force.COLLECTIVE] = np.clip(
+            t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
+            + 0.25 * life.political - 0.20 * life.social_need, 0.0, 1.0)
+        t[:, Force.IDENTITY] = np.clip(
+            t[:, Force.IDENTITY] + 0.25 * life.social_need
+            - 0.15 * life.relationship, 0.0, 1.0)
+        t[:, Force.EXPERIENCE] = np.clip(
+            t[:, Force.EXPERIENCE] + 0.10 * np.clip(life.n_events / 8.0,
+                                                    0, 1), 0.0, 1.0)
     return t
 
 
