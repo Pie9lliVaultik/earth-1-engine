@@ -28,6 +28,7 @@ convention — `may_influence()` is the only way through.
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 import urllib.parse
@@ -125,14 +126,56 @@ def gdelt_volume(topic: str, timespan: str = "7d") -> Reading | None:
 
 
 def _classify(title: str) -> str:
+    """Regex tier — fast, free, and deliberately the FALLBACK."""
     for name, rx in DOMAIN_RX:
         if rx.search(title or ""):
             return name
     return "general"
 
 
-def rss_pulse(limit_per_feed: int = 25) -> list:
-    """Headline stream, domain-classified and deduplicated (world-pulse)."""
+def classify_runtime(titles: list, allow_live: bool = True) -> list:
+    """RUNTIME classification — resolved live, like grounding.
+
+    The regex list under-hits (most headlines fell to 'general' on the
+    first sweep) and hardcoding a bigger list just moves the ceiling.
+    One batched Sonnet call labels the whole sweep with domain AND
+    region, and the regex tier remains the offline fallback so the bus
+    never depends on the network to keep observing.
+    """
+    if not titles:
+        return []
+    if not allow_live or not os.environ.get("ANTHROPIC_API_KEY"):
+        return [{"domain": _classify(t), "region": None,
+                 "by": "regex"} for t in titles]
+    numbered = "\n".join(f"{i+1}. {t}" for i, t in enumerate(titles))
+    prompt = (
+        "Classify each headline by DOMAIN and REGION.\n"
+        "domain: politics | finance | conflict | climate | health | ai | "
+        "society | sport | general\n"
+        "region: ISO2 country code the headline is ABOUT, or GLOBAL, or "
+        "NONE\n\n"
+        f"{numbered}\n\n"
+        'Return JSON only: {"items":[{"n":1,"domain":"...","region":"..."}]}')
+    try:
+        from earth1.live_search import _call, _json_of, _text_of, LIVE_MODEL
+        out = _json_of(_text_of(_call({
+            "model": LIVE_MODEL, "max_tokens": 3000,
+            "messages": [{"role": "user", "content": prompt}]})))
+        by_n = {int(i["n"]): i for i in out.get("items", []) if "n" in i}
+        res = []
+        for i, t in enumerate(titles, start=1):
+            it = by_n.get(i)
+            res.append({"domain": (it or {}).get("domain") or _classify(t),
+                        "region": (it or {}).get("region"),
+                        "by": "llm" if it else "regex"})
+        return res
+    except Exception:
+        return [{"domain": _classify(t), "region": None, "by": "regex"}
+                for t in titles]
+
+
+def rss_pulse(limit_per_feed: int = 25, allow_live: bool = True) -> list:
+    """Headline stream, domain-classified at RUNTIME and deduplicated."""
     out, seen = [], set()
     for name, url in RSS_FEEDS.items():
         try:
@@ -147,8 +190,14 @@ def rss_pulse(limit_per_feed: int = 25) -> list:
             if not t or k in seen:
                 continue
             seen.add(k)
-            out.append(Reading("rss", _classify(t), None, "headline", _now(),
+            out.append(Reading("rss", "general", None, "headline", _now(),
                                name, detail={"title": t[:300]}))
+    labels = classify_runtime([r.detail["title"] for r in out],
+                              allow_live=allow_live)
+    for r, lab in zip(out, labels):
+        r.key = lab["domain"]
+        r.detail["region"] = lab["region"]
+        r.detail["classified_by"] = lab["by"]
     return out
 
 
@@ -221,3 +270,62 @@ def collect(topics: list | None = None, countries: list | None = None) -> dict:
     for cc in countries:
         readings.append(worldbank(cc))
     return record([r for r in readings if r is not None])
+
+
+# ── the correlation review that lets a family EARN rights ──
+
+def correlation_review(family: str, outcome_series: dict,
+                       min_days: int = OBSERVATION_DAYS,
+                       min_abs_r: float = 0.30) -> dict:
+    """Run the review the gate depends on — from accumulated bus data.
+
+    `outcome_series` maps YYYY-MM-DD -> the observed quantity the signal
+    is supposed to predict (an opinion reading, a resolved market, a
+    survey share). The review pairs each day's signal value with the
+    NEXT observed outcome, correlates them, and writes the verdict into
+    data/signal_earned_rights.json.
+
+    A family earns influence ONLY with (a) at least `min_days` of
+    observation and (b) |r| >= min_abs_r. Anything else is recorded as
+    a failed review — which is a result, not a bug.
+    """
+    import numpy as _np
+    days, vals = [], []
+    for p in sorted(BUS.glob("*.jsonl")):
+        day = p.stem
+        xs = []
+        for line in p.read_text().splitlines():
+            try:
+                r = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if r.get("family") == family and r.get("value") is not None:
+                xs.append(float(r["value"]))
+        if xs:
+            days.append(day)
+            vals.append(float(_np.mean(xs)))
+
+    paired_x, paired_y = [], []
+    for d, v in zip(days, vals):
+        later = [k for k in sorted(outcome_series) if k > d]
+        if later:
+            paired_x.append(v)
+            paired_y.append(float(outcome_series[later[0]]))
+    n_days = len(days)
+    r = (float(_np.corrcoef(paired_x, paired_y)[0, 1])
+         if len(paired_x) >= 3 else None)
+    earned = bool(r is not None and abs(r) >= min_abs_r
+                  and n_days >= min_days)
+    rights = _rights()
+    rights.setdefault("families", {})[family] = {
+        "earned": earned, "review_passed": bool(r is not None and
+                                                abs(r) >= min_abs_r),
+        "observation_days": n_days, "pairs": len(paired_x),
+        "correlation": r, "min_abs_r": min_abs_r,
+        "reviewed_at": _now(),
+        "verdict": ("EARNED" if earned else
+                    "insufficient observation" if n_days < min_days else
+                    "failed correlation review"),
+    }
+    RIGHTS.write_text(json.dumps(rights, indent=1))
+    return rights["families"][family]
