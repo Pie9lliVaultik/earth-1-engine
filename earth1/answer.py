@@ -39,7 +39,8 @@ import numpy as np
 
 from earth1.grounding import Grounding, ground
 from earth1.readout import (TIER_LABEL, TIER_MEANING, born_probability,
-                            camp_diagnostic, counting_vote, resultant_length)
+                            camp_diagnostic, cohort_shape, counting_vote,
+                            resultant_length)
 from earth1.rng import logit, sigmoid
 
 PREDICTION_RX = re.compile(
@@ -74,6 +75,9 @@ class Answer:
     camp_cosine: float | None = None
     abstained: bool = False
     abstain_reason: str | None = None
+    # SHAPE, measured rather than averaged (from the seed's real
+    # cohort targets when the cascade found one)
+    shape: dict | None = None
     # trajectory (predictions only)
     trajectory: dict | None = None
     # commitment
@@ -173,6 +177,10 @@ def answer(question_text: str,
                   f"{(a.nearest_similarity or 0):.2f} away). The "
                   "population produced a structured distribution anyway "
                   "— this is a testable claim, not a missing answer.")
+
+    # the shape the engine cannot manufacture: read it off the data
+    if getattr(g, "cohort_targets", None):
+        a.shape = cohort_shape(g.cohort_targets, axis="pol")
 
     if horizon_years and not a.abstained:
         a.trajectory = _project(civ, weights, baseline, m, horizon_years)
