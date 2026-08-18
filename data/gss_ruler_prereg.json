@@ -1,0 +1,23 @@
+{
+ "registered": "2026-08-18, BEFORE any engine run against GSS",
+ "instruction_being_followed": "Stop testing dynamics against authored truth. Get real ground truth. Build second.",
+ "the_ruler": {
+  "source": "General Social Survey 1972-2024 Release 3, real respondent microdata (75,699 respondents), weight WTSSNRPS",
+  "independence": "different survey organisation from WVS/GOQA; never used in any Earth-1 calibration; questions Earth-1 has never been fitted to",
+  "coverage": "15 variables, 456 variable-years, 4,809 cohort cells (year x age bucket x education)",
+  "why_it_is_the_right_ruler": "it contains 50 years of MEASURED MOVEMENT to predict \u2014 abortion +20.6pp, marijuana +47.8pp, homosexuality +45.0pp, open housing +45.7pp, trust -21.9pp, confidence in press -15.7pp, Congress -18.5pp. Authored targets could never have supplied this."
+ },
+ "PRE-REGISTERED TESTS (thresholds stated before any run)": {
+  "T1_levels": "engine and MrsP each predict the US national share for each variable-year, calibrated on OTHER variables only (never the scored one). Naive = grand mean across years. Threshold: beat naive.",
+  "T2_movement_vs_persistence": "predict the CHANGE between consecutive survey years. Persistence (no change) is the baseline. This is the honest dynamics test, on verified truth, with 456 real transitions instead of 6 authored ones.",
+  "T3_cohort_structure": "predict which age x education cells differ, scored on the 4,809 real cells (the cohort instrument, on verified US data).",
+  "T4_direction_of_secular_change": "sign accuracy on multi-decade drifts (15 variables with known signs) \u2014 a genuinely blind directional test, since no Earth-1 constant was fitted to GSS."
+ },
+ "EXPECTATIONS, stated now": {
+  "T1": "engine loses to MrsP on levels (established pattern); both should beat naive",
+  "T2": "UNKNOWN and this is the point \u2014 the first honest measurement of whether Earth-1's dynamics predict real movement. Persistence over 1-4 year gaps is a hard baseline.",
+  "T3": "engine fails without cohort-target calibration (established: 26% gradient direction), improves with it (80%)",
+  "T4": "no prediction registered; this is the cleanest blind test available"
+ },
+ "discipline": "every claim states which ruler produced it. GSS = verified. WVS W6/W7 authored targets = suspended until official microdata lands."
+}
