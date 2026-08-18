@@ -1,0 +1,18 @@
+{
+ "registered": "2026-08-18, BEFORE reading any ladder result (the run is in flight; nothing below is informed by it)",
+ "why": "'engine, naive and MrsP side by side' without a registered expectation turns results into a shopping trip \u2014 whichever rung looks best gets the emphasis.",
+ "predictions_on_the_record": {
+  "R1_GSS": "engine LOSES to MrsP and lands near naive \u2014 US-only, no cross-national leverage for the 18 features",
+  "R2_WVS7": "engine CLOSEST to MrsP \u2014 cross-national variation is where the 18 features do their work",
+  "R3_ANES": "same shape as R1",
+  "R4_GOQA": "engine loses to MrsP, 10.59 vs 8.56 \u2014 already measured, included as the anchor",
+  "R5_LIVE": "UNKNOWN \u2014 the only rung that could genuinely surprise, and the only one whose validation set extends itself"
+ },
+ "predicted_by": "external advisor, recorded verbatim; Claude Code concurs and registers no separate prediction",
+ "gate_statistics_caveat": {
+  "threshold": "|r| >= 0.30 with >= 14 observation days",
+  "honest_statement": "at n=14 a correlation of 0.30 is NOT significant at conventional levels (p<0.05 needs roughly |r| >= 0.53). A passing gate is DIRECTIONAL EVIDENCE, NOT STATISTICAL CONFIRMATION, and must never be reported as a validated causal link.",
+  "incentive": "the review strengthens as the window lengthens \u2014 patience is rewarded, and the wording must say so"
+ },
+ "runtime_classifier_cost_note": "one Sonnet call per sweep. Negligible at daily cadence; if cadence rises the regex tier becomes the production path and the LLM becomes enrichment. Monitored, not solved today."
+}

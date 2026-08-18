@@ -323,6 +323,11 @@ def correlation_review(family: str, outcome_series: dict,
         "observation_days": n_days, "pairs": len(paired_x),
         "correlation": r, "min_abs_r": min_abs_r,
         "reviewed_at": _now(),
+        "evidence_class": ("DIRECTIONAL EVIDENCE, NOT STATISTICAL "
+                           "CONFIRMATION — at n=14 an |r| of 0.30 is not "
+                           "significant at conventional levels (p<0.05 "
+                           "needs ~0.53). The review strengthens as the "
+                           "observation window lengthens."),
         "verdict": ("EARNED" if earned else
                     "insufficient observation" if n_days < min_days else
                     "failed correlation review"),
