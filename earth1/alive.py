@@ -41,6 +41,8 @@ class World:
     gov: object
     klass: object
     chronicle: object
+    climate: object = None
+    flourishing: object = None
     day: int = 0
 
 
@@ -57,11 +59,16 @@ def birth_world(pop: int, seed: int = 42) -> World:
     life = birth_life(civ, seed=seed)
     fab = build_fabric(civ, life, seed=seed)
     civ.adj = fab.adj
+    from earth1.flourishing import birth_flourishing
+    from earth1.weather import birth_climate
+
     gov, klass = birth_institutions(civ, seed=seed)
     return World(civ=civ, life=life, fabric=fab,
                  health=birth_health(pop),
                  knowledge=birth_knowledge(civ, life, seed=seed),
-                 gov=gov, klass=klass, chronicle=Chronicle())
+                 gov=gov, klass=klass, chronicle=Chronicle(),
+                 climate=birth_climate(seed=seed),
+                 flourishing=birth_flourishing(civ, life, seed=seed))
 
 
 def live_one_day(w: World, rng, *, beta: float = 2.0,
@@ -93,6 +100,23 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     # 5 knowledge
     st.update(knowledge_tick(civ, life, w.knowledge, rng, dt_days,
                              alive=w.health.alive))
+
+    # 5b THE SKY — a correlated shock that lands on a PLACE
+    if w.climate is not None:
+        from earth1.weather import weather_tick
+        st.update(weather_tick(civ, life, w.health, w.climate, rng,
+                               dt_days, alive=w.health.alive))
+
+    # 5c THE BODY'S DEMANDS AND THE REASONS TO KEEP GOING
+    if w.flourishing is not None:
+        from earth1.flourishing import flourishing_tick
+        st.update(flourishing_tick(
+            civ, life, w.flourishing, w.knowledge, w.health, rng, dt_days,
+            alive=w.health.alive,
+            discoveries_today=st.get("discoveries_today", 0),
+            works_today=st.get("works_today", 0),
+            welfare=w.gov.welfare[civ.country],
+            soil=w.climate.soil if w.climate is not None else None))
 
     target = life_force_target(civ, life)
     # a homeless person's circumstances are not their wage: being on the
