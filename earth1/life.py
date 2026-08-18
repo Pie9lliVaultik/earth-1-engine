@@ -181,6 +181,7 @@ class Life:
     relationship_setpoint: np.ndarray = None
     # what just happened to this person, as a code and a day. Kept as
     # arrays rather than per-agent lists so 8.3B stays affordable.
+    policy_net: np.ndarray = None    # welfare generosity, set by government
     last_event: np.ndarray = None    # int code, see EVENT_CODES
     last_event_day: np.ndarray = None
     n_events: np.ndarray = None      # lifetime count of marks left
@@ -378,6 +379,12 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     # An agent out of formal work falls back on whichever is better: the
     # welfare state, or the informal economy. Modelling only the former
     # made the poorest countries destitute by construction.
+    # If a government exists and has decided on a welfare policy, THAT
+    # is the safety net. The constant in this file is only the default
+    # for a world with no institutions — see earth1/institutions.py.
+    policy = getattr(life, "policy_net", None)
+    if policy is not None:
+        net = np.asarray(policy)
     fallback = np.maximum(net, informal)
     # Outside the labour force is not the same as jobless: pensions,
     # family support and household pooling carry these agents.

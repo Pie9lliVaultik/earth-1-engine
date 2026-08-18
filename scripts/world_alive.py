@@ -35,10 +35,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from earth1.chaos import entropy, world_step
-from earth1.fabric import build_fabric
-from earth1.genesis import genesis
-from earth1.life import birth_life
+from earth1.alive import birth_world, live_one_day
+from earth1.chaos import entropy
+from earth1.memory import event_from_news
 
 HOME = ROOT / "data" / "alive"
 JOURNAL = HOME / "journal.jsonl"
@@ -72,7 +71,45 @@ CIV_ARRAYS = ("country", "region", "age_bucket", "age", "education", "income",
               "alpha", "means")
 
 
-def save(civ, life, fab, day):
+def save_world(w):
+    """Persist everything: people, bodies, knowledge, states, memory."""
+    import pickle
+    HOME.mkdir(parents=True, exist_ok=True)
+    from scipy import sparse
+    sparse.save_npz(HOME / "adj.npz", w.civ.adj.tocsr())
+    with open(HOME / "world.pkl", "wb") as f:
+        pickle.dump({"civ": {k: getattr(w.civ, k) for k in CIV_ARRAYS},
+                     "life": w.life, "health": w.health,
+                     "knowledge": w.knowledge, "gov": w.gov,
+                     "klass": w.klass, "chronicle": w.chronicle,
+                     "day": w.day, "n": w.civ.n, "seed": w.civ.seed}, f)
+    (HOME / "state.json").write_text(json.dumps(
+        {"day": w.day, "pop": int(w.civ.n), "seed": int(w.civ.seed),
+         "alive": int(w.health.alive.sum()),
+         "saved_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}))
+
+
+def load_world():
+    import pickle
+    from scipy import sparse
+    if not (HOME / "world.pkl").exists():
+        print(f"  birthing a world: {POP:,} earthlings", flush=True)
+        return birth_world(POP, 42)
+    with open(HOME / "world.pkl", "rb") as f:
+        d = pickle.load(f)
+    w = birth_world(d["n"], d["seed"])
+    for k, v in d["civ"].items():
+        setattr(w.civ, k, v)
+    w.civ.adj = sparse.load_npz(HOME / "adj.npz")
+    w.life, w.health = d["life"], d["health"]
+    w.knowledge, w.gov = d["knowledge"], d["gov"]
+    w.klass, w.chronicle, w.day = d["klass"], d["chronicle"], d["day"]
+    print(f"  woke up: day {w.day}, {int(w.health.alive.sum()):,} alive",
+          flush=True)
+    return w
+
+
+def _unused_save(civ, life, fab, day):
     HOME.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(HOME / "civ.npz",
                         **{k: getattr(civ, k) for k in CIV_ARRAYS})
@@ -166,17 +203,16 @@ def read_the_news(civ, life):
 def main():
     signal.signal(signal.SIGTERM, _sigterm)
     signal.signal(signal.SIGINT, _sigterm)
-    civ, life, fab, day = load_or_birth()
-    if fab is None:
-        fab = None  # rebuilt only at birth; the graph is persisted
+    w = load_world()
+    civ, life = w.civ, w.life
     rng = np.random.default_rng(int(time.time()) % (2 ** 31))
     HOME.mkdir(parents=True, exist_ok=True)
     print(f"  alive. one world-day every {PERIOD:.0f}s\n", flush=True)
 
     while not _stop:
         t0 = time.time()
-        st = world_step(civ, life, rng, **STEP)
-        day += 1
+        st = live_one_day(w, rng, **STEP)
+        day = w.day
 
         line = {"day": day,
                 "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -187,7 +223,14 @@ def main():
                 "entropy": round(entropy(civ.forces), 5),
                 "fear": round(float(civ.forces[:, 0].mean()), 5)}
         for k in ("mental_ill", "addicted", "isolated", "crime_victims",
-                  "bereaved", "new_children"):
+                  "bereaved", "new_children", "alive", "deaths", "ill",
+                  "in_treatment", "countries_at_war", "war_deaths",
+                  "conscripted", "mean_welfare", "mean_legitimacy",
+                  "homeless", "crimes_today", "criminal_share",
+                  "wealth_gini", "status_gini", "migrated_today",
+                  "mean_knowledge", "discoveries_today", "works_today",
+                  "living_works", "scientists", "remembered",
+                  "people_under_memory"):
             if k in st:
                 line[k] = round(st[k], 5) if isinstance(st[k], float) else st[k]
         if day % NEWS_EVERY == 0:
@@ -195,21 +238,25 @@ def main():
         with open(JOURNAL, "a") as f:
             f.write(json.dumps(line) + "\n")
         if day % SAVE_EVERY == 0:
-            save(civ, life, fab, day)
+            save_world(w)
 
         if day % 10 == 0 or day < 3:
-            print(f"  day {day:6d}  unemployment {line['unemployment']:6.2%}"
-                  f"  cascades {line['cascades']:5d}"
-                  f"  entropy {line['entropy']:.4f}"
-                  f"  fear {line['fear']:.4f}", flush=True)
+            print(f"  day {day:6d}  alive {line.get('alive', 0):7,d}"
+                  f"  unemp {line['unemployment']:5.1%}"
+                  f"  homeless {line.get('homeless', 0):5.2%}"
+                  f"  wars {line.get('countries_at_war', 0):3d}"
+                  f"  gini {line.get('wealth_gini', 0):.3f}"
+                  f"  know {line.get('mean_knowledge', 0):.3f}"
+                  f"  entropy {line['entropy']:.4f}", flush=True)
 
         rest = PERIOD - (time.time() - t0)
         while rest > 0 and not _stop:
             time.sleep(min(rest, 1.0))
             rest -= 1.0
 
-    save(civ, life, fab, day)
-    print(f"  saved at day {day}. the world is paused, not lost.", flush=True)
+    save_world(w)
+    print(f"  saved at day {w.day}. the world is paused, not lost.",
+          flush=True)
 
 
 if __name__ == "__main__":
