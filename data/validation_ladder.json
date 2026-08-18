@@ -1,0 +1,41 @@
+{
+ "pop": 200000,
+ "rungs": [
+  {
+   "rung": "R1 GSS",
+   "ruler": "GSS 1972-2024 microdata (US)",
+   "scale": "441 item-years",
+   "engine_mae": 0.15568624707888676,
+   "naive_mae": 0.06160185080764892,
+   "verdict": "FAIL"
+  },
+  {
+   "rung": "R2 WVS7",
+   "ruler": "WVS Wave 7 microdata (66 countries)",
+   "scale": "96 held-out country-items",
+   "engine_mae": 0.1166970706941411,
+   "naive_mae": 0.13882994011324043,
+   "verdict": "PASS"
+  },
+  {
+   "rung": "R4 GOQA",
+   "ruler": "GOQA 40x66 (Pew+WVS derived)",
+   "scale": "2473 cells",
+   "engine_mae": 0.1059,
+   "naive_mae": 0.1264,
+   "wins": "34/40",
+   "verdict": "PASS"
+  }
+ ],
+ "R1_BASELINE_AUDIT": {
+  "issue": "R1's naive baseline was the grand mean across ALL years, which INCLUDES the scored years \u2014 information the engine never had. That is leakage in the BASELINE's favour and makes 0.0616 an unfairly strong number.",
+  "fair_comparison_on_the_same_441_item_years": {
+   "naive_as_run_grand_mean": 0.0616,
+   "fair_anchor_year1_only": 0.1158,
+   "engine_fitted_on_year1_cells": 0.1557,
+   "mean_total_movement_per_variable": 0.2186
+  },
+  "verdict_after_audit": "R1 STILL FAILS. Against the fair year-1 anchor (0.1158) the engine is 0.1557 \u2014 worse by 4.0pp. Correcting the baseline narrows the gap from 9.4pp to 4.0pp but does not reverse it: on US-only data the engine's cohort-fitted level is worse than simply remembering what the country said in the fit year.",
+  "recorded": "2026-08-18, immediately on reading the rung, before any further work"
+ }
+}
