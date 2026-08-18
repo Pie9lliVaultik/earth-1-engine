@@ -1,0 +1,24 @@
+question_text,question_type,source,notes,target_far_left,target_left,target_centrist,target_right,target_far_right,target_age_18_29,target_age_30_44,target_age_45_59,target_age_60_plus
+Most people can be trusted,wvs_cohort_seed,WVS Wave 7,wvs_code=Q57;rule=binary_yes=1;cohorts=lr+age,0.221022,0.344172,0.225596,0.276255,0.163424,0.198650,0.223044,0.245120,0.303954
+Would not want as neighbours: people of different race,wvs_cohort_seed,WVS Wave 7,wvs_code=Q19;rule=neighbor_mentioned;cohorts=lr+age,0.113956,0.102094,0.113377,0.158796,0.195974,0.160812,0.161356,0.170700,0.150379
+Would not want as neighbours: immigrants/foreign workers,wvs_cohort_seed,WVS Wave 7,wvs_code=Q21;rule=neighbor_mentioned;cohorts=lr+age,0.161031,0.150882,0.178930,0.234103,0.241791,0.206659,0.222088,0.233649,0.206420
+Would not want as neighbours: homosexuals,wvs_cohort_seed,WVS Wave 7,wvs_code=Q22;rule=neighbor_mentioned;cohorts=lr+age,0.388523,0.294476,0.360632,0.418571,0.498888,0.446976,0.456151,0.442130,0.385069
+Confidence: the churches,wvs_cohort_seed,WVS Wave 7,wvs_code=Q65;rule=top2of4;cohorts=lr+age,0.565901,0.630354,0.645385,0.699881,0.670104,0.640784,0.676069,0.700374,0.749130
+Confidence: the armed forces,wvs_cohort_seed,WVS Wave 7,wvs_code=Q66;rule=top2of4;cohorts=lr+age,0.329838,0.386086,0.344976,0.416171,0.403240,0.382533,0.388003,0.400418,0.428858
+Confidence: the police,wvs_cohort_seed,WVS Wave 7,wvs_code=Q70;rule=top2of4;cohorts=lr+age,0.477863,0.573094,0.517274,0.582274,0.533656,0.539733,0.545916,0.561217,0.590693
+Confidence: the courts / justice system,wvs_cohort_seed,WVS Wave 7,wvs_code=Q71;rule=top2of4;cohorts=lr+age,0.373205,0.392541,0.384004,0.480678,0.510478,0.439673,0.455522,0.471346,0.466404
+Confidence: the government,wvs_cohort_seed,WVS Wave 7,wvs_code=Q72;rule=top2of4;cohorts=lr+age,0.216522,0.217131,0.205385,0.279430,0.300524,0.286717,0.283090,0.285970,0.271647
+Confidence: parliament,wvs_cohort_seed,WVS Wave 7,wvs_code=Q74;rule=top2of4;cohorts=lr+age,0.443261,0.505033,0.442357,0.505192,0.476301,0.474683,0.492524,0.499677,0.512169
+Confidence: elections,wvs_cohort_seed,WVS Wave 7,wvs_code=Q77;rule=top2of4;cohorts=lr+age,0.383989,0.387656,0.421989,0.482194,0.499073,0.462698,0.455960,0.458272,0.443944
+Confidence: the United Nations,wvs_cohort_seed,WVS Wave 7,wvs_code=Q85;rule=top2of4;cohorts=lr+age,0.461172,0.524280,0.450160,0.500051,0.456414,0.481889,0.461249,0.447858,0.478861
+Believe in God,wvs_cohort_seed,WVS Wave 7,wvs_code=Q165;rule=binary_yes=1;cohorts=lr+age,0.796005,0.694459,0.795833,0.804869,0.919587,0.825052,0.820576,0.795304,0.769254
+Believe in hell,wvs_cohort_seed,WVS Wave 7,wvs_code=Q167;rule=binary_yes=1;cohorts=lr+age,0.523022,0.453907,0.557837,0.606174,0.658930,0.635937,0.626060,0.574337,0.473523
+"We depend too much on science, not enough on faith (6–10 of 10)",wvs_cohort_seed,WVS Wave 7,wvs_code=Q161;rule=6-10of10;cohorts=lr+age,0.445097,0.381267,0.458931,0.523302,0.537344,0.493930,0.483456,0.468160,0.451381
+Importance of God in your life (6–10 of 10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q164;rule=6-10of10;cohorts=lr+age,0.703774,0.550781,0.678224,0.744974,0.881576,0.746665,0.738538,0.710274,0.671326
+Importance of living in a democratically governed country (6–10 of 10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q250;rule=6-10of10;cohorts=lr+age,0.876144,0.885202,0.843510,0.925811,0.906140,0.850992,0.871229,0.889416,0.903771
+Justifiable: cheating on taxes (6–10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q180;rule=6-10of10;cohorts=lr+age,0.089419,0.071055,0.084034,0.118374,0.114127,0.113547,0.097540,0.083853,0.063321
+Justifiable: someone accepting a bribe (6–10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q181;rule=6-10of10;cohorts=lr+age,0.064551,0.051843,0.063616,0.096310,0.089505,0.088358,0.070326,0.060657,0.041596
+Justifiable: homosexuality (6–10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q182;rule=6-10of10;cohorts=lr+age,0.370324,0.491012,0.338844,0.343242,0.229951,0.299599,0.285455,0.298283,0.326845
+Justifiable: abortion (6–10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q184;rule=6-10of10;cohorts=lr+age,0.314326,0.406747,0.258936,0.282384,0.168515,0.226379,0.227085,0.241088,0.268500
+Justifiable: divorce (6–10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q185;rule=6-10of10;cohorts=lr+age,0.495211,0.572260,0.443412,0.450384,0.347569,0.395742,0.398976,0.416637,0.442296
+Justifiable: for a man to beat his wife (6–10),wvs_cohort_seed,WVS Wave 7,wvs_code=Q189;rule=6-10of10;cohorts=lr+age,0.053097,0.042739,0.058281,0.085119,0.076715,0.073279,0.067964,0.055124,0.039847
