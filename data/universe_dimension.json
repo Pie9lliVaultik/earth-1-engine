@@ -1,0 +1,15 @@
+{
+ "engine": {
+  "eff_rank_pooled": 13.875528410526192,
+  "n90": 13,
+  "dims": 23,
+  "eff_rank_within_country": 14.576866932380918
+ },
+ "reality": {
+  "eff_rank_pooled": 42.23279591480357,
+  "n90": 45,
+  "dims": 60,
+  "eff_rank_within_country": 41.85471428819587,
+  "n_respondents": 42667
+ }
+}
