@@ -1,0 +1,10 @@
+{
+ "recorded": "2026-08-18",
+ "finding": "LEVEL error and SHAPE error are INDEPENDENT failures with independent fixes.",
+ "evidence": [
+  "MrsP fixes levels (0.0856 vs engine 0.1059) and has no shape at all (spike density)",
+  "born readout improves shape (W1 0.1259 vs 0.1277) and worsens levels (0.1273 vs 0.1093)",
+  "re-anchoring the engine to MrsP levels did not improve shape"
+ ],
+ "consequence": "the two repairs can proceed in PARALLEL without interference: MrsP/EMRP owns levels, the readout layer owns shape. Stated because it will not be obvious later."
+}

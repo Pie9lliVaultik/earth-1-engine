@@ -1,7 +1,8 @@
 {
  "pop": 30000,
  "n_cells": 15,
- "engine": 0.12768620156238003,
- "mrsp": 0.15035985185185183,
- "composed": 0.1330928559434614
+ "STATUS": "PARKED \u2014 n=15 held-out cells is too small to interpret. Not a caveat, not a result. Excluded from all comparisons until re-run with adequate cells.",
+ "engine_UNINTERPRETABLE": 0.12768620156238003,
+ "mrsp_UNINTERPRETABLE": 0.15035985185185183,
+ "composed_UNINTERPRETABLE": 0.1330928559434614
 }

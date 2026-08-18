@@ -1,0 +1,16 @@
+{
+ "registered": "2026-08-18, BEFORE the dynamics test is written or run",
+ "test": "MrsP-seeded state + engine tick vs PERSISTENCE (MrsP level held constant) on the six historical reaction cases.",
+ "TRUTH PROVENANCE \u2014 stated up front": {
+  "these_six_cases": "graded against AUTHORED pre/post deltas (my own compilation), NOT database-verified",
+  "claim_if_engine_wins": "SUGGESTIVE ONLY \u2014 'beats persistence on authored truth'. It is NOT the defensible claim.",
+  "defensible_version": "the same test on VERIFIED deltas, which requires W6 microdata (pending Pietro's registration). The record must always say which of the two claims is being made."
+ },
+ "REGISTERED EXPECTATION ON THE AGGREGATE RATIO": {
+  "current": 0.97,
+  "prediction": "MrsP seeding will LOWER the aggregate magnitude ratio, to roughly 0.80-0.95",
+  "mechanism": "RESPONSE_GAIN=3.1 was fitted with genesis-anchored baselines, which sit closer to 0.5 than reality for extreme countries. Re-seeding moves those countries away from the sigmoid's steep centre, so the SAME logit delta produces a SMALLER probability shift.",
+  "reading": "a drop toward 0.80-0.95 means the gain was implicitly compensating for level error and must be re-fitted on seeded baselines; a ratio that stays ~0.97 means the gain is level-independent; a RISE would falsify my mechanical account and needs explaining before anything is claimed."
+ },
+ "success_criteria": "engine beats persistence on movement MAE across held-out cases AND aggregate ratio stays >= 0.90 after any re-fit; failure = persistence wins, which is a real possibility the temporal leg already demonstrated once (0.032 vs 0.029)."
+}
