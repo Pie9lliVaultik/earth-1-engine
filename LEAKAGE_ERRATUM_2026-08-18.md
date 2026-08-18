@@ -35,10 +35,20 @@ Verified clean: **employed** (max |corr| 0.364), **social_class** (0.437).
 | Baseline, no injection | 0.1094 | 33/40 |
 | employed + social_class | 0.1095 | 35/40 |
 
-**No MAE improvement (+0.01pp = nothing).** Win count moved 33→35, which
-is not a claim without CI across fold seeds. The honest reading: the
-clean joint structure available so far does not improve country-level
-prediction. That small true number replaces a large false one.
+**NO MEASURED EFFECT.** MAE +0.01pp = nothing. The 33→35 win count is
+NOISE, not a directional hint: the win criterion has a ±0.005 dead band
+and fold noise at this scale is ~0.6pp, so two questions crossing the
+threshold is exactly what reshuffling produces. Recorded as "no
+measured effect" deliberately — "wins improved but unconfirmed" is the
+phrasing that gets quoted later without its caveat, which is how 6.1pp
+survived for weeks.
+
+**What this positively establishes:** employment and social class,
+injected as genuine within-country joint structure, do NOT improve
+country-level prediction. The rank-18 bound now holds under an honest
+test with clean features — stronger evidence than yesterday's argument
+from arithmetic. Country-level accuracy is not where within-country
+structure pays. That small true number replaces a large false one.
 
 The within-country cell metrics are unchanged by the clean injection
 (cell-MAE 0.3945 in both flag-on runs) — because the clean features

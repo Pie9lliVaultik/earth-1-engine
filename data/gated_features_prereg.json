@@ -1,0 +1,12 @@
+{
+ "registered": "2026-08-18, BEFORE extracting or measuring the next variable batch",
+ "context": "After the religiosity/ideology leakage erratum. All candidates pass scripts/feature_adjacency_gate.py first; correlation tables committed before any measurement.",
+ "candidates": ["household_size Q270", "children Q274", "town_size G_TOWNSIZE",
+                "immigrant Q263/Q264", "income_scale Q288", "settlement/region"],
+ "REGISTERED PREDICTION": {
+   "B1_GOQA_country_level": "NO GAIN expected (nulls). Within-country structure is invisible to a metric graded on country means — established by the clean employed+social_class test (0.1094 -> 0.1095).",
+   "B2_cohort_level": "GAIN expected. Cohort resolution is where within-country joint structure is the graded quantity.",
+   "interpretation_rule": "A string of GOQA nulls with cohort gains CONFIRMS the instrument thesis and is a success, not a stall. GOQA gains from a gated feature would be surprising and must be re-checked for leakage before being believed. No gain in EITHER = the feature carries nothing; record and move on."
+ },
+ "reporting_rule": "Win-count changes without MAE movement are reported as NO MEASURED EFFECT (win criterion has a +/-0.005 dead band; fold noise ~0.6pp at 30K)."
+}
