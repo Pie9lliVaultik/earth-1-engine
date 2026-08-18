@@ -105,3 +105,65 @@ def camp_diagnostic(forces: np.ndarray, stances: np.ndarray,
             "r_yes": resultant_length(forces[yes]),
             "r_no": resultant_length(forces[no]),
             "n_yes": int(yes.sum()), "n_no": int(no.sum())}
+
+
+# ── grounding port, step 6: confidence tier as a first-class output ──
+
+TIER_LABEL = {
+    "survey-matched": "A",
+    "reference-anchored": "B",
+    "live-grounded": "D",
+    "forward-estimate": "C",
+}
+TIER_MEANING = {
+    "survey-matched": "Calibrated from real survey data",
+    "reference-anchored": "Borrowed from a nearby real survey, dampened",
+    "live-grounded": "Web-searched and calibrated from published polling",
+    "forward-estimate": "LLM-derived, no real data backing",
+}
+
+
+def answer_envelope(grounding, forces=None, stances=None,
+                    mrsp_estimate=None) -> dict:
+    """Wrap any answer with WHERE IT CAME FROM and WHO PRODUCED IT.
+
+    Two independent axes, never merged into one number:
+      calibration tier  — A/B/D/C, from the grounding cascade
+      manifold status   — is the population contributing or decorating
+                          (camp diagnostic; 39 of 40 GOQA questions were
+                          measured 'grounding_dependent' on 2026-08-18)
+
+    Routing rule carried over from the old engine: when the manifold is
+    empty, return the statistical estimate and SAY SO, rather than
+    presenting a population reading that is decoration.
+    """
+    src = getattr(grounding, "calibration_source", "forward-estimate")
+    env = {
+        "calibration_source": src,
+        "tier": TIER_LABEL.get(src, "C"),
+        "tier_meaning": TIER_MEANING.get(src, TIER_MEANING["forward-estimate"]),
+        "confidence": getattr(grounding, "confidence", "low"),
+        "source": getattr(grounding, "source", None),
+        "source_url": getattr(grounding, "source_url", None),
+        "date": getattr(grounding, "date", None),
+        "matched_question": getattr(grounding, "matched_question", None),
+        "dampening_factor": getattr(grounding, "dampening_factor", None),
+        "manifold": None,
+        "answer_from": None,
+        "mrsp_estimate": mrsp_estimate,
+    }
+    if forces is not None and stances is not None:
+        d = camp_diagnostic(forces, stances)
+        env["manifold"] = d
+        if d["regime"] == "manifold_native":
+            env["answer_from"] = "engine"
+        elif mrsp_estimate is not None:
+            env["answer_from"] = "mrsp"
+            env["note"] = ("manifold is empty on this question; returning "
+                           "the statistical estimate, not a population "
+                           "reading")
+        else:
+            env["answer_from"] = "engine_uncertain"
+            env["note"] = ("manifold is empty and no statistical estimate "
+                           "was supplied — treat as low information")
+    return env
