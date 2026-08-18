@@ -112,14 +112,19 @@ def camp_diagnostic(forces: np.ndarray, stances: np.ndarray,
 TIER_LABEL = {
     "survey-matched": "A",
     "reference-anchored": "B",
+    "loose-interpolation": "B-",
     "live-grounded": "D",
     "forward-estimate": "C",
 }
 TIER_MEANING = {
     "survey-matched": "Calibrated from real survey data",
     "reference-anchored": "Borrowed from a nearby real survey, dampened",
+    "loose-interpolation": ("Nobody has surveyed this; interpolated from "
+                           "the nearest real measurement — directional"),
     "live-grounded": "Web-searched and calibrated from published polling",
-    "forward-estimate": "LLM-derived, no real data backing",
+    "forward-estimate": ("Outside the measured space entirely — LLM-derived, "
+                         "and the distance to the nearest measurement is "
+                         "itself the finding"),
 }
 
 
@@ -148,6 +153,9 @@ def answer_envelope(grounding, forces=None, stances=None,
         "date": getattr(grounding, "date", None),
         "matched_question": getattr(grounding, "matched_question", None),
         "dampening_factor": getattr(grounding, "dampening_factor", None),
+        "nearest_seed": getattr(grounding, "nearest_seed", None),
+        "nearest_similarity": getattr(grounding, "nearest_similarity", None),
+        "unsurveyed": getattr(grounding, "unsurveyed", False),
         "manifold": None,
         "answer_from": None,
         "mrsp_estimate": mrsp_estimate,

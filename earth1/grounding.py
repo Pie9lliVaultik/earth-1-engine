@@ -30,7 +30,16 @@ from earth1.stem_family import classify_pair, dampening_factor
 
 CORPUS = Path(__file__).resolve().parents[1] / "data" / "seed_corpus" / "index.json"
 EXACT = 0.92
-NEAR = 0.70
+NEAR = 0.70          # ported: Path B's original floor
+LOOSE = 0.45         # EXTENSION (2026-08-18, ours, not in the TS):
+                     # below NEAR but still inside the measured space.
+                     # Rationale: the corpus spans ten topic families
+                     # across fifty years, so almost any opinion
+                     # question has SOMETHING near it. An honest
+                     # heavily-dampened interpolation from a real
+                     # measurement beats LLM-authored weights, and the
+                     # DISTANCE is itself reportable information.
+LOOSE_CAP = 0.25     # interpolation this far out is directional only
 FLAT_BAND = 0.10          # |p - 0.5| below this from a weak anchor = flat
 COND_MAX = 20_000.0       # ill-conditioned solves are rejected (old gate)
 
@@ -38,7 +47,8 @@ COND_MAX = 20_000.0       # ill-conditioned solves are rejected (old gate)
 @dataclass
 class Grounding:
     calibration_source: str          # survey-matched | reference-anchored |
-                                     # live-grounded | forward-estimate
+                                     # loose-interpolation | live-grounded |
+                                     # forward-estimate
     confidence: str                  # high | medium | low
     seed_id: str | None = None
     matched_question: str | None = None
@@ -51,6 +61,9 @@ class Grounding:
     source_url: str | None = None
     date: str | None = None
     condition_number: float | None = None
+    nearest_seed: str | None = None
+    nearest_similarity: float | None = None
+    unsurveyed: bool = False         # nothing within LOOSE of this question
     note: str | None = None
 
 
@@ -153,8 +166,35 @@ def ground(question_text: str, population: str | None = None,
         except ImportError:
             pass
 
-    # ── Path C ──
+    # ── Path B-loose (EXTENSION) ── still inside the measured space
+    if sim >= LOOSE:
+        klass = classify_pair(question_text, best["question_text"])
+        cls = ("stem_collision" if klass == "stem_collision"
+               else "different_question")
+        factor = min(LOOSE_CAP, dampening_factor(max(sim, 0.51), cls))
+        return Grounding("loose-interpolation", "low",
+                         seed_id=best["id"],
+                         matched_question=best["question_text"],
+                         similarity=sim, dampening_factor=factor,
+                         stem_class=cls,
+                         cohort_targets=best.get("cohort_targets", {}),
+                         national_target=best.get("national_target"),
+                         source=best.get("source"),
+                         source_url=best.get("source_url"),
+                         date=best.get("date"),
+                         nearest_seed=best["id"], nearest_similarity=sim,
+                         note=("nobody has surveyed this question; "
+                               "interpolated from the nearest real "
+                               f"measurement at similarity {sim:.2f}, "
+                               f"dampened to {factor:.2f} — DIRECTIONAL"))
+
+    # ── Path C ── genuinely outside the measured space
     return Grounding("forward-estimate", "low", similarity=sim,
                      matched_question=best["question_text"],
-                     note="no corpus match and no live data; "
-                          "LLM-derived weights, NOT a measurement")
+                     nearest_seed=best["id"], nearest_similarity=sim,
+                     unsurveyed=True,
+                     note=("no measurement within reach: nearest of "
+                           f"{len(pool)} real seeds is {sim:.2f} away. "
+                           "This is itself a finding — the question is "
+                           "unsurveyed. Weights are LLM-derived, NOT a "
+                           "measurement."))
