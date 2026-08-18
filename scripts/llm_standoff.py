@@ -33,9 +33,11 @@ def ask(model: str, question: str, countries: list) -> dict:
         f"Countries (ISO2): {', '.join(countries)}\n\n"
         "Reply with ONLY a JSON object mapping each ISO2 code to a number "
         "0-100. No prose, no markdown fences.")
-    body = json.dumps({
-        "model": model, "max_tokens": 2000, "temperature": 0,
-        "messages": [{"role": "user", "content": prompt}]}).encode()
+    payload = {"model": model, "max_tokens": 2000,
+               "messages": [{"role": "user", "content": prompt}]}
+    if not model.endswith("-5"):
+        payload["temperature"] = 0  # deprecated on the Claude 5 family
+    body = json.dumps(payload).encode()
     req = urllib.request.Request(
         "https://api.anthropic.com/v1/messages", data=body,
         headers={"x-api-key": os.environ["ANTHROPIC_API_KEY"],

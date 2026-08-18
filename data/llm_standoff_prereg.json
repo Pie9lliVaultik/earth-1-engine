@@ -40,5 +40,6 @@
   "alarm_threshold": "under 6pp across all 66 countries = real competitive problem",
   "interpretation_if_split_appears": "reconciliation closed; 'frontier models are Western-anchored' line earned"
  },
- "amendment": "2026-08-18: western_set converted ISO2->ISO3 to match truth keys (classification fix, pre-results for sonnet; haiku 2-q smoke discarded)"
+ "amendment": "2026-08-18: western_set converted ISO2->ISO3 to match truth keys (classification fix, pre-results for sonnet; haiku 2-q smoke discarded)",
+ "amendment2": "2026-08-18: temperature=0 impossible for claude-sonnet-5 (API: 'deprecated for this model') \u2014 sonnet calls run at model default sampling, one draw per question, cached. Haiku keeps temp 0. Registered before sonnet results."
 }
