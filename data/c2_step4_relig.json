@@ -1,0 +1,16 @@
+{
+ "religiosity": true,
+ "pop": 30000,
+ "country_only": {
+  "country_mae": 0.10095290514454111,
+  "cohort_mae": 0.15947165376617714,
+  "gradient_acc": 0.31645569620253167,
+  "n_gradient": 79
+ },
+ "with_cohorts": {
+  "country_mae": 0.11373640485954975,
+  "cohort_mae": 0.13103147565023915,
+  "gradient_acc": 0.7468354430379747,
+  "n_gradient": 79
+ }
+}

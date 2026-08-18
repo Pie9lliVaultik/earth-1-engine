@@ -1,0 +1,155 @@
+{
+ "pop": 20000,
+ "n_cells": 96,
+ "n_pairs": 24,
+ "engine_bucket_mae": 0.3349376503354604,
+ "flat_baseline_mae": 0.03385859375,
+ "gradient_direction_acc": 0.25,
+ "n_gradient_pairs": 24,
+ "per_pair": [
+  {
+   "q": "Q57",
+   "cc": "US",
+   "obs_grad": -0.14,
+   "eng_grad": -0.019
+  },
+  {
+   "q": "Q57",
+   "cc": "IN",
+   "obs_grad": 0.031,
+   "eng_grad": -0.026
+  },
+  {
+   "q": "Q57",
+   "cc": "CN",
+   "obs_grad": 0.062,
+   "eng_grad": -0.02
+  },
+  {
+   "q": "Q65",
+   "cc": "US",
+   "obs_grad": -0.238,
+   "eng_grad": 0.05
+  },
+  {
+   "q": "Q65",
+   "cc": "IN",
+   "obs_grad": 0.021,
+   "eng_grad": 0.04
+  },
+  {
+   "q": "Q65",
+   "cc": "CN",
+   "obs_grad": -0.052,
+   "eng_grad": 0.04
+  },
+  {
+   "q": "Q71",
+   "cc": "US",
+   "obs_grad": -0.169,
+   "eng_grad": 0.09
+  },
+  {
+   "q": "Q71",
+   "cc": "IN",
+   "obs_grad": 0.087,
+   "eng_grad": 0.068
+  },
+  {
+   "q": "Q71",
+   "cc": "CN",
+   "obs_grad": -0.067,
+   "eng_grad": 0.07
+  },
+  {
+   "q": "Q164",
+   "cc": "US",
+   "obs_grad": -0.215,
+   "eng_grad": 0.122
+  },
+  {
+   "q": "Q164",
+   "cc": "IN",
+   "obs_grad": -0.055,
+   "eng_grad": 0.121
+  },
+  {
+   "q": "Q164",
+   "cc": "CN",
+   "obs_grad": -0.053,
+   "eng_grad": 0.114
+  },
+  {
+   "q": "Q180",
+   "cc": "IN",
+   "obs_grad": 0.03,
+   "eng_grad": 0.026
+  },
+  {
+   "q": "Q180",
+   "cc": "US",
+   "obs_grad": 0.077,
+   "eng_grad": 0.029
+  },
+  {
+   "q": "Q180",
+   "cc": "CN",
+   "obs_grad": 0.02,
+   "eng_grad": 0.027
+  },
+  {
+   "q": "Q182",
+   "cc": "US",
+   "obs_grad": 0.14,
+   "eng_grad": -0.059
+  },
+  {
+   "q": "Q182",
+   "cc": "IN",
+   "obs_grad": 0.098,
+   "eng_grad": -0.136
+  },
+  {
+   "q": "Q182",
+   "cc": "CN",
+   "obs_grad": 0.157,
+   "eng_grad": -0.132
+  },
+  {
+   "q": "Q184",
+   "cc": "US",
+   "obs_grad": 0.137,
+   "eng_grad": -0.066
+  },
+  {
+   "q": "Q184",
+   "cc": "IN",
+   "obs_grad": 0.073,
+   "eng_grad": -0.107
+  },
+  {
+   "q": "Q184",
+   "cc": "CN",
+   "obs_grad": 0.006,
+   "eng_grad": -0.104
+  },
+  {
+   "q": "Q185",
+   "cc": "US",
+   "obs_grad": 0.005,
+   "eng_grad": -0.086
+  },
+  {
+   "q": "Q185",
+   "cc": "IN",
+   "obs_grad": 0.133,
+   "eng_grad": -0.132
+  },
+  {
+   "q": "Q185",
+   "cc": "CN",
+   "obs_grad": 0.093,
+   "eng_grad": -0.135
+  }
+ ]
+}
