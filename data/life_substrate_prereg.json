@@ -1,0 +1,33 @@
+{
+ "build": "LIFE SUBSTRATE — earthlings with biographies",
+ "registered": "2026-08-18",
+ "status_when_registered": "earth1/life.py written, never executed",
+
+ "why_this_exists": "Every failure measured this week has one cause: an agent is a static draw with attributes and no biography, so two agents born identical stay identical forever. A population like that has no tail. With no tail there is nothing for a threshold to detect (measured: max participation 0.292 anywhere on Earth-1), nothing for a cascade to propagate, and nothing a country-level regression cannot reproduce (measured: MrsP 0.0856 beat the engine's 0.1059 on less information).",
+
+ "the_mechanism_being_tested": "CORRELATED SHOCKS THROUGH STRUCTURE. Independent misfortune averages out and leaves a Gaussian — the world we currently have. Real hardship arrives correlated: a firm fails and everyone inside loses income in the same week. Compounding then prevents reconvergence, because a drained agent cannot absorb the next shock. The claim under test is that this mechanism, and not any tuned parameter, is what produces a population with a genuine tail.",
+
+ "pre_stated_expectations": {
+  "primary": "the ECONOMICS force standard deviation rises substantially, and max rule participation exceeds 0.30 — the level at which Fix 1's knife-edge disappears and the threshold detector becomes robust rather than parameter-dependent",
+  "secondary": "the participation sweep stops collapsing to zero between 0.25 and 0.30",
+  "tertiary": "unemployment and destitution settle at plausible real-world magnitudes without being targeted"
+ },
+
+ "how_this_build_can_be_WRONG_regardless_of_whether_it_produces_tails": [
+  "RUNAWAY: unemployment climbs past ~35% or collapses under ~2% globally. Either means the separation/finding rates are wrong and the module is not a labour market, whatever it does to the force distribution. This invalidates the build even if the tails look great.",
+  "SATURATION NOT TAIL: the distribution widens only because agents pile up against the 0.0/1.0 clip bounds. A wall is not a tail. Checked by reporting the fraction of agents exactly at each bound — if widening is mostly clip-pileup, the result is an artifact.",
+  "DESTITUTION RUNAWAY: destitute fraction exceeding ~25% globally means the buffer dynamics are broken, since the safety net and wage levels should prevent that outside genuine crisis.",
+  "NO EFFECT: participation still cannot reach 0.30, in which case the material layer is not the binding constraint and the diagnosis was wrong."
+ ],
+
+ "explicitly_not_claimed": "no accuracy claim. This build does not assert that any prediction improves. It asserts that the population acquires internal structure it did not have. Whether that structure carries predictive value is a separate question requiring a separate registered test against real data, and it is NOT answered here.",
+
+ "parameters_and_their_provenance": {
+  "SEPARATION_RATE_YR 0.12": "mid-range OECD job destruction plus voluntary quits",
+  "FINDING_RATE_YR 0.55": "deliberately slower than separation so spells persist long enough to drain a buffer",
+  "FIRM_FAILURE_RATE_YR 0.08": "approximate all-sizes business exit rate",
+  "SAFETY_NET by income tier": "welfare generosity ordered HIC > UMIC > LMIC > LIC",
+  "COST_SHARE by income tier": "Engel's law — poorer countries spend more of income on survival",
+  "note": "these are ordinary labour-economics magnitudes chosen before the run, not values tuned to produce a tail. The sweep and the failure modes above are what protect against the tuning temptation."
+ }
+}

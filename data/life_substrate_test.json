@@ -1,0 +1,272 @@
+{
+ "prereg": "data/life_substrate_prereg.json",
+ "pop": 20000,
+ "days": 365,
+ "history": [
+  {
+   "day": 0,
+   "unemployment": 0.0893,
+   "deprived": 0.0202,
+   "destitute": 0.0024,
+   "median_buffer_days": 14.1,
+   "firms_failed": 0
+  },
+  {
+   "day": 60,
+   "unemployment": 0.091,
+   "deprived": 0.2536,
+   "destitute": 0.241,
+   "median_buffer_days": 14.2,
+   "firms_failed": 0
+  },
+  {
+   "day": 120,
+   "unemployment": 0.0821,
+   "deprived": 0.3054,
+   "destitute": 0.2973,
+   "median_buffer_days": 15.8,
+   "firms_failed": 0
+  },
+  {
+   "day": 180,
+   "unemployment": 0.0797,
+   "deprived": 0.3243,
+   "destitute": 0.3191,
+   "median_buffer_days": 17.7,
+   "firms_failed": 0
+  },
+  {
+   "day": 240,
+   "unemployment": 0.0839,
+   "deprived": 0.3346,
+   "destitute": 0.3308,
+   "median_buffer_days": 19.3,
+   "firms_failed": 0
+  },
+  {
+   "day": 300,
+   "unemployment": 0.0887,
+   "deprived": 0.3428,
+   "destitute": 0.3397,
+   "median_buffer_days": 20.9,
+   "firms_failed": 0
+  },
+  {
+   "day": 360,
+   "unemployment": 0.0885,
+   "deprived": 0.3468,
+   "destitute": 0.3443,
+   "median_buffer_days": 22.3,
+   "firms_failed": 0
+  },
+  {
+   "day": 364,
+   "unemployment": 0.0914,
+   "deprived": 0.3473,
+   "destitute": 0.3446,
+   "median_buffer_days": 22.3,
+   "firms_failed": 0
+  }
+ ],
+ "force_before": {
+  "fear": {
+   "std": 0.1087,
+   "p01": 0.2822,
+   "p99": 0.7866,
+   "at_zero": 0.0,
+   "at_one": 0.0
+  },
+  "desire": {
+   "std": 0.1829,
+   "p01": 0.141,
+   "p99": 1.0,
+   "at_zero": 0.0008,
+   "at_one": 0.0106
+  },
+  "economics": {
+   "std": 0.2205,
+   "p01": 0.1471,
+   "p99": 1.0,
+   "at_zero": 0.0002,
+   "at_one": 0.0141
+  },
+  "collective": {
+   "std": 0.1612,
+   "p01": 0.2015,
+   "p99": 0.9441,
+   "at_zero": 0.0001,
+   "at_one": 0.0013
+  },
+  "identity": {
+   "std": 0.1694,
+   "p01": 0.0892,
+   "p99": 0.8654,
+   "at_zero": 0.0003,
+   "at_one": 0.0008
+  },
+  "culture": {
+   "std": 0.0797,
+   "p01": 0.3941,
+   "p99": 0.7683,
+   "at_zero": 0.0,
+   "at_one": 0.0
+  },
+  "experience": {
+   "std": 0.2393,
+   "p01": 0.0,
+   "p99": 0.9306,
+   "at_zero": 0.012,
+   "at_one": 0.004
+  },
+  "temperament": {
+   "std": 0.1324,
+   "p01": 0.1659,
+   "p99": 0.7837,
+   "at_zero": 0.0,
+   "at_one": 0.0
+  }
+ },
+ "force_after": {
+  "fear": {
+   "std": 0.1942,
+   "p01": 0.3101,
+   "p99": 1.0,
+   "at_zero": 0.0,
+   "at_one": 0.1077
+  },
+  "desire": {
+   "std": 0.2266,
+   "p01": 0.0,
+   "p99": 0.9717,
+   "at_zero": 0.0238,
+   "at_one": 0.0069
+  },
+  "economics": {
+   "std": 0.3396,
+   "p01": 0.0,
+   "p99": 1.0,
+   "at_zero": 0.127,
+   "at_one": 0.0844
+  },
+  "collective": {
+   "std": 0.1908,
+   "p01": 0.2087,
+   "p99": 1.0,
+   "at_zero": 0.0,
+   "at_one": 0.0498
+  },
+  "identity": {
+   "std": 0.1694,
+   "p01": 0.0892,
+   "p99": 0.8654,
+   "at_zero": 0.0003,
+   "at_one": 0.0008
+  },
+  "culture": {
+   "std": 0.0797,
+   "p01": 0.3941,
+   "p99": 0.7683,
+   "at_zero": 0.0,
+   "at_one": 0.0
+  },
+  "experience": {
+   "std": 0.2393,
+   "p01": 0.0,
+   "p99": 0.9306,
+   "at_zero": 0.012,
+   "at_one": 0.004
+  },
+  "temperament": {
+   "std": 0.1324,
+   "p01": 0.1659,
+   "p99": 0.7837,
+   "at_zero": 0.0,
+   "at_one": 0.0
+  }
+ },
+ "participation_before": {
+  "identity_collapse": {
+   "max": 0.2062,
+   "mean": 0.0463,
+   "countries_over_30pct": 0
+  },
+  "panic_cascade": {
+   "max": 0.1649,
+   "mean": 0.0705,
+   "countries_over_30pct": 0
+  },
+  "polarization_lock": {
+   "max": 0.2474,
+   "mean": 0.0025,
+   "countries_over_30pct": 0
+  },
+  "economic_boom": {
+   "max": 0.0208,
+   "mean": 0.0038,
+   "countries_over_30pct": 0
+  },
+  "collective_surge": {
+   "max": 0.3299,
+   "mean": 0.0779,
+   "countries_over_30pct": 1
+  }
+ },
+ "participation_after": {
+  "identity_collapse": {
+   "max": 0.7526,
+   "mean": 0.3744,
+   "countries_over_30pct": 124
+  },
+  "panic_cascade": {
+   "max": 0.5464,
+   "mean": 0.2872,
+   "countries_over_30pct": 93
+  },
+  "polarization_lock": {
+   "max": 0.2474,
+   "mean": 0.0025,
+   "countries_over_30pct": 0
+  },
+  "economic_boom": {
+   "max": 0.0312,
+   "mean": 0.0037,
+   "countries_over_30pct": 0
+  },
+  "collective_surge": {
+   "max": 0.7629,
+   "mean": 0.2984,
+   "countries_over_30pct": 101
+  }
+ },
+ "sweep_before": {
+  "0.1": 128,
+  "0.15": 39,
+  "0.2": 15,
+  "0.25": 5,
+  "0.3": 1,
+  "0.4": 0,
+  "0.5": 0
+ },
+ "sweep_after": {
+  "0.1": 503,
+  "0.15": 459,
+  "0.2": 399,
+  "0.25": 366,
+  "0.3": 318,
+  "0.4": 215,
+  "0.5": 114
+ },
+ "occupation_mix": {
+  "subsistence_agriculture": 1602,
+  "manual_labour": 1708,
+  "service": 1664,
+  "trades": 2106,
+  "clerical": 2109,
+  "sales": 2110,
+  "care_and_teaching": 2259,
+  "technical": 2149,
+  "professional": 2167,
+  "management": 2126
+ },
+ "verdict": "FAIL: DESTITUTION RUNAWAY: 34.5% destitute"
+}
