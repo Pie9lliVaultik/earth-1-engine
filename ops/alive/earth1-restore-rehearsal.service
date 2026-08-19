@@ -1,0 +1,10 @@
+[Unit]
+Description=Earth-1 — restore the newest backup off-production and load it
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/earth1
+ExecStart=/opt/earth1/ops/alive/verify_restore.sh
+StandardOutput=append:/var/log/earth1-backup.log
+StandardError=append:/var/log/earth1-backup.log

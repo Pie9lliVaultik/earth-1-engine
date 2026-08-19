@@ -1,0 +1,15 @@
+# Backs up the LIVING world (data/alive/) and verifies the remote copy.
+# Before 2026-08-19 this pointed at data/living/ — the old 200K world —
+# so the 4M civilization was never protected. Checked in so that can
+# never again be true only on one machine.
+[Unit]
+Description=Earth-1 — back up the living world, and verify it
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/earth1
+ExecStart=/opt/earth1/ops/alive/run_backup.sh
+StandardOutput=append:/var/log/earth1-backup.log
+StandardError=append:/var/log/earth1-backup.log
