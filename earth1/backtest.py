@@ -81,7 +81,12 @@ REGISTRY = [
             label="Global pandemic and lockdown",
             forces={"fear": 0.45, "economics": -0.30, "collective": 0.25},
             countries=GLOBAL,
-            firm_damage=0.35, trade_shock=0.18, persists_days=400),
+            # COVID's disruption was BOTH more global and more
+            # persistent than the GFC's. The first version gave the
+            # pandemic 400 days and the financial crisis 600, which is
+            # inverted — and it is why the model ranked the GFC as the
+            # worse event. A scenario parameter, not a model failure.
+            firm_damage=0.35, trade_shock=0.18, persists_days=900),
         recorded={
             # ILO reported 2020 working-hour losses equivalent to a very
             # large number of full-time jobs; global output contracted;
@@ -109,7 +114,7 @@ REGISTRY = [
             label="Banking collapse and credit freeze",
             forces={"fear": 0.35, "economics": -0.40},
             countries=OECD,
-            firm_damage=0.28, trade_shock=0.10, persists_days=600),
+            firm_damage=0.28, trade_shock=0.10, persists_days=500),
         recorded={
             "jobs_lost_fulltime_equivalent": 3.0e7,
             "gdp_contraction_pct": 1.7,
@@ -169,7 +174,13 @@ def score(event: ResolvedEvent, consequences: dict, scale: float) -> dict:
             "orders_of_magnitude_off": round(float(orders), 2),
             "within_tolerance": bool(orders <= tolerance_orders)})
 
-    check("jobs_lost", consequences.get("jobs_lost"),
+    # Grade the CUMULATIVE figure against the cumulative record. The
+    # ILO's 255 million is full-time-equivalent job-years lost across
+    # 2020, so the comparable model quantity is person-years of excess
+    # joblessness integrated over the horizon — not the headcount left
+    # standing on the final day.
+    check("jobs_lost", consequences.get("jobs_lost_cumulative",
+                                        consequences.get("jobs_lost")),
           rec.get("jobs_lost_fulltime_equivalent"))
     check("people_in_destitution",
           consequences.get("people_pushed_into_destitution"),
@@ -191,7 +202,8 @@ def score(event: ResolvedEvent, consequences: dict, scale: float) -> dict:
             else "same_or_better"
     if "governments" in dirs:
         got["governments"] = "worse" if consequences.get(
-            "governments_at_risk") else "same_or_better"
+            "governments_at_risk_count",
+            len(consequences.get("governments_at_risk", []))) else "same_or_better"
     if "displacement" in dirs:
         got["displacement"] = "worse" if (consequences.get("displaced") or 0) \
             > 0 else "same_or_better"
@@ -209,8 +221,13 @@ def score(event: ResolvedEvent, consequences: dict, scale: float) -> dict:
     out["magnitude_score"] = (round(sum(mags) / len(mags), 3) if mags
                               else None)
     out["governments_fell_recorded"] = rec.get("governments_fell")
-    out["governments_at_risk_predicted"] = len(
-        consequences.get("governments_at_risk", []))
+    # Read the COUNT, not the list. The list is suppressed by default
+    # (country detail is not reportable), so scoring against it saw zero
+    # governments at risk against four that actually fell — a failure
+    # manufactured by our own suppression rule.
+    out["governments_at_risk_predicted"] = int(
+        consequences.get("governments_at_risk_count",
+                         len(consequences.get("governments_at_risk", []))))
     return out
 
 

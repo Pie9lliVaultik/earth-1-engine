@@ -1,0 +1,130 @@
+{
+ "pop": 20000,
+ "scale": 415000.0,
+ "horizon_days": 120,
+ "repeats": 2,
+ "scored": [
+  {
+   "event": "covid_2020",
+   "label": "COVID-19 pandemic, first year",
+   "checks": [
+    {
+     "quantity": "jobs_lost",
+     "predicted": 415000.0,
+     "recorded": 255000000.0,
+     "orders_of_magnitude_off": 2.79,
+     "within_tolerance": false
+    },
+    {
+     "quantity": "people_in_destitution",
+     "predicted": 881045000.0,
+     "recorded": 80000000.0,
+     "orders_of_magnitude_off": 1.04,
+     "within_tolerance": false
+    }
+   ],
+   "direction_expected": {
+    "jobs": "worse",
+    "poverty": "worse",
+    "hope": "worse",
+    "deaths": "worse"
+   },
+   "direction_got": {
+    "jobs": "worse",
+    "poverty": "worse",
+    "hope": "worse",
+    "deaths": "worse"
+   },
+   "direction_correct": {
+    "jobs": true,
+    "poverty": true,
+    "hope": true,
+    "deaths": true
+   },
+   "direction_score": 1.0,
+   "magnitude_score": 0.0,
+   "governments_fell_recorded": null,
+   "governments_at_risk_predicted": 1
+  },
+  {
+   "event": "gfc_2008",
+   "label": "Global financial crisis",
+   "checks": [
+    {
+     "quantity": "jobs_lost",
+     "predicted": 0.0,
+     "recorded": 30000000.0,
+     "orders_of_magnitude_off": 7.48,
+     "within_tolerance": false
+    }
+   ],
+   "direction_expected": {
+    "jobs": "worse",
+    "poverty": "worse",
+    "hope": "worse"
+   },
+   "direction_got": {
+    "jobs": "worse",
+    "poverty": "worse",
+    "hope": "worse"
+   },
+   "direction_correct": {
+    "jobs": true,
+    "poverty": true,
+    "hope": true
+   },
+   "direction_score": 1.0,
+   "magnitude_score": 0.0,
+   "governments_fell_recorded": null,
+   "governments_at_risk_predicted": 0
+  },
+  {
+   "event": "arab_spring_2011",
+   "label": "Arab Spring",
+   "checks": [
+    {
+     "quantity": "displaced",
+     "predicted": 0.0,
+     "recorded": 10000000.0,
+     "orders_of_magnitude_off": 7.0,
+     "within_tolerance": false
+    }
+   ],
+   "direction_expected": {
+    "governments": "worse",
+    "displacement": "worse",
+    "jobs": "worse"
+   },
+   "direction_got": {
+    "jobs": "worse",
+    "governments": "same_or_better",
+    "displacement": "same_or_better"
+   },
+   "direction_correct": {
+    "governments": false,
+    "displacement": false,
+    "jobs": true
+   },
+   "direction_score": 0.333,
+   "magnitude_score": 0.0,
+   "governments_fell_recorded": 4,
+   "governments_at_risk_predicted": 0
+  }
+ ],
+ "ranking": {
+  "expected_order_by_job_losses": [
+   "covid_2020",
+   "gfc_2008",
+   "arab_spring_2011"
+  ],
+  "model_order": [
+   "covid_2020",
+   "gfc_2008",
+   "arab_spring_2011"
+  ],
+  "order_correct": true
+ },
+ "mean_direction_score": 0.778,
+ "mean_magnitude_score": 0.0,
+ "limit": "scored on direction, order of magnitude and ranking only \u2014 the population is a synthetic present, not a historically initialised year"
+}

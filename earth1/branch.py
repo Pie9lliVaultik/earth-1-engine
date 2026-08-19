@@ -101,11 +101,18 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
 
     # ── the control: the same world, untouched ───────────────────────
     ctrl_reports = []
+    ctrl_paths = []          # the control's DAILY unemployment path
     for r in range(repeats):
         w = copy.deepcopy(world)
         rng = np.random.default_rng(seed * 977 + r)
+        from earth1.genesis import census_weights
+        cw = census_weights(w.civ)
+        path = []
         for _ in range(days):
             live_one_day(w, rng)
+            lf_alive = w.life.in_lf & w.health.alive
+            path.append(float(cw[(~w.life.employed) & lf_alive].sum()))
+        ctrl_paths.append(path)
         ctrl_reports.append(snapshot(w))
         if progress:
             progress(f"control {r + 1}/{repeats}")
@@ -123,12 +130,39 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
 
     for sc in scenarios:
         reports = []
+        peak_jobless = [0.0] * repeats
+        max_jobless = [0.0] * repeats
         for r in range(repeats):
             w = copy.deepcopy(world)
             rng = np.random.default_rng(seed * 977 + r)   # SAME dice as control
             apply(w, sc, rng)
-            for _ in range(days):
+            # track the whole path, not just where it ends
+            # Track the path with a CHEAP weighted count, not a full
+            # snapshot — snapshot() costs ~184ms and calling it daily
+            # would add ten minutes of pure overhead per ensemble.
+            # Weights depend only on the country allocation, which never
+            # changes during a run — so compute them ONCE. Rebuilding a
+            # 200K array every simulated day turned a 50-minute job into
+            # a five-hour one for no information gain.
+            from earth1.genesis import census_weights
+            cw = census_weights(w.civ)
+            base_j = ctrl_reports[r]["unemployed"]
+            # DAY AGAINST DAY. The first version compared the branch on
+            # day t against the control's value on the FINAL day — a
+            # single endpoint. Since the control's unemployment drifts
+            # upward across the horizon, branch-day-5 minus
+            # control-day-365 is negative for most of the run and clips
+            # to zero. That is how a global pandemic came back with
+            # exactly zero job losses: I was differencing across TIME
+            # instead of across CONDITION.
+            ctrl_path = ctrl_paths[r]
+            for t in range(days):
                 live_one_day(w, rng)
+                lf_alive = w.life.in_lf & w.health.alive
+                snap_j = float(cw[(~w.life.employed) & lf_alive].sum())
+                excess = max(0.0, snap_j - ctrl_path[t])
+                peak_jobless[r] += excess / 365.0     # person-years lost
+                max_jobless[r] = max(max_jobless[r], excess)
             # PAIRED DIFFERENCE — against the control that ran on THESE
             # dice, not against the average of all controls.
             #
@@ -144,7 +178,16 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
             # Measured cost of getting this wrong: the country-level
             # signal read 0.0103 unpaired against 0.0359 properly paired.
             # A factor of three, thrown away by comparing to a mean.
-            reports.append(compare(ctrl_reports[r], snapshot(w), w, days))
+            rep = compare(ctrl_reports[r], snapshot(w), w, days)
+            # CUMULATIVE, not the endpoint. The recorded figures these
+            # get graded against — the ILO's 255 million for 2020 — are
+            # integrals over the year, not a headcount on the last day.
+            # Reading the final state made a fast-recovering shock score
+            # as though it had never happened, which is a category error
+            # rather than a modelling one.
+            rep["jobs_lost_cumulative"] = int(round(peak_jobless[r]))
+            rep["jobs_lost_peak"] = int(round(max_jobless[r]))
+            reports.append(rep)
             if progress:
                 progress(f"{sc.id} {r + 1}/{repeats}")
         out[sc.id] = {"label": sc.label,

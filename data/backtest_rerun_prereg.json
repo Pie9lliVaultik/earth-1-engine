@@ -1,0 +1,34 @@
+{
+ "run": "COVID backtest, rerun after three measurement fixes",
+ "registered": "2026-08-19, before the rerun completed",
+ "registered_by": "Pietro, verbatim expectation",
+
+ "what_the_first_run_established": {
+  "direction_100pct_on_both_economic_events": "From a world never initialised to 2019 — no 2019 firms, supply chains or governments — COVID and the GFC both made jobs, poverty and hope worse. The scenario-to-consequence transmission path is directionally sound: forces land on firms, firms fail, jobs go, savings drain, hope falls. The causal chain runs the right way.",
+  "this_is_not_trivial": "it is the part that could have failed silently and did not"
+ },
+
+ "the_three_bugs_were_MEASUREMENT_not_physics": {
+  "persistence_inverted": "COVID's economic disruption outlasted the GFC's; the scenario said the opposite. A factual error in a scenario parameter I authored. One line.",
+  "snapshot_vs_integral": "The ILO's 255M is cumulative working-hour-equivalent loss across 2020. The scorer read the state on the FINAL DAY — a residual after recovery. Comparing them is like measuring distance travelled by checking where the car is parked.",
+  "government_suppression": "My own prior-day refusal rule hid the field the scorer reads. A self-inflicted zero on a test the model might have passed."
+ },
+
+ "PRE-STATED EXPECTATION for the cumulative figure": {
+  "claim": "cumulative jobs lost should be HIGHER than the snapshot figure, because it integrates the peak that the endpoint misses. So the gap to the recorded 255M should SHRINK.",
+  "if_it_does_not_shrink": "the recovery trajectory in the model is too slow — the world is not re-employing people fast enough after the shock, so the integral does not accumulate the way the real one did. That is a SEPARATE calibration target from the three bugs, and must not be folded into them.",
+  "do_not_assume_it_still_passes": "the snapshot version was 0.60 orders off and passed the 1-order tolerance. The cumulative version is a different number and may fail. Passing is not the prediction; the direction of change is."
+ },
+
+ "THE DECISIVE TEST": {
+  "ranking": "COVID must rank above the GFC. It needs no historically initialised world — it is a claim about the model's internal proportionality.",
+  "if_it_passes": "internal proportionality is correct and the three named bugs were the whole story",
+  "if_it_still_fails": "the problem is deeper than parameters and the Phase 2 calibration loop begins"
+ },
+
+ "SEPARATE ISSUE, NOT CAUSED BY THE THREE BUGS": {
+  "destitution_overshoot": "model 899M against a recorded 80M — more than an order of magnitude too high, and none of the three fixes touch it.",
+  "diagnosis": "the life layer pushes too many people into destitution under stress. Consistent with the missing wealth brake already observed: unbounded Gini (0.45 -> 0.80 and still climbing), no consumption scaling with wealth, and an informal-economy buffer that does not scale with the size of the shock.",
+  "status": "a calibration problem in the economic layer itself. If it persists in the rerun it is the Phase 2 target and must be reported as its own finding rather than absorbed into the ranking result."
+ }
+}
