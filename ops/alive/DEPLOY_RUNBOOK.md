@@ -1,7 +1,8 @@
 # Deployment runbook — Epoch 0 → Epoch 1
 
 **Purpose:** migrate the live 4M world onto the provenanced, exactly-persistent
-path (0.0e + 0.0c, commit `b92c7ed` or later on `v1-unification`).
+path (0.0e + 0.0c, commit **`be7e8d0`** or later on `v1-unification` —
+`b92c7ed` is NOT sufficient: the step-4 epoch marker landed in `be7e8d0`).
 
 **Authorised:** founder, 2026-08-19. **Status: NOT YET EXECUTED.**
 The agent that prepared this was blocked from SSH to the world box by a
@@ -105,7 +106,8 @@ If the box cannot push, record the SHA here and in the audit by hand.
 ```bash
 cd /opt/earth1
 git fetch origin v1-unification
-git checkout b92c7ed          # or the newest v1-unification commit
+git checkout be7e8d0          # MUST be >= be7e8d0: the epoch marker
+                              # step 4 depends on landed in that commit
 git status --porcelain        # MUST be empty — the gate refuses otherwise
 
 mkdir -p ops/alive
@@ -146,7 +148,7 @@ grep '"event": "startup"' /opt/earth1/data/alive/journal.jsonl | tail -1 \
   | python3 -m json.tool
 ```
 
-Check every field: `code_commit` == `intended_commit` == `b92c7ed…`;
+Check every field: `code_commit` == `intended_commit` == `be7e8d0…`;
 `dirty_worktree: false`; `service_matches: true`; `schema_version: 1`;
 `snapshot_version: null` (it came from v0 — correct); population and world day
 match step 0.
