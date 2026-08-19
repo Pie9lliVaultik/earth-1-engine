@@ -82,6 +82,118 @@ def _build_features(civ: Civilization, extended: bool = False) -> np.ndarray:
     return np.hstack([forces_centered, traits_centered])
 
 
+# ═══ 0.4 — THE LIVING READOUT ═══════════════════════════════════════
+# Opinion becomes a readout of each Earthling's CURRENT LIVED STATE,
+# not a country stereotype with civilization state sitting beside it.
+# The causal contract: civilization state -> individual lived state ->
+# opinion. Every channel below reads the canonical field its subsystem
+# actually writes — no shadow variables, no recomputation, no silent
+# fallback (a missing subsystem raises; a zeroed world is not a world).
+#
+# feature -> (world attr, field, canonical writer)
+LIVING_FEATURES = {
+    "deprivation":  ("life", "deprivation", "life_tick"),
+    "unemployed":   ("life", None, "life_tick"),        # in_lf & ~employed
+    "spells":       ("life", "spells", "life_tick"),    # scarring, /5 cap
+    "hunger":       ("flourishing", "hunger", "flourishing_tick"),
+    "mental":       ("life", "mental", "life_tick"),
+    "addiction":    ("life", "addiction", "life_tick"),
+    "relationship": ("life", "relationship", "life_tick"),  # isolation =
+                                                        # low connectedness
+    "hope":         ("flourishing", "hope", "flourishing_tick"),
+}
+
+
+class MissingLivingState(RuntimeError):
+    """A required living subsystem is absent. Never silently zeroed."""
+
+
+def _living_matrix(w) -> np.ndarray:
+    """The (N, 8) raw living-state block, canonical fields only."""
+    cols = []
+    for name, (obj_name, field, _writer) in LIVING_FEATURES.items():
+        obj = getattr(w, obj_name, None)
+        if obj is None:
+            raise MissingLivingState(
+                f"living feature {name!r} needs w.{obj_name}, which is "
+                f"None — refusing to fake a zero for a person's life")
+        if name == "unemployed":
+            col = (obj.in_lf & ~obj.employed).astype(np.float64)
+        elif name == "spells":
+            col = np.clip(obj.spells.astype(np.float64) / 5.0, 0.0, 1.0)
+        else:
+            arr = getattr(obj, field, None)
+            if arr is None:
+                raise MissingLivingState(
+                    f"living feature {name!r} needs {obj_name}.{field}, "
+                    f"which is None")
+            col = np.clip(np.asarray(arr, dtype=np.float64), 0.0, 1.0)
+        cols.append(col)
+    return np.column_stack(cols)
+
+
+def living_features(w, extended: bool = True) -> np.ndarray:
+    """The 0.4 feature matrix: forces + traits + WITHIN-UNIT lived state.
+
+    Reads only. Building features must never mutate the world, the RNG,
+    memory, forces, fabric or conviction — the readout observes a
+    person, it does not touch them (tests/test_living_readout.py proves
+    non-mutation by whole-world hash).
+    """
+    base = _build_features(w.civ, extended=extended)
+    living = _living_matrix(w)
+    living_centered = living - living.mean(axis=0, keepdims=True)
+    return np.hstack([base, living_centered])
+
+
+def living_feature_names(extended: bool = True) -> list:
+    from earth1.types import FORCE_KEYS
+    names = [f"force_{k}" for k in FORCE_KEYS]
+    if extended:
+        names += list(_active_traits())
+    names += list(LIVING_FEATURES)
+    return names
+
+
+def write_feature_provenance(path=None) -> dict:
+    """feature -> canonical writer -> availability -> transformation ->
+    leakage status. GENERATED, never hand-maintained; the leakage test
+    regenerates and audits it every CI run."""
+    import json
+    from pathlib import Path
+    from earth1.types import FORCE_KEYS
+    rows = {}
+    for k in FORCE_KEYS:
+        rows[f"force_{k}"] = {
+            "canonical_writer": "genesis + live_one_day force channels",
+            "availability": "world-time t (state, pre-question)",
+            "transformation": "centered on civ.means",
+            "leakage_status": "clean"}
+    for t in _active_traits():
+        rows[t] = {
+            "canonical_writer": "genesis traits (+ live feedback residue)",
+            "availability": "world-time t",
+            "transformation": "population-centered",
+            "leakage_status": "clean"}
+    tf = {"unemployed": "in_lf & ~employed", "spells": "clip(spells/5, 0, 1)"}
+    for name, (obj, field, writer) in LIVING_FEATURES.items():
+        rows[name] = {
+            "canonical_writer": f"{writer} -> w.{obj}.{field or name}",
+            "availability": "world-time t (lived state, pre-question)",
+            "transformation": tf.get(name, "clip[0,1], population-centered"),
+            "leakage_status": "clean"}
+    table = {"features": rows,
+             "note": ("no feature derives from survey targets, future "
+                      "waves, post-outcome labels, held-out aggregates "
+                      "or benchmark calibration unavailable at "
+                      "prediction time; the adjacency gate additionally "
+                      "bans convicted features at runtime")}
+    p = Path(path) if path else (Path(__file__).resolve().parents[1]
+                                 / "data" / "feature_provenance.json")
+    p.write_text(json.dumps(table, indent=1))
+    return table
+
+
 def _get_country_index(civ: Civilization):
     """Return (code_to_idx dict, country_codes list) for the civilization."""
     try:
