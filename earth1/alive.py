@@ -267,65 +267,14 @@ def _be_born(w: World, rng, heritability: float = 0.45) -> dict:
     slots = free[:n_new]
     parents = np.flatnonzero(conceived)[:n_new]
 
-    # a country's births are proportional to its living population, so
-    # the world's composition follows its own demography rather than a
-    # global average
-    civ.country[slots] = civ.country[parents]
-    civ.region[slots] = civ.region[parents]
-    civ.urban[slots] = civ.urban[parents]
+    # THE CENTRAL RESET SCHEMA (0.0b). Every per-agent field's rebirth
+    # behaviour is declared in earth1/rebirth.py and enforced by CI —
+    # never a hand-maintained scatter of assignments here. The previous
+    # occupant's ties, body, home, memories and record are gone; the
+    # newborn is birth initialization plus declared parental
+    # inheritance, nothing else.
+    from earth1.rebirth import apply_rebirth
+    apply_rebirth(w, slots, parents, rng, heritability=heritability)
 
-    for t in ("openness", "empathy", "risk_appetite", "doubt",
-              "desire_intensity", "conscientiousness", "agreeableness",
-              "extraversion", "neuroticism"):
-        a = getattr(civ, t)
-        a[slots] = np.clip(heritability * a[parents]
-                           + (1 - heritability) * float(a[living].mean())
-                           + rng.normal(0, 0.08, slots.size), 0.0, 1.0)
-    civ.age[slots] = 0.0                       # eighteen years old
-    civ.age_bucket[slots] = 0
-    civ.education[slots] = civ.education[parents]
-    civ.forces[slots] = civ.forces[parents] * 0.5 + \
-        civ.forces[living].mean(axis=0) * 0.5
-    civ.alpha[slots] = 0.35                    # the young are not certain
-
-    # a new life, materially: no savings, no scars, no history
-    life.wealth[slots] = 0.0
-    life.spells[slots] = 0
-    life.tenure[slots] = 0.0
-    life.employed[slots] = False
-    life.in_lf[slots] = True
-    life.firm[slots] = -1
-    life.deprivation[slots] = 0.0
-    if life.mental is not None:
-        life.mental[slots] = life.mental_setpoint[slots]
-        life.addiction[slots] = 0.0
-        life.n_events[slots] = 0
-        life.last_event[slots] = 0
-    if life.force_baseline is not None:
-        life.force_baseline[slots] = civ.forces[slots]
-    if life.trait_baseline is not None:
-        life.trait_baseline[slots] = np.stack(
-            [civ.openness[slots], civ.doubt[slots],
-             civ.desire_intensity[slots]], axis=1)
-
-    w.knowledge.stock[slots] = np.clip(
-        0.35 * w.knowledge.stock[parents]
-        + 0.65 * float(w.knowledge.stock[living].mean())
-        + rng.normal(0, 0.06, slots.size), 0.0, 1.0)
-    w.knowledge.works_made[slots] = 0
-    w.knowledge.discoveries[slots] = 0
-    w.klass.homeless[slots] = False
-    w.klass.criminal[slots] = False
-    w.klass.crimes_committed[slots] = 0
-
-    h.alive[slots] = True
-    h.condition[slots] = 0
-    h.cause_of_death[slots] = 0
-    h.in_treatment[slots] = False
-    h.diagnosed_day[slots] = -1.0
-    h.lifetime_illnesses[slots] = 0
-    if life.rent is not None:
-        life.arrears[slots] = 0.0
-        life.evicted[slots] = False
     return {"births": int(slots.size),
             "population": int(h.alive.sum())}
