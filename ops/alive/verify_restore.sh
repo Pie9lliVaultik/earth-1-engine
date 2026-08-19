@@ -35,7 +35,9 @@ BASE="${BACKUP_TARGET#*:}"
 
 WHICH="${1:-}"
 if [ -z "$WHICH" ]; then
-    WHICH="$(ssh -p "$BACKUP_PORT" "$HOST" "ls -1 $BASE/alive | sort | tail -1")"
+    # restricted shell on the Storage Box: no remote pipes, so list
+    # remotely and sort locally
+    WHICH="$(ssh -p "$BACKUP_PORT" "$HOST" ls -1 "$BASE/alive" | sort | tail -1)"
     [ -n "$WHICH" ] || die "no backups found at $BASE/alive"
 fi
 log "rehearsing restore of $WHICH"

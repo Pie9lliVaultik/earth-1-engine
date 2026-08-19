@@ -71,20 +71,43 @@ rsync -a --partial --inplace -e "ssh -p $BACKUP_PORT" \
   || die "rsync failed"
 
 # THE VERIFICATION. A copy nobody checked is a hope, not a backup.
+#
+# The Storage Box runs a restricted shell: no `cd`, no remote pipes, so
+# `cd DEST && sha256sum -c manifest` dies with "Command not found" and
+# bare manifest names can't resolve (found in production, first run,
+# 2026-08-19). Plain `sha256sum <explicit path>` IS supported, so the
+# remote is asked to hash each file by full path and the comparison
+# happens here. Same integrity guarantee: digests computed on the far
+# end, compared against the local manifest.
 log "verifying checksums on the far end"
-ssh -p "$BACKUP_PORT" "${BACKUP_TARGET%%:*}" \
-    "cd '${DEST#*:}' && sha256sum -c BACKUP_MANIFEST.sha256 --quiet" \
+RHOST="${BACKUP_TARGET%%:*}"
+RDIR="${DEST#*:}"
+REMOTE_SUMS="$(mktemp)"
+LOCAL_SUMS="$(mktemp)"
+trap 'rm -f "$MANIFEST" "$REMOTE_SUMS" "$LOCAL_SUMS"' EXIT
+awk -v d="$RDIR" '{print d "/" $2}' "$MANIFEST" \
+  | xargs ssh -p "$BACKUP_PORT" "$RHOST" sha256sum > "$REMOTE_SUMS" \
+  || die "remote hashing failed at $DEST"
+# strip the remote path prefix so both sides read `hash  name`
+sed "s|  $RDIR/|  |" "$REMOTE_SUMS" | sort > "$LOCAL_SUMS.remote"
+sort "$MANIFEST" > "$LOCAL_SUMS.local"
+diff -u "$LOCAL_SUMS.local" "$LOCAL_SUMS.remote" \
   || die "REMOTE CHECKSUM MISMATCH at $DEST — the copy is not the world"
+rm -f "$LOCAL_SUMS.remote" "$LOCAL_SUMS.local"
 
 log "verified OK"
 
-# retention: keep the newest $KEEP, never delete the only copy
-COUNT="$(ssh -p "$BACKUP_PORT" "${BACKUP_TARGET%%:*}" \
-         "ls -1 ${BACKUP_TARGET#*:}/alive 2>/dev/null | wc -l" || echo 1)"
+# retention: keep the newest $KEEP, never delete the only copy.
+# Restricted shell: list remotely with a bare `ls -1`, decide locally,
+# remove by explicit path.
+LISTING="$(ssh -p "$BACKUP_PORT" "$RHOST" ls -1 "${BACKUP_TARGET#*:}/alive" 2>/dev/null || true)"
+COUNT="$(printf '%s\n' "$LISTING" | grep -c . || true)"
 if [ "$COUNT" -gt "$KEEP" ] && [ "$COUNT" -gt 1 ]; then
     log "pruning to newest $KEEP of $COUNT"
-    ssh -p "$BACKUP_PORT" "${BACKUP_TARGET%%:*}" \
-        "cd ${BACKUP_TARGET#*:}/alive && ls -1 | sort | head -n -$KEEP | xargs -r rm -rf"
+    printf '%s\n' "$LISTING" | sort | head -n "-$KEEP" | while read -r OLD; do
+        [ -n "$OLD" ] || continue
+        ssh -p "$BACKUP_PORT" "$RHOST" rm -rf "${BACKUP_TARGET#*:}/alive/$OLD"
+    done
 fi
 
 printf '{"at":"%s","day":%s,"schema":%s,"dest":"%s","verified":true}\n' \
