@@ -50,14 +50,34 @@ DAY="$(python3 -c "import json;print(json.load(open('$ALIVE/state.json'))['day']
 DEST="$BACKUP_TARGET/alive/$STAMP-day$DAY"
 log "backing up $ALIVE (schema v$SCHEMA, world day $DAY) -> $DEST"
 
+# STAGE A CONSISTENT VIEW FIRST. The daemon appends to journal.jsonl
+# every tick and this script appends to backup_log.jsonl, so hashing
+# the live directory and then copying it can never agree with itself —
+# run 2 in production failed exactly there. Large files (world.pkl,
+# *.npz) are only ever REPLACED atomically, so a hardlink pins the
+# inode and is consistent by construction; small append/truncate files
+# are really copied, which is instantaneous at their size. If a save
+# lands between linking the pickle and copying state.json, the pair can
+# be one save apart — self-consistent for transport either way, and the
+# restore rehearsal's day/alive cross-check catches the pairing.
+STAGE="$ALIVE/.backup-stage"
+rm -rf "$STAGE"
+mkdir -p "$STAGE"
 cd "$ALIVE"
+for f in state.json world.pkl.sha256 journal.jsonl backup_log.jsonl; do
+    [ -f "$f" ] && cp -p "$f" "$STAGE/$f"
+done
+for f in world.pkl world.adj.npz adj.npz; do
+    [ -f "$f" ] && { ln "$f" "$STAGE/$f" 2>/dev/null || cp -p "$f" "$STAGE/$f"; }
+done
+
 MANIFEST="$(mktemp)"
-trap 'rm -f "$MANIFEST"' EXIT
-# Hash every file we are about to send. The manifest must EXCLUDE
-# itself: a previous run leaves BACKUP_MANIFEST.sha256 in place, so
-# including it hashes the stale copy and then overwrites it — the first
+trap 'rm -f "$MANIFEST"; rm -rf "$STAGE"' EXIT
+# Hash the STAGE, not the live dir. The manifest must EXCLUDE itself:
+# including it hashes a stale copy and then overwrites it — the first
 # backup verifies and every one after it fails. Found by the local
 # rehearsal before this ever ran on the box.
+cd "$STAGE"
 find . -maxdepth 1 -type f ! -name '*.tmp' \
      ! -name 'BACKUP_MANIFEST.sha256' -printf '%P\n' | sort \
   | xargs -r sha256sum > "$MANIFEST"
