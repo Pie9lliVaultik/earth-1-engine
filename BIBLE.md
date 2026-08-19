@@ -1110,6 +1110,15 @@ hence Standing Rule 1.
 Three benchmarks. Targets fixed **now**, before measurement, at the
 published state of the art. Each reports every baseline alongside.
 
+> **Every tier below is governed by Part XI.A — NO DEAD-END RESULTS.**
+> A miss against ACCEPT *starts* the MISS → VERIFY → DIAGNOSE →
+> RESEARCH → IMPLEMENT → CALIBRATE → ABLATE → RETEST → PASS → FREEZE
+> cycle; it never ends the work. A miss report that is only an
+> explanation of why the number was bad is an incomplete deliverable.
+> Thresholds never move after a result is seen, and the holdout is
+> never tuned on. **Do not stop at "the model failed." Your job starts
+> there.**
+
 ## VI.A — Opinions vs WVS
 
 - **Instrument:** held-out WVS-7 items, cross-national, pinned CV folds
@@ -1325,7 +1334,126 @@ threshold, cannot carry a cascade.
 9. **Report failures as solved problems.** The founder's standing
    instruction: find the solution, verify it honestly, then report the
    working state with receipts — never a negative result as a
-   deliverable, and never a cheated positive.
+   deliverable, and never a cheated positive. **Rule 9 is stated in
+   full as Part XI.A below, which is its canonical form.**
+
+---
+
+# PART XI.A — EARTH-1 V1: NO DEAD-END RESULTS
+
+*The scientific operating doctrine. Founder instruction, 2026-08-19,
+verbatim. This is the canonical text; `CLAUDE.md` and every benchmark
+plan carry copies so it cannot quietly disappear. If they disagree,
+this one governs.*
+
+> **Do not stop at "the model failed." Your job starts there.**
+
+A benchmark miss is not an acceptable final deliverable. It is a
+diagnostic result that starts the next engineering/research cycle.
+
+When any experiment, calibration, benchmark, scenario backtest,
+prediction task, module validation, or acceptance gate misses its
+predefined target:
+
+1. **Record the result exactly.** Never hide, soften, delete, or
+   rewrite a bad result.
+2. **Verify the instrument first.** Check ground truth, provenance,
+   units, leakage, implementation correctness, persistence, state
+   continuity, metric visibility, benchmark design, and whether the
+   tested code is actually the production/canonical path.
+3. **Explain causally why the result occurred.** Trace the output back
+   through the code and quantify which mechanisms, parameters,
+   datasets, or missing channels account for the error.
+4. **Research before inventing.** Search peer-reviewed academic
+   literature, authoritative technical reports, established
+   simulators, government models, white papers, reference
+   implementations, and relevant empirical datasets for methods that
+   address the diagnosed problem.
+5. **Do not make assumptions where established research exists.** Cite
+   the methods considered and explain why the selected approach
+   applies to Earth-1.
+6. **Implement the smallest defensible correction or improvement.**
+   Bugs are fixed. Missing empirically justified mechanisms are added.
+   Poor parameterizations are calibrated. Weak algorithms are replaced
+   with stronger established methods when evidence supports doing so.
+7. **Run controlled ablations and sensitivity analysis** so we know
+   what actually caused the improvement.
+8. **Retest on TRAIN/DEV and iterate** until the predefined
+   development gate is met.
+9. **Never tune on the final holdout.** Never alter the acceptance
+   threshold after seeing holdout results. Never manufacture a pass.
+10. **Only freeze a capability** after it passes an untouched external
+    holdout or prospective test appropriate to that capability.
+
+The required workflow is:
+
+```
+MISS → VERIFY → DIAGNOSE → RESEARCH → IMPLEMENT
+     → CALIBRATE → ABLATE → RETEST → PASS → FREEZE
+```
+
+A document saying "FAIL" is never the end of the task. It is evidence
+preserved in the research record and the beginning of the next
+iteration.
+
+**Claude Code must not respond to a bad result with only an
+explanation of why it failed.** It must return:
+
+> result → quantified diagnosis → relevant research → proposed
+> solution → implementation → new experiment → comparison with
+> previous result.
+
+The only legitimate terminal exception is when repeated clean
+experiments, correct implementation, strong literature-derived
+approaches, appropriate calibration, and untouched external evidence
+demonstrate that the underlying hypothesis itself is false. In that
+case, preserve the negative evidence and redesign the capability
+rather than falsifying success.
+
+Earth-1's goal is not to document avoidable failure. The goal is to
+engineer every capability in our wheelhouse until it works, while
+preserving a scientifically honest record of every attempt.
+
+## XI.A.1 — How this composes with the rest of the Bible
+
+This doctrine **subsumes and supersedes** the looser phrasings
+elsewhere, and it is the operative reading of:
+
+- **Standing Rule 9** (Part XI) — of which this is the full statement.
+- **The four-partition doctrine** (§9 of the v4.1 amendments) — steps
+  8–10 above *are* the FREEZE / HOLDOUT discipline. "We do not accept
+  failure" means the team never stops engineering; it never means the
+  team edits the exam after reading the answer sheet.
+- **The VII.3 loop** (measure → explain from the code → search the
+  literature → adapt → retest) — steps 2–5 here are that loop with
+  the verification and research obligations made explicit and
+  mandatory rather than customary.
+- **The nine-step miss protocol** (§9 of the v4.1 amendments) — that
+  protocol is the domain-specific expansion of steps 2–8.
+- **Standing Rule 11's prohibitions** — step 9 restates the three that
+  matter most under pressure: no authoring the holdout answer into a
+  coefficient, no moving a threshold after seeing a result, no hiding
+  a failed mechanism.
+
+Where a benchmark tier in Part VI reads ACCEPT / GOOD / WIN, a miss
+against ACCEPT **starts** this protocol; it does not end the work.
+
+## XI.A.2 — What a miss report must contain
+
+A miss written up as prose diagnosis alone is an incomplete
+deliverable and is to be returned to the cycle. The required artifact
+carries, in order:
+
+| section | content |
+|---|---|
+| **RESULT** | the number, the target, the gap, the prereg hash, the provenance stamp (host, commit, seed, wall-clock) |
+| **INSTRUMENT** | what was checked to rule out the instrument — ground truth, units, leakage, persistence, canonical-path confirmation — and the known-answer verification that passed |
+| **DIAGNOSIS** | the causal path from code to number, with file:line, and a quantified attribution of the error to mechanisms/parameters/data/missing channels |
+| **RESEARCH** | the literature searched, the methods considered, citations, and why the selected approach applies here |
+| **IMPLEMENTATION** | the smallest defensible change, and why it is the smallest |
+| **ABLATION** | controlled runs isolating what actually produced the improvement, with sensitivity |
+| **RETEST** | the new number on TRAIN/DEV against the unchanged gate, compared to the previous result |
+| **STATUS** | PASS → eligible for freeze on untouched holdout · ITERATING → next hypothesis named · FALSIFIED → negative evidence preserved, capability redesigned |
 
 ---
 

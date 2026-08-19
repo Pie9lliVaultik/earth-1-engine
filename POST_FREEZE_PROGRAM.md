@@ -139,3 +139,48 @@ before the mechanism):
   with an elegant name."
 - Sequencing unchanged: ruler (0) and instrument (1) precede this as
   they precede all step-2 physics. Nothing here modifies E1-0.4.
+
+---
+
+## REQUIRED MISS-RESOLUTION PROTOCOL
+
+> **Do not stop at "the model failed." Your job starts there.**
+
+Every target, tier and gate in this plan is governed by
+**BIBLE.md Part XI.A — NO DEAD-END RESULTS** (canonical text; also in
+`CLAUDE.md`). A miss against any threshold in this document **starts**
+the following cycle; it never ends the work.
+
+```
+MISS → VERIFY → DIAGNOSE → RESEARCH → IMPLEMENT
+     → CALIBRATE → ABLATE → RETEST → PASS → FREEZE
+```
+
+1. **Record the result exactly.** Never hide, soften, delete, or rewrite a bad result.
+2. **Verify the instrument first** — ground truth, provenance, units, leakage,
+   implementation correctness, persistence, state continuity, metric visibility,
+   benchmark design, and whether the tested code is actually the
+   production/canonical path.
+3. **Explain causally why**, tracing the output back through the code with
+   file:line and quantifying which mechanisms, parameters, datasets or missing
+   channels account for the error.
+4. **Research before inventing** — peer-reviewed literature, authoritative
+   technical reports, established simulators, government models, white papers,
+   reference implementations, empirical datasets.
+5. **Do not assume where established research exists.** Cite the methods
+   considered; explain why the selected one applies to Earth-1.
+6. **Implement the smallest defensible correction.**
+7. **Ablate and run sensitivity** so we know what actually caused the change.
+8. **Retest on TRAIN/DEV and iterate** until the predefined gate is met.
+9. **Never tune on the final holdout.** Never move a threshold after seeing a
+   result. Never manufacture a pass.
+10. **Freeze only** after an untouched external holdout or prospective test.
+
+A miss report is incomplete unless it carries: **RESULT → INSTRUMENT →
+DIAGNOSIS → RESEARCH → IMPLEMENTATION → ABLATION → RETEST → STATUS**
+(see BIBLE.md XI.A.2 for the required contents of each).
+
+The only legitimate terminal exception is a hypothesis demonstrated false by
+repeated clean experiments, correct implementation, literature-derived methods,
+proper calibration and untouched external evidence — in which case the negative
+evidence is preserved and the capability redesigned, never falsified into a pass.

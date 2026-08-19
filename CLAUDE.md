@@ -61,6 +61,82 @@ destitution-bar ruling.
 - Laptop = iteration only. A leftover launchd job
   (`com.earthling.earth1-daily`) must be removed (Phase 0.6).
 
+## EARTH-1 V1 — NO DEAD-END RESULTS
+
+> **Do not stop at "the model failed." Your job starts there.**
+
+A benchmark miss is not an acceptable final deliverable. It is a
+diagnostic result that starts the next engineering/research cycle.
+
+When any experiment, calibration, benchmark, scenario backtest,
+prediction task, module validation, or acceptance gate misses its
+predefined target:
+
+1. **Record the result exactly.** Never hide, soften, delete, or
+   rewrite a bad result.
+2. **Verify the instrument first.** Check ground truth, provenance,
+   units, leakage, implementation correctness, persistence, state
+   continuity, metric visibility, benchmark design, and whether the
+   tested code is actually the production/canonical path.
+3. **Explain causally why the result occurred.** Trace the output back
+   through the code and quantify which mechanisms, parameters,
+   datasets, or missing channels account for the error.
+4. **Research before inventing.** Search peer-reviewed academic
+   literature, authoritative technical reports, established
+   simulators, government models, white papers, reference
+   implementations, and relevant empirical datasets for methods that
+   address the diagnosed problem.
+5. **Do not make assumptions where established research exists.** Cite
+   the methods considered and explain why the selected approach
+   applies to Earth-1.
+6. **Implement the smallest defensible correction or improvement.**
+   Bugs are fixed. Missing empirically justified mechanisms are added.
+   Poor parameterizations are calibrated. Weak algorithms are replaced
+   with stronger established methods when evidence supports doing so.
+7. **Run controlled ablations and sensitivity analysis** so we know
+   what actually caused the improvement.
+8. **Retest on TRAIN/DEV and iterate** until the predefined
+   development gate is met.
+9. **Never tune on the final holdout.** Never alter the acceptance
+   threshold after seeing holdout results. Never manufacture a pass.
+10. **Only freeze a capability** after it passes an untouched external
+    holdout or prospective test appropriate to that capability.
+
+The required workflow is:
+
+```
+MISS → VERIFY → DIAGNOSE → RESEARCH → IMPLEMENT
+     → CALIBRATE → ABLATE → RETEST → PASS → FREEZE
+```
+
+A document saying "FAIL" is never the end of the task. It is evidence
+preserved in the research record and the beginning of the next
+iteration.
+
+**Claude Code must not respond to a bad result with only an
+explanation of why it failed.** It must return:
+
+> result → quantified diagnosis → relevant research → proposed
+> solution → implementation → new experiment → comparison with
+> previous result.
+
+The only legitimate terminal exception is when repeated clean
+experiments, correct implementation, strong literature-derived
+approaches, appropriate calibration, and untouched external evidence
+demonstrate that the underlying hypothesis itself is false. In that
+case, preserve the negative evidence and redesign the capability
+rather than falsifying success.
+
+Earth-1's goal is not to document avoidable failure. The goal is to
+engineer every capability in our wheelhouse until it works, while
+preserving a scientifically honest record of every attempt.
+
+*This doctrine is carried verbatim in three places so it cannot
+quietly disappear: here (execution rule), `BIBLE.md` Part XI.A
+(scientific operating doctrine), and every benchmark plan
+(miss-resolution protocol). If the copies ever disagree, BIBLE.md is
+canonical.*
+
 ## Standing rules (BIBLE.md Part XI — enforced, not advisory)
 
 1. Verify every instrument on a known answer before believing a
