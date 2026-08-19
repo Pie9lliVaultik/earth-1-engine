@@ -1,0 +1,46 @@
+# Earth-1 — the living world daemon. THE SINGLE WRITER.
+#
+# Phase 0.0e: this file is the source of truth. Until 2026-08-19 it
+# existed only at /etc/systemd/system/earth1-alive.service on the world
+# box and nowhere in git, so "what is the world running" was not a
+# question the repository could answer.
+#
+# Install:
+#   install -m 644 ops/alive/earth1-alive.service \
+#       /etc/systemd/system/earth1-alive.service
+#   systemctl daemon-reload
+#
+# The daemon compares the sha256 of the installed copy against this one
+# at startup and refuses to run if they differ. Edit here, never there.
+#
+# DEPLOYED carries the commit the deploy intended to ship
+# (EARTH1_EXPECT_COMMIT=<sha>); see ops/alive/DEPLOYED.example. It is
+# written by the deploy, not by hand, and is not in git. The leading '-'
+# means a missing file does not block boot — but its absence IS a
+# provenance violation, so the daemon will refuse anyway, loudly and
+# with a reason.
+
+[Unit]
+Description=Earth-1 — the world that never stops
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/earth1
+EnvironmentFile=-/opt/earth1/.env
+EnvironmentFile=-/opt/earth1/ops/alive/DEPLOYED
+Environment=ALIVE_POP=4000000
+Environment=ALIVE_PERIOD=60
+Environment=ALIVE_NEWS=60
+Environment=ALIVE_SAVE=30
+ExecStart=/opt/earth1/.venv/bin/python3 /opt/earth1/scripts/world_alive.py
+Restart=always
+RestartSec=10
+KillSignal=SIGTERM
+TimeoutStopSec=120
+StandardOutput=append:/var/log/earth1-alive.log
+StandardError=append:/var/log/earth1-alive.log
+
+[Install]
+WantedBy=multi-user.target

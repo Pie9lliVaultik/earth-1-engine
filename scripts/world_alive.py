@@ -35,6 +35,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from earth1 import provenance
 from earth1.alive import birth_world, live_one_day
 from earth1.chaos import entropy
 from earth1.memory import event_from_news
@@ -230,13 +231,53 @@ def read_the_news(civ, life, world=None):
             "news_influenced_life": bool(abs(stress) > 1e-6)}
 
 
+def _snapshot_version():
+    """Schema version of the snapshot on disk, or None if unversioned.
+
+    Everything written before 0.0c is unversioned, and says so rather
+    than defaulting to a number nobody stamped.
+    """
+    try:
+        with open(HOME / "state.json") as f:
+            return json.load(f).get("schema_version")
+    except (OSError, ValueError):
+        return None
+
+
 def main():
     signal.signal(signal.SIGTERM, _sigterm)
     signal.signal(signal.SIGINT, _sigterm)
+
+    # ── 0.0e provenance gate: prove what code this is, before the world
+    # takes a step. Strict on the single writer; EARTH1_STRICT_PROVENANCE=0
+    # for laptop iteration only.
+    strict = os.environ.get("EARTH1_STRICT_PROVENANCE", "1") == "1"
+    prov = provenance.record(
+        ROOT,
+        config={**STEP, "ALIVE_POP": POP, "ALIVE_PERIOD": PERIOD,
+                "ALIVE_NEWS": NEWS_EVERY, "ALIVE_SAVE": SAVE_EVERY},
+        snapshot_version=_snapshot_version(),
+    )
+    provenance.enforce(prov, strict=strict)
+
     w = load_world()
     civ, life = w.civ, w.life
     rng = np.random.default_rng(int(time.time()) % (2 ** 31))
     HOME.mkdir(parents=True, exist_ok=True)
+
+    # the world is identified only once it exists, so population and day
+    # are filled in here and the record is journaled as the first line
+    # of this process's life
+    prov.update(population=int(civ.n), world_day=int(w.day),
+                event="startup",
+                at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+    with open(JOURNAL, "a") as f:
+        f.write(json.dumps(prov) + "\n")
+    print(f"  commit {str(prov['code_commit'])[:12]}"
+          f"  dirty={prov['dirty_worktree']}"
+          f"  schema={prov['schema_version']}"
+          f"  snapshot={prov['snapshot_version']}"
+          f"  pop {int(civ.n):,}  day {w.day}", flush=True)
     print(f"  alive. one world-day every {PERIOD:.0f}s\n", flush=True)
 
     while not _stop:

@@ -2,7 +2,118 @@
 
 **Branch:** `v1-unification` · **Audited commit:** `e7545f8` · **Date:** 2026-08-19
 **Scope:** audit only. No physics changed, no file edited outside this document.
-**Status:** awaiting founder review. Nothing in 0.0a–0.8 begins until this is signed off.
+**Status:** ✅ **SIGNED OFF 2026-08-19** by the founder, with three amendments
+(§A below) and a re-ordered execution sequence. Amendments are binding and
+override the body of this document where they conflict.
+
+---
+
+## §A — FOUNDER RULING (2026-08-19), binding
+
+### Execution order (supersedes Part 8 and BIBLE Part VIII's ordering)
+
+```
+credential rotation  →  0.0e provenance gate  →  0.0c state/persistence
+  →  0.0a/0.0b/0.0d aging, rebirth, fabric  →  One-Earth integration
+  →  0.8 physics re-measurement  →  benchmarks may begin accumulating evidence
+```
+
+Note **0.0c now precedes 0.0a** — persistence invariants land before the
+demographic clock. 0.0e is promoted to *Phase 0.0 / provenance gate*: everything
+after it is meaningless if we cannot say which source tree the civilization is
+executing.
+
+### Amendment A — N2 is broader: the daemon has the same defect
+
+The audit reported N2 against `timeline.restore` (where `presence`/`mobility`
+become `None`). It applies equally to the **always-on daemon**:
+`scripts/world_alive.py:74-127` saves `climate`/`flourishing` but still does not
+save `presence` or `mobility`. On restart they do **not** become `None` — worse,
+`birth_world()` at `:106` silently creates *new* presence/mobility state before
+the saved state is restored at `:107-108`. So:
+
+> **S_t(before restart) ≠ S_t(after restart), without advancing time at all.**
+
+This merges audit items **N2 + N16** into one defect with two faces, and both
+belong to **0.0c**. The founder confirms the audit's recommendation: persistence
+must be **schema-driven**, not another hand-maintained field list. Supporting
+evidence already in the tree — `CIV_ARRAYS` (`scripts/world_alive.py:65-71`) also
+omits the five optional `Civilization` fields (`religiosity`, `marital`,
+`employed`, `ideology`, `social_class`). A hand-authored list will keep losing
+new state as the world grows.
+
+### Amendment B — extract the clock, not the trait physics
+
+Do **not** lift all of `generational.py:181-194`. Verified boundaries at
+`e7545f8`:
+
+| lines | content | disposition |
+|---|---|---|
+| **181-185** | `d_age = dt_years/_AGE_SPAN`; `civ.age = clip(age + d_age)`; `age_years`; `civ.age_bucket = digitize(...)` | ✅ **EXTRACT** — this is the unambiguous missing clock |
+| **187-192** | `for t, g in _AGE_GRADIENTS.items(): apply_trait_delta(...)` — openness −0.08, risk_appetite −0.12, desire_intensity −0.30, conscientiousness +0.10, agreeableness +0.05, extraversion −0.06, neuroticism −0.04 per age-unit | ❌ **DO NOT EXTRACT** — behavioural physics, not a correctness fix |
+| **193-194** | `civ.forces[:, EXPERIENCE] = civ.age` | ⚠️ **DEFERRED — see the open question below** |
+
+Phase 0 ships `advance_age(...)` maintaining **age and age_bucket only**.
+
+> **Governing rule:** *Bug? Fix it. Contradiction? Fix it. Architectural or
+> behavioural preference? Don't silently change the model.*
+
+### ⚠️ Open question raised by Amendment B — EXPERIENCE (needs a ruling)
+
+The ruling says `advance_age` may also maintain *"definitionally age-derived
+state such as EXPERIENCE."* **In the old substrate that is safe; in the living
+world it is not**, and the audit must flag it rather than choose.
+
+`generational.py:193-194` re-asserts `forces[:, EXPERIENCE] = civ.age` as an
+identity map. But in the living world EXPERIENCE is a **live dynamical channel
+that six modules write every day** — `flourishing.py:243-244` (`+= 0.10 *
+curiosity`), `mobility.py:170-171` (`+= 0.01` per flyer), plus `propagate`
+(`alive.py:143`), the circumstance relax (`:173`), `feed.py:137` and
+`contagion.py:210`.
+
+Re-asserting the identity map daily would **overwrite all six** — deleting live
+behaviour. That is exactly the silent model change Amendment B forbids. Yet
+leaving it alone means EXPERIENCE and age remain decoupled (audit defect **N10**:
+EXPERIENCE ratchets upward with no decay consumer, since
+`PERISHABILITY_HALF_LIFE[EXPERIENCE]=4000` has no live consumer).
+
+Neither option is a pure correctness fix. **Recommendation: `advance_age` touches
+age and age_bucket ONLY in Phase 0**; the EXPERIENCE identity re-assertion joins
+the **0.8 registered A/B** alongside conviction decay. Awaiting ruling.
+
+### Amendment C — 0.1(c) conviction decay: make the truth explicit, activate at 0.8
+
+`influence.py:107` (`- decay * 0.0`) contradicts its own docstring and
+`CONVICTION_DECAY = 0.02` (`:43`). But activating it changes α_{t+1}, and
+therefore the conviction kernel, influence, polarization, cascades and possibly
+the chaotic regime. **That is physics.**
+
+Phase 0 marks isolation decay as **disabled/unadjudicated in code and docstring,
+leaving output bit-identical**. Phase 0.8 runs the registered A/B — A = decay
+disabled (current), B = decay active — on identical worlds, seeds and forcing,
+measuring conviction distribution, camp persistence/extinction, propagation,
+macro stability, FSLE/chaos diagnostics, and benchmark consequences. **Promote B
+only if the evidence earns it.** Do not turn it on because the docstring says it
+was intended.
+
+### Founder's independent verification, and what remains uncertified
+
+Independently confirmed against the codebase: `answer.py` zero importers; the
+`generational_tick` hazard (*"two incompatible demographic authorities"*); N2.
+
+**Not certified:** the remote-only claims — box on `14401ea`, exactly 133 commits
+behind, and `/etc/systemd/system/earth1-alive.service` existing there — require
+direct machine evidence unavailable in the founder's environment. *(This audit's
+evidence for them is the SSH transcript logged in the Appendix; the
+repository-side half — no service file in git — is independently confirmed.)*
+A full pytest collection timed out founder-side, so **899/616 remain
+this-audit-only**; the founder counted **894 explicit `test_*` functions** and
+independently confirmed **zero** direct test references to `earth1.alive`,
+`birth_world`, `live_one_day`, `Chronicle`, mobility, contagion, or the living
+timeline. The load-bearing conclusion is agreed either way: **the most important
+runtime has essentially no CI protection.**
+
+---
 
 ## How to read this
 
