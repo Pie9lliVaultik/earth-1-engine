@@ -97,6 +97,7 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
 
     # 3 first: governments decide on YESTERDAY's state, and their policy
     # is what today's deprivation will be computed against
+    alive_at_tick_start = int(w.health.alive.sum())
     st.update(govern(civ, life, w.gov, rng, dt_days))
     st.update(apply_policy_and_war(civ, life, w.gov, w.health, rng, dt_days))
 
@@ -250,6 +251,21 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     # which is how a population carries its culture forward while
     # remaining a different population than the one before it.
     st.update(_be_born(w, rng))
+
+    # ── 0.1d: the end-of-tick mortality contract ─────────────────────
+    # "deaths" means GROSS deaths across the COMPLETE tick — every
+    # killer (disease, war, weather, want, road), counted after all of
+    # them and after births, so the identity
+    #     alive_end == alive_start - deaths + births
+    # closes exactly, every day. health_tick's own count (disease only)
+    # is preserved under an explicit name; its mid-tick "alive" reading
+    # is overwritten with the terminal one. The journal's previous
+    # "deaths" undercounted by every late-tick killer (0.1 ledger).
+    st["disease_deaths"] = int(st.get("deaths", 0))
+    alive_at_tick_end = int(w.health.alive.sum())
+    st["deaths"] = (alive_at_tick_start - alive_at_tick_end
+                    + int(st.get("births", 0)))
+    st["alive"] = alive_at_tick_end
 
     w.day += 1
     return st
