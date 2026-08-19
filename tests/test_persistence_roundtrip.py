@@ -308,6 +308,43 @@ def test_v0_snapshot_migrates_when_asked(tiny_world, tmp_path):
         assert name in info["lost"], f"v0 dropped {name} and did not say so"
 
 
+def test_v0_migration_rebuilds_gating_subsystems(tiny_world, tmp_path):
+    """THE PRODUCTION BUG, 2026-08-19: migration printed 'rebuilt at
+    birth values' while rebuilding nothing, so the migrated 4M world ran
+    20 days with contagion, shared attention and mobility switched off.
+    Caught by the restore rehearsal on prime, not by this suite — this
+    test is the missing control. A migrated world must be WHOLE.
+    """
+    p = tmp_path / "old.pkl"
+    _write_v0_daemon_snapshot(tiny_world, p)
+    back, _, _ = load_world(p, allow_v0_migration=True)
+    for name in PHYSICS_GATING_FIELDS:
+        assert getattr(back, name) is not None, (
+            f"migration left {name}=None — the world resumes with "
+            f"reduced physics")
+    # and the rebuilt subsystems must be usable, not placeholders
+    assert back.presence.locality.shape == (tiny_world.civ.n,)
+    assert back.mobility.owns_car.shape == (tiny_world.civ.n,)
+
+
+def test_v1_snapshot_with_none_gating_field_is_refused(tiny_world, tmp_path):
+    """Defense in depth for the same bug: the mis-migrated daemon then
+    SAVED presence=None into a v1 snapshot, which passed the missing-KEY
+    check (the key exists, its value is None) and would have resumed
+    reduced physics forever. Present-as-None must fail closed.
+    """
+    p = tmp_path / "w.pkl"
+    save_world(tiny_world, p)
+    with open(p, "rb") as f:
+        blob = pickle.load(f)
+    blob["fields"]["presence"] = None
+    with open(p, "wb") as f:
+        pickle.dump(blob, f)
+    p.with_suffix(p.suffix + ".sha256").unlink()
+    with pytest.raises(SnapshotError, match="reduced physics"):
+        load_world(p)
+
+
 def test_missing_persistent_field_is_refused(tiny_world, tmp_path):
     """Never substitute a default for state the snapshot should have."""
     p = tmp_path / "w.pkl"

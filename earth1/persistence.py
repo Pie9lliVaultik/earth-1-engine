@@ -287,8 +287,6 @@ def _restore_v0(d: Dict[str, Any], adj) -> Tuple[Any, list]:
             continue
         if d.get(name) is not None:
             kw[name] = d[name]
-        elif name in PHYSICS_GATING_FIELDS:
-            lost.append(name)
         else:
             lost.append(name)
 
@@ -296,6 +294,24 @@ def _restore_v0(d: Dict[str, Any], adj) -> Tuple[Any, list]:
     civ.adj = adj
     if w.fabric is not None and getattr(w.fabric, "adj", None) is None:
         w.fabric.adj = adj
+
+    # REBUILD the physics-gating subsystems the v0 format never wrote.
+    # Leaving them None does not merely lose values — live_one_day gates
+    # contagion, shared attention and mobility on them being non-None
+    # (alive.py:150,160), so a None-migrated world runs REDUCED PHYSICS,
+    # silently, forever. The first production migration (2026-08-19,
+    # day 284) shipped exactly that defect: this function printed
+    # "rebuilt at birth values" while rebuilding nothing, and the
+    # restore rehearsal on prime caught it 20 world-days later. The
+    # boundary record already declares these fields discontinuous;
+    # rebuilding at birth values is the documented migration semantic.
+    if w.presence is None:
+        from earth1.contagion import birth_presence
+        w.presence = birth_presence(w.civ, seed=int(d.get("seed", 0)))
+    if w.mobility is None:
+        from earth1.mobility import birth_mobility
+        w.mobility = birth_mobility(w.civ, w.life,
+                                    seed=int(d.get("seed", 0)))
     return w, lost
 
 
@@ -382,6 +398,19 @@ def load_world(path, *, allow_v0_migration: bool = False,
             f"{', '.join(missing)}. Refusing to substitute defaults — a "
             f"world with regenerated {missing[0]} is not the world that "
             f"was saved.")
+    # present-as-None is as bad as absent for the gating fields:
+    # live_one_day switches whole subsystems off on None (alive.py:150,
+    # 160), so such a snapshot resumes with different physics. The first
+    # production migration wrote exactly this kind of v1 snapshot; it
+    # must never load as if whole.
+    none_gating = sorted(f for f in PHYSICS_GATING_FIELDS
+                         if fld.get(f) is None)
+    if none_gating:
+        raise SnapshotError(
+            f"snapshot at {path} carries {', '.join(none_gating)} as "
+            f"None — a world saved without these subsystems runs reduced "
+            f"physics on resume. This snapshot is defective; restore "
+            f"from a complete one, or re-migrate from the v0 origin.")
 
     from earth1.alive import World
     w = World(**{k: v for k, v in fld.items() if k in PERSISTENT_FIELDS})
