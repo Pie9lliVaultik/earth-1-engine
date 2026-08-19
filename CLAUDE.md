@@ -52,6 +52,12 @@ destitution-bar ruling.
   single writer. Do not run experiments here.
 - **prime** 46.4.189.237 (96c/503GB) — ALL ensemble/research work runs
   here, never on the laptop. SSH key: `~/.ssh/earth1_hetzner`.
+- **Storage Box** `u652120@u652120.your-storagebox.de` port 23 — SSH
+  key auth from the world box. Daily backup at 09:50 Berlin via
+  `earth1-backup.timer` → `/opt/earth1/run_backup.sh`. **WARNING
+  (2026-08-19 rehearsal): the script currently backs up the OLD 200K
+  world (`data/living/`), NOT the real 4M world (`data/alive/`).
+  Fix pending — the living civilization has never been backed up.**
 - Laptop = iteration only. A leftover launchd job
   (`com.earthling.earth1-daily`) must be removed (Phase 0.6).
 
