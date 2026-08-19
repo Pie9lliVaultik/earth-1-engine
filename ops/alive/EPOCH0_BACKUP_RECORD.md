@@ -48,6 +48,27 @@ against the real artifact:
 The size-preserving byte-flip matters: it proves the verification is not
 merely comparing file sizes.
 
+### Provenance note — two different population counts, and why
+
+The daemon log reported `day 240 alive 3,970,902`; the snapshot's own
+`state.json` records `3,970,839`. **The snapshot is authoritative.** Do
+not reconcile or average them — they measure different instants:
+
+- `st["alive"]` is set at `health.py:281`, inside `health_tick`, which
+  is **step 4 of 18** in `live_one_day` (`alive.py:106`).
+- Three more killers run later in the *same* tick: `weather_tick`
+  (`:117`, cause 6), `flourishing_tick` (`:123`, want, cause 7),
+  `mobility_tick` (`:162`, road, cause 8) — plus `_be_born` (`:222`).
+- `state.json` recomputes `health.alive.sum()` at save time, after the
+  full tick.
+
+Difference: **63**. So the journal's `alive` field systematically
+undercounts a day's mortality. Minor, but it means daily death rates
+read out of `journal.jsonl` are biased low and should be taken from
+snapshots or from the per-cause counters instead. Logged; not fixed
+here — it is a readout defect, not a physics one, and Phase 0 is not
+the place for it.
+
 ## Two findings from the capture
 
 ### 1. The v0 save is not atomic — an active risk, every 30 minutes
