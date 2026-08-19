@@ -274,3 +274,27 @@ def test_full_tick_path_rehomes_migrants(tiny_world, rng):
     residents = residents[residents != i]
     assert int(w.presence.locality[i]) in \
         set(w.presence.locality[residents].tolist())
+
+
+def test_employed_migrant_loses_colleague_ties_via_live_path(tiny_world,
+                                                             rng):
+    """PRODUCTION MISS, first 0.0d window: 179 of 180 phantom
+    workplaces were employed migrants. class_tick ends the job AFTER
+    life_tick built its lost set, so migrants never reached the
+    employment severing. The live path must sever their colleague ties
+    in the same tick as the move."""
+    w = tiny_world
+    w.life.deprivation[:] = 0.95
+    w.civ.age[:] = 0.2
+    for _ in range(40):
+        st = live_one_day(w, rng)
+        if st.get("rehomed_migrants", 0) > 0:
+            break
+    else:
+        pytest.fail("no migration fired in 40 days")
+    col = w.fabric.by_type["colleagues"].tocsr()
+    movers = np.flatnonzero(w.klass.migrated & w.health.alive
+                            & ~w.life.employed)
+    assert movers.size
+    for i in movers:
+        assert not _nbrs(col, int(i)),             f"migrant {i} kept a phantom workplace through the live path"

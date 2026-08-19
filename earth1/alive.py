@@ -126,7 +126,17 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     if (_migrated is not None and len(_migrated)) or        (_lost is not None and len(_lost)) or        (_found is not None and len(_found)):
         from earth1.rehome import rehome_employment, rehome_migrants
         st["rehomed_migrants"] = rehome_migrants(w, _migrated, rng)
-        st["rehomed_workers"] = rehome_employment(w, _lost, _found, rng)
+        # migration ENDS the job (class_tick sets employed=False after
+        # life_tick has already built its lost set), so migrants must be
+        # merged into the employment severing or their colleague ties
+        # outlive the move — found in production: 179 of 180 phantom
+        # workplaces in the first 0.0d window were exactly the employed
+        # migrants. This is the VIA_EMPLOYMENT policy, actually wired.
+        _lost_all = _lost
+        if _migrated is not None and len(_migrated):
+            base = _lost if _lost is not None else np.array([], dtype=np.int64)
+            _lost_all = np.unique(np.concatenate([base, _migrated]))
+        st["rehomed_workers"] = rehome_employment(w, _lost_all, _found, rng)
     # 5 knowledge
     st.update(knowledge_tick(civ, life, w.knowledge, rng, dt_days,
                              alive=w.health.alive))
