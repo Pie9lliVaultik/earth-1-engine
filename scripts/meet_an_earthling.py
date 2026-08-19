@@ -3,10 +3,15 @@ from __future__ import annotations
 import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 0.2 MIGRATION NOTE: this instrument now steps THE canonical loop
+# (chaos.world_step delegates to alive.live_one_day over a full World).
+# Its numbers are NOT comparable with any measured before 0.2 - the
+# instrument itself changed. 0.8 re-runs every measurement from scratch.
 from earth1.chaos import world_step
 from earth1.fabric import build_fabric
-from earth1.genesis import GENESIS_COUNTRIES, genesis
-from earth1.life import EVENT_CODES, birth_life, life_tick
+from earth1.alive import birth_world
+from earth1.genesis import GENESIS_COUNTRIES
+from earth1.life import EVENT_CODES, life_tick
 from earth1.observe import futures, observe
 
 POP = int(os.environ.get("ME_POP", "20000"))
@@ -16,7 +21,8 @@ HORIZON = int(os.environ.get("ME_HORIZON", "180"))
 ISO = {c["iso2"]: i for i, c in enumerate(GENESIS_COUNTRIES)}
 
 def main():
-    civ = genesis(POP, 42); life = birth_life(civ, seed=42)
+    w = birth_world(POP, 42)
+    civ, life = w.civ, w.life
     fab = build_fabric(civ, life, seed=42); civ.adj = fab.adj
     rng = np.random.default_rng(7)
     kw = dict(beta=2.0, residue=0.02, critical_fraction=0.12, relax=0.25)
@@ -27,7 +33,7 @@ def main():
     pool = np.flatnonzero((civ.country == target) & life.in_lf)
     who = int(pool[len(pool) // 3])
     for d in range(WARM):
-        world_step(civ, life, rng, **kw)
+        world_step(w, rng, **kw)
         ev = int(life.last_event[who])
         if ev and (d == 0 or ev != diary.get("last")):
             diary.setdefault("events", []).append((d, EVENT_CODES[ev]))

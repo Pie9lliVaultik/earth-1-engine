@@ -8,20 +8,23 @@ from __future__ import annotations
 import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 0.2 MIGRATION NOTE: this instrument now steps THE canonical loop
+# (chaos.world_step delegates to alive.live_one_day over a full World).
+# Its numbers are NOT comparable with any measured before 0.2 - the
+# instrument itself changed. 0.8 re-runs every measurement from scratch.
 from earth1.chaos import entropy, lyapunov_from, world_step
-from earth1.genesis import genesis
-from earth1.life import birth_life
+from earth1.alive import birth_world
 
 POP = int(os.environ.get("BF_POP", "20000"))
 DAYS = int(os.environ.get("BF_DAYS", "120"))
 SEED = 42
 
 def fresh():
-    civ = genesis(POP, SEED)
-    return civ, birth_life(civ, seed=SEED)
+    return birth_world(POP, SEED)
 
 def run(beta, residue, crit, relax=0.25, perturb=True):
-    cA, lA = fresh(); cB, lB = fresh()
+    wA = fresh(); wB = fresh()
+    cA, lA, cB, lB = wA.civ, wA.life, wB.civ, wB.life
     rA = np.random.default_rng(1234); rB = np.random.default_rng(1234)
     touched = -1
     if perturb:
@@ -30,9 +33,9 @@ def run(beta, residue, crit, relax=0.25, perturb=True):
         lB.tenure[touched] = 0.0; lB.spells[touched] += 1
     div, frac, ent = [], [], []
     for d in range(DAYS):
-        world_step(cA, lA, rA, beta=beta, residue=residue,
+        world_step(wA, rA, beta=beta, residue=residue,
                    critical_fraction=crit, relax=relax)
-        world_step(cB, lB, rB, beta=beta, residue=residue,
+        world_step(wB, rB, beta=beta, residue=residue,
                    critical_fraction=crit, relax=relax)
         df = np.abs(cA.forces - cB.forces)
         div.append(float(np.linalg.norm(df)))

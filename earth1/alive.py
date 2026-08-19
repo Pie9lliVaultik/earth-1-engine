@@ -26,7 +26,6 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from earth1.chaos import CRITICAL_FRACTION, RELAX, RESIDUE_RATE
 from earth1.influence import propagate, update_conviction
 from earth1.types import Force
 
@@ -81,10 +80,28 @@ def birth_world(pop: int, seed: int = 42) -> World:
                  mobility=birth_mobility(civ, life, seed=seed))
 
 
-def live_one_day(w: World, rng, *, beta: float = 2.0,
-                 residue: float = RESIDUE_RATE,
-                 critical_fraction: float = CRITICAL_FRACTION,
-                 relax: float = RELAX, layers: int = 2,
+# ═══ THE CANONICAL DAY — one authoritative declaration (0.2) ═══════
+# These are the values the production civilization has actually lived
+# under since Epoch 0. Before 0.2 they existed in FIVE places: the
+# daemon's STEP dict (these values), integration.py's copy,
+# observe.futures' inline copy, chaos.world_step's DIVERGENT defaults
+# (beta 1.0, residue 0.01, critical_fraction 0.15), and live_one_day's
+# own defaults — which imported residue/critical_fraction from chaos,
+# so every bare live_one_day(w, rng) call (branch, backtest, timeline,
+# hormuz, assimilate, every research script) ran residue=0.01/cf=0.15
+# while the world ran 0.02/0.12. The instrument and the product
+# disagreed. Every entry point now consumes THIS dict; experiments may
+# override explicitly, but a default is always this default.
+CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
+                     relax=0.25, layers=2)
+
+
+def live_one_day(w: World, rng, *,
+                 beta: float = CANONICAL_DAY["beta"],
+                 residue: float = CANONICAL_DAY["residue"],
+                 critical_fraction: float = CANONICAL_DAY["critical_fraction"],
+                 relax: float = CANONICAL_DAY["relax"],
+                 layers: int = CANONICAL_DAY["layers"],
                  dt_days: float = 1.0) -> dict:
     from earth1.health import health_tick
     from earth1.institutions import apply_policy_and_war, class_tick, govern

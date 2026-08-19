@@ -46,7 +46,8 @@ POP = int(os.environ.get("ALIVE_POP", "200000"))
 PERIOD = float(os.environ.get("ALIVE_PERIOD", "60"))
 NEWS_EVERY = int(os.environ.get("ALIVE_NEWS", "60"))
 SAVE_EVERY = int(os.environ.get("ALIVE_SAVE", "30"))
-STEP = dict(beta=2.0, residue=0.02, critical_fraction=0.12, relax=0.25)
+# 0.2: the ONE canonical configuration — no local copy to drift
+from earth1.alive import CANONICAL_DAY as STEP
 
 _stop = False
 

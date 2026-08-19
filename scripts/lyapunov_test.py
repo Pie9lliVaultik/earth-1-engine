@@ -3,15 +3,18 @@ from __future__ import annotations
 import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 0.2 MIGRATION NOTE: this instrument now steps THE canonical loop
+# (chaos.world_step delegates to alive.live_one_day over a full World).
+# Its numbers are NOT comparable with any measured before 0.2 - the
+# instrument itself changed. 0.8 re-runs every measurement from scratch.
 from earth1.chaos import lyapunov_benettin
-from earth1.genesis import genesis
-from earth1.life import birth_life
+from earth1.alive import birth_world
 
 POP = int(os.environ.get("LY_POP", "20000"))
 STEPS = int(os.environ.get("LY_STEPS", "240"))
 
 def fresh():
-    c = genesis(POP, 42); return c, birth_life(c, seed=42)
+    return birth_world(POP, 42)
 
 def main():
     rows = []
@@ -22,8 +25,8 @@ def main():
     print(f"  {POP:,} agents, {STEPS} steps, Benettin renormalisation\n")
     print(f"  {'configuration':46s} {'lambda/day':>11s} {'doubling':>10s}")
     for label, kw in settings:
-        cA, lA = fresh(); cB, lB = fresh()
-        r = lyapunov_benettin(cA, lA, cB, lB,
+        wA = fresh(); wB = fresh()
+        r = lyapunov_benettin(wA, wB,
                               np.random.default_rng(1234),
                               np.random.default_rng(1234),
                               steps=STEPS, **kw)

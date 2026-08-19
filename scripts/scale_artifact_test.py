@@ -11,16 +11,20 @@ from __future__ import annotations
 import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 0.2 MIGRATION NOTE: this instrument now steps THE canonical loop
+# (chaos.world_step delegates to alive.live_one_day over a full World).
+# Its numbers are NOT comparable with any measured before 0.2 - the
+# instrument itself changed. 0.8 re-runs every measurement from scratch.
 from earth1.chaos import world_step
-from earth1.genesis import genesis
-from earth1.life import birth_life
+from earth1.alive import birth_world
 LIVING = dict(beta=2.0, residue=0.02, critical_fraction=0.12, relax=0.25)
 DAYS = int(os.environ.get("SA_DAYS", "30"))
 
 def one(pop):
     def fresh():
-        c = genesis(pop, 42); return c, birth_life(c, seed=42)
-    cA, lA = fresh(); cB, lB = fresh()
+        return birth_world(pop, 42)
+    wA = fresh(); wB = fresh()
+    cA, lA, cB, lB = wA.civ, wA.life, wB.civ, wB.life
     rA = np.random.default_rng(1234); rB = np.random.default_rng(1234)
     cand = np.flatnonzero(lB.employed); who = int(cand[len(cand)//2])
     lB.employed[who] = False; lB.firm[who] = -1
@@ -28,7 +32,7 @@ def one(pop):
     home = int(cA.country[who])
     curve = []
     for d in range(DAYS):
-        world_step(cA, lA, rA, **LIVING); world_step(cB, lB, rB, **LIVING)
+        world_step(wA, rA, **LIVING); world_step(wB, rB, **LIVING)
         diff = np.abs(cA.forces - cB.forces).max(axis=1) > 1e-12
         curve.append(float(diff.mean()))
     hm = cA.country == home
