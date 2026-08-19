@@ -38,6 +38,33 @@ import numpy as np
 
 from earth1.types import Force
 
+# ── THE COUNTRY MAP IS REFUSED ───────────────────────────────────────
+# Measured 2026-08-19, registered in
+# data/stratified_allocation_prereg.json before the run.
+#
+# The noise floor — two runs of the IDENTICAL scenario differing only in
+# dice — sits at rank correlation -0.6 and set overlap 0.11, and it does
+# not move with sample size:
+#
+#     50,000 agents   (258/country)   -0.583
+#    200,000 agents  (1031/country)   -0.600
+#    600,000 agents  (3093/country)   -0.617
+#
+# A twelve-fold increase in agents per country changed nothing. Country
+# rankings are not sample-limited, they are GENUINELY CHAOTIC — which is
+# the butterfly effect (FSLE +0.13/day, measured independently) showing
+# up as a limit on what can be forecast. It is the same limit weather
+# models live with: the response to forcing is predictable, the
+# trajectory is not.
+#
+# So country-level detail is computed and RETURNED BEHIND A FLAG, never
+# in the headline. Anyone who wants it must pass
+# include_unstable_country_detail=True and will get the noise floor
+# attached to it. This is a structural refusal, not a caveat in a
+# footnote, because a caveat gets dropped when a chart is made.
+COUNTRY_MAP_IS_STABLE = False
+COUNTRY_NOISE_FLOOR_RANK_CORR = -0.60
+
 # a country is called into recession when this share of its workers
 # lose income relative to the counterfactual
 RECESSION_JOB_LOSS = 0.02
@@ -144,7 +171,8 @@ def protest_risk(w) -> np.ndarray:
     return out
 
 
-def compare(baseline: dict, branch: dict, w_branch, days: int) -> dict:
+def compare(baseline: dict, branch: dict, w_branch, days: int,
+            include_unstable_country_detail: bool = False) -> dict:
     """What this branch did to people, ATTRIBUTABLE to the event.
 
     Every figure is a difference against the world that did not receive
@@ -192,17 +220,30 @@ def compare(baseline: dict, branch: dict, w_branch, days: int) -> dict:
         "jobs_lost": int(round(float(np.maximum(extra_jobless, 0).sum()))),
         "jobs_gained_elsewhere": int(round(float(
             np.maximum(-extra_jobless, 0).sum()))),
-        "jobs_lost_where": top(extra_jobless),
-        "countries_in_recession": [names[i] for i in recession],
+        # country detail: measured to be noise, so it is suppressed by
+        # default and labelled when requested
+        "jobs_lost_where": (top(extra_jobless)
+                            if include_unstable_country_detail else []),
+        "countries_in_recession": ([names[i] for i in recession]
+                                   if include_unstable_country_detail else []),
+        "country_detail_suppressed": not include_unstable_country_detail,
+        "country_detail_note": (
+            "country-level rankings are not reportable: two runs of the "
+            "same scenario diverge at rank correlation -0.60, unchanged "
+            "from 258 to 3,093 agents per country. Global aggregates are "
+            "stable and are the product."),
         "people_pushed_into_destitution": max(0, extra_destitute),
         "people_made_homeless": max(0, extra_homeless),
         "excess_deaths": max(0, extra_dead),
         "displaced": max(0, extra_migrants),
-        "governments_at_risk": [
+        "governments_at_risk": ([
             {"country": names[i], "legitimacy": round(float(
                 branch["legitimacy"][i]), 3),
-             "fell_by": round(float(leg_fall[i]), 3)} for i in at_risk],
-        "protest_risk_where": top(protests, minimum=1.0),
+             "fell_by": round(float(leg_fall[i]), 3)} for i in at_risk]
+            if include_unstable_country_detail else []),
+        "governments_at_risk_count": int(at_risk.size),
+        "protest_risk_where": (top(protests, minimum=1.0)
+                               if include_unstable_country_detail else []),
         "countries_at_war": branch["at_war"] - baseline["at_war"],
         "hope_change": (round(branch["mean_hope"] - baseline["mean_hope"], 4)
                         if branch["mean_hope"] is not None else None),

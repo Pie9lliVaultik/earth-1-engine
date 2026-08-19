@@ -1,0 +1,1076 @@
+{
+ "horizon_days": 60,
+ "repeats": 2,
+ "branches": {
+  "resolution": {
+   "label": "Diplomatic resolution in 72 hours",
+   "runs": [
+    {
+     "horizon_days": 60,
+     "jobs_lost": 566,
+     "jobs_gained_elsewhere": 765,
+     "jobs_lost_where": [
+      {
+       "country": "Mexico",
+       "iso2": "MX",
+       "value": 61.19543258754632
+      },
+      {
+       "country": "Ivory Coast",
+       "iso2": "CI",
+       "value": 48.68650544053547
+      },
+      {
+       "country": "Iran",
+       "iso2": "IR",
+       "value": 42.846399316568686
+      },
+      {
+       "country": "China",
+       "iso2": "CN",
+       "value": 40.94027704736251
+      },
+      {
+       "country": "Bangladesh",
+       "iso2": "BD",
+       "value": 33.412067444979925
+      }
+     ],
+     "countries_in_recession": [
+      "Mexico",
+      "Iran",
+      "Ivory Coast",
+      "Venezuela",
+      "Australia",
+      "North Korea",
+      "Somalia",
+      "Belgium",
+      "Papua New Guinea",
+      "Hungary",
+      "Kyrgyzstan",
+      "Bulgaria",
+      "Denmark",
+      "New Zealand",
+      "Georgia",
+      "Gabon",
+      "Latvia",
+      "Estonia",
+      "Eswatini",
+      "R\u00e9union",
+      "Luxembourg",
+      "Brunei",
+      "Vanuatu",
+      "Antigua and Barbuda",
+      "Andorra",
+      "Dominica"
+     ],
+     "people_pushed_into_destitution": 1580,
+     "people_made_homeless": 16,
+     "excess_deaths": 0,
+     "displaced": 0,
+     "governments_at_risk": [],
+     "protest_risk_where": [
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 10.0
+      },
+      {
+       "country": "Kenya",
+       "iso2": "KE",
+       "value": 10.0
+      },
+      {
+       "country": "Nigeria",
+       "iso2": "NG",
+       "value": 8.0
+      },
+      {
+       "country": "Bangladesh",
+       "iso2": "BD",
+       "value": 8.0
+      },
+      {
+       "country": "Ethiopia",
+       "iso2": "ET",
+       "value": 8.0
+      }
+     ],
+     "countries_at_war": 2.0,
+     "hope_change": -0.0287,
+     "savings_change_days": -1.11
+    },
+    {
+     "horizon_days": 60,
+     "jobs_lost": 643,
+     "jobs_gained_elsewhere": 863,
+     "jobs_lost_where": [
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 136.53407493385617
+      },
+      {
+       "country": "Russia",
+       "iso2": "RU",
+       "value": 50.70706011047495
+      },
+      {
+       "country": "Belgium",
+       "iso2": "BE",
+       "value": 34.50935560990622
+      },
+      {
+       "country": "Netherlands",
+       "iso2": "NL",
+       "value": 28.991065742069413
+      },
+      {
+       "country": "Tajikistan",
+       "iso2": "TJ",
+       "value": 26.71212254480212
+      }
+     ],
+     "countries_in_recession": [
+      "Russia",
+      "Sudan",
+      "Malawi",
+      "Chad",
+      "Netherlands",
+      "Haiti",
+      "Belgium",
+      "Tajikistan",
+      "Paraguay",
+      "Serbia",
+      "Singapore",
+      "Lebanon",
+      "Panama",
+      "Uruguay",
+      "Qatar",
+      "Albania",
+      "Gambia",
+      "Trinidad and Tobago",
+      "Eswatini",
+      "Cabo Verde",
+      "Saint Lucia",
+      "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
+      "Seychelles",
+      "Andorra"
+     ],
+     "people_pushed_into_destitution": 2344,
+     "people_made_homeless": 0,
+     "excess_deaths": 29,
+     "displaced": 12,
+     "governments_at_risk": [],
+     "protest_risk_where": [
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 10.0
+      },
+      {
+       "country": "Kenya",
+       "iso2": "KE",
+       "value": 10.0
+      },
+      {
+       "country": "Nigeria",
+       "iso2": "NG",
+       "value": 8.0
+      },
+      {
+       "country": "Bangladesh",
+       "iso2": "BD",
+       "value": 8.0
+      },
+      {
+       "country": "Ethiopia",
+       "iso2": "ET",
+       "value": 8.0
+      }
+     ],
+     "countries_at_war": 4.0,
+     "hope_change": -0.0184,
+     "savings_change_days": -2.8
+    }
+   ],
+   "consequences": {
+    "horizon_days": 60,
+    "jobs_lost": 566,
+    "jobs_gained_elsewhere": 765,
+    "jobs_lost_where": [
+     {
+      "country": "Mexico",
+      "iso2": "MX",
+      "value": 61.19543258754632
+     },
+     {
+      "country": "Ivory Coast",
+      "iso2": "CI",
+      "value": 48.68650544053547
+     },
+     {
+      "country": "Iran",
+      "iso2": "IR",
+      "value": 42.846399316568686
+     },
+     {
+      "country": "China",
+      "iso2": "CN",
+      "value": 40.94027704736251
+     },
+     {
+      "country": "Bangladesh",
+      "iso2": "BD",
+      "value": 33.412067444979925
+     }
+    ],
+    "countries_in_recession": [
+     "Mexico",
+     "Iran",
+     "Ivory Coast",
+     "Venezuela",
+     "Australia",
+     "North Korea",
+     "Somalia",
+     "Belgium",
+     "Papua New Guinea",
+     "Hungary",
+     "Kyrgyzstan",
+     "Bulgaria",
+     "Denmark",
+     "New Zealand",
+     "Georgia",
+     "Gabon",
+     "Latvia",
+     "Estonia",
+     "Eswatini",
+     "R\u00e9union",
+     "Luxembourg",
+     "Brunei",
+     "Vanuatu",
+     "Antigua and Barbuda",
+     "Andorra",
+     "Dominica"
+    ],
+    "people_pushed_into_destitution": 1580,
+    "people_made_homeless": 16,
+    "excess_deaths": 0,
+    "displaced": 0,
+    "governments_at_risk": [],
+    "protest_risk_where": [
+     {
+      "country": "India",
+      "iso2": "IN",
+      "value": 10.0
+     },
+     {
+      "country": "Kenya",
+      "iso2": "KE",
+      "value": 10.0
+     },
+     {
+      "country": "Nigeria",
+      "iso2": "NG",
+      "value": 8.0
+     },
+     {
+      "country": "Bangladesh",
+      "iso2": "BD",
+      "value": 8.0
+     },
+     {
+      "country": "Ethiopia",
+      "iso2": "ET",
+      "value": 8.0
+     }
+    ],
+    "countries_at_war": 2.0,
+    "hope_change": -0.0287,
+    "savings_change_days": -1.11
+   },
+   "uncertainty": {
+    "jobs_lost": {
+     "median": 604.5,
+     "low": 573.7,
+     "high": 635.3,
+     "spread_ratio": 1.1073731915635348
+    },
+    "people_pushed_into_destitution": {
+     "median": 1962.0,
+     "low": 1656.4,
+     "high": 2267.6,
+     "spread_ratio": 1.3689929968606616
+    },
+    "excess_deaths": {
+     "median": 14.5,
+     "low": 2.9000000000000004,
+     "high": 26.1,
+     "spread_ratio": 9.0
+    },
+    "displaced": {
+     "median": 6.0,
+     "low": 1.2000000000000002,
+     "high": 10.8,
+     "spread_ratio": 9.0
+    },
+    "people_made_homeless": {
+     "median": 8.0,
+     "low": 1.6,
+     "high": 14.4,
+     "spread_ratio": 9.0
+    },
+    "recession_probability": {
+     "Belgium": 1.0,
+     "Eswatini": 1.0,
+     "Andorra": 1.0,
+     "Mexico": 0.5,
+     "Iran": 0.5,
+     "Ivory Coast": 0.5,
+     "Venezuela": 0.5,
+     "Australia": 0.5,
+     "North Korea": 0.5,
+     "Somalia": 0.5
+    },
+    "government_at_risk_probability": {}
+   }
+  },
+  "escalation": {
+   "label": "Naval confrontation, oil doubles",
+   "runs": [
+    {
+     "horizon_days": 60,
+     "jobs_lost": 1367,
+     "jobs_gained_elsewhere": 924,
+     "jobs_lost_where": [
+      {
+       "country": "Brazil",
+       "iso2": "BR",
+       "value": 308.3166717157845
+      },
+      {
+       "country": "Tanzania",
+       "iso2": "TZ",
+       "value": 164.54637445363096
+      },
+      {
+       "country": "Ghana",
+       "iso2": "GH",
+       "value": 118.30003974843859
+      },
+      {
+       "country": "Philippines",
+       "iso2": "PH",
+       "value": 56.48955976033006
+      },
+      {
+       "country": "Morocco",
+       "iso2": "MA",
+       "value": 49.65615650202422
+      }
+     ],
+     "countries_in_recession": [
+      "Brazil",
+      "Philippines",
+      "Iran",
+      "Turkey",
+      "Tanzania",
+      "Afghanistan",
+      "Yemen",
+      "Poland",
+      "Morocco",
+      "Ukraine",
+      "Ghana",
+      "Ivory Coast",
+      "Kazakhstan",
+      "Chile",
+      "Senegal",
+      "Zimbabwe",
+      "Tunisia",
+      "Jordan",
+      "UAE",
+      "Greece",
+      "Sierra Leone",
+      "Laos",
+      "New Zealand",
+      "Croatia",
+      "Uruguay",
+      "Qatar",
+      "Armenia",
+      "Moldova",
+      "Gabon",
+      "Bahrain",
+      "R\u00e9union",
+      "Bhutan",
+      "Montenegro",
+      "Bahamas",
+      "Tonga",
+      "Antigua and Barbuda",
+      "Andorra"
+     ],
+     "people_pushed_into_destitution": 11877,
+     "people_made_homeless": 6,
+     "excess_deaths": 154,
+     "displaced": 6,
+     "governments_at_risk": [],
+     "protest_risk_where": [
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 10.0
+      },
+      {
+       "country": "Turkey",
+       "iso2": "TR",
+       "value": 10.0
+      },
+      {
+       "country": "South Africa",
+       "iso2": "ZA",
+       "value": 10.0
+      },
+      {
+       "country": "Kenya",
+       "iso2": "KE",
+       "value": 10.0
+      },
+      {
+       "country": "China",
+       "iso2": "CN",
+       "value": 10.0
+      }
+     ],
+     "countries_at_war": 2.0,
+     "hope_change": -0.0301,
+     "savings_change_days": -1.49
+    },
+    {
+     "horizon_days": 60,
+     "jobs_lost": 642,
+     "jobs_gained_elsewhere": 969,
+     "jobs_lost_where": [
+      {
+       "country": "Thailand",
+       "iso2": "TH",
+       "value": 93.50844849544274
+      },
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 75.7695724477831
+      },
+      {
+       "country": "Azerbaijan",
+       "iso2": "AZ",
+       "value": 43.145604594977705
+      },
+      {
+       "country": "Kenya",
+       "iso2": "KE",
+       "value": 42.41853954330871
+      },
+      {
+       "country": "Nigeria",
+       "iso2": "NG",
+       "value": 40.88643857656917
+      }
+     ],
+     "countries_in_recession": [
+      "Thailand",
+      "Kenya",
+      "Sudan",
+      "Iraq",
+      "Yemen",
+      "Poland",
+      "Australia",
+      "Sri Lanka",
+      "Chad",
+      "Belgium",
+      "Tajikistan",
+      "Azerbaijan",
+      "Greece",
+      "Sierra Leone",
+      "Libya",
+      "New Zealand",
+      "Armenia",
+      "Bhutan",
+      "Brunei",
+      "Bahamas",
+      "Belize",
+      "Saint Lucia",
+      "Antigua and Barbuda",
+      "Liechtenstein",
+      "Palau"
+     ],
+     "people_pushed_into_destitution": 13432,
+     "people_made_homeless": 14,
+     "excess_deaths": 142,
+     "displaced": 9,
+     "governments_at_risk": [],
+     "protest_risk_where": [
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 10.0
+      },
+      {
+       "country": "Thailand",
+       "iso2": "TH",
+       "value": 10.0
+      },
+      {
+       "country": "Turkey",
+       "iso2": "TR",
+       "value": 10.0
+      },
+      {
+       "country": "South Africa",
+       "iso2": "ZA",
+       "value": 10.0
+      },
+      {
+       "country": "Kenya",
+       "iso2": "KE",
+       "value": 10.0
+      }
+     ],
+     "countries_at_war": 4.0,
+     "hope_change": -0.0326,
+     "savings_change_days": -3.65
+    }
+   ],
+   "consequences": {
+    "horizon_days": 60,
+    "jobs_lost": 1367,
+    "jobs_gained_elsewhere": 924,
+    "jobs_lost_where": [
+     {
+      "country": "Brazil",
+      "iso2": "BR",
+      "value": 308.3166717157845
+     },
+     {
+      "country": "Tanzania",
+      "iso2": "TZ",
+      "value": 164.54637445363096
+     },
+     {
+      "country": "Ghana",
+      "iso2": "GH",
+      "value": 118.30003974843859
+     },
+     {
+      "country": "Philippines",
+      "iso2": "PH",
+      "value": 56.48955976033006
+     },
+     {
+      "country": "Morocco",
+      "iso2": "MA",
+      "value": 49.65615650202422
+     }
+    ],
+    "countries_in_recession": [
+     "Brazil",
+     "Philippines",
+     "Iran",
+     "Turkey",
+     "Tanzania",
+     "Afghanistan",
+     "Yemen",
+     "Poland",
+     "Morocco",
+     "Ukraine",
+     "Ghana",
+     "Ivory Coast",
+     "Kazakhstan",
+     "Chile",
+     "Senegal",
+     "Zimbabwe",
+     "Tunisia",
+     "Jordan",
+     "UAE",
+     "Greece",
+     "Sierra Leone",
+     "Laos",
+     "New Zealand",
+     "Croatia",
+     "Uruguay",
+     "Qatar",
+     "Armenia",
+     "Moldova",
+     "Gabon",
+     "Bahrain",
+     "R\u00e9union",
+     "Bhutan",
+     "Montenegro",
+     "Bahamas",
+     "Tonga",
+     "Antigua and Barbuda",
+     "Andorra"
+    ],
+    "people_pushed_into_destitution": 11877,
+    "people_made_homeless": 6,
+    "excess_deaths": 154,
+    "displaced": 6,
+    "governments_at_risk": [],
+    "protest_risk_where": [
+     {
+      "country": "India",
+      "iso2": "IN",
+      "value": 10.0
+     },
+     {
+      "country": "Turkey",
+      "iso2": "TR",
+      "value": 10.0
+     },
+     {
+      "country": "South Africa",
+      "iso2": "ZA",
+      "value": 10.0
+     },
+     {
+      "country": "Kenya",
+      "iso2": "KE",
+      "value": 10.0
+     },
+     {
+      "country": "China",
+      "iso2": "CN",
+      "value": 10.0
+     }
+    ],
+    "countries_at_war": 2.0,
+    "hope_change": -0.0301,
+    "savings_change_days": -1.49
+   },
+   "uncertainty": {
+    "jobs_lost": {
+     "median": 1004.5,
+     "low": 714.5,
+     "high": 1294.5,
+     "spread_ratio": 1.8117564730580826
+    },
+    "people_pushed_into_destitution": {
+     "median": 12654.5,
+     "low": 12032.5,
+     "high": 13276.5,
+     "spread_ratio": 1.1033866611261167
+    },
+    "excess_deaths": {
+     "median": 148.0,
+     "low": 143.2,
+     "high": 152.8,
+     "spread_ratio": 1.0670391061452515
+    },
+    "displaced": {
+     "median": 7.5,
+     "low": 6.3,
+     "high": 8.7,
+     "spread_ratio": 1.380952380952381
+    },
+    "people_made_homeless": {
+     "median": 10.0,
+     "low": 6.8,
+     "high": 13.2,
+     "spread_ratio": 1.9411764705882353
+    },
+    "recession_probability": {
+     "Yemen": 1.0,
+     "Poland": 1.0,
+     "Greece": 1.0,
+     "Sierra Leone": 1.0,
+     "New Zealand": 1.0,
+     "Armenia": 1.0,
+     "Bhutan": 1.0,
+     "Bahamas": 1.0,
+     "Antigua and Barbuda": 1.0,
+     "Brazil": 0.5
+    },
+    "government_at_risk_probability": {}
+   }
+  },
+  "fragmentation": {
+   "label": "Proxy fragmentation, blocs harden",
+   "runs": [
+    {
+     "horizon_days": 60,
+     "jobs_lost": 617,
+     "jobs_gained_elsewhere": 1081,
+     "jobs_lost_where": [
+      {
+       "country": "South Africa",
+       "iso2": "ZA",
+       "value": 130.9730816252497
+      },
+      {
+       "country": "Pakistan",
+       "iso2": "PK",
+       "value": 70.70472510284496
+      },
+      {
+       "country": "Thailand",
+       "iso2": "TH",
+       "value": 37.907759410692904
+      },
+      {
+       "country": "Indonesia",
+       "iso2": "ID",
+       "value": 32.20596562021464
+      },
+      {
+       "country": "Somalia",
+       "iso2": "SO",
+       "value": 31.622974111386018
+      }
+     ],
+     "countries_in_recession": [
+      "Thailand",
+      "France",
+      "South Africa",
+      "Ghana",
+      "Ivory Coast",
+      "Somalia",
+      "Ecuador",
+      "Rwanda",
+      "Tajikistan",
+      "Laos",
+      "Hong Kong",
+      "Turkmenistan",
+      "Paraguay",
+      "Serbia",
+      "Republic of the Congo",
+      "Oman",
+      "Croatia",
+      "Qatar",
+      "Gambia",
+      "Latvia",
+      "Estonia",
+      "Mauritius",
+      "Fiji",
+      "R\u00e9union",
+      "Malta",
+      "Cabo Verde",
+      "Brunei",
+      "Bahamas",
+      "Samoa",
+      "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
+      "Micronesia",
+      "Antigua and Barbuda"
+     ],
+     "people_pushed_into_destitution": 4530,
+     "people_made_homeless": 8,
+     "excess_deaths": 11,
+     "displaced": 15,
+     "governments_at_risk": [],
+     "protest_risk_where": [
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 10.0
+      },
+      {
+       "country": "Kenya",
+       "iso2": "KE",
+       "value": 10.0
+      },
+      {
+       "country": "South Africa",
+       "iso2": "ZA",
+       "value": 8.0
+      },
+      {
+       "country": "Philippines",
+       "iso2": "PH",
+       "value": 8.0
+      },
+      {
+       "country": "Egypt",
+       "iso2": "EG",
+       "value": 8.0
+      }
+     ],
+     "countries_at_war": 0.0,
+     "hope_change": -0.009,
+     "savings_change_days": -0.25
+    },
+    {
+     "horizon_days": 60,
+     "jobs_lost": 1041,
+     "jobs_gained_elsewhere": 933,
+     "jobs_lost_where": [
+      {
+       "country": "Russia",
+       "iso2": "RU",
+       "value": 221.14971853464948
+      },
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 173.73446373105125
+      },
+      {
+       "country": "Ivory Coast",
+       "iso2": "CI",
+       "value": 92.91338446406185
+      },
+      {
+       "country": "Iraq",
+       "iso2": "IQ",
+       "value": 79.88197664401638
+      },
+      {
+       "country": "Pakistan",
+       "iso2": "PK",
+       "value": 55.920297286112216
+      }
+     ],
+     "countries_in_recession": [
+      "Russia",
+      "Italy",
+      "Colombia",
+      "Iraq",
+      "Argentina",
+      "Morocco",
+      "Ivory Coast",
+      "Nepal",
+      "Niger",
+      "North Korea",
+      "Malawi",
+      "Chile",
+      "Romania",
+      "Ecuador",
+      "Dominican Republic",
+      "Paraguay",
+      "Serbia",
+      "Mauritania",
+      "Namibia",
+      "Jamaica",
+      "Albania",
+      "Gambia",
+      "Lesotho",
+      "Estonia",
+      "Djibouti",
+      "R\u00e9union",
+      "Cabo Verde",
+      "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
+      "Kiribati",
+      "Micronesia",
+      "Andorra"
+     ],
+     "people_pushed_into_destitution": 5415,
+     "people_made_homeless": 4,
+     "excess_deaths": 23,
+     "displaced": 13,
+     "governments_at_risk": [],
+     "protest_risk_where": [
+      {
+       "country": "India",
+       "iso2": "IN",
+       "value": 10.0
+      },
+      {
+       "country": "Kenya",
+       "iso2": "KE",
+       "value": 10.0
+      },
+      {
+       "country": "Nigeria",
+       "iso2": "NG",
+       "value": 8.0
+      },
+      {
+       "country": "Bangladesh",
+       "iso2": "BD",
+       "value": 8.0
+      },
+      {
+       "country": "Ethiopia",
+       "iso2": "ET",
+       "value": 8.0
+      }
+     ],
+     "countries_at_war": 0.0,
+     "hope_change": 0.0004,
+     "savings_change_days": -1.42
+    }
+   ],
+   "consequences": {
+    "horizon_days": 60,
+    "jobs_lost": 617,
+    "jobs_gained_elsewhere": 1081,
+    "jobs_lost_where": [
+     {
+      "country": "South Africa",
+      "iso2": "ZA",
+      "value": 130.9730816252497
+     },
+     {
+      "country": "Pakistan",
+      "iso2": "PK",
+      "value": 70.70472510284496
+     },
+     {
+      "country": "Thailand",
+      "iso2": "TH",
+      "value": 37.907759410692904
+     },
+     {
+      "country": "Indonesia",
+      "iso2": "ID",
+      "value": 32.20596562021464
+     },
+     {
+      "country": "Somalia",
+      "iso2": "SO",
+      "value": 31.622974111386018
+     }
+    ],
+    "countries_in_recession": [
+     "Thailand",
+     "France",
+     "South Africa",
+     "Ghana",
+     "Ivory Coast",
+     "Somalia",
+     "Ecuador",
+     "Rwanda",
+     "Tajikistan",
+     "Laos",
+     "Hong Kong",
+     "Turkmenistan",
+     "Paraguay",
+     "Serbia",
+     "Republic of the Congo",
+     "Oman",
+     "Croatia",
+     "Qatar",
+     "Gambia",
+     "Latvia",
+     "Estonia",
+     "Mauritius",
+     "Fiji",
+     "R\u00e9union",
+     "Malta",
+     "Cabo Verde",
+     "Brunei",
+     "Bahamas",
+     "Samoa",
+     "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
+     "Micronesia",
+     "Antigua and Barbuda"
+    ],
+    "people_pushed_into_destitution": 4530,
+    "people_made_homeless": 8,
+    "excess_deaths": 11,
+    "displaced": 15,
+    "governments_at_risk": [],
+    "protest_risk_where": [
+     {
+      "country": "India",
+      "iso2": "IN",
+      "value": 10.0
+     },
+     {
+      "country": "Kenya",
+      "iso2": "KE",
+      "value": 10.0
+     },
+     {
+      "country": "South Africa",
+      "iso2": "ZA",
+      "value": 8.0
+     },
+     {
+      "country": "Philippines",
+      "iso2": "PH",
+      "value": 8.0
+     },
+     {
+      "country": "Egypt",
+      "iso2": "EG",
+      "value": 8.0
+     }
+    ],
+    "countries_at_war": 0.0,
+    "hope_change": -0.009,
+    "savings_change_days": -0.25
+   },
+   "uncertainty": {
+    "jobs_lost": {
+     "median": 829.0,
+     "low": 659.4,
+     "high": 998.6,
+     "spread_ratio": 1.5144070367000304
+    },
+    "people_pushed_into_destitution": {
+     "median": 4972.5,
+     "low": 4618.5,
+     "high": 5326.5,
+     "spread_ratio": 1.1532965248457292
+    },
+    "excess_deaths": {
+     "median": 17.0,
+     "low": 12.2,
+     "high": 21.8,
+     "spread_ratio": 1.7868852459016396
+    },
+    "displaced": {
+     "median": 14.0,
+     "low": 13.2,
+     "high": 14.8,
+     "spread_ratio": 1.1212121212121213
+    },
+    "people_made_homeless": {
+     "median": 6.0,
+     "low": 4.4,
+     "high": 7.6,
+     "spread_ratio": 1.727272727272727
+    },
+    "recession_probability": {
+     "Ivory Coast": 1.0,
+     "Ecuador": 1.0,
+     "Paraguay": 1.0,
+     "Serbia": 1.0,
+     "Gambia": 1.0,
+     "Estonia": 1.0,
+     "R\u00e9union": 1.0,
+     "Cabo Verde": 1.0,
+     "S\u00e3o Tom\u00e9 and Pr\u00edncipe": 1.0,
+     "Micronesia": 1.0
+    },
+    "government_at_risk_probability": {}
+   }
+  }
+ },
+ "geography_divergence": {
+  "pairs": [
+   {
+    "a": "resolution",
+    "b": "escalation",
+    "rank_correlation": -0.8061,
+    "set_overlap": 0.0
+   },
+   {
+    "a": "resolution",
+    "b": "fragmentation",
+    "rank_correlation": -0.903,
+    "set_overlap": 0.0
+   },
+   {
+    "a": "escalation",
+    "b": "fragmentation",
+    "rank_correlation": -0.7818,
+    "set_overlap": 0.0
+   }
+  ],
+  "mean_rank_correlation": -0.8303,
+  "mean_set_overlap": 0.0,
+  "noise_floor": {
+   "rank_correlation": -0.7212,
+   "set_overlap": 0.0
+  },
+  "verdict": "INDISTINGUISHABLE FROM NOISE \u2014 two runs of the same scenario diverge as much as two different ones. The geography is sampling noise, not physics."
+ }
+}
