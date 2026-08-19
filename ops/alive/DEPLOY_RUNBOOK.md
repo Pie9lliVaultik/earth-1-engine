@@ -1,7 +1,7 @@
 # Deployment runbook — Epoch 0 → Epoch 1
 
 **Purpose:** migrate the live 4M world onto the provenanced, exactly-persistent
-path (0.0e + 0.0c, frozen at tag **`v1-persistence-deploy-1`** = `fe09377`).
+path (0.0e + 0.0c, frozen at tag **`v1-persistence-deploy-1`** = `ae65bcd`).
 
 **Authorised:** founder, 2026-08-19. **Owner: Claude Code**, which executes
 every step itself with abort gates. This document is the record of what it
@@ -100,7 +100,7 @@ git push origin alive-pre-v1-persistence-2026-08-19  # if the box has a remote
 
 If the box cannot push, record the SHA here and in the audit by hand.
 
-## Step 3 — deploy `b92c7ed`
+## Step 3 — deploy the frozen tag
 
 ```bash
 cd /opt/earth1
@@ -146,7 +146,7 @@ grep '"event": "startup"' /opt/earth1/data/alive/journal.jsonl | tail -1 \
   | python3 -m json.tool
 ```
 
-Check every field: `code_commit` == `intended_commit` == `fe09377…`;
+Check every field: `code_commit` == `intended_commit` == `ae65bcd…`;
 `dirty_worktree: false`; `service_matches: true`; `schema_version: 1`;
 `snapshot_version: null` (it came from v0 — correct); population and world day
 match step 0.
