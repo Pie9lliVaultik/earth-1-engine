@@ -1,0 +1,27 @@
+{
+ "paired_cells": 5412,
+ "mean_delta_pp": -0.4775,
+ "median_delta_pp": -0.26,
+ "living_wins_pct": 44.3,
+ "seed_means_pp": [
+  -0.3658,
+  -0.5016,
+  -0.5651
+ ],
+ "provenance": {
+  "host": "earth1-prime",
+  "commit": "858b6262daca2c760db9e73392ad9e215823af21",
+  "protocol": {
+   "pop": 200000,
+   "seed": 42,
+   "days": 60,
+   "folds": 5,
+   "cv_seeds": [
+    42,
+    7,
+    13
+   ]
+  },
+  "wall_clock": "2026-08-19T21:33:34Z"
+ }
+}

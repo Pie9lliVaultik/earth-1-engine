@@ -17,6 +17,19 @@ helps): hope −0.304 · employment −0.143 · mental −0.015 · hunger
 −0.003 · deprivation +0.007 · isolation +0.005 · addiction +0.023.
 **No living channel currently earns its place on this instrument.**
 
+## The paired within-country Δ (country identity gets zero credit)
+
+Per (country, question, cell), same folds and seeds:
+Δ = |err_legacy| − |err_living|. Positive = living closer.
+
+    paired cells 5,412 · mean Δ = −0.478 pp · median −0.26 pp
+    living wins 44.3% of cells · per-seed means −0.37 / −0.50 / −0.57
+
+Consistent across all three seeds: **within the same country and
+question, the lived-state features currently move predictions AWAY
+from truth slightly more often than toward it.** The clean, attributed
+form of the miss.
+
 ## INSTRUMENT (verified before believing the negative)
 
 - legacy-18 reproduces the known ~10.5pp national figure → the
