@@ -1,10 +1,11 @@
 # Earth-1 — session guidance
 
 **Read `BIBLE.md` before doing anything else.** It is the canonical
-assessment (v4, 2026-08-19): what exists, what is wired, what is
-measured, the benchmark targets, and the plan. Every claim in it was
-measured or cited on that date. Do not trust any earlier STATUS
-document over it.
+assessment (v4.1, 2026-08-19, three-auditor reconciliation): what
+exists, what is wired, what is measured, the benchmark targets, and
+the plan. Every claim in it was measured or cited on that date, and
+its central findings carry three independent auditors' agreement. Do
+not trust any earlier STATUS document over it.
 
 ## The one-paragraph state
 
@@ -17,10 +18,33 @@ and **nothing else is meaningful until Phase 0 exits.**
 
 ## Current phase
 
-**Phase 0 — INTEGRITY** (BIBLE.md Part VIII, eight tasks with exit
-criteria). Next task: 0.1, the four correctness bugs (unseeded RNG in
-`memory.spread`; shared RNG row in `health.py`; conviction decay
-no-op in `influence.py`; cause-of-death code collision).
+**Phase 0 — INTEGRITY** (BIBLE.md Part VIII + the v4.1 amendments at
+the top of the document; now 12 tasks with exit criteria).
+
+**First deliverable: WP-0** — create branch `v1-unification`, no new
+physics, produce `V1_UNIFICATION_AUDIT.md` (entry-point graph, state
+schemas, persistence field lists, test gaps, exact files to edit) and
+have it reviewed BEFORE any implementation.
+
+Then, in order:
+- 0.0a fix aging (`live_one_day` never advances `civ.age` — verified
+  max|Δage|=0.0 over 30 days; invariant: 365 days = +1 year)
+- 0.0b virgin-slot rebirth (reborn slots inherit the dead agent's
+  adjacency row — verified; invariant: zero inherited ties)
+- 0.0c complete persistence (presence, mobility, RNG, clock missing
+  from `world_alive.save_world` and `timeline._save`; invariant:
+  save→restore→hash round-trip + restored-branch parity)
+- 0.0d fabric re-homing on migration/firm change
+- 0.1 the four correctness bugs (unseeded RNG in `memory.spread`;
+  shared RNG row in `health.py`; conviction decay no-op in
+  `influence.py`; cause-of-death code collision)
+- 0.2–0.8 as written. Note 0.5 explicitly includes the product API:
+  `earth1/api/deps.py:19-35` still loads the OLD world.
+
+Founder-gated parallel track (independent of wiring, start
+immediately): WVS microdata registration (gates R16), FRED/ACLED
+keys, RunPod key rotation, one backup restore rehearsal, the
+destitution-bar ruling.
 
 ## Machines
 
@@ -49,6 +73,15 @@ no-op in `influence.py`; cause-of-death code collision).
 9. Report failures as solved problems — iterate to the working state,
    verify honestly, then report with receipts. Never present a
    negative result as the deliverable, and never cheat a positive.
+   The clean form of this rule is the four-partition doctrine
+   (BIBLE v4.1 §9): iterate relentlessly on train/dev; the holdout is
+   scored once, after freeze, and targets never move after results.
+10. Result provenance stamping: every result JSON stamps hostname,
+    git commit, seed, and wall-clock at write time.
+11. The ten prohibitions (BIBLE v4.1 §19 / V1-Readiness Appendix H) —
+    including: no third world for a benchmark; no promoting a
+    mechanism because output looks more alive/chaotic; never
+    calibrate to chaos; no design document outranks current code.
 
 ## Working style (from the founder, standing)
 
