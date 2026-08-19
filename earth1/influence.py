@@ -40,7 +40,7 @@ import numpy as np
 BETA = 1.0            # conviction exponent; 0 = pure averaging (legacy)
 ETA = 0.18            # propagation rate per layer
 CONVICTION_GAIN = 0.06    # how fast agreement hardens conviction
-CONVICTION_DECAY = 0.02   # how fast isolation softens it
+CONVICTION_DECAY = 0.02   # 0.8 A/B arm-B value ONLY - decay is DISABLED in production
 
 
 def propagate(forces: np.ndarray, alpha: np.ndarray, adj,
@@ -90,13 +90,24 @@ def propagate(forces: np.ndarray, alpha: np.ndarray, adj,
 
 def update_conviction(forces: np.ndarray, alpha: np.ndarray, adj,
                       gain: float = CONVICTION_GAIN,
-                      decay: float = CONVICTION_DECAY) -> np.ndarray:
-    """Agreement hardens conviction; disagreement and isolation soften it.
+                      _experimental_decay_0_8_ab: float = 0.0) -> np.ndarray:
+    """Agreement hardens conviction; disagreement softens it.
 
     The second amplifier. Without it, clusters form and then relax. With
     it, a cluster that agrees becomes a cluster that is CERTAIN, which
     by the kernel above makes it better at recruiting — and that loop is
     what produces cascades that do not simply decay.
+
+    ISOLATION DECAY IS DISABLED. The original code carried a
+    `- decay * 0.0` no-op while the docstring claimed isolation softens
+    conviction — implementation and documentation disagreed, and alpha
+    has been a ratchet for the world's entire history. Making the term
+    real changes the conviction kernel, propagation, polarization and
+    possibly the chaotic regime — that is physics, not a bug fix, so
+    it is adjudicated by the registered 0.8 A/B (arm A: disabled, as
+    here; arm B: `_experimental_decay_0_8_ab=CONVICTION_DECAY`), never
+    switched on silently. Production output is bit-identical to the
+    pre-0.1 code.
     """
     deg = np.maximum(np.asarray(adj.sum(axis=1)).ravel(), 1.0)
     pole = (forces > 0.5).astype(np.float64)
@@ -104,5 +115,10 @@ def update_conviction(forces: np.ndarray, alpha: np.ndarray, adj,
     # every force channel
     nb_pole = (adj @ pole) / deg[:, None]
     agreement = 1.0 - np.abs(nb_pole - pole).mean(axis=1)   # (N,) in [0,1]
-    return np.clip(alpha + gain * (agreement - 0.5) * 2.0 - decay * 0.0,
-                   0.02, 1.0)
+    out = alpha + gain * (agreement - 0.5) * 2.0
+    if _experimental_decay_0_8_ab:
+        # THE REGISTERED 0.8 A/B ARM — never taken in production. The
+        # isolation channel softens conviction for the unconnected.
+        isolation = 1.0 / (1.0 + deg)
+        out = out - _experimental_decay_0_8_ab * isolation
+    return np.clip(out, 0.02, 1.0)
