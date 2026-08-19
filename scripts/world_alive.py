@@ -293,6 +293,12 @@ def main():
                 "fear": round(float(civ.forces[:, 0].mean()), 5)}
         for k in ("mental_ill", "addicted", "isolated", "crime_victims",
                   "bereaved", "new_children", "alive", "deaths", "ill",
+                  # 0.1d mortality contract: the journal must carry the
+                  # full accounting so closure is provable from the
+                  # journal alone, not just from in-memory st
+                  "births", "disease_deaths", "weather_deaths",
+                  "starved_or_parched", "road_deaths_today",
+                  "rehomed_migrants", "rehomed_workers",
                   "in_treatment", "countries_at_war", "war_deaths",
                   "conscripted", "mean_welfare", "mean_legitimacy",
                   "homeless", "crimes_today", "criminal_share",
