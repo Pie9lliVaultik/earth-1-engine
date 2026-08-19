@@ -238,3 +238,33 @@ subsequent restart must show zero discontinuity. Any future
 **Remaining, and now overdue:** fix `run_backup.sh` to target `data/alive/`.
 The timer has been backing up the wrong world; the two manual copies above are
 the only backups of the living civilization that exist.
+
+---
+
+# EPOCH 1 PRODUCTION ACCEPTANCE REPORT — required contents
+
+This is the deliverable the founder evaluates. Ten items, each either
+PASS with evidence or not green. **Do not report acceptance until every
+line is satisfied.** Where an item is a *control*, a green is only
+admissible after the control has been shown to fail on its known
+failure case — Standing Rule 2: *a test that cannot demonstrate failure
+is not yet evidence.*
+
+| # | item | evidence required |
+|---|---|---|
+| 1 | **Frozen code provenance** | startup journal record: `code_commit` == `intended_commit` == `ae65bcd…`, `dirty_worktree: false`, `service_matches: true` |
+| 2 | **Verified off-box `data/alive/` backup** | remote `sha256sum -c` OK for every file, run **on the far end**, before the daemon was stopped |
+| 3 | **Corrupted-copy checksum control demonstrably fails** | flip a byte in a *scratch copy*, re-run the verification, show it **rejects**. Never on the live snapshot. Without this, item 2 proves transport, not integrity |
+| 4 | **Explicit Epoch 0→1 continuity boundary** | the `continuity_break` journal line, `reason: legacy_v0_missing_presence_mobility`, `bit_continuous: false`, written **before** any subsequent world tick |
+| 5 | **v1 snapshot / restore** | `state.json` shows `schema_version: 1`, a `sha256`, `rng_persisted: true`; the copy verified off-box |
+| 6 | **Perturbed-field continuity control demonstrably fails** | on a *scratch* restored world, perturb one field (e.g. `flourishing.hope[0]`) and show the comparison **detects** it. Without this, item 7 may be comparing something to itself |
+| 7 | **Exact restart continuity passes** | second restart from v1: **no** `MIGRATED` line, **no** new `continuity_break`, `rng_continued: true`, day/alive/pop identical pre and post, component-wise |
+| 8 | **Recurring living-world backup passes** | `ops/alive/run_backup.sh` runs green against `data/alive/` — and a **second** run also passes (the manifest-includes-itself bug made run 2 the failing case) |
+| 9 | **Restore rehearsal passes** | `ops/alive/verify_restore.sh`: fetch → verify → load through the canonical loader, off-production, asserting every persistent field present and day/alive matching |
+| 10 | **Migration override removed** | `EARTH1_MIGRATE_V0` absent from the service environment, **and** a v0 snapshot proven to fail closed on a scratch copy |
+
+Report the world day and population at each boundary so the epoch
+timeline is reconstructible. If any item misses, apply **BIBLE.md Part
+XI.A** — record it exactly, verify the instrument, diagnose, research,
+implement the smallest defensible correction, retest, continue until
+the gate passes. Do not report a partial green as acceptance.
