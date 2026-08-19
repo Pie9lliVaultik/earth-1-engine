@@ -2,9 +2,458 @@
 
 ### The canonical technical assessment, research foundation, benchmark specification, and road to v1
 
-**Version 4.0 — 2026-08-19**
+**Version 4.1 — 2026-08-19 (three-auditor reconciliation)**
 **Status: PRE-BENCHMARK. No validated predictive claim currently exists.**
-**Method: three parallel deep audits of all 92 modules, ten literature threads, and direct measurement on both machines. Every number in this document was either measured on 2026-08-19 or carries a citation. Nothing is asserted from memory.**
+**Method: three parallel deep audits of all 92 modules, ten literature threads, direct measurement on both machines — now reconciled with two independent external reviews (the v4 Review Addendum and the v3 V1-Readiness assessment). Every load-bearing claim carries either a measurement date or a citation; the central findings now carry three-auditor agreement.**
+
+---
+
+## VERSION 4.1 — WHAT THE TWO EXTERNAL REVIEWS ADDED
+
+Two independent documents reviewed this program against the same code.
+Neither knew of the other. Where all three assessments agree, the claim
+is now triple-confirmed; where either found something v4.0 missed, it
+is folded in below and the phases amended. The most important additions:
+
+### New P0 correctness findings (external, now INDEPENDENTLY VERIFIED here)
+
+| finding | verification (2026-08-19, this machine) | consequence |
+|---|---|---|
+| **Nobody ages in the living world.** `live_one_day` never advances `civ.age`; `generational.py` exists and is never called. | `max abs(age change) = 0.0` after 30 simulated days, measured | Every age-dependent hazard — cancer t⁵, falls ×2/decade, road-death peak at 24, fertility windows — ran on a frozen age structure through **every long run ever performed** (365-day backtests, the 750-day archived world, 15-year calibration runs). All long-horizon demographic results carry this caveat until re-run. |
+| **Reborn slots inherit the dead person's social graph.** | Adjacency row bit-identical through death→rebirth (degree 19 preserved), measured. Field resets are present in current HEAD (partial fix already landed); the tie inheritance is live. | Newborns are born with a dead stranger's friends, colleagues and household. Violates the fabric's whole design. |
+| **Presence and mobility are not persisted** by the live daemon or the timeline; RNG state not serialized. | Confirmed by inspection of `world_alive.save_world` and `timeline._save` field lists (same defect class as the climate/flourishing persistence bug fixed 08-19). | Every restart silently drops co-presence physics and mobility; restore→branch loses crowds, riots, flights, road deaths. |
+| G5 unit mismatch: logit-space baseline built from probability-space WVS means. | Not re-verified here; old-substrate only. | Old temporal grid results additionally contaminated; do not cite. |
+
+### The external smoke-check discipline is adopted
+The V1-Readiness review demonstrated its findings with **executed
+smoke checks at tiny population** (semantics, not performance). That
+practice — a semantic invariant suite (ages advance; reborn slots are
+virgin; save→restore→branch round-trips every subsystem including a
+state-hash; RNG continuation) — becomes the **release gate** for
+Phase 0 and permanent CI. A feature is not "built" until its state
+survives save/restore and a branch from a restored world retains it.
+
+### Evidence vocabulary adopted (from V1-Readiness)
+**BUILT** (code exists) → **WIRED** (on the canonical path) → **LIVE**
+(deployed, always-on) → **VALIDATED** (externally graded under a
+pre-declared protocol). These labels replace looser language
+everywhere; a module may hold any prefix of this chain and the
+distinctions are non-negotiable.
+
+### Scope ruling refined: multi-fidelity co-simulation
+The V1-Readiness review improves Part X's doctrine, and its version is
+adopted: **no physical layer is excluded by doctrine; every layer
+exists in the ontology at the lowest resolution that transmits causal
+consequences to the civilisation, with higher-fidelity solvers invoked
+only when a scenario makes that layer decision-relevant** (the
+Earth-system digital-twin pattern). The interaction-variance criterion
+survives as the *every-tick* rule; scenario-activated layers (nuclear/
+radiological, solar-storm/asteroid, EMP/grid, pathogen dynamics) are
+BUILT-on-demand rather than OUT. Unknown physics is handled by
+branching over competing hypotheses and propagating the epistemic
+uncertainty — never by "modelling the unknown as known."
+
+### From the Review Addendum — six deltas, all adopted
+1. **R16 (HIGH): temporal ground truth is authored, not transcribed.**
+   `wvs_paired.py` W6/W7 aggregates were compiled from published
+   summaries with an un-acted "verify against official WVS" note
+   (confirmed at `wvs_paired.py:9-12`); authored-truth error was
+   previously measured at 6.8pp against a ~3pp signal. Same class:
+   `census.py` / `culture.py` literals. **Fix is founder-gated and
+   long-lead (official WVS microdata registration) → starts in
+   parallel with Phase 0, today.** Until transcribed truth lands, no
+   temporal/wave-paired claim may be published.
+2. **Benchmark A grounding reworded** (tiers unchanged): the MRP 2–5pp
+   band is *domestic* (US states, individual covariates). No published
+   cross-national 66-country band exists — which is why even the
+   ACCEPT tier, with baselines and provenance attached, is itself a
+   contribution. This wording forestalls the transfer-across-problems
+   objection.
+3. **Benchmark C timestamp discipline:** engine forecast hash-committed
+   at time T; market price snapshot **at the same T**; both scored
+   against resolution; the T-to-resolution horizon distribution
+   reported. Abstention restored **pre-hoc**: the anatomy-gated scope
+   rule is committed before the ≥50-contract basket; no filtering
+   within scope afterwards.
+4. **The founder-gated parallel track** (independent of all wiring,
+   on later phases' critical path): WVS microdata registration (gates
+   R16 — the most valuable founder-hour available); FRED + ACLED keys;
+   RunPod key rotation (open exposure); one **backup restore
+   rehearsal** (the timer fires; an unrestored backup is a hope, and
+   the script is sized for 900 MB against an 18 GB world); the
+   destitution-bar ruling (34.5% measured vs a 25% bar written with
+   rich-world intuition — pre-registered FAIL honoured; revising the
+   bar is a founder decision, not a quiet adjustment).
+5. **Standing Rule 10 — result provenance stamping:** every result
+   JSON stamps hostname, git commit, seed, and wall-clock at write
+   time. "Which machine produced this file" becomes greppable, not
+   arguable.
+6. **Two phrasing/method rules made explicit:** (a) all external
+   material says **finite-size (FSLE) exponent**, never bare
+   "Lyapunov" — the infinitesimal exponent measured ≈ 0 and one
+   conflated sentence in a deck is a free referee hit; (b) the VII.3
+   loop gains the **iterate/confirm split** — iterate freely on
+   training folds, confirm once on untouched holdout, targets never
+   move after results (this program has been burned twice by exactly
+   this).
+
+### Evidence-ledger corrections accepted from V1-Readiness
+MrsP (~8.56pp) is **stronger** than the old engine (10.59pp) at
+national means — population-average fidelity is *not* the living
+world's strongest case, distributional/counterfactual capability is.
+The current prediction-market record is small and **much worse than
+the market**; the market is a baseline to beat prospectively, not to
+explain away. Chaos results are "inconsistent across metrics" pending
+the Phase 0.8 unified re-measurement — consistent with v4.0's own
+downgrade. Scenario adapters (COVID/Hormuz/GFC as generic force+economy
+shocks) must become **domain causal adapters** (pathogen/policy/
+health-system channels; shipping/energy/commodity channels; credit/
+liquidity/housing channels) before any official backtest paper — this
+moves into Phase 2 as its first task.
+
+### Phase 0 amendments (now 12 tasks)
+0.0a **Fix aging** — wire `generational_tick` (or equivalent) into
+`live_one_day`; semantic invariant: population mean age advances
+1/365 per day ± mortality effects; 365 simulated days age every
+survivor by exactly one year.
+0.0b **Virgin-slot rebirth** — central reset schema + typed-tie
+rebuild on birth; invariant: a forced death→rebirth test proves the
+reborn slot carries only intentionally inherited state and zero
+inherited ties.
+0.0c **Complete persistence** — presence, mobility, RNG state, clock
+and version metadata in every save path; invariant: save→restore→hash
+round-trip equality, and a branch from a restored snapshot under the
+same seed reproduces the branch from the live world.
+0.0d **Fabric re-homing** — migration and firm change must rebuild
+locality-, workplace- and co-presence-dependent ties (the fabric
+currently goes semantically stale when people move — a correctness
+mismatch, not a new-physics request); invariant: a migrated agent is
+removed from old local/colleague structures and added to new ones.
+Then 0.1–0.8 as written, with the semantic invariant suite (above)
+added to 0.3 as the release gate. Note that "Two Earths" includes the
+**product API**: `earth1/api/deps.py:19-35` still resolves the old
+`LivingWorld`/`WorldState`, so 0.5's exit criterion explicitly covers
+`/ask`, `/world`, `/forecast` and the observatory — every production
+surface answers from the same world UUID/hash as the daemon.
+
+### From the full V1-Readiness read — the execution architecture (adopted)
+
+The document was read in its entirety — 71 pages, 60 chapters,
+appendices A–I. Beyond the P0 findings above, its second half
+contributes something v4.0 did not have: a complete **execution
+architecture** — contracts, gates, work packages, claim discipline and
+registry schemas. All of the following is adopted into this Bible.
+
+**1. The E0–E5 evidence hierarchy** (finer-grained than, and mapped
+onto, BUILT/WIRED/LIVE/VALIDATED): E0 comment/plan (intent only) →
+E1 executable code path → E2 semantic test/deterministic invariant →
+E3 internal diagnostic artifact → E4 external empirical benchmark with
+verified truth → E5 prospective frozen prediction / independent
+replication. Two promotion rules: *a module is never promoted from E1
+to E4 by prose*; and *an E3 failure is not grounds to delete a
+mechanism if the benchmark never exercised it or a correctness bug
+contaminates the route — diagnose the causal path first* (this is why
+"delete the dead engines" was wrong and PORT-then-retire is right).
+
+**2. The universal module acceptance test.** A layer is accepted into
+V1 only when all five hold: (i) its state survives save/reload and
+snapshot/restore; (ii) its parameters have provenance and uncertainty;
+(iii) a module-level observable is calibrated against real data;
+(iv) disabling it produces the expected causal difference on at least
+one benchmark designed to exercise it; (v) its outputs are stable
+under timestep/resolution changes within declared tolerance. This
+becomes the gate for **every** module row in Part X.
+
+**3. Lifecycle ontology ruling.** `_be_born` can only fill dead slots
+and sets `age=0.0` ≈ adult entry at 18 — so the current world is a
+**fixed-capacity adult-slot model**, which is valid *only if declared*.
+The ruling: declare adult-entry capacity semantics explicitly in API
+and papers now (fast path for V1); a resizable population with
+childhood stages is the later path to literal 8.3B. No growth claim
+beyond capacity until dynamic allocation exists.
+
+**4. One-Earth invariants + the WorldModule contract.** Six invariants:
+API reads/writes the world the daemon evolves; branching copies the
+complete world, never a reduced substitute; timeline restore
+reconstructs the exact module set and schema version; earthling
+observation is a view into canonical state; benchmarks may initialize
+from snapshots but cannot construct a second ontology; every
+physics/submodel version is part of the prediction commitment hash.
+Each subsystem migrates toward a formal module contract (the FMI-3.0
+co-simulation pattern): declared `state_schema`, typed inputs/outputs
+with units, `step(dt, rng, inputs)` with an explicit stochastic
+stream, events, calibratable observables, typed parameters,
+**fidelity levels** (reduced-form / surrogate / specialist solver) and
+bit-consistent checkpoint/restore. This is the architectural answer to
+"model ALL of it": a nuclear module exposes reduced geopolitical state
+most days and swaps in blast/radiation physics for a nuclear scenario;
+climate consumes observed ERA5 fields for replay and DestinE-class
+storylines for futures. Resolution follows the causal question.
+
+**5. Scrub / Assimilate / Branch — the time machine formalized.**
+SCRUB = restore a state the synthetic world actually lived (versioned
+complete snapshots, seekable journal, seeded replay metadata).
+ASSIMILATE = condition an ensemble of plausible lived histories on
+observations (localized ensemble DA, filtered-vs-unfiltered twin, ESS
+diagnostics — never resample the million-dimensional agent array as
+one particle). BRANCH = fork any restored world into
+scenario/control ensembles (full clone, domain adapter, common random
+numbers, consequence distributions). The official backtest protocol:
+historical ensemble from a frozen start; dated exogenous history;
+assimilate **only information available up to the branch date**;
+restore the pre-event ensemble; inject resolved event vs control;
+evolve; compare external consequences. The live product is the same
+operation with the branch date = now.
+
+**6. Event ontology — natural language is perception; event objects
+are physics.** Every ingested headline/document becomes a structured
+`WorldEvent` (actors, location, affected systems, magnitude,
+confidence, duration, causal channels, provenance). The LLM extracts;
+**the LLM must not directly write the outcome.** Domain adapters then
+translate events into model inputs with explicit units: pandemic
+(pathogen params, seeding, NPIs, hospital capacity), energy/shipping
+(route capacity, supply, freight, pass-through), financial (credit,
+solvency, asset shock, refinancing), war (territory, casualties,
+refugees, sanctions), climate-extreme (fields + sector impacts),
+technology and political/policy families.
+
+**7. Observer effects and manifesting — the scientific separation.**
+Five concepts that currently share language must never share claims:
+psychological observer effect (being asked crystallizes attitude —
+potentially real, must be calibrated, never triggered accidentally by
+measurement code); statistical observation (new data conditions the
+ensemble — the assimilation mathematics, valid); the quantum
+measurement analogy (experimental only; no claim that civilization
+obeys quantum mechanics); manifesting (model through causal behavior —
+expectations altering decisions/actions/social signals — if
+measurable, never through unsupported physics); unknown laws (cannot
+be encoded as facts; represent as competing hypotheses). Observation
+may legitimately change the synthetic state **when there is a causal
+channel** — survey reactivity, self-fulfilling expectations, market
+reflexivity, assimilation, policy response.
+
+**8. 8.3B — identity namespace ≠ compute resolution.** The scale
+design: a canonical live civilization at a validated reference
+population; every agent carries a population weight and
+representativeness cell; **adaptive splitting** — cells with high
+causal sensitivity, rare tails, dense scenario exposure or claimed
+real earthlings split to higher resolution; a stable 8.3B identity
+namespace can exist before literal 8.3B simultaneous compute (a
+claimed earthling gets explicit persistent state). The scale ladder,
+each rung earned by an observable that *requires* it: 200K
+(correctness/reproducibility) → 1M (country/cohort distributions
+stabilize — already measured: country-mean accuracy is flat past ~1M)
+→ 10M (rare tails/geography/network) → 100M (does adaptive splitting
+still miss local heterogeneity?) → 1B (literal locality vs weights) →
+8.3B (does one-state-per-human create demonstrable value?). Never
+claim 8.3B because counts were multiplied by 8.3B/N.
+
+**9. The four-partition benchmark doctrine — "no failure mode"
+without overfitting.** Every benchmark has four partitions:
+engineering tests, calibration/training, development/validation, and
+final/prospective holdout. MISS → causal diagnosis → literature →
+hypothesis → calibration → DEV retest → repeat → FREEZE → HOLDOUT
+once. "We do not accept failure" means the team never stops
+engineering; it does not mean the team edits the exam after reading
+the answer sheet. A negative holdout stays on the public ledger and
+becomes the next model version's program. The nine-step miss protocol
+is adopted verbatim into VII.3: reproduce on immutable snapshot →
+trace the causal path (units, dt, persistence, reachability *before*
+touching physics) → sensitivity/ablation (if no parameter can move the
+error, a causal channel is structurally missing) → literature memo
+with competing hypotheses → candidate mechanisms behind experiment
+flags → calibrate with observation uncertainty → placebos and
+adversarial baselines, simplest robust mechanism wins → promote only
+with semantic tests + no regression → freeze and score holdout once.
+
+**10. NEVER CALIBRATE TO CHAOS.** A positive Lyapunov/FSLE exponent is
+not a quality target; increasing feedback until a metric turns
+positive is reverse-engineering an aesthetic. Calibrate mechanisms to
+real observables; then *measure* whether sensitive dependence emerges.
+The chaos benchmark is comparative: perturbation growth under shared
+randomness vs same-state replicate noise, and whether perturbations
+change policy-relevant consequence distributions — not whether a
+scalar exponent is positive. Emergence is validated by its own table:
+cascade reproduction (on > off), network structure vs external social
+data, perturbation reach above the noise floor, path dependence
+(same event on distinct assimilated histories → plausibly different
+responses), distributional tails without hand-injection, and ablation
+(removing a mechanism degrades the observable it explains, held-out).
+
+**11. Benchmark A restructured — five tasks, and MRP becomes an ally.**
+The WVS benchmark is built from **official microdata with survey
+weights** (the WVS/EVS Trend 1981–2022 corpus: 464 surveys, 120
+countries/territories, 666,907 respondents — repeated cross-sections,
+NOT panel data; cohort validation must be phrased as repeated
+cross-sectional cohort distributions, never individual trajectories).
+Tasks and targets: (i) country means — non-inferior to strong MRP
+(≤0.5pp excess MAE) or significant hybrid gain; *the country mean
+alone is no longer sufficient*; (ii) cohort/age cells — ≥10% relative
+error reduction vs strongest baseline and ≥75% correct gradient
+direction on held-out cells; (iii) joint distributions —
+energy/Wasserstein improvement over independent-marginal synthetic
+populations; (iv) held-out question generalization — beat the
+LLM/semantic-neighbor baseline on a frozen new-question set;
+(v) cross-wave deltas — beat no-change and trend baselines, final wave
+untouched. If MRP wins national means, Earth-1 *uses MRP as a
+calibration layer* and demonstrates value where agent structure
+matters: tails, joints, networks, path dependence, intervention
+response. V1 reports the incremental value over the best statistical
+baseline — that is the honest headline.
+
+**12. Benchmark B universal scenario metrics (reconciled tiers).**
+Per-scenario, pre-registered: direction ≥75% of observables (ACCEPT;
+v4.0's 85% becomes the GOOD tier); magnitude — median normalized
+absolute error beats the strongest simple causal baseline; geography —
+median Spearman ρ ≥ 0.5 on exercised outcomes; timing — lag error
+within domain tolerance; coverage — nominal 80% intervals empirically
+covering 70–90%; scenario discrimination — between-scenario distance
+above within-scenario noise with CI; attribution — paired controls
+mandatory, zero-effect placebo ≈ 0. Final V1 gate: **at least three
+resolved events across ≥ two domains** pass pre-registered criteria.
+COVID gets hard aggregate anchors: WHO ≈ **14.9M excess deaths
+2020–21**; ILO **8.8% of global working hours lost in 2020 ≈ 255M
+FTE jobs**; Oxford Government Response Tracker for policy timing;
+excess-mortality, labor, mobility, hospital-load, policy and
+opinion outcome families each with a named external truth source. The
+Hormuz adapter is specified: shipping network with chokepoint
+capacity and rerouting; oil/gas production/import dependency and
+inventories; price pass-through into cost of living and firm margins;
+sector/geography supply-chain exposure; escalation as a *separate
+branch*, not baked into every scenario; government reserve/subsidy
+response. Success is not "the branches look different" — it is
+treatment−control effects and geographic ranking stable above
+stochastic noise and consistent with external elasticity/flow data.
+
+**13. Benchmark C hierarchy — the hybrid is the product.** The
+realistic ladder: (i) Earth-1 beats the raw frontier LLM on the scoped
+set; (ii) Earth-1 probabilities are calibrated; (iii) the
+**market + Earth-1 hybrid** shows positive out-of-sample incremental
+skill — commercially the most meaningful result, since it answers
+"does civilization state add information to price?"; (iv) ≥30–100
+fully prospective resolved predictions before any broad forecasting
+claim. Beating the market outright on a scoped domain is the stretch
+goal, not the gate. Polymarket CLOB and Kalshi candlestick endpoints
+reconstruct the market probability at arming time T (the Delta-3
+timestamp discipline).
+
+**14. Benchmark D (new) — the living-macro scoreboard.** Every
+submodule gets its own empirical scoreboard *before* it may dominate
+scenario results: labor transitions (ILO/World Bank), demography (UN
+WPP), health (WHO/IARC/GBD), housing/homelessness (OECD/Eurostat),
+crime (UNODC), wealth (WID/OECD/LIS), migration (UN DESA/UNHCR/IOM),
+mobility (World Bank/ICAO/WHO), knowledge (UNESCO/OpenAlex),
+climate/food (ERA5/FAOSTAT). Module calibration means plausible
+marginal rates and response elasticities — otherwise a scenario miss
+cannot be diagnosed because one cannot tell whether the adapter, the
+substrate or the readout is responsible. Calibration method: global
+sensitivity analysis → emulators/surrogates on prime → **history
+matching** to eliminate implausible parameter regions (it treats
+observation error and model discrepancy explicitly) → ABC/SBI
+posterior refinement — the JASSS 2022 ABM-calibration toolkit, run as
+designed ensembles on the 96 cores, hierarchical where parameters vary
+by country/cohort.
+
+**15. The measurement spine (added to Phase 1).** `data_registry/`
+with source manifests, checksums, transformations, uncertainty;
+`parameter_registry.yaml` generated *into* runtime constants — no
+material numeric literal without source/status (schema per datum:
+stable id, module/version, value/unit, scope, source/DOI, vintage,
+estimation status authored/fitted/calibrated/derived, uncertainty,
+train-data hash, validation status, sensitivity rank, introducing
+commit); an experiment manifest on every run (prereg hash, commit +
+dirty-tree status, world schema + module versions, snapshot ID,
+adapter version, parameter/data hashes with roles, population
+size/weights, streams/seeds/pairing, host, thresholds, artifact
+checksums, auto-surfaced warnings); and a machine-readable
+`STATE_OF_TRUTH.json` generated from tests/artifacts, never
+hand-maintained — a design document must not outrank current code.
+
+**16. Work packages and the first instruction.** The build sequence is
+restated as WP-0…WP-10 (audit-freeze → One Earth → state continuity →
+living CI → provenance → module calibration → timeline → scenario
+adapters → benchmark harness → market record → V1 freeze), and the
+discipline is adopted: **WP-0 first and alone** — branch
+`v1-unification`, no new physics, produce `V1_UNIFICATION_AUDIT.md`
+with the entry-point graph, state schemas, persistence fields, test
+gaps and exact files to edit, reviewed *before* implementation. This
+prevents discovering a second system after coding against the first —
+which is precisely what happened between v3 and v4. The WP map onto
+Part VIII: WP-0–3 ≙ Phase 0, WP-4 ≙ Phase 1's spine, WP-5 ≙ Phase 2's
+module calibration, WP-6 ≙ Phase 5, WP-7–8 ≙ Phase 2, WP-9 ≙ Phase 3,
+WP-10 ≙ Phase 6.
+
+**17. Four papers, not three.** A/B/C as specified in Part VI, plus
+the **Technical Architecture paper**: an ODD+-style model description
+(the Grimm et al. 2010/2020 protocol — purpose/patterns,
+entities/state, process overview = the daily heartbeat, design
+concepts, initialization, input data, submodels with parameter tables,
+fitness-for-purpose = the benchmark suite and claim boundaries). This
+is what makes Earth-1 reproducible and reviewable rather than
+folklore.
+
+**18. The claim ladder (public claims discipline).** Now: "a living,
+branchable synthetic civilization kernel with material, biological,
+social, institutional and memory state" (evidence: code, E1–E3).
+After One Earth: "every product surface uses one persistent living
+civilization." After Paper A: "reproduces specified held-out human
+distributions at measured accuracy relative to strong baselines."
+After Paper B: "reproduces specified consequences of resolved events
+from pre-event worlds within measured uncertainty." After Paper C:
+"collective expectations prospectively calibrated, adding measured
+forecast skill on scoped questions." After multi-domain replication:
+"a validated computational civilization model for specified domains."
+**Not until proven, never:** predicts civilization generally; perfect
+digital twin of every human; 8.3B literally live; deterministic chaos;
+quantum consciousness/observer effect.
+
+**19. Standing Rule 11 — the ten prohibitions** (verbatim class, from
+Appendix H, born of this exact week): no third world or "temporary"
+production state for a benchmark; no promoting a mechanism because the
+output looks more alive/chaotic/polarized/interesting; no fixing a
+failed benchmark by authoring the holdout answer into a coefficient;
+no calling a module validated off an end-metric that never exercised
+it; no claiming 8.3B from multiplied counts; no describing
+reduced-form health as clinical prediction or abstract escalation as
+nuclear physics; no "quantum" language upgrading an analogy into an
+empirical claim; no design document outranking current code; no
+reporting a single chaotic branch as a forecast — paired effect
+distributions with uncertainty, always; no hiding a failed mechanism —
+ledger, diagnosis, calibrated replacement.
+
+**20. Operations.** The machine allocation gains "never-do" columns:
+CCX33 — no calibration grids, no mutable experiment branches, no
+unversioned physics changes; prime — never becomes canonical just
+because a result ran there; Storage Box — no silent overwrites,
+retention policy, **restore rehearsal required**; laptop — control
+plane only, never the sole copy of anything. Every run launches
+through a checked-in job manifest; the supervisor reports run ID,
+snapshot, commit, parameter hash, PID, host, progress, artifact
+destination. *Observable progress is mandatory; wall-clock estimates
+are optional.* Deployment-as-code for the living daemon: checked-in
+unit file, health endpoint, restart policy, state lock, deployment
+manifest with commit SHA and physics version.
+
+**21. Research foundations added to Part IV** (all primary):
+Destination Earth / ECMWF Climate DT (operational multi-fidelity
+Earth-system twin — the 8.3B-scale architectural precedent alongside
+Covasim); FMI 3.0 (the module-contract standard); Grimm et al.
+2010/2020 (ODD protocol, DOIs 10.1016/j.ecolmodel.2010.08.019 and
+10.18564/jasss.4259); JASSS 2022 history-matching + ABC for stochastic
+ABM calibration; the WVS/EVS Trend File 1981–2022 (DOI
+10.14281/18241.27); Polymarket CLOB prices-history and Kalshi
+historical endpoints; WHO COVID excess mortality; ILO WESO 2021; IARC
+CI5 Volume XII / GLOBOCAN (to replace the income-tier cancer
+constants).
+
+**22. The final CTO recommendation, adopted as this document's closing
+ruling:** do not freeze Earth-1 v1 today — freeze the **architecture
+direction** today. `alive.World` is the civilization; everything else
+becomes an adapter, a readout, a module or an archived benchmark. The
+next leap comes not from more ambition but from making what exists
+coherent, empirically calibrated and impossible to misinterpret. Then
+the V1 decision is made from the three benchmark papers, not from a
+feeling that the architecture is finished.
 
 ---
 
@@ -800,6 +1249,8 @@ loop.
 | R13 | 8.3B claim unsupportable full-fidelity | LOW | dynamic-rescaling architecture per Covasim precedent; claim worded as instantiation-on-observation |
 | R14 | Single writer (world box) SPOF | LOW | verified off-site backup; archive of prior worlds retained |
 | R15 | Feed homophily edges frozen at day-0 stances; static online status | LOW | port `graph_dynamics` (Phase 0.5) to make ties evolve |
+| R16 | Temporal ground truth authored, not transcribed (`wvs_paired.py:9-12`; same class in `census.py`/`culture.py` literals) | **HIGH** | founder-gated WVS microdata registration starts now, in parallel; transcription + committed diff; re-run every frozen temporal pipeline; no temporal claim published until closed |
+| R17 | Aging frozen, rebirth graph inheritance, presence/mobility/RNG unpersisted (external-found, independently verified 08-19) | **CRITICAL** | Phase 0.0a–0.0d; all long-horizon demographic results carry the caveat until re-run |
 
 ---
 
