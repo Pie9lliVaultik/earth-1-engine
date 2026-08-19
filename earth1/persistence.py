@@ -216,7 +216,14 @@ def save_world(w, path, rng: Optional[np.random.Generator] = None,
     _assert_policy_current()
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    sparse.save_npz(path.with_suffix(".adj.npz"), w.civ.adj.tocsr())
+    # the graph is written atomically too. sparse.save_npz truncates its
+    # destination in place, which left a 210 MB world.adj.npz inside a
+    # verified production backup on 2026-08-19 — the manifest faithfully
+    # recorded the truncation and the restore rehearsal caught it at
+    # load. tmp name must end in .npz or save_npz appends the suffix.
+    adj_tmp = path.with_suffix(".adj.tmp.npz")
+    sparse.save_npz(adj_tmp, w.civ.adj.tocsr())
+    adj_tmp.replace(path.with_suffix(".adj.npz"))
 
     civ, fab = _detach_adj(w)
     payload = {name: getattr(w, name) for name in PERSISTENT_FIELDS}

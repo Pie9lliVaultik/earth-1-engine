@@ -124,6 +124,39 @@ def test_v0_snapshot_is_refused_without_the_override(daemon, monkeypatch):
         daemon.load_world()
 
 
+def test_atomic_graph_write_leaves_no_tmp(daemon):
+    """The graph is replaced atomically — no truncate-in-place window.
+
+    Production 2026-08-19: sparse.save_npz truncated world.adj.npz in
+    place, a backup staged the 210 MB partial, and the manifest
+    faithfully verified the truncation. The rehearsal caught it at
+    canonical load. Saves must never expose a partial graph under the
+    canonical name.
+    """
+    w, _, _ = daemon.load_world()
+    daemon.save_world(w, np.random.default_rng(1))
+    assert not list(daemon.HOME.glob("*.tmp.npz"))
+    assert (daemon.HOME / "world.adj.npz").exists()
+    from scipy import sparse
+    m = sparse.load_npz(daemon.HOME / "world.adj.npz")   # loads = complete
+    assert m.shape == (w.civ.n, w.civ.n)
+
+
+def test_v1_graph_preferred_over_legacy(daemon):
+    """When both graphs exist, the v1 world.adj.npz is canonical.
+
+    The old priority read legacy adj.npz whenever present, which masked
+    a truncated v1 graph in production. A garbage legacy file must now
+    be ignored entirely on a v1 world.
+    """
+    w, _, _ = daemon.load_world()
+    daemon.save_world(w, np.random.default_rng(1))
+    (daemon.HOME / "adj.npz").write_bytes(b"NOT A GRAPH")   # legacy garbage
+    back, _, info = daemon.load_world()
+    assert info["schema_version"] == persistence.SCHEMA_VERSION
+    assert back.civ.adj.shape == (w.civ.n, w.civ.n)
+
+
 def test_v0_snapshot_migrates_only_with_the_override(daemon, monkeypatch):
     from tests.test_persistence_roundtrip import _write_v0_daemon_snapshot
     w, _, _ = daemon.load_world()

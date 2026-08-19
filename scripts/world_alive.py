@@ -95,7 +95,13 @@ def load_world():
                                             "lost": [], "born": True}
 
     migrate = os.environ.get("EARTH1_MIGRATE_V0") == "1"
-    adj = LEGACY_ADJ if LEGACY_ADJ.exists() else None
+    # graph priority: the v1 graph (world.adj.npz) is canonical whenever
+    # it exists; the legacy adj.npz is only for pre-migration snapshots.
+    # The old order preferred legacy whenever present, which silently
+    # masked a truncated v1 graph in production on 2026-08-19.
+    v1_adj = WORLD_PKL.with_suffix(".adj.npz")
+    adj = None if v1_adj.exists() else (LEGACY_ADJ if LEGACY_ADJ.exists()
+                                        else None)
     w, rng_state, info = persistence.load_world(
         WORLD_PKL, allow_v0_migration=migrate, adj_path=adj)
 
