@@ -226,6 +226,17 @@ def compare(baseline: dict, branch: dict, w_branch, days: int,
                             if include_unstable_country_detail else []),
         "countries_in_recession": ([names[i] for i in recession]
                                    if include_unstable_country_detail else []),
+        # THE FULL COUNTRY VECTOR, always returned. The diagnostic that
+        # declared country consequences "chaotic" was comparing two
+        # TOP-FIVE lists out of 194 countries — zero-padding two
+        # near-disjoint supports produces a large negative correlation
+        # as pure arithmetic, with no bearing on whether the underlying
+        # signal is stable. Stability has to be measured on the whole
+        # vector, so the whole vector has to be available.
+        "jobs_by_country_vector": extra_jobless.tolist(),
+        "jobless_rate_change_by_country": (
+            raw_jobless / baseline["workers_by_country"]).tolist(),
+        "country_iso2": iso,
         "country_detail_suppressed": not include_unstable_country_detail,
         "country_detail_note": (
             "country-level rankings are not reportable: two runs of the "

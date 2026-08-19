@@ -3,23 +3,23 @@
   {
    "pop": 50000,
    "per_country": 257.7,
-   "rank_correlation": -0.5833,
+   "rank_correlation": -0.0823,
    "set_overlap": 0.1111
   },
   {
    "pop": 200000,
    "per_country": 1030.9,
-   "rank_correlation": -0.6,
-   "set_overlap": 0.1111
+   "rank_correlation": 0.012,
+   "set_overlap": 0.0526
   },
   {
    "pop": 600000,
    "per_country": 3092.8,
-   "rank_correlation": -0.6167,
-   "set_overlap": 0.1111
+   "rank_correlation": 0.0076,
+   "set_overlap": 0.1765
   }
  ],
- "slope": -0.033399999999999985,
+ "slope": 0.0899,
  "verdict": "GENUINELY CHAOTIC \u2014 more agents do not stabilise country consequences. Refuse the map, ship global aggregates.",
  "days": 45,
  "scenario": "escalation"

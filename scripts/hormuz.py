@@ -74,13 +74,26 @@ def geography_divergence(res: dict, k: int = 10, noise_floor=None) -> dict:
       SET OVERLAP near 1.0 means the same countries appear at all.
     Both low means the branches are genuinely different geographies.
     """
+    # THE FULL 194-COUNTRY VECTOR, not the top five. Comparing two
+    # top-k lists and zero-padding their union produces a large negative
+    # correlation whenever the lists differ, which is arithmetic rather
+    # than evidence — and it is what previously produced a "-0.6 noise
+    # floor, flat across sample sizes" and a false conclusion that
+    # country consequences are chaotic.
     vecs, tops = {}, {}
     for sid, b in res["branches"].items():
-        # rebuild a country vector from the reported worst-hit list
-        rows = b["consequences"].get("jobs_lost_where", [])
-        d = {r["iso2"]: float(r["value"]) for r in rows}
+        c = b["consequences"]
+        full = c.get("jobs_by_country_vector")
+        iso = c.get("country_iso2")
+        if full and iso:
+            d = {iso[i]: float(v) for i, v in enumerate(full)}
+        else:                      # fall back to the old, broken read
+            d = {r["iso2"]: float(r["value"])
+                 for r in c.get("jobs_lost_where", [])}
         vecs[sid] = d
-        tops[sid] = set(list(d)[:k])
+        # top-k membership is still reported, but only as a SECONDARY
+        # readout — the correlation below is computed on everything
+        tops[sid] = set(sorted(d, key=lambda x: -d[x])[:k])
 
     ids = list(vecs)
     out = {"pairs": []}

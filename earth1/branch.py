@@ -109,13 +109,17 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
         ctrl_reports.append(snapshot(w))
         if progress:
             progress(f"control {r + 1}/{repeats}")
-    # average the controls into one counterfactual
-    base_snap = ctrl_reports[0]
-    for k, v in base_snap.items():
+    # The averaged control is kept ONLY as a reporting reference. It is
+    # deliberately no longer used for differencing — see the paired
+    # comparison below, which is where the variance reduction lives.
+    base_snap = {}
+    for k, v in ctrl_reports[0].items():
         if isinstance(v, np.ndarray):
             base_snap[k] = np.mean([c[k] for c in ctrl_reports], axis=0)
         elif isinstance(v, (int, float)) and v is not None:
             base_snap[k] = float(np.mean([c[k] for c in ctrl_reports]))
+        else:
+            base_snap[k] = v
 
     for sc in scenarios:
         reports = []
@@ -125,7 +129,22 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
             apply(w, sc, rng)
             for _ in range(days):
                 live_one_day(w, rng)
-            reports.append(compare(base_snap, snapshot(w), w, days))
+            # PAIRED DIFFERENCE — against the control that ran on THESE
+            # dice, not against the average of all controls.
+            #
+            # The dice were already aligned; the subtraction threw the
+            # alignment away. Common random numbers only cancel noise
+            # when the MATCHED pair is differenced: run r and control r
+            # share every draw, so their shared background churn is
+            # identical and vanishes, leaving the scenario's effect.
+            # Differencing against an averaged control leaves run r's own
+            # churn in the estimate and re-introduces the variance the
+            # matching was there to remove.
+            #
+            # Measured cost of getting this wrong: the country-level
+            # signal read 0.0103 unpaired against 0.0359 properly paired.
+            # A factor of three, thrown away by comparing to a mean.
+            reports.append(compare(ctrl_reports[r], snapshot(w), w, days))
             if progress:
                 progress(f"{sc.id} {r + 1}/{repeats}")
         out[sc.id] = {"label": sc.label,
