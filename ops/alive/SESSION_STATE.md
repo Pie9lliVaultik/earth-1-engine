@@ -1,5 +1,19 @@
 # WHERE THINGS STAND — read this immediately after BIBLE.md
 
+## Document precedence (founder ruling, 2026-08-19)
+
+| document | authority |
+|---|---|
+| `BIBLE.md` | governing architecture and scientific program |
+| **`ops/alive/SESSION_STATE.md`** (this file) | **current execution checkpoint** |
+| `ops/alive/DEPLOY_RUNBOOK.md` | the immediate procedure |
+| `CLAUDE.md` → "Current phase" | **STALE** until Epoch 1 acceptance |
+
+Reconcile `CLAUDE.md` **after** production is green — not before. Doing
+it first adds a commit ahead of the operational gate and contributes
+nothing to the deployment.
+
+
 *Written 2026-08-19. `CLAUDE.md`'s "Current phase" section is STALE: it
 still names WP-0 as the first deliverable. WP-0 is done. This file is
 current; when they disagree, this one is right. Fold it into

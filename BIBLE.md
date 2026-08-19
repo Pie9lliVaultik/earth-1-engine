@@ -1315,6 +1315,29 @@ threshold, cannot carry a cascade.
    instruments this week; every false "impossible" traces to one.
 2. **Every control must be able to fail.** A control that cannot fail
    is not a control (three caught).
+
+   **A test that cannot demonstrate failure is not yet evidence.**
+   Show the control that makes the check fail, or the green is
+   decoration. Two 2026-08-19 near-misses make the point, and both
+   passed at the implementation level while failing at the *meta*
+   level — which is why neither was caught by reading the code:
+
+   - The **backup timer was green and watching the wrong Earth.**
+     `run_backup.sh` protected `data/living/` (the retired 200K
+     opinion world) while the live 4M civilization went unbacked. Every
+     component worked; the target was wrong. Had Epoch 0 been stopped
+     on the strength of that green, the only living world would have
+     been halted with no recoverable copy.
+   - The **persistence guard derived its expectation from itself.**
+     `test_every_world_field_is_saved` compared the saved payload
+     against `dataclasses.fields(World)` — but the serializer *built*
+     the payload from that same call. A mirror, not a control; it could
+     never have failed on a new field. The cure was a **declared**
+     policy the test checks against independently.
+
+   Applies for the rest of the program — calibration, assimilation,
+   scenarios, WVS, market forecasting: before believing any green
+   result, name the failure case and verify the instrument reports it.
 3. **Small before large.** A binary question never needs a full-scale
    run (the ranking answer took 90 seconds at 20K after hours were
    wasted at 200K).
