@@ -395,6 +395,7 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     life.firm[lost] = -1
     life.tenure[lost] = 0.0
     life.spells[lost] += 1
+    lost_idx = np.flatnonzero(lost)          # for fabric re-homing (0.0d)
 
     # ── 3. the unemployed look for work ───────────────────────────────
     # Finding gets harder the longer the spell and the more spells you
@@ -408,9 +409,10 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     scar = np.maximum(1.0 / (1.0 + 0.25 * life.spells), 0.35)
     find_p = FINDING_RATE_YR * dt_yr * scar
     found = idle & (u_find < find_p)
+    found_idx = np.flatnonzero(found)        # for fabric re-homing (0.0d)
     if found.any():
         life.employed[found] = True
-        idx = np.flatnonzero(found)
+        idx = found_idx
         for ci in np.unique(civ.country[idx]):
             who = idx[civ.country[idx] == ci]
             firms_here = np.flatnonzero((life.firm_country == ci)
@@ -578,7 +580,8 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
                 life.last_event[m] = code
                 life.n_events[m] += 1
 
-    stats = {"laid_off": int(laid_off.sum()), "separated": int(sep.sum()),
+    stats = {"lost_idx": lost_idx, "found_idx": found_idx,
+             "laid_off": int(laid_off.sum()), "separated": int(sep.sum()),
              "found_work": int(found.sum()), "firms_failed": int(failed.size),
              "unemployment": float((~life.employed & life.in_lf).sum()
                                    / max(life.in_lf.sum(), 1)),

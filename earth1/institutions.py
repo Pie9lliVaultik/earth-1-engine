@@ -338,12 +338,18 @@ def class_tick(civ, life, kn, gov: Governments, cls: Class, rng,
         idx = np.flatnonzero(goes)
         civ.country[idx] = rng.choice(dest_pool, idx.size)
         cls.migrated[idx] = True
-        # arriving costs you your ties and your job
+        # arriving costs you your ties and your job — the ties are
+        # actually severed and rebuilt by earth1.rehome (0.0d), which
+        # alive.py invokes with the indices returned below; region,
+        # urban, locality and presence update there too
         life.employed[idx] = False
         life.firm[idx] = -1
         moved = int(idx.size)
+        migrated_idx = idx
 
-    return {"homeless": float(cls.homeless[live].mean()),
+    out_idx = migrated_idx if moved else np.array([], dtype=np.int64)
+    return {"migrated_idx": out_idx,
+            "homeless": float(cls.homeless[live].mean()),
             "became_homeless": int(becomes.sum()),
             "crimes_today": int(commits.sum()),
             "criminal_share": float(cls.criminal[live].mean()),

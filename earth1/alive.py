@@ -109,12 +109,24 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     advance_age(civ, dt_days)
 
     # 1 matter
-    st.update(life_tick(civ, life, rng, dt_days=dt_days, couple_forces=False))
+    st_life = life_tick(civ, life, rng, dt_days=dt_days, couple_forces=False)
+    _lost = st_life.pop("lost_idx", None)
+    _found = st_life.pop("found_idx", None)
+    st.update(st_life)
     # 2 bodies
     st.update(health_tick(civ, life, w.health, rng, float(w.day), dt_days))
     # 4 class
-    st.update(class_tick(civ, life, w.knowledge, w.gov, w.klass, rng,
-                         dt_days, alive=w.health.alive))
+    st_cls = class_tick(civ, life, w.knowledge, w.gov, w.klass, rng,
+                        dt_days, alive=w.health.alive)
+    _migrated = st_cls.pop("migrated_idx", None)
+    st.update(st_cls)
+
+    # 0.0d — the fabric follows the person: severed and rebuilt through
+    # the declared re-homing policies, one batched pass per day
+    if (_migrated is not None and len(_migrated)) or        (_lost is not None and len(_lost)) or        (_found is not None and len(_found)):
+        from earth1.rehome import rehome_employment, rehome_migrants
+        st["rehomed_migrants"] = rehome_migrants(w, _migrated, rng)
+        st["rehomed_workers"] = rehome_employment(w, _lost, _found, rng)
     # 5 knowledge
     st.update(knowledge_tick(civ, life, w.knowledge, rng, dt_days,
                              alive=w.health.alive))
