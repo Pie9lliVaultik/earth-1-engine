@@ -268,7 +268,8 @@ def apply_policy_and_war(civ, life, gov: Governments, health, rng,
         killed = young & (rng.random(civ.n) < p_die)
         if health is not None and killed.any():
             health.alive[killed] = False
-            health.cause_of_death[killed] = 5     # war
+            from earth1.types import CauseOfDeath
+            health.cause_of_death[killed] = int(CauseOfDeath.WAR)
         # everyone in a country at war is more afraid and more collective
         civ.forces[war_here, Force.FEAR] = np.clip(
             civ.forces[war_here, Force.FEAR] + 0.03 * dt_days, 0, 1)

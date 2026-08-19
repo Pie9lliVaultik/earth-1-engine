@@ -170,7 +170,8 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
     gone = starving | parched
     if gone.any() and health is not None:
         health.alive[gone] = False
-        health.cause_of_death[gone] = 7          # want
+        from earth1.types import CauseOfDeath
+        health.cause_of_death[gone] = int(CauseOfDeath.WANT)
 
     # breathing is a continuous tax nobody notices paying
     life.physical = np.clip(life.physical - BREATH_TAX * fl.breath

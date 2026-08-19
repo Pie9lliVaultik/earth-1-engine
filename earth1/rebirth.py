@@ -406,7 +406,8 @@ def apply_rebirth(w, slots, parents, rng, heritability=HERITABILITY):
     # health — a new body
     h.alive[slots] = True
     h.condition[slots] = 0
-    h.cause_of_death[slots] = 0
+    from earth1.types import CauseOfDeath
+    h.cause_of_death[slots] = int(CauseOfDeath.ALIVE)
     h.in_treatment[slots] = False
     h.diagnosed_day[slots] = -1.0
     h.lifetime_illnesses[slots] = 0
