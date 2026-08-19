@@ -19,6 +19,26 @@ still names WP-0 as the first deliverable. WP-0 is done. This file is
 current; when they disagree, this one is right. Fold it into
 `CLAUDE.md` when that file is next editable.*
 
+## ✅ DONE: Epoch 1 deployed and ACCEPTED (2026-08-19)
+
+All ten acceptance criteria green — `ops/alive/EPOCH1_ACCEPTANCE_REPORT.md`
+is the record. Running commit `d2e55b0` (= frozen `ae65bcd` + three
+fixes found by the acceptance run itself; physics delta is
+`earth1/persistence.py` only). World at day 290+, full physics,
+epoch boundary at day 284, first-attempt days 284-304 ANNULLED
+(reduced physics — never cite as world history).
+
+## ▶ THE NEXT ACTION: 0.0a — aging
+
+Scope FIXED (founder): `advance_age()` = chronological `age` +
+`age_bucket` only. Details in `CLAUDE.md` Current phase (now
+reconciled and authoritative again — the staleness note below is
+historical).
+
+---
+
+# ORIGINAL DEPLOYMENT CHECKPOINT (historical, superseded)
+
 ## ▶ THE NEXT ACTION: execute the Epoch-1 deployment
 
 **Frozen target: tag `v1-persistence-deploy-1` → `ae65bcd`.**
