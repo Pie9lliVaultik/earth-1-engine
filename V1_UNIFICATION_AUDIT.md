@@ -58,7 +58,22 @@ Phase 0 ships `advance_age(...)` maintaining **age and age_bucket only**.
 > **Governing rule:** *Bug? Fix it. Contradiction? Fix it. Architectural or
 > behavioural preference? Don't silently change the model.*
 
-### ⚠️ Open question raised by Amendment B — EXPERIENCE (needs a ruling)
+### ✅ EXPERIENCE — RULED 2026-08-19: leave it alone
+
+**Ruling:** `advance_age()` touches **only** `age` and `age_bucket`. Do **not**
+re-assert EXPERIENCE from age. In the living world EXPERIENCE has become a
+genuine dynamical state receiving contributions from curiosity, travel,
+propagation, circumstances, feed and contagion; replacing it from age would
+**erase lived history**.
+
+N10 therefore moves to 0.8 — but the competing arm is *not* "overwrite EXPERIENCE
+from age." The scientific question is whether the stateful EXPERIENCE channel
+needs **decay / mean-reversion** versus its current pure-accumulation law.
+
+*(Original analysis retained below, since it is the reasoning the ruling rests
+on.)*
+
+### Open question as originally raised — EXPERIENCE
 
 The ruling says `advance_age` may also maintain *"definitionally age-derived
 state such as EXPERIENCE."* **In the old substrate that is safe; in the living

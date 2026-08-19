@@ -35,7 +35,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from earth1 import provenance
+from earth1 import persistence, provenance
 from earth1.alive import birth_world, live_one_day
 from earth1.chaos import entropy
 from earth1.memory import event_from_news
@@ -57,114 +57,57 @@ def _sigterm(*_):
     print("  stop requested — finishing the day, then saving", flush=True)
 
 
-LIFE_ARRAYS = ("occupation", "firm", "employed", "in_lf", "wage", "wealth",
-               "cost", "tenure", "deprivation", "spells", "firm_health",
-               "firm_country", "force_baseline", "trait_baseline", "mental",
-               "physical", "addiction", "relationship", "social_need",
-               "political", "mental_setpoint", "relationship_setpoint",
-               "last_event", "last_event_day", "n_events")
-CIV_ARRAYS = ("country", "region", "age_bucket", "age", "education", "income",
-              "urban", "openness", "empathy", "risk_appetite", "doubt",
-              "desire_intensity", "economic_field", "culture_offset",
-              "conscientiousness", "agreeableness", "extraversion",
-              "neuroticism", "power_distance", "individualism",
-              "uncertainty_avoidance", "long_term_orientation", "forces",
-              "alpha", "means")
+WORLD_PKL = HOME / "world.pkl"
+LEGACY_ADJ = HOME / "adj.npz"          # the pre-schema graph location
 
 
-def save_world(w):
-    """Persist everything: people, bodies, knowledge, states, memory."""
-    import pickle
+def save_world(w, rng=None):
+    """Persist everything, through the one canonical serializer.
+
+    This used to carry its own field list, which is how presence and
+    mobility came to be dropped on every restart. `persistence` walks a
+    declared policy instead, so new world state cannot be forgotten
+    here (tests/test_persistence_roundtrip.py).
+    """
     HOME.mkdir(parents=True, exist_ok=True)
-    from scipy import sparse
-    sparse.save_npz(HOME / "adj.npz", w.civ.adj.tocsr())
-    with open(HOME / "world.pkl", "wb") as f:
-        pickle.dump({"civ": {k: getattr(w.civ, k) for k in CIV_ARRAYS},
-                     "fabric": w.fabric, "feed": w.feed,
-                     "life": w.life, "health": w.health,
-                     "knowledge": w.knowledge, "gov": w.gov,
-                     "klass": w.klass, "chronicle": w.chronicle,
-                     # climate and flourishing were absent here, so every
-                     # restart silently reset the weather and wiped
-                     # everyone's hunger, thirst and hope. Restart=always
-                     # means that was happening in production.
-                     "climate": w.climate, "flourishing": w.flourishing,
-                     "day": w.day, "n": w.civ.n, "seed": w.civ.seed}, f)
+    meta = persistence.save_world(w, WORLD_PKL, rng=rng)
     (HOME / "state.json").write_text(json.dumps(
         {"day": w.day, "pop": int(w.civ.n), "seed": int(w.civ.seed),
          "alive": int(w.health.alive.sum()),
-         "saved_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}))
+         "schema_version": meta["schema_version"],
+         "sha256": meta["sha256"],
+         "rng_persisted": meta["rng_persisted"],
+         "saved_at": meta["saved_at"]}))
+    return meta
 
 
 def load_world():
-    import pickle
-    from scipy import sparse
-    if not (HOME / "world.pkl").exists():
+    """Bring the world back, or refuse to pretend. Returns (world, rng).
+
+    A pre-schema snapshot cannot carry presence, mobility or the random
+    stream, so resuming from one silently changes the physics. That is a
+    deliberate migration, not an incidental load: set
+    EARTH1_MIGRATE_V0=1 once, at a controlled checkpoint.
+    """
+    if not WORLD_PKL.exists():
         print(f"  birthing a world: {POP:,} earthlings", flush=True)
-        return birth_world(POP, 42)
-    with open(HOME / "world.pkl", "rb") as f:
-        d = pickle.load(f)
-    w = birth_world(d["n"], d["seed"])
-    for k, v in d["civ"].items():
-        setattr(w.civ, k, v)
-    w.civ.adj = sparse.load_npz(HOME / "adj.npz")
-    # THE FABRIC MUST MATCH THE GRAPH IT DESCRIBES. birth_world builds a
-    # fresh fabric from a fresh population; overwriting civ.adj from disk
-    # afterwards left w.fabric.by_type describing a world that no longer
-    # exists, so any per-channel analysis on a resumed world was wrong.
-    if "fabric" in d and d["fabric"] is not None:
-        w.fabric = d["fabric"]
-    if "feed" in d and d["feed"] is not None:
-        w.feed = d["feed"]
-    w.life, w.health = d["life"], d["health"]
-    w.knowledge, w.gov = d["knowledge"], d["gov"]
-    w.klass, w.chronicle, w.day = d["klass"], d["chronicle"], d["day"]
-    if d.get("climate") is not None:
-        w.climate = d["climate"]
-    if d.get("flourishing") is not None:
-        w.flourishing = d["flourishing"]
-    print(f"  woke up: day {w.day}, {int(w.health.alive.sum()):,} alive",
-          flush=True)
-    return w
+        return birth_world(POP, 42), None
 
+    migrate = os.environ.get("EARTH1_MIGRATE_V0") == "1"
+    adj = LEGACY_ADJ if LEGACY_ADJ.exists() else None
+    w, rng_state, info = persistence.load_world(
+        WORLD_PKL, allow_v0_migration=migrate, adj_path=adj)
 
-def _unused_save(civ, life, fab, day):
-    HOME.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(HOME / "civ.npz",
-                        **{k: getattr(civ, k) for k in CIV_ARRAYS})
-    np.savez_compressed(HOME / "life.npz",
-                        **{k: getattr(life, k) for k in LIFE_ARRAYS
-                           if getattr(life, k, None) is not None})
-    from scipy import sparse
-    sparse.save_npz(HOME / "adj.npz", civ.adj.tocsr())
-    (HOME / "state.json").write_text(json.dumps(
-        {"day": day, "pop": int(civ.n), "seed": int(civ.seed),
-         "saved_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}))
-
-
-def load_or_birth():
-    st = HOME / "state.json"
-    if st.exists():
-        from scipy import sparse
-        meta = json.loads(st.read_text())
-        civ = genesis(meta["pop"], meta["seed"])
-        cz = np.load(HOME / "civ.npz")
-        for k in cz.files:
-            setattr(civ, k, cz[k])
-        civ.adj = sparse.load_npz(HOME / "adj.npz")
-        life = birth_life(civ, seed=meta["seed"])
-        lz = np.load(HOME / "life.npz")
-        for k in lz.files:
-            setattr(life, k, lz[k])
-        print(f"  woke up: day {meta['day']}, {civ.n:,} earthlings",
+    if info["schema_version"] == 0:
+        print(f"  MIGRATED a v0 snapshot. It could not carry: "
+              f"{', '.join(info['lost']) or 'nothing'}", flush=True)
+        print("  those subsystems were rebuilt at birth values — this "
+              "world is NOT bit-continuous with the one that saved it.",
               flush=True)
-        return civ, life, None, int(meta["day"])
-    print(f"  birthing a world: {POP:,} earthlings", flush=True)
-    civ = genesis(POP, 42)
-    life = birth_life(civ, seed=42)
-    fab = build_fabric(civ, life, seed=42)
-    civ.adj = fab.adj
-    return civ, life, fab, 0
+    print(f"  woke up: day {w.day}, {int(w.health.alive.sum()):,} alive"
+          f"  (schema v{info['schema_version']}, "
+          f"checksum {info.get('checksum')})", flush=True)
+    return w, rng_state
 
 
 def read_the_news(civ, life, world=None):
@@ -260,15 +203,20 @@ def main():
     )
     provenance.enforce(prov, strict=strict)
 
-    w = load_world()
+    w, rng_state = load_world()
     civ, life = w.civ, w.life
-    rng = np.random.default_rng(int(time.time()) % (2 ** 31))
+    # continue the saved stream where it stopped. Only a world with no
+    # stream to continue — a fresh birth, or a migrated v0 snapshot —
+    # falls back to the clock, and that fallback is journaled below.
+    rng = persistence.rng_from_state(
+        rng_state, fallback_seed=int(time.time()) % (2 ** 31))
     HOME.mkdir(parents=True, exist_ok=True)
 
     # the world is identified only once it exists, so population and day
     # are filled in here and the record is journaled as the first line
     # of this process's life
     prov.update(population=int(civ.n), world_day=int(w.day),
+                rng_continued=rng_state is not None,
                 event="startup",
                 at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     with open(JOURNAL, "a") as f:
@@ -309,7 +257,7 @@ def main():
         with open(JOURNAL, "a") as f:
             f.write(json.dumps(line) + "\n")
         if day % SAVE_EVERY == 0:
-            save_world(w)
+            save_world(w, rng)
 
         if day % 10 == 0 or day < 3:
             print(f"  day {day:6d}  alive {line.get('alive', 0):7,d}"
@@ -325,7 +273,7 @@ def main():
             time.sleep(min(rest, 1.0))
             rest -= 1.0
 
-    save_world(w)
+    save_world(w, rng)
     print(f"  saved at day {w.day}. the world is paused, not lost.",
           flush=True)
 

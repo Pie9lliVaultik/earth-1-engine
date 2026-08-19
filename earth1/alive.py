@@ -175,7 +175,7 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
 
     # 6 memory — what happened is still happening, and still spreading
     st.update(w.chronicle.tick(civ, dt_days))
-    st["memory_spread"] = w.chronicle.spread(civ)
+    st["memory_spread"] = w.chronicle.spread(civ, rng)
 
     # 9 cascade
     from earth1.thresholds import TRANSITION_RULES
