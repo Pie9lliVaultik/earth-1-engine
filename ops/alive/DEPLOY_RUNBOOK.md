@@ -105,7 +105,7 @@ If the box cannot push, record the SHA here and in the audit by hand.
 ```bash
 cd /opt/earth1
 git fetch origin v1-unification
-git checkout v1-persistence-deploy-1   # frozen tag == fe09377
+git checkout v1-persistence-deploy-1   # frozen tag
 git status --porcelain        # MUST be empty — the gate refuses otherwise
 
 mkdir -p ops/alive
