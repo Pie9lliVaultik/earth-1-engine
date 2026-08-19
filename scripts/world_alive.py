@@ -91,7 +91,8 @@ def load_world():
     """
     if not WORLD_PKL.exists():
         print(f"  birthing a world: {POP:,} earthlings", flush=True)
-        return birth_world(POP, 42), None
+        return birth_world(POP, 42), None, {"schema_version": None,
+                                            "lost": [], "born": True}
 
     migrate = os.environ.get("EARTH1_MIGRATE_V0") == "1"
     adj = LEGACY_ADJ if LEGACY_ADJ.exists() else None
@@ -107,7 +108,43 @@ def load_world():
     print(f"  woke up: day {w.day}, {int(w.health.alive.sum()):,} alive"
           f"  (schema v{info['schema_version']}, "
           f"checksum {info.get('checksum')})", flush=True)
-    return w, rng_state
+    return w, rng_state, info
+
+
+def journal_continuity_break(w, info):
+    """Mark an epoch boundary in the journal, permanently.
+
+    A v0 migration rebuilds presence and mobility at birth values
+    because the old format never wrote them. That is an ENGINEERING
+    discontinuity in the trajectory, not something that happened to the
+    civilization — and nothing downstream may ever read across it as
+    though the world evolved through it.
+
+    It is journaled rather than merely printed so that any later
+    analysis can find the instant and refuse to span it. No causal
+    benchmark may use this boundary as evidence.
+    """
+    rec = {"event": "continuity_break",
+           "reason": "legacy_v0_missing_presence_mobility",
+           "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+           "world_day": int(w.day),
+           "population": int(w.civ.n),
+           "alive": int(w.health.alive.sum()),
+           "fields_not_carried": list(info.get("lost", [])),
+           "from_schema": 0,
+           "to_schema": persistence.SCHEMA_VERSION,
+           "epoch": 1,
+           "bit_continuous": False,
+           "note": ("engineering discontinuity, not a world event — "
+                    "do not use as evidence in any causal benchmark, "
+                    "and do not treat any trajectory as continuous "
+                    "across this instant")}
+    JOURNAL.parent.mkdir(parents=True, exist_ok=True)
+    with open(JOURNAL, "a") as f:
+        f.write(json.dumps(rec) + "\n")
+    print(f"  EPOCH BOUNDARY journaled at day {w.day}: "
+          f"{rec['reason']}", flush=True)
+    return rec
 
 
 def read_the_news(civ, life, world=None):
@@ -203,7 +240,7 @@ def main():
     )
     provenance.enforce(prov, strict=strict)
 
-    w, rng_state = load_world()
+    w, rng_state, load_info = load_world()
     civ, life = w.civ, w.life
     # continue the saved stream where it stopped. Only a world with no
     # stream to continue — a fresh birth, or a migrated v0 snapshot —
@@ -217,6 +254,8 @@ def main():
     # of this process's life
     prov.update(population=int(civ.n), world_day=int(w.day),
                 rng_continued=rng_state is not None,
+                snapshot_schema=load_info.get("schema_version") if load_info
+                else None,
                 event="startup",
                 at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     with open(JOURNAL, "a") as f:
@@ -226,6 +265,11 @@ def main():
           f"  schema={prov['schema_version']}"
           f"  snapshot={prov['snapshot_version']}"
           f"  pop {int(civ.n):,}  day {w.day}", flush=True)
+    # an epoch boundary is recorded BEFORE the world takes a step, so
+    # the journal can never show a tick that appears to cross it
+    if load_info and load_info.get("schema_version") == 0:
+        journal_continuity_break(w, load_info)
+
     print(f"  alive. one world-day every {PERIOD:.0f}s\n", flush=True)
 
     while not _stop:
