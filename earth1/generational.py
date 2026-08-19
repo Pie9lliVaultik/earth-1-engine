@@ -107,6 +107,39 @@ def _age_years(civ: Civilization) -> np.ndarray:
     return _AGE_MIN + civ.age * _AGE_SPAN
 
 
+def advance_age(civ: Civilization, dt_days: float = 1.0) -> None:
+    """Chronological aging — the clock, and ONLY the clock. Phase 0.0a.
+
+    Extracted verbatim from generational_tick's aging block because the
+    live world never called that function: `live_one_day` advanced no
+    one's age, so every age-dependent hazard — cancer t^5, falls
+    x2/decade, the road-death peak at 24, fertility windows,
+    conscription, heat frailty — ran on a frozen day-0 age structure
+    through every long run ever performed (BIBLE v4.1, R17).
+
+    Scope is fixed by founder ruling (2026-08-19) and deliberately
+    excludes the rest of generational_tick:
+      - NO trait drift (_AGE_GRADIENTS) — behavioural physics, not a
+        correctness fix;
+      - NO EXPERIENCE re-assertion — in the living world EXPERIENCE is
+        a real dynamical channel written daily by six modules;
+        overwriting it from age would erase lived history (N10 is
+        adjudicated at the 0.8 A/B, and the question there is decay vs
+        accumulation, not overwrite);
+      - NO mortality, NO rebirth — the live path has its own in
+        health_tick and _be_born; a second demographic authority would
+        double deaths and overwrite living people.
+
+    Ages every slot, dead ones included — exactly as the original block
+    did. Dead slots are recycled by _be_born with age = 0.0, so their
+    drift is inert; skipping them would be a new behaviour, not an
+    extraction.
+    """
+    d_age = (dt_days / 365.0) / _AGE_SPAN
+    civ.age = np.clip(civ.age + d_age, 0.0, 1.0)
+    civ.age_bucket = np.digitize(_age_years(civ), [30, 45, 60, 75])
+
+
 def _cohort_mean_age_at_death(a: float, b: float = GOMPERTZ_B) -> float:
     """Mean age at death for a cohort entering at 18 under Gompertz
     hazard h(x) = a * exp(b * (x - 18)), by discrete survival sum."""

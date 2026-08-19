@@ -100,6 +100,14 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     st.update(govern(civ, life, w.gov, rng, dt_days))
     st.update(apply_policy_and_war(civ, life, w.gov, w.health, rng, dt_days))
 
+    # 0.0a time — everyone is one day older. Before life/health so the
+    # day's hazards (cancer t^5, falls, road deaths, fertility) see
+    # today's age, and before _be_born so newborns are not aged on
+    # their birth day. Age was frozen here for the world's entire
+    # pre-Epoch-1 history (BIBLE R17).
+    from earth1.generational import advance_age
+    advance_age(civ, dt_days)
+
     # 1 matter
     st.update(life_tick(civ, life, rng, dt_days=dt_days, couple_forces=False))
     # 2 bodies
