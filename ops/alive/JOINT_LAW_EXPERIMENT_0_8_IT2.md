@@ -19,7 +19,15 @@ interpretable families, hardening AND softening possible):
   A5 C3(gain 0.10)           A0 C0 incumbent (pathological reference)
 
 Factor B — relax (derived from registry T1 via the DISCRETE map
-(1−r)^t = 0.5, not a continuous approximation):
+(1−r)^t = 0.5, i.e. r = 1 − 0.5^(1/t½), not a continuous
+approximation). Founder clarification, recorded before any result
+was read: this mapping names the NOMINAL half-life of the isolated
+discrete pull term only — it does NOT assert the full joint system
+(conviction, propagation, lived-state targets, feedback) will
+exhibit that half-life. Iteration 2 tests whether the MEASURED
+joint-system persistence lands in the frozen empirical band; r=0.25
+stays in the grid as the pathological reference for causal
+attribution against the existing law.
   B0 0.25   (t½≈2.4d — current, pathological reference)
   B1 0.129  (t½≈5d — T1 band edge)
   B2 0.067  (t½≈10d — T1 center)
