@@ -107,7 +107,11 @@ def plasticity_tick(w, rng, dt_days: float = 1.0) -> dict:
     if n_rewire > 0:
         movers = rng.choice(n, size=min(n_rewire, n), replace=False)
         movers = movers[alive[movers]]
-        friends = fab.by_type["friends"].tolil()
+        # 0.7: membership test straight on CSR (indices are sorted per
+        # row) — the tolil() this replaces was ~14% of a 4M world-day
+        # of pure format conversion. RNG draw order is untouched.
+        friends = fab.by_type["friends"].tocsr()
+        f_indptr, f_indices = friends.indptr, friends.indices
         add_r, add_c = [], []
         for i in movers:
             i = int(i)
@@ -117,7 +121,10 @@ def plasticity_tick(w, rng, dt_days: float = 1.0) -> dict:
                 continue
             d = np.abs(civ.forces[cand] - civ.forces[i]).mean(axis=1)
             j = int(cand[int(np.argmin(d))])
-            if friends[i, j] == 0:
+            row = f_indices[f_indptr[i]:f_indptr[i + 1]]
+            pos = np.searchsorted(row, j)
+            present = pos < row.size and row[pos] == j
+            if not present:
                 add_r.extend([i, j])
                 add_c.extend([j, i])
         if add_r:

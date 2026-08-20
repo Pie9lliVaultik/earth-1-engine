@@ -143,7 +143,11 @@ def live_one_day(w: World, rng, *,
     # the declared re-homing policies, one batched pass per day
     if (_migrated is not None and len(_migrated)) or        (_lost is not None and len(_lost)) or        (_found is not None and len(_found)):
         from earth1.rehome import rehome_employment, rehome_migrants
-        st["rehomed_migrants"] = rehome_migrants(w, _migrated, rng)
+        # recompose=False: rehome_employment always recomposes adj right
+        # below, and nothing reads adj between the two calls (0.7
+        # profile: each recompose ~7% of a 4M world-day)
+        st["rehomed_migrants"] = rehome_migrants(w, _migrated, rng,
+                                                 recompose=False)
         # migration ENDS the job (class_tick sets employed=False after
         # life_tick has already built its lost set), so migrants must be
         # merged into the employment severing or their colleague ties

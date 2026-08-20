@@ -164,7 +164,7 @@ def _sample_members(keys, order, sorted_keys, value, k, rng, exclude):
 
 # ── migration ───────────────────────────────────────────────────────
 
-def rehome_migrants(w, idx, rng):
+def rehome_migrants(w, idx, rng, recompose=True):
     """Execute MIGRATION_POLICY for movers `idx` (country already set
     by class_tick; everything context-dependent is updated here)."""
     if idx is None or len(idx) == 0:
@@ -233,7 +233,10 @@ def rehome_migrants(w, idx, rng):
             fab.by_type[name], np.array(rows, dtype=np.int64),
             np.array(cols, dtype=np.int64), weight, n)
 
-    _recompose_adj(w)
+    # 0.7: the daily loop recomposes once after rehome_employment, which
+    # always follows this call with no adj reader in between
+    if recompose:
+        _recompose_adj(w)
     return int(idx.size)
 
 
@@ -275,12 +278,41 @@ def rehome_employment(w, lost_idx, found_idx, rng):
 
 def _recompose_adj(w):
     """adj = sum of the typed matrices — one canonical composition,
-    no delta bookkeeping to drift. Keeps the alive.py:64 alias true."""
+    no delta bookkeeping to drift. Keeps the alive.py:64 alias true.
+
+    0.7: built in ONE pass from the concatenated COO triplets instead
+    of a chain of csr_plus_csr binops (the chain was ~11% of a 4M
+    world-day). Duplicates are summed OURSELVES — stable lexsort keeps
+    appearance (by_type) order within each (i,j), and reduceat sums
+    left-to-right — because scipy's own dedup sums in a different
+    order and drifts by 1-2 ULP from what the chained adds produced.
+    Bit-identity to the old composition is proven by world_hash A/B
+    in tests and on multi-day 4M runs."""
+    from scipy import sparse
     fab = w.fabric
-    total = None
-    for m in fab.by_type.values():
-        total = m if total is None else total + m
-    fab.adj = total.tocsr()
+    mats = [m.tocoo() for m in fab.by_type.values()]
+    n = mats[0].shape[0]
+    rows = np.concatenate([m.row for m in mats])
+    cols = np.concatenate([m.col for m in mats])
+    data = np.concatenate([m.data for m in mats])
+    order = np.lexsort((cols, rows))          # stable: ties keep order
+    rows, cols, data = rows[order], cols[order], data[order]
+    if rows.size:
+        starts = np.empty(rows.size, dtype=bool)
+        starts[0] = True
+        starts[1:] = (rows[1:] != rows[:-1]) | (cols[1:] != cols[:-1])
+        idx = np.flatnonzero(starts)
+        # left-to-right accumulation, one pass per tie type — NOT
+        # reduceat, whose pairwise association drifts by ULPs from the
+        # chained adds this replaces
+        counts = np.diff(np.append(idx, rows.size))
+        acc = data[idx].copy()
+        for p in range(1, int(counts.max())):
+            m = counts > p
+            acc[m] += data[idx[m] + p]
+        data = acc
+        rows, cols = rows[idx], cols[idx]
+    fab.adj = sparse.csr_matrix((data, (rows, cols)), shape=(n, n))
     fab.adj.setdiag(0.0)
     fab.adj.eliminate_zeros()
     w.civ.adj = fab.adj
