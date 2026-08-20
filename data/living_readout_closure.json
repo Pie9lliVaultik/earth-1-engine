@@ -1,0 +1,57 @@
+{
+ "closure": "0.4 decision run",
+ "frozen_protocol": true,
+ "arms": {
+  "legacy_hier_mae": 11.39,
+  "hybrid_hier_mae": 11.362
+ },
+ "q1_seed_stability": {
+  "42": {
+   "n": 1804,
+   "mean_pp": 0.01,
+   "b_wins_pct": 51.3
+  },
+  "7": {
+   "n": 1804,
+   "mean_pp": 0.0485,
+   "b_wins_pct": 51.9
+  },
+  "13": {
+   "n": 1804,
+   "mean_pp": 0.0253,
+   "b_wins_pct": 49.4
+  }
+ },
+ "q1_all_seeds_beneficial": true,
+ "q2_hybrid_ablations_deltaL_positive_helps": {
+  "deprivation": 0.002,
+  "unemployed": 0.0,
+  "spells": 0.009,
+  "hunger": 0.002,
+  "mental": 0.0,
+  "addiction": 0.011,
+  "isolation": -0.004,
+  "hope": -0.001
+ },
+ "q2_earning_families": [
+  "addiction",
+  "deprivation",
+  "hunger",
+  "spells"
+ ],
+ "q3_permutation_deltas_pp": [
+  -0.1003,
+  -0.1048,
+  -0.1117,
+  -0.1276,
+  -0.1104
+ ],
+ "q3_real_delta_pp": 0.0279,
+ "q3_advantage_collapses": true,
+ "provenance": {
+  "host": "earth1-prime",
+  "commit": "c862560872efea4a46f904fc4c38643e20793a57",
+  "wall_clock": "2026-08-20T06:27:02Z",
+  "runtime_s": 15.6
+ }
+}

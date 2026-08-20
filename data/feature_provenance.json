@@ -1,0 +1,161 @@
+{
+ "features": {
+  "force_0": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "force_1": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "force_2": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "force_3": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "force_4": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "force_5": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "force_6": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "force_7": {
+   "canonical_writer": "genesis + live_one_day force channels",
+   "availability": "world-time t (state, pre-question)",
+   "transformation": "centered on civ.means",
+   "leakage_status": "clean"
+  },
+  "openness": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "risk_appetite": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "doubt": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "empathy": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "desire_intensity": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "agreeableness": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "extraversion": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "neuroticism": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "individualism": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "power_distance": {
+   "canonical_writer": "genesis traits (+ live feedback residue)",
+   "availability": "world-time t",
+   "transformation": "population-centered",
+   "leakage_status": "clean"
+  },
+  "deprivation": {
+   "canonical_writer": "life_tick -> w.life.deprivation",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "clip[0,1], population-centered",
+   "leakage_status": "clean"
+  },
+  "unemployed": {
+   "canonical_writer": "life_tick -> w.life.unemployed",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "in_lf & ~employed",
+   "leakage_status": "clean"
+  },
+  "spells": {
+   "canonical_writer": "life_tick -> w.life.spells",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "clip(spells/5, 0, 1)",
+   "leakage_status": "clean"
+  },
+  "hunger": {
+   "canonical_writer": "flourishing_tick -> w.flourishing.hunger",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "clip[0,1], population-centered",
+   "leakage_status": "clean"
+  },
+  "mental": {
+   "canonical_writer": "life_tick -> w.life.mental",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "clip[0,1], population-centered",
+   "leakage_status": "clean"
+  },
+  "addiction": {
+   "canonical_writer": "life_tick -> w.life.addiction",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "clip[0,1], population-centered",
+   "leakage_status": "clean"
+  },
+  "relationship": {
+   "canonical_writer": "life_tick -> w.life.relationship",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "clip[0,1], population-centered",
+   "leakage_status": "clean"
+  },
+  "hope": {
+   "canonical_writer": "flourishing_tick -> w.flourishing.hope",
+   "availability": "world-time t (lived state, pre-question)",
+   "transformation": "clip[0,1], population-centered",
+   "leakage_status": "clean"
+  }
+ },
+ "note": "no feature derives from survey targets, future waves, post-outcome labels, held-out aggregates or benchmark calibration unavailable at prediction time; the adjacency gate additionally bans convicted features at runtime"
+}
