@@ -45,6 +45,7 @@ FROZEN_SNAPSHOT_SHA = ("379212b25f5735202aa3e9dd7f18fcf397451756"
                        "df6c60d388471e41eb7cef2c")
 
 SNAPSHOT = Path(os.environ["EARTH1_ENSEMBLE_SNAPSHOT"])
+PRECISION = os.environ.get("EARTH1_PRECISION", "float64")
 WORKERS = int(os.environ.get("EARTH1_ENSEMBLE_WORKERS", "40"))
 PAIRS = int(os.environ.get("EARTH1_ENSEMBLE_PAIRS", str(FROZEN_PAIRS)))
 DAYS = int(os.environ.get("EARTH1_ENSEMBLE_DAYS", str(FROZEN_DAYS)))
@@ -72,9 +73,13 @@ def run_member(task):
     pair, kind = task
     from earth1 import persistence
     from earth1.alive import live_one_day
+    from earth1.precision import apply_precision
     from earth1.types import Force
 
     w = BASE                       # this process's COW copy — private
+    # precision applied at load, BEFORE the scenario perturbation —
+    # only ever non-f64 under a certified execution mode
+    apply_precision(w, PRECISION)
     tgt_idx, tgt_name, _ = TARGET_COUNTRY
     if kind == "scenario":
         mask = w.health.alive & (w.civ.country == tgt_idx)
@@ -98,8 +103,10 @@ def run_member(task):
     emp = float(life.employed[alive & life.in_lf].mean()) \
         if (alive & life.in_lf).any() else None
     tmask = alive & (w.civ.country == tgt_idx)
+    from earth1.precision import world_precision
     return {
         "pair": pair, "kind": kind, "seed": seed, "days": DAYS,
+        "precision": world_precision(w),
         "world_hash": persistence.world_hash(w),
         "day_end": int(w.day),
         "alive_end": int(alive.sum()),
@@ -127,6 +134,7 @@ def main():
 
     stamp = time.strftime("%Y-%m-%dT%H%M%SZ", time.gmtime())
     run_dir = OUT / (f"run_{stamp}_p{PAIRS}d{DAYS}w{WORKERS}"
+                     + ("" if PRECISION == "float64" else f"_{PRECISION}")
                      + ("" if is_frozen_run else "_SUBSET"))
     man = Manifest(
         run_dir, experiment="paired_ensemble_0_7",
@@ -134,6 +142,7 @@ def main():
         config={"CANONICAL_DAY": dict(CANONICAL_DAY), "pairs": PAIRS,
                 "days": DAYS, "seed_base": SEED_BASE,
                 "fear_shock": FEAR_SHOCK,
+                "precision": PRECISION,
                 "frozen_workload": is_frozen_run},
         seeds={"member": f"{SEED_BASE}+i, shared within pair"},
         workers=WORKERS,
@@ -192,6 +201,7 @@ def main():
     member_walls = [r["wall_s"] for r in results]
     summary = {
         "frozen_workload": is_frozen_run,
+        "precision": PRECISION,
         "pairs": PAIRS, "days": DAYS, "workers": WORKERS,
         "threads_per_worker": int(os.environ["OMP_NUM_THREADS"]),
         "target_country": {"index": TARGET_COUNTRY[0],
