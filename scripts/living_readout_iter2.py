@@ -108,8 +108,15 @@ def pick_lam(X, y, rs):
     return best
 
 
-def main():
-    t0 = time.time()
+def build_cells(t0):
+    cache = ROOT / "data" / "iter2_cells_cache.npz"
+    if cache.exists():
+        z = np.load(cache, allow_pickle=True)
+        print(f"  cells from cache ({len(z['y'])})", flush=True)
+        return [{"q": str(q), "c": int(c), "b": str(b), "y": float(y),
+                 "leg": lg, "liv": lv}
+                for q, c, b, y, lg, lv in zip(z["q"], z["c"], z["b"],
+                                              z["y"], z["leg"], z["liv"])]
     print(f"  world: {POP:,} @ {SEED}, {DAYS} no-news days", flush=True)
     w = birth_world(POP, SEED)
     rng = np.random.default_rng(SEED)
@@ -118,12 +125,8 @@ def main():
         if (d + 1) % 100 == 0:
             print(f"    day {d+1}  ({time.time()-t0:.0f}s)", flush=True)
     civ = w.civ
-
     X = {"legacy": _build_features(civ, extended=True),
          "living": living_features(w)}
-    n_static = X["legacy"].shape[1]
-    names_liv = list(LIVING_FEATURES)
-
     c2i = {c: i for i, c in enumerate(GENESIS_COUNTRY_CODES)}
     cells = []
     for r in csv.DictReader(open(ROOT / "data/wvs_w7_cohort_by_country.csv")):
@@ -138,11 +141,28 @@ def main():
                       "y": float(r["yes_weighted"]),
                       "leg": X["legacy"][m].mean(axis=0),
                       "liv": X["living"][m].mean(axis=0)})
-    print(f"  cells: {len(cells)}", flush=True)
+    np.savez_compressed(cache,
+                        q=[c["q"] for c in cells], c=[c["c"] for c in cells],
+                        b=[c["b"] for c in cells], y=[c["y"] for c in cells],
+                        leg=np.array([c["leg"] for c in cells]),
+                        liv=np.array([c["liv"] for c in cells]))
+    print(f"  cells: {len(cells)} (cached)", flush=True)
+    return cells
 
-    def run_arm(fkey, estimator, drop=None):
-        def feats(cell):
+
+def main():
+    t0 = time.time()
+    cells = build_cells(t0)
+    n_static = 18
+    names_liv = list(LIVING_FEATURES)
+
+    def run_arm(fkey, estimator, drop=None, within_key=None):
+        wkey = within_key or fkey
+        def feats(cell):          # between-level features
             v = cell[fkey]
+            return np.delete(v, drop) if drop is not None else v
+        def wfeats(cell):         # within-level features
+            v = cell[wkey]
             return np.delete(v, drop) if drop is not None else v
         qs = sorted({c["q"] for c in cells})
         countries = sorted({c["c"] for c in cells})
@@ -189,11 +209,11 @@ def main():
                         # within: demeaned features -> demeaned logit
                         Xw, yw = [], []
                         for v in cmap.values():
-                            fm = np.mean([feats(c) for c in v], 0)
+                            fm = np.mean([wfeats(c) for c in v], 0)
                             ym = np.mean([logit(np.clip(c["y"], .02, .98))
                                           for c in v])
                             for c in v:
-                                Xw.append(feats(c) - fm)
+                                Xw.append(wfeats(c) - fm)
                                 yw.append(logit(np.clip(c["y"], .02, .98))
                                           - ym)
                         Xw, yw = np.array(Xw), np.array(yw)
@@ -207,11 +227,12 @@ def main():
                         p = np.zeros(len(te))
                         for ci2, v in te_map.items():
                             fm = np.mean([feats(c) for c in v], 0)
+                            wm = np.mean([wfeats(c) for c in v], 0)
                             base = ridge_pred(mb, fm[None, :])[0]
                             for c in v:
                                 j = te.index(c)
                                 dev = ridge_pred(
-                                    mw, (feats(c) - fm)[None, :])[0]
+                                    mw, (wfeats(c) - wm)[None, :])[0]
                                 p[j] = sigmoid(base + dev)
                     maes.append(float(np.abs(p - ys).mean()) * 100)
                     cal_p.extend(p.tolist()); cal_y.extend(ys.tolist())
@@ -246,11 +267,15 @@ def main():
                 "within_r2": round(1 - wnum / max(wden, 1e-9), 4)}, pair
 
     arms, pairs = {}, {}
-    for label, fkey, est in (("legacy_flat", "leg", "flat"),
-                             ("living_flat", "liv", "flat"),
-                             ("legacy_hier", "leg", "hier"),
-                             ("living_hier", "liv", "hier")):
-        arms[label], pairs[label] = run_arm(fkey, est)
+    for label, fkey, est, wkey in (
+            ("legacy_flat", "leg", "flat", None),
+            ("living_flat", "liv", "flat", None),
+            ("legacy_hier", "leg", "hier", None),
+            ("living_hier", "liv", "hier", None),
+            # ITERATION 3 (contract C, literally): country level is
+            # legacy-only; lived state competes ONLY within countries
+            ("hybrid_hier", "leg", "hier", "liv")):
+        arms[label], pairs[label] = run_arm(fkey, est, within_key=wkey)
         print(f"  {label}: {arms[label]}", flush=True)
 
     def paired_delta(a, b):
@@ -266,7 +291,9 @@ def main():
               "living_vs_legacy_hier": paired_delta("legacy_hier",
                                                     "living_hier"),
               "hier_vs_flat_legacy": paired_delta("legacy_flat",
-                                                  "legacy_hier")}
+                                                  "legacy_hier"),
+              "hybrid_vs_legacy_hier": paired_delta("legacy_hier",
+                                                    "hybrid_hier")}
 
     abl = {}
     for fam, members in FAMILIES.items():
@@ -278,7 +305,7 @@ def main():
                                      3)}   # positive = channel helps
         print(f"  ablate {fam}: dL={abl[fam]['delta_L']}", flush=True)
 
-    out = {"iteration": 2, "NOT_BENCHMARK_A": True,
+    out = {"iteration": "2+3", "NOT_BENCHMARK_A": True,
            "holdout_touched": False,
            "iteration1_immutable": "b0c00a4",
            "admissibility": ADMISSIBILITY,
