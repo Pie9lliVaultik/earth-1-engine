@@ -19,10 +19,22 @@ world-day at ensemble concurrency:
 Numba is an acceleration DEPENDENCY, not a semantics one: when it is
 unavailable the callers keep their pure scipy/numpy paths, which these
 kernels are proven bit-identical to.
+
+OPT-IN (EARTH1_FUSED_KERNELS=1): measured at 0.7 close, the scalar
+k-way merge LOSES at 40-way ensemble concurrency on prime (f32 w=40:
+107 s/day fused vs 79 unfused — latency-bound scalar loop under
+memory contention vs scipy's tight pairwise merges). Bit-identical
+either way, so the default executor keeps the faster scipy paths and
+these kernels stay available for serial/low-concurrency work where
+they win.
 """
 from __future__ import annotations
 
+import os
+
 import numpy as np
+
+ENABLED = os.environ.get("EARTH1_FUSED_KERNELS") == "1"
 
 try:
     from numba import njit
@@ -103,9 +115,10 @@ def _merge_fill(indptrs, indices, datas, out_indptr, out_indices,
 
 def merge_typed_csr(mats, n):
     """Sum the typed CSR matrices into the adjacency in one pass.
-    Returns (indptr, indices, data) ready for csr_matrix. Falls back
-    to None when numba is unavailable (caller keeps the chained path)."""
-    if not HAVE_NUMBA:
+    Returns (indptr, indices, data) ready for csr_matrix. Returns None
+    (caller keeps the chained path) unless opted in AND numba is
+    available."""
+    if not (ENABLED and HAVE_NUMBA):
         return None
     csrs = [m.tocsr() for m in mats]
     indptrs = np.stack([c.indptr.astype(np.int64) for c in csrs])
@@ -151,8 +164,8 @@ def _edge_dist8(forces, rows, cols, out):
 
 
 def edge_distance(forces, rows, cols):
-    """Fused per-edge mean |Δforce|; None when numba is unavailable."""
-    if not HAVE_NUMBA:
+    """Fused per-edge mean |Δforce|; None unless opted in."""
+    if not (ENABLED and HAVE_NUMBA):
         return None
     if forces.shape[1] != 8:
         return None                       # caller keeps the numpy path

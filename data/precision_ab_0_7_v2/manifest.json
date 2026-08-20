@@ -1,0 +1,57 @@
+{
+ "experiment": "precision_equivalence_0_7",
+ "git_sha": "c5d2ac242c2a2e5b6aec7182c8d73676f5065962",
+ "git_dirty": false,
+ "snapshot": {
+  "path": "/opt/earth1-data/snapshots/2026-08-20T074529Z-day1142",
+  "world_pkl_sha256": "379212b25f5735202aa3e9dd7f18fcf397451756df6c60d388471e41eb7cef2c",
+  "day": 1142,
+  "alive": 3797604,
+  "schema_version": 1
+ },
+ "config": {
+  "CANONICAL_DAY": {
+   "beta": 2.0,
+   "residue": 0.02,
+   "critical_fraction": 0.12,
+   "relax": 0.25,
+   "layers": 2
+  },
+  "pairs": 8,
+  "control_pairs": 3,
+  "days": 30,
+  "horizons": [
+   3,
+   15,
+   30
+  ],
+  "seed_base": 720000,
+  "fear_shock": -0.2,
+  "precisions": [
+   "float64",
+   "float32",
+   "float16-control"
+  ]
+ },
+ "config_hash": "9e0dc799b06623ef08c8154388404b62059e4d224c22284c6f727523e7f21b2c",
+ "dataset_hashes": {},
+ "seeds": {
+  "member": "720000+i shared across quadruple"
+ },
+ "machine": {
+  "hostname": "earth1-prime",
+  "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "cpu_count": 96,
+  "mem_total_kb": 527844648
+ },
+ "workers": 38,
+ "threads_per_worker": 1,
+ "started_utc": "2026-08-20T12:11:26Z",
+ "ended_utc": "2026-08-20T13:01:02Z",
+ "wall_clock_s": 2976.5,
+ "artifacts": [
+  "/opt/earth1-data/precision_ab_v2/run_2026-08-20T121126Z/members.json"
+ ],
+ "wall_clock_total_s": 2976.5
+}
