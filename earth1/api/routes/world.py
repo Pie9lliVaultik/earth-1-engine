@@ -1,220 +1,72 @@
-"""API routes for the living world — tick, state, emergence, receiver control."""
+"""/world — readouts of THE living civilization. Phase 0.5e.
+
+Read-only by contract: the daemon is the single writer. The old
+/world/tick endpoint advanced a second in-process Earth; evolution via
+API is retired — 410, permanently.
+"""
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query, Request
-from typing import Optional, List
-from pydantic import BaseModel
+import numpy as np
+from fastapi import APIRouter, HTTPException
 
-from earth1.questions import QUESTIONS
-from earth1.types import Force
+from earth1.api.deps import get_world
 
 router = APIRouter(prefix="/world", tags=["world"])
 
 
-def _require_admin(request):
-    """World-mutating endpoints need the admin key when auth is on —
-    an ordinary API key must not be able to alter the planet (audit
-    round 7). No auth configured (dev) -> open, as before."""
-    import os
-    from fastapi import HTTPException
-    admin = os.environ.get("EARTH1_ADMIN_KEY")
-    if not os.environ.get("EARTH1_AUTH_REQUIRED") and not admin:
-        return
-    provided = (request.headers.get("X-Admin-Key", "")
-                if request is not None else "")
-    if not admin or provided != admin:
-        raise HTTPException(403, "world mutation requires the admin key")
-
-# "There is only one Earth-1" (2026-08-16 audit): the old module-global
-# _world_state here was a SECOND world — /ask answered from one Earth
-# while /world ticked another. All routes now share deps.get_world_state.
-from earth1.api.deps import get_world_state as _get_or_create_state
-from earth1.api.deps import get_living_world, reset_civ
+@router.get("")
+def world_summary():
+    w, identity = get_world()
+    alive = w.health.alive
+    return {
+        "identity": identity,
+        "unemployment": round(float((~w.life.employed & w.life.in_lf).sum()
+                                    / max(int(w.life.in_lf.sum()), 1)), 5),
+        "deprived": round(float((w.life.deprivation > 0.5)[alive].mean()), 5),
+        "homeless": round(float(w.klass.homeless[alive].mean()), 5),
+        "mean_hope": round(float(w.flourishing.hope[alive].mean()), 4),
+        "mean_knowledge": round(float(w.knowledge.stock[alive].mean()), 4),
+        "countries_at_war": int((w.gov.at_war_with >= 0).sum() // 2),
+    }
 
 
-class TickRequest(BaseModel):
-    n_ticks: int = 1
-    # PHYSICS_VERSION E1-0.4: the validated scalar path is canonical.
-    # Force dynamics is experimental until it passes a gate of its own
-    # (re-audit: the API served physics G5 never validated).
-    use_force_dynamics: bool = False
-    enable_receiver: bool = False
-    batch_size: int = 5
-    dt: float = 1.0
+@router.get("/countries")
+def countries():
+    w, identity = get_world()
+    from earth1.genesis import GENESIS_COUNTRY_CODES
+    alive = w.health.alive
+    out = []
+    for ci, code in enumerate(GENESIS_COUNTRY_CODES):
+        m = (w.civ.country == ci) & alive
+        n = int(m.sum())
+        if n < 50:
+            continue
+        out.append({"iso2": code, "alive": n,
+                    "unemployment": round(float(
+                        (~w.life.employed & w.life.in_lf)[m].sum()
+                        / max(int(w.life.in_lf[m].sum()), 1)), 4),
+                    "deprived": round(float(
+                        (w.life.deprivation[m] > 0.5).mean()), 4),
+                    "hope": round(float(w.flourishing.hope[m].mean()), 4)})
+    return {"identity": identity, "countries": out}
 
 
-class ReceiverToggleRequest(BaseModel):
-    enabled: bool = True
-    sources: Optional[List[str]] = None
-
-
-class InjectEventRequest(BaseModel):
-    force_deltas: dict
-    region_pattern: str = "*"
-    decay_half_life: float = 30.0
-    source: str = "manual"
+@router.get("/earthling/{idx}")
+def earthling(idx: int):
+    w, identity = get_world()
+    if not (0 <= idx < w.civ.n):
+        raise HTTPException(404, "no such earthling")
+    if not bool(w.health.alive[idx]):
+        raise HTTPException(404, "this slot is not currently alive")
+    from earth1.observe import observe
+    view = observe(w.civ, w.life, idx)
+    return {"identity": identity, "earthling": view}
 
 
 @router.post("/tick")
-def advance_world_route(req: TickRequest, request: Request = None):
-    """Advance THE world — same canonical passage of time as the
-    daily heartbeat (audit round 8: the API previously ran a second,
-    coupling-less, ageless tick path)."""
-    _require_admin(request)
-    from earth1.advance import advance_world
-
-    state = _get_or_create_state()
-    qs = [q for q in QUESTIONS if q.domain != "external_substrate"]
-
-    results = []
-    for _ in range(req.n_ticks):
-        advance_world(
-            state, qs, days=1, dt=req.dt,
-            batch_size=req.batch_size,
-            use_force_dynamics=req.use_force_dynamics,
-            enable_receiver=req.enable_receiver,
-        )
-        results.append({
-            "tick": state.tick_count,
-            "t": round(state.t, 1),
-            "questions_run": len(qs),
-            "events_fired": len(state.event_log),
-        })
-
-    living = get_living_world()
-    if living is not None:
-        living.save()          # ticks on the living world persist
-
-    return {
-        "ticks_run": req.n_ticks,
-        "current_tick": state.tick_count,
-        "current_t": round(state.t, 1),
-        "total_events": len(state.event_log),
-        "persisted": living is not None,
-        "results": results,
-    }
-
-
-@router.get("/state")
-def world_state():
-    """Return current world state summary."""
-    state = _get_or_create_state()
-
-    from earth1.engine import run_question
-    qs = [q for q in QUESTIONS if q.domain != "external_substrate"]
-
-    force_means = {}
-    for f in Force:
-        force_means[f.name.lower()] = round(float(state.civ.forces[:, f].mean()), 4)
-
-    question_snapshot = []
-    for q in qs[:10]:
-        r = run_question(q, state.civ, event_log=state.event_log, t=state.t)
-        question_snapshot.append({
-            "id": q.id, "yes_pct": round(r.yes_pct, 4),
-            "dominant": r.dominant.name.lower(),
-            "conviction": round(r.conviction, 4),
-        })
-
-    receiver_active = (
-        state.receiver_config is not None
-        and hasattr(state.receiver_config, 'sources')
-        and len(state.receiver_config.sources) > 0
-    )
-
-    receiver_events = sum(
-        1 for e in state.event_log.events()
-        if e.source.startswith("receiver:")
-    )
-
-    return {
-        "tick": state.tick_count,
-        "t": round(state.t, 1),
-        "population": state.civ.n,
-        "total_events": len(state.event_log),
-        "receiver_events": receiver_events,
-        "receiver_active": receiver_active,
-        "force_means": force_means,
-        "questions": question_snapshot,
-    }
-
-
-@router.get("/emergence")
-def emergence_metrics():
-    """Return emergence metrics vs genesis baseline."""
-    state = _get_or_create_state()
-
-    from earth1.genesis import genesis
-    from earth1.observatory import measure_emergence
-    qs = [q for q in QUESTIONS if q.domain != "external_substrate"]
-
-    baseline = genesis(pop=state.civ.n, seed=state.civ.seed, min_per_country=100)
-    metrics = measure_emergence(
-        state.civ, baseline, questions=qs,
-        event_log=state.event_log, t=state.t,
-        tick_count=state.tick_count,
-    )
-
-    return {
-        "tick": state.tick_count,
-        "surprise_index": round(metrics.surprise_index, 6),
-        "trait_drift_magnitude": round(metrics.trait_drift_magnitude, 4),
-        "entropy": round(metrics.entropy, 4),
-        "n_unprogrammed_events": metrics.n_unprogrammed_events,
-        "graph_n_edges": metrics.graph_n_edges,
-        "graph_mean_degree": round(metrics.graph_mean_degree, 2),
-    }
-
-
-@router.post("/receiver/enable")
-def enable_receiver(req: ReceiverToggleRequest, request: Request = None):
-    _require_admin(request)
-    """Enable or disable live source polling."""
-    state = _get_or_create_state()
-
-    if req.enabled:
-        from earth1.receiver import ReceiverConfig
-        config = ReceiverConfig.default()
-        if req.sources:
-            config.sources = [s for s in config.sources if s.source_id in req.sources]
-        state.receiver_config = config
-        return {
-            "status": "enabled",
-            "sources": [s.source_id for s in config.sources],
-        }
-    else:
-        state.receiver_config = None
-        return {"status": "disabled", "sources": []}
-
-
-@router.post("/inject")
-def inject_event(req: InjectEventRequest, request: Request = None):
-    _require_admin(request)
-    """Manually inject a world event."""
-    state = _get_or_create_state()
-
-    from earth1.event_log import WorldEvent
-    event = WorldEvent.create(
-        timestamp=state.t,
-        force_deltas=req.force_deltas,
-        region_pattern=req.region_pattern,
-        decay_half_life=req.decay_half_life,
-        source=req.source,
-    )
-    state.event_log.append(event)
-
-    return {
-        "event_id": event.id,
-        "timestamp": event.timestamp,
-        "force_deltas": event.force_deltas,
-        "total_events": len(state.event_log),
-    }
-
-
-@router.post("/reset")
-def reset_world(request: Request = None, pop: int = Query(100_000), seed: int = Query(42)):
-    _require_admin(request)
-    """Reset THE world singleton to genesis state (frozen path only —
-    a persisted living world on disk is never destroyed by this)."""
-    reset_civ(pop=pop, seed=seed)
-    return {"status": "reset", "population": pop, "seed": seed}
+@router.get("/tick")
+def tick_retired():
+    raise HTTPException(
+        410, "evolution via API is retired (0.5e): the daemon "
+             "earth1-alive.service is the single writer of the one "
+             "living civilization")

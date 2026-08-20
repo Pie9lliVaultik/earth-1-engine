@@ -1,3 +1,7 @@
+"""RETIRED (0.5g): tests of the old-engine API surface (/ask numbers,
+/lab, legacy /world). Not collected (no test_ prefix). Historical
+comparator only - the living surface is proven by
+tests/test_api_one_earth.py."""
 """API integration tests using FastAPI's test client."""
 import sys
 sys.path.insert(0, ".")

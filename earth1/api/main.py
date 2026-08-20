@@ -1,23 +1,42 @@
-"""Earth-1 API — FastAPI application."""
+"""Earth-1 API — FastAPI application over THE canonical living world.
+
+Phase 0.5e. Every product route answers from the daemon's persisted
+`alive.World` — the same civilization, by identity, that
+`earth1-alive.service` evolves. No route may construct or resolve any
+other world; if the canonical snapshot is unavailable the API returns
+503 rather than fabricating an Earth.
+
+Retired with the engine family (0.5g): the `lab`, `loop` and
+`receiver` routers — old-substrate research surfaces, not products.
+Their history lives in git; they are not mounted.
+"""
 from __future__ import annotations
-import os
+
 import time
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
-from earth1.api.routes import ask, billing, forecast, lab, loop, observatory, predictions, receiver, world
-from earth1.api.schemas import HealthSchema, CivStatsSchema
-from earth1.api.deps import get_civ
-from earth1.engine import civ_breakdown
+from earth1.api.deps import CanonicalWorldUnavailable, get_world
+from earth1.api.routes import (ask, billing, forecast, observatory,
+                               predictions, world)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     t0 = time.time()
-    civ = get_civ()
-    dt = time.time() - t0
-    print(f"[earth1] Civilization built: {civ.n:,} agents in {dt:.1f}s")
+    try:
+        _, identity = get_world()
+        print(f"[earth1] canonical world resolved in {time.time()-t0:.1f}s"
+              f": day {identity['world_day']}, "
+              f"{identity['alive']:,} alive, "
+              f"snapshot {str(identity['snapshot_sha256'])[:12]}")
+    except CanonicalWorldUnavailable as e:
+        # the app still starts (health must be reachable) but every
+        # world-backed route will 503 loudly — never a legacy fallback
+        print(f"[earth1] CANONICAL WORLD UNAVAILABLE: {e}")
 
     from earth1.db import init_db, is_enabled
     if is_enabled():
@@ -30,9 +49,10 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Earth-1 Engine API",
-    description="Synthetic civilization of ~1M agents — force-field opinion dynamics at scale",
-    version="0.1.0",
+    title="Earth-1 API",
+    description="One living civilization. Every route answers from the "
+                "same canonical alive.World the daemon evolves.",
+    version="0.5.0",
     lifespan=lifespan,
 )
 
@@ -44,55 +64,66 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.exception_handler(CanonicalWorldUnavailable)
+async def world_unavailable(_req, exc):
+    return JSONResponse(
+        status_code=503,
+        content={"error": "canonical_world_unavailable",
+                 "detail": str(exc),
+                 "note": "there is no legacy fallback by design"})
+
+
 app.include_router(ask.router)
 app.include_router(forecast.router)
-app.include_router(lab.router)
 app.include_router(observatory.router)
-app.include_router(loop.router)
 app.include_router(predictions.router)
-app.include_router(receiver.router)
 app.include_router(billing.router)
 app.include_router(world.router)
 
-from earth1.api.middleware import RateLimitMiddleware, PauseSwitchMiddleware
 from earth1.api.auth import APIKeyMiddleware
-
-# All control middlewares mount unconditionally and self-gate on env
-# flags PER REQUEST (2026-08-16 audit). Starlette middleware is LIFO —
-# the LAST added runs FIRST. Execution order (outermost -> innermost):
-# Pause -> APIKey -> Budget -> RateLimit. Budget must run INSIDE APIKey
-# because it reads request.state.api_key (re-audit finding: the old
-# order ran Budget first, so the budget check silently skipped).
 from earth1.api.metering import BudgetMiddleware
+from earth1.api.middleware import PauseSwitchMiddleware, RateLimitMiddleware
+
+# Starlette middleware is LIFO — the LAST added runs FIRST. Execution
+# order (outermost -> innermost): Pause -> APIKey -> Budget -> RateLimit.
 app.add_middleware(RateLimitMiddleware)
 app.add_middleware(BudgetMiddleware)
 app.add_middleware(APIKeyMiddleware)
 app.add_middleware(PauseSwitchMiddleware)
 
 
-@app.get("/health", response_model=HealthSchema)
+@app.get("/health")
 def health():
-    civ = get_civ()
-    return {"status": "ok", "population": civ.n, "engine": "numpy-vectorized"}
+    try:
+        _, identity = get_world()
+        return {"status": "ok", "world": identity}
+    except CanonicalWorldUnavailable as e:
+        return JSONResponse(status_code=503,
+                            content={"status": "world_unavailable",
+                                     "detail": str(e)})
 
 
-@app.get("/civ", response_model=CivStatsSchema)
+@app.get("/civ")
 def civ_stats():
-    civ = get_civ()
-    from scipy import sparse
-    nnz = civ.adj.nnz if sparse.issparse(civ.adj) else 0
+    w, identity = get_world()
+    import numpy as np
+    alive = w.health.alive
+    per_country = np.bincount(w.civ.country[alive], minlength=194)
+    top = np.argsort(per_country)[::-1][:20]
+    from earth1.genesis import GENESIS_COUNTRY_CODES
     return {
-        "population": civ.n,
-        "seed": civ.seed,
-        "countries": civ_breakdown(civ),
-        "edges": nnz,
-        "mean_degree": nnz / max(civ.n, 1),
+        "identity": identity,
+        "edges": int(w.civ.adj.nnz),
+        "mean_degree": round(float(w.civ.adj.nnz) / max(w.civ.n, 1), 2),
+        "top_countries": [{"iso2": GENESIS_COUNTRY_CODES[int(c)],
+                           "alive": int(per_country[c])} for c in top],
     }
 
 
 def run():
     import uvicorn
-    uvicorn.run("earth1.api.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("earth1.api.main:app", host="0.0.0.0", port=8000)
 
 
 if __name__ == "__main__":
