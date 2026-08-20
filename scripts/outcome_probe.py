@@ -50,7 +50,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-SHOCK_HEALTH = 0.05
+SHOCK_HEALTH = 0.05        # closed firms stay far below the 0.25 gate
+DEPRESSED_HEALTH = 0.20    # survivors: below the gate, ~12 days to reopen
+CLOSURE_FRAC = 0.30        # the weakest 30% of the country's firms close
 DAYS = 30
 HORIZONS = (3, 15, 30)
 ARMS = (("main", 740000, 8, "largest"),
@@ -125,11 +127,33 @@ def run_member(task):
     comp_mask = (w.health.alive & w.life.in_lf
                  & (w.civ.country == GEO["comparison"][0]))
 
-    shocked_firms = 0
+    shocked = {"firms": 0, "closed": 0, "laid_off": 0}
     if kind == "scenario":
-        firms = np.flatnonzero(w.life.firm_country == tgt_idx)
-        w.life.firm_health[firms] = SHOCK_HEALTH
-        shocked_firms = int(firms.size)
+        life = w.life
+        firms = np.flatnonzero(life.firm_country == tgt_idx)
+        k = int(firms.size * CLOSURE_FRAC)
+        order = np.argsort(life.firm_health[firms])
+        closed = firms[order[:k]]
+        survivors = firms[order[k:]]
+        # the canonical failure transition (life_tick's own layoff
+        # semantics), applied exogenously at branch time
+        laid_off = np.isin(life.firm, closed) & life.employed
+        life.employed[laid_off] = False
+        life.firm[laid_off] = -1
+        life.tenure[laid_off] = 0.0
+        life.spells[laid_off] += 1
+        life.firm_health[closed] = SHOCK_HEALTH
+        life.firm_health[survivors] = DEPRESSED_HEALTH
+        # the fabric follows the person (0.0d): sever the laid-off
+        # workers' employment ties through the production machinery,
+        # on a DEDICATED rng so the paired main stream stays aligned
+        from earth1.rehome import rehome_employment
+        lost_idx = np.flatnonzero(laid_off)
+        rehome_employment(w, lost_idx,
+                          np.array([], dtype=np.int64),
+                          np.random.default_rng(seed + 500000))
+        shocked = {"firms": int(firms.size), "closed": int(k),
+                   "laid_off": int(laid_off.sum())}
 
     rng = np.random.default_rng(seed)
     cum = {}
@@ -154,7 +178,7 @@ def run_member(task):
     return {"arm": arm, "pair": pair, "seed": seed, "kind": kind,
             "target": {"key": target_key, "index": tgt_idx,
                        "name": GEO[target_key][1]},
-            "shocked_firms": shocked_firms,
+            "shock": shocked,
             "wall_s": round(time.monotonic() - t0, 1),
             "daily": daily, "horizons": snaps}
 
@@ -188,10 +212,14 @@ def main():
         run_dir, experiment="meaningful_outcome_probe_0_7",
         snapshot_dir=SNAPSHOT,
         config={"CANONICAL_DAY": dict(CANONICAL_DAY),
-                "intervention": {"type": "firm_health_recession",
-                                 "set_health": SHOCK_HEALTH,
-                                 "mechanisms": ["failure_wave",
-                                                "hiring_gate_0.25"]},
+                "intervention": {"type": "firm_closure_recession",
+                                 "closure_frac": CLOSURE_FRAC,
+                                 "closed_health": SHOCK_HEALTH,
+                                 "survivor_health": DEPRESSED_HEALTH,
+                                 "mechanisms": ["canonical_layoff",
+                                                "0.0d_tie_severing",
+                                                "hiring_gate_0.25",
+                                                "failure_wave"]},
                 "days": DAYS, "horizons": list(HORIZONS),
                 "arms": [list(a) for a in arms],
                 "precision": "float64"},
@@ -210,8 +238,7 @@ def main():
             results.append(r)
             print(f"  [{len(results):2d}/{len(tasks)}] {r['arm']:8s} "
                   f"pair {r['pair']} {r['kind']:8s} "
-                  f"shocked_firms={r['shocked_firms']:>6} "
-                  f"{r['wall_s']:7.1f}s", flush=True)
+                  f"shock={r['shock']} {r['wall_s']:7.1f}s", flush=True)
 
     results.sort(key=lambda r: (r["arm"], r["pair"], r["kind"]))
     (run_dir / "members.json").write_text(json.dumps(results, indent=1))
