@@ -283,8 +283,22 @@ def _recompose_adj(w):
     (0.7 note: a one-pass COO-concat + lexsort rebuild was tried and
     proven bit-identical — but SLOWER at 4M (global sort of ~60M
     triplets loses to the pairwise sorted merges csr_plus_csr does).
-    The chain stays; the daily loop calls it one time fewer instead.)"""
+    The numba k-way row merge keeps the merge structure AND the single
+    pass: duplicates accumulate left-to-right in type order — the
+    chained association exactly — with the diagonal/zero handling of
+    the guarded path below built in. Chain retained as the no-numba
+    fallback.)"""
+    from scipy import sparse as _sp
+    from earth1.graph_kernels import merge_typed_csr
     fab = w.fabric
+    mats = list(fab.by_type.values())
+    n = mats[0].shape[0]
+    got = merge_typed_csr(mats, n)
+    if got is not None:
+        indptr, indices, data = got
+        fab.adj = _sp.csr_matrix((data, indices, indptr), shape=(n, n))
+        w.civ.adj = fab.adj
+        return
     total = None
     for m in fab.by_type.values():
         total = m if total is None else total + m

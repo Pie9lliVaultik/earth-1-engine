@@ -51,7 +51,16 @@ _CHUNK = 4_000_000          # edge-gather chunk: bounds peak memory
 
 
 def _edge_distance(forces, rows, cols):
-    """Mean |Δforce| per edge, chunked so 4M-scale gathers stay bounded."""
+    """Mean |Δforce| per edge, chunked so 4M-scale gathers stay bounded.
+
+    0.7: the fused kernel skips materializing the (E, K) gather twice;
+    it reproduces numpy's pairwise mean association exactly (proven by
+    trajectory hash) and falls back to this numpy path when numba is
+    unavailable."""
+    from earth1.graph_kernels import edge_distance as fused
+    got = fused(forces, rows, cols)
+    if got is not None:
+        return got
     out = np.empty(rows.size, dtype=forces.dtype)
     for s in range(0, rows.size, _CHUNK):
         e = min(s + _CHUNK, rows.size)

@@ -54,6 +54,23 @@ OUT = Path(os.environ.get("EARTH1_ENSEMBLE_OUT",
 
 BASE = None          # the loaded world, shared into children by fork
 TARGET_COUNTRY = None
+_PIN_COUNTER = None  # multiprocessing.Value when EARTH1_ENSEMBLE_PIN=1
+
+
+def _pin_worker():
+    """Pin each worker to a distinct PHYSICAL core (EPYC enumerates
+    0..N-1 physical, N..2N-1 as SMT siblings): without this the
+    scheduler can co-locate two members on one core's hyperthreads
+    while whole cores idle. Opt-in via EARTH1_ENSEMBLE_PIN=1;
+    execution config only — recorded in the summary."""
+    if _PIN_COUNTER is None or not hasattr(os, "sched_setaffinity"):
+        return
+    with _PIN_COUNTER.get_lock():
+        me = _PIN_COUNTER.value
+        _PIN_COUNTER.value += 1
+    ncpu = os.cpu_count() or 1
+    phys = ncpu // 2 if ncpu >= 2 else ncpu
+    os.sched_setaffinity(0, {me % phys})
 
 
 def _target_country(w):
@@ -166,8 +183,13 @@ def main():
     load_samples = []
     results = []
     ctx = mp.get_context("fork")
+    global _PIN_COUNTER
+    pin = os.environ.get("EARTH1_ENSEMBLE_PIN") == "1"
+    if pin:
+        _PIN_COUNTER = ctx.Value("i", 0)
     t1 = time.monotonic()
-    with ctx.Pool(processes=WORKERS, maxtasksperchild=1) as pool:
+    with ctx.Pool(processes=WORKERS, maxtasksperchild=1,
+                  initializer=_pin_worker if pin else None) as pool:
         for r in pool.imap_unordered(run_member, tasks):
             results.append(r)
             load_samples.append(
@@ -202,6 +224,7 @@ def main():
     summary = {
         "frozen_workload": is_frozen_run,
         "precision": PRECISION,
+        "pinned": pin,
         "pairs": PAIRS, "days": DAYS, "workers": WORKERS,
         "threads_per_worker": int(os.environ["OMP_NUM_THREADS"]),
         "target_country": {"index": TARGET_COUNTRY[0],
