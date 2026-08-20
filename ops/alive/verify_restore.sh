@@ -36,9 +36,13 @@ BASE="${BACKUP_TARGET#*:}"
 WHICH="${1:-}"
 if [ -z "$WHICH" ]; then
     # restricted shell on the Storage Box: no remote pipes, so list
-    # remotely and sort locally
-    WHICH="$(ssh -p "$BACKUP_PORT" "$HOST" ls -1 "$BASE/alive" | sort | tail -1)"
-    [ -n "$WHICH" ] || die "no backups found at $BASE/alive"
+    # remotely and sort locally. Only timestamp-named dirs are backups:
+    # annulled ones are renamed TAINTED-DO-NOT-RESTORE-* precisely so
+    # nothing restores them — the first real rehearsal run picked the
+    # tainted dir via a bare `sort | tail -1` and failed on it.
+    WHICH="$(ssh -p "$BACKUP_PORT" "$HOST" ls -1 "$BASE/alive" \
+             | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}T' | sort | tail -1)"
+    [ -n "$WHICH" ] || die "no restorable backups found at $BASE/alive"
 fi
 log "rehearsing restore of $WHICH"
 
