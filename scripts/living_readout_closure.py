@@ -48,18 +48,21 @@ def load_cells():
                                           z["leg"], z["liv"])]
 
 
-def run_hier(cells, fkey, within_key, drop=None):
+def run_hier(cells, fkey, within_key, drop_w=None):
     """The hierarchical arm, verbatim logic from the frozen script,
-    returning per-(seed,q,c,b) predictions for paired analysis."""
+    returning per-(seed,q,c,b) predictions for paired analysis.
+
+    drop_w ablates columns at the WITHIN level only: in the hybrid
+    configuration the between level is legacy-18, which contains no
+    living columns to drop (first run crashed on exactly that)."""
     wkey = within_key
 
     def feats(cell):
-        v = cell[fkey]
-        return np.delete(v, drop) if drop is not None else v
+        return cell[fkey]
 
     def wfeats(cell):
         v = cell[wkey]
-        return np.delete(v, drop) if drop is not None else v
+        return np.delete(v, drop_w) if drop_w is not None else v
 
     qs = sorted({c["q"] for c in cells})
     countries = sorted({c["c"] for c in cells})
@@ -141,7 +144,7 @@ def main():
     abl = {}
     for fam, members in FAMILIES.items():
         cols = [N_STATIC + NAMES_LIV.index(m) for m in members]
-        m_a, _ = run_hier(cells, "leg", "liv", drop=cols)
+        m_a, _ = run_hier(cells, "leg", "liv", drop_w=cols)
         abl[fam] = round(m_a - mae_hyb, 3)      # positive = channel helps
         print(f"  ablate {fam}: dL={abl[fam]:+.3f}", flush=True)
 
