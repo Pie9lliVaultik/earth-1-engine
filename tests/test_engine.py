@@ -184,8 +184,8 @@ class TestWorldReadsAreEventAware:
                  for a, b in zip(aware, blind)]
         assert max(diffs) > 1e-4, "active event invisible to run_segment"
 
-    @__import__("pytest").mark.skip(reason="RETIRED SURFACE (0.5g): exercises the old-engine /ask API; living surface proven by test_api_one_earth.py")
-def test_ask_route_reads_the_world(self):
+    @__import__("pytest").mark.skip(reason="RETIRED SURFACE (0.5g)")
+    def test_ask_route_reads_the_world(self):
         """The route itself: inject into THE WorldState, /ask must move."""
         import os
         from fastapi.testclient import TestClient
