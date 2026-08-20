@@ -1,0 +1,16 @@
+{
+ "eligible": false,
+ "verdict": "REFUSED",
+ "broken_invariants": [
+  "gate_canary"
+ ],
+ "invariants": {
+  "gate_canary": {
+   "suite": "tests/test_gate_canary.py",
+   "passed": false,
+   "summary": "1 failed in 0.03s"
+  }
+ },
+ "commit": "972864a01f4cc0d8d4edf108271eb866b32941a2",
+ "dirty_worktree": true
+}

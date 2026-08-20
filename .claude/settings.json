@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 systemctl:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 journalctl:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 git:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 sha256sum:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 ls:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 df:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 tail:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 head:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 find:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 install:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 mkdir:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 python3:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner root@167.233.77.48 /opt/earth1/ops/alive/:*)",
+      "Bash(ssh -i ~/.ssh/earth1_hetzner -p 23 u652120@u652120.your-storagebox.de:*)",
+      "Bash(rsync:*)"
+    ]
+  }
+}

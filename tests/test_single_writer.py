@@ -17,8 +17,12 @@ from pathlib import Path
 
 import pytest
 
-from earth1.single_writer import (WORLD_RUNNER_MARKERS, scan_launch_dirs,
+from earth1.single_writer import (WORLD_RUNNER_MARKERS,
+                                  SYSTEMD_ALLOWED_ON_CANONICAL,
+                                  scan_launch_dirs, scan_systemd_units,
                                   assert_single_writer)
+
+ARCHIVE = Path(__file__).resolve().parents[1] / "ops/legacy_archive"
 
 
 def test_no_world_runner_is_configured_on_this_machine():
@@ -60,6 +64,58 @@ def test_second_canonical_writer_is_refused(tmp_path):
     assert offenders, "a fresh second-writer config was not detected"
     with pytest.raises(RuntimeError, match="single_writer_world"):
         assert_single_writer(extra_dirs=[tmp_path])
+
+
+def test_no_systemd_world_runner_on_this_machine():
+    """0.7 extension: systemd units are judged too. On a dev machine
+    /etc/systemd/system barely exists; the scan must still be clean."""
+    assert scan_systemd_units() == []
+    assert_single_writer()
+
+
+def test_retired_systemd_daily_unit_is_refused(tmp_path):
+    """Failing control: the FOURTH world's actual unit (found enabled on
+    the production box during 0.7, archived as evidence) must trip the
+    gate — even under the canonical-host allowance."""
+    retired = ARCHIVE / "earth1-daily.service.retired"
+    assert retired.exists(), "the archived fourth-world evidence is missing"
+    staged = tmp_path / "earth1-daily.service"
+    staged.write_bytes(retired.read_bytes())
+    for canonical in (False, True):
+        offenders = scan_systemd_units(extra_dirs=[tmp_path],
+                                       canonical_host=canonical)
+        assert offenders, ("the gate cannot detect the fourth world "
+                           f"(canonical={canonical})")
+    with pytest.raises(RuntimeError, match="single_writer_world"):
+        assert_single_writer(systemd_extra_dirs=[tmp_path],
+                             canonical_host=True)
+
+
+def test_canonical_allowlist_does_not_leak_to_other_machines(tmp_path):
+    """The writer's own unit is allowed ONLY on the canonical host: the
+    same earth1-alive.service on any other machine is a second Earth."""
+    unit = tmp_path / "earth1-alive.service"
+    unit.write_text("[Service]\nExecStart=/opt/earth1/.venv/bin/python3 "
+                    "/opt/earth1/scripts/world_alive.py\n")
+    assert scan_systemd_units(extra_dirs=[tmp_path],
+                              canonical_host=True) == []
+    offenders = scan_systemd_units(extra_dirs=[tmp_path],
+                                   canonical_host=False)
+    assert offenders, "a second canonical writer was not detected"
+    with pytest.raises(RuntimeError, match="single_writer_world"):
+        assert_single_writer(systemd_extra_dirs=[tmp_path])
+
+
+def test_disguised_systemd_writer_is_refused_even_on_canonical(tmp_path):
+    """A NEW unit name not on the allowlist referencing a runner must
+    trip the gate even on the canonical host."""
+    unit = tmp_path / "totally-not-a-world.service"
+    unit.write_text("[Service]\nExecStart=/usr/bin/python3 -c "
+                    "'from earth1.alive import live_one_day'\n")
+    assert "totally-not-a-world.service" not in SYSTEMD_ALLOWED_ON_CANONICAL
+    offenders = scan_systemd_units(extra_dirs=[tmp_path],
+                                   canonical_host=True)
+    assert offenders, "a disguised writer passed the canonical allowance"
 
 
 def test_dev_tooling_remains_possible():

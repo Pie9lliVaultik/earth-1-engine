@@ -1,0 +1,39 @@
+{
+ "bar": 0.5,
+ "ladder": [
+  {
+   "pop": 200000,
+   "floor": 1000,
+   "days": 180,
+   "repeats": 2,
+   "countries": 194,
+   "agents_per_small_country": 1000,
+   "rank_correlation": -0.0785,
+   "pearson": 0.0071,
+   "passes": false
+  },
+  {
+   "pop": 400000,
+   "floor": 2000,
+   "days": 270,
+   "repeats": 3,
+   "countries": 194,
+   "agents_per_small_country": 2000,
+   "rank_correlation": 0.1124,
+   "pearson": 0.1265,
+   "passes": false
+  },
+  {
+   "pop": 600000,
+   "floor": 3000,
+   "days": 360,
+   "repeats": 3,
+   "countries": 194,
+   "agents_per_small_country": 3000,
+   "rank_correlation": 0.0393,
+   "pearson": 0.0204,
+   "passes": false
+  }
+ ],
+ "winner": null
+}
