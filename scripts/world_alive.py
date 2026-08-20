@@ -300,6 +300,8 @@ def main():
                   "births", "disease_deaths", "weather_deaths",
                   "starved_or_parched", "road_deaths_today",
                   "rehomed_migrants", "rehomed_workers",
+                  "ties_strengthened", "ties_weakened",
+                  "ties_pruned", "ties_rewired",
                   "in_treatment", "countries_at_war", "war_deaths",
                   "conscripted", "mean_welfare", "mean_legitimacy",
                   "homeless", "crimes_today", "criminal_share",
