@@ -289,6 +289,15 @@ def _recompose_adj(w):
     for m in fab.by_type.values():
         total = m if total is None else total + m
     fab.adj = total.tocsr()
-    fab.adj.setdiag(0.0)
-    fab.adj.eliminate_zeros()
+    # 0.7: setdiag(0.0) on a diagonal-free CSR INSERTS 4M explicit
+    # zeros (a full structure rebuild) that eliminate_zeros then strips
+    # back out — ~10% of a world-day spent on a semantic no-op. No tie
+    # type carries self-loops, so the guard almost never fires; when it
+    # does, the old path runs unchanged. Bit-identical either way:
+    # values untouched, and eliminate_zeros only runs when there is an
+    # explicit zero to remove.
+    if np.count_nonzero(fab.adj.diagonal()):
+        fab.adj.setdiag(0.0)
+    if not np.all(fab.adj.data):
+        fab.adj.eliminate_zeros()
     w.civ.adj = fab.adj
