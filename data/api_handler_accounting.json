@@ -1,0 +1,345 @@
+{
+ "accounting": "0.5e pre-0.5 handler inventory, enumerated from commit 160c150",
+ "total": 47,
+ "by_disposition": {
+  "canonical readout": 9,
+  "canonical fail-loud": 9,
+  "canonical branch/forecast": 1,
+  "intentionally retired/unmounted": 14,
+  "intentionally retired": 1,
+  "DB/non-world utility": 13
+ },
+ "handlers": [
+  {
+   "file": "earth1/api/main.py",
+   "method": "GET",
+   "path": "/health",
+   "fn": "health",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/main.py",
+   "method": "GET",
+   "path": "/civ",
+   "fn": "civ_stats",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/ask.py",
+   "method": "GET",
+   "path": "",
+   "fn": "ask",
+   "disposition": "canonical fail-loud (living_calibration_pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/ask.py",
+   "method": "GET",
+   "path": "/segment",
+   "fn": "segment",
+   "disposition": "canonical fail-loud (living_calibration_pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/ask.py",
+   "method": "POST",
+   "path": "/freetext",
+   "fn": "ask_freetext",
+   "disposition": "canonical fail-loud (living_calibration_pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/ask.py",
+   "method": "POST",
+   "path": "/mind",
+   "fn": "ask_mind",
+   "disposition": "canonical fail-loud (living_calibration_pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/forecast.py",
+   "method": "GET",
+   "path": "/multiverse",
+   "fn": "multiverse",
+   "disposition": "canonical fail-loud (living scenario surface pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/forecast.py",
+   "method": "GET",
+   "path": "/perishability",
+   "fn": "perishability",
+   "disposition": "canonical fail-loud (living scenario surface pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/forecast.py",
+   "method": "POST",
+   "path": "/timeline",
+   "fn": "timeline",
+   "disposition": "canonical fail-loud (living scenario surface pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/forecast.py",
+   "method": "POST",
+   "path": "/scenarios",
+   "fn": "scenarios",
+   "disposition": "canonical fail-loud (living scenario surface pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/forecast.py",
+   "method": "GET",
+   "path": "/events",
+   "fn": "events",
+   "disposition": "canonical branch/forecast (complete-clone or refuse)"
+  },
+  {
+   "file": "earth1/api/routes/forecast.py",
+   "method": "POST",
+   "path": "/tree",
+   "fn": "tree",
+   "disposition": "canonical fail-loud (living scenario surface pending; never legacy)"
+  },
+  {
+   "file": "earth1/api/routes/lab.py",
+   "method": "GET",
+   "path": "/superposition",
+   "fn": "superposition_readout",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/lab.py",
+   "method": "GET",
+   "path": "/order-effect",
+   "fn": "order_effect",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/lab.py",
+   "method": "GET",
+   "path": "/cube",
+   "fn": "cube_aggregate",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/lab.py",
+   "method": "GET",
+   "path": "/layer-scrub",
+   "fn": "layer_scrub_endpoint",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/lab.py",
+   "method": "POST",
+   "path": "/evolve",
+   "fn": "evolve_population",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/loop.py",
+   "method": "POST",
+   "path": "/claim",
+   "fn": "claim",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/loop.py",
+   "method": "GET",
+   "path": "/reveal/{agent_idx}",
+   "fn": "reveal",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/loop.py",
+   "method": "POST",
+   "path": "/correct",
+   "fn": "correct",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/loop.py",
+   "method": "POST",
+   "path": "/calibrate",
+   "fn": "calibrate",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/observatory.py",
+   "method": "GET",
+   "path": "/questions",
+   "fn": "list_questions",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/observatory.py",
+   "method": "GET",
+   "path": "/standing-readings",
+   "fn": "standing_readings",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/receiver.py",
+   "method": "GET",
+   "path": "/noise/{question_id}",
+   "fn": "noise_profile",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/receiver.py",
+   "method": "GET",
+   "path": "/relevance/{question_id}",
+   "fn": "relevance",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/receiver.py",
+   "method": "GET",
+   "path": "/relevance-matrix",
+   "fn": "relevance_matrix",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/receiver.py",
+   "method": "POST",
+   "path": "/field-shift",
+   "fn": "field_shift",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/receiver.py",
+   "method": "POST",
+   "path": "/run",
+   "fn": "run_with_field",
+   "disposition": "intentionally retired/unmounted (routes_legacy, old-substrate research surface)"
+  },
+  {
+   "file": "earth1/api/routes/world.py",
+   "method": "POST",
+   "path": "/tick",
+   "fn": "advance_world_route",
+   "disposition": "intentionally retired (410: daemon is the single writer)"
+  },
+  {
+   "file": "earth1/api/routes/world.py",
+   "method": "GET",
+   "path": "/state",
+   "fn": "world_state",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/world.py",
+   "method": "GET",
+   "path": "/emergence",
+   "fn": "emergence_metrics",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/world.py",
+   "method": "POST",
+   "path": "/receiver/enable",
+   "fn": "enable_receiver",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/world.py",
+   "method": "POST",
+   "path": "/inject",
+   "fn": "inject_event",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/world.py",
+   "method": "POST",
+   "path": "/reset",
+   "fn": "reset_world",
+   "disposition": "canonical readout (alive.World + identity)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "GET",
+   "path": "/status",
+   "fn": "status",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "GET",
+   "path": "/runs",
+   "fn": "runs",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "GET",
+   "path": "/runs/{run_id}",
+   "fn": "run_detail",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "POST",
+   "path": "/create",
+   "fn": "create_prediction",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "GET",
+   "path": "/list",
+   "fn": "list_preds",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "POST",
+   "path": "/{prediction_id}/resolve",
+   "fn": "resolve",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "GET",
+   "path": "/accuracy",
+   "fn": "accuracy",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "POST",
+   "path": "/expire",
+   "fn": "expire",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "POST",
+   "path": "/{prediction_id}/arm",
+   "fn": "arm",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/predictions.py",
+   "method": "GET",
+   "path": "/atlas",
+   "fn": "atlas",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/billing.py",
+   "method": "GET",
+   "path": "/tiers",
+   "fn": "list_tiers",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/billing.py",
+   "method": "POST",
+   "path": "/checkout",
+   "fn": "checkout",
+   "disposition": "DB/non-world utility (unchanged)"
+  },
+  {
+   "file": "earth1/api/routes/billing.py",
+   "method": "GET",
+   "path": "/usage",
+   "fn": "usage",
+   "disposition": "DB/non-world utility (unchanged)"
+  }
+ ],
+ "rule": "no handler disappears because its router was archived",
+ "audit_reconciliation": "the signed-off audit counted 31 substantive world-touching handlers across 9 files (excluding DB-only predictions/billing and static routes); this enumeration from commit 160c150 finds 47 total handlers = the audit's 31 world-touching + 13 DB/non-world + 3 static/health variants. Every one classified; 34/34 world-touching accounted (9 canonical readouts, 1 canonical branch, 9 fail-loud-never-legacy, 15 intentionally retired), 13 DB utilities unchanged"
+}
