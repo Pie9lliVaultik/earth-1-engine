@@ -7,124 +7,69 @@
 | `BIBLE.md` | governing architecture and scientific program |
 | **`ops/alive/SESSION_STATE.md`** (this file) | **current execution checkpoint** |
 | `ops/alive/DEPLOY_RUNBOOK.md` | the immediate procedure |
-| `CLAUDE.md` → "Current phase" | **STALE** until Epoch 1 acceptance |
 
-Reconcile `CLAUDE.md` **after** production is green — not before. Doing
-it first adds a commit ahead of the operational gate and contributes
-nothing to the deployment.
-
-
-*Written 2026-08-19. `CLAUDE.md`'s "Current phase" section is STALE: it
-still names WP-0 as the first deliverable. WP-0 is done. This file is
-current; when they disagree, this one is right. Fold it into
-`CLAUDE.md` when that file is next editable.*
-
-## ✅ DONE: Epoch 1 deployed and ACCEPTED (2026-08-19)
-
-All ten acceptance criteria green — `ops/alive/EPOCH1_ACCEPTANCE_REPORT.md`
-is the record. Running commit `d2e55b0` (= frozen `ae65bcd` + three
-fixes found by the acceptance run itself; physics delta is
-`earth1/persistence.py` only). World at day 290+, full physics,
-epoch boundary at day 284, first-attempt days 284-304 ANNULLED
-(reduced physics — never cite as world history).
-
-## ▶ THE NEXT ACTION: 0.0a — aging
-
-Scope FIXED (founder): `advance_age()` = chronological `age` +
-`age_bucket` only. Details in `CLAUDE.md` Current phase (now
-reconciled and authoritative again — the staleness note below is
-historical).
-
----
-
-# ORIGINAL DEPLOYMENT CHECKPOINT (historical, superseded)
-
-## ▶ THE NEXT ACTION: execute the Epoch-1 deployment
-
-**Frozen target: tag `v1-persistence-deploy-1` → `ae65bcd`.**
-Do not move it. **Do not begin 0.0a until production acceptance is
-green.** Later commits on `v1-unification` are docs and tests only; the
-code at the tag is complete.
-
-Follow `ops/alive/DEPLOY_RUNBOOK.md` — all twelve steps, executed by
-Claude Code, never handed to the founder. **Re-run Step 0 from scratch**
-in a new session; do not resume from a mutating command.
-
-> ### HARD GATE
-> Do not stop `earth1-alive.service` until the complete canonical 4M
-> `data/alive/` civilization is off-box **and independently
-> checksum-verified**.
->
-> The shipped `/opt/earth1/run_backup.sh` protects `data/living/` — the
-> old 200K world — so **this is the first real backup this
-> civilization has ever had**, despite a green timer. If any
-> verification fails: **stop before mutation**, diagnose, fix the
-> cause. Do not proceed on an unverified copy.
-
-The world becomes **Epoch 1** at a recorded discontinuity
-(`legacy_v0_missing_presence_mobility`), because the v0 format never
-wrote `presence`/`mobility` and they are rebuilt at birth values. That
-boundary is an engineering artifact, not a world event: **no causal
-benchmark may span it**, and no trajectory may be treated as continuous
-across it.
-
-Acceptance is only green when all of this holds:
-**known code + known state + off-site memory + exact restart.**
+*Updated 2026-08-20, mid-0.7.*
 
 ## Phase 0 status
 
-| task | state |
+| phase | state |
 |---|---|
-| **WP-0** unification audit | ✅ **DONE** — `V1_UNIFICATION_AUDIT.md`, signed off with 3 amendments (see its §A) |
-| **0.0e** provenance gate *(new task; promoted ahead of 0.0a)* | ✅ built · ⏳ **not deployed** |
-| **0.0c** exact persistence | ✅ built · ⏳ **not deployed** |
-| **0.0a** aging | ⬜ **next, after deployment** — see scope below |
-| **0.0b** virgin-slot rebirth | ⬜ `_be_born` clears no adjacency row **and** inherits ~40 fields incl. `health.declining`/`falls` (a newborn can be born mid fall-decline). Needs a central reset schema, not a longer list |
-| **0.0d** fabric re-homing | ⬜ migration updates `civ.country` but not `region`/`urban`, so the locality key `country*1000+region*2+urban` becomes an invalid address |
-| **0.1** four correctness bugs | ⚠️ (a) `memory.spread` global RNG — **already FIXED** in 0.0c under ruling 4 · (b) `health.py:235` `u[4]` double-use → change to the unused `u[5]` · (c) conviction decay `× 0.0` — **mark disabled/unadjudicated, keep output bit-identical, activate only via the 0.8 A/B** · (d) cause codes: war=5 collides with fall=5 |
-| **0.2–0.8** | ⬜ as written. 0.5 covers **31 API route handlers across 9 files**, and `earth1/__init__.py:1` imports `engine` unconditionally — **empty that first** or nothing is retirable |
+| WP-0 → 0.6 | ✅ ACCEPTED, tagged (`phase0-0.5`, `phase0-0.6`, …). Acceptance reports in `ops/alive/`. Production world day ~1143, 3.79M alive, running v1-unification. |
+| **0.7 — prime goes to work** | ▶ **IN FLIGHT** — see below |
+| 0.8 | ⬜ next: re-measure physics on the unified loop |
 
-## 0.0a scope — decided, do not re-litigate
+## 0.7 progress (contract: prime = lab, CCX33 = sole writer, <30-min 20-pair ensemble)
 
-`advance_age()` maintains **`age` and `age_bucket` ONLY.**
-
-- ❌ Do **not** re-assert `forces[:, EXPERIENCE] = age`. In the living
-  world EXPERIENCE is a real dynamical channel written every day by six
-  modules (`flourishing.py:243`, `mobility.py:170`, propagate, relax,
-  feed, contagion). Overwriting it would erase lived history.
-- ❌ Do **not** port `_AGE_GRADIENTS` trait drift
-  (`generational.py:187-192`) — that is behavioural physics, not a
-  correctness fix.
-- ❌ Do **not** call `generational_tick` whole: it carries its own
-  Gompertz mortality and rebirth that never touch `health.alive`, which
-  would create two incompatible demographic authorities.
-- ✅ Extract `generational.py:181-185`; insert at `alive.py:102`, after
-  policy/war and **before** `life_tick`/`health_tick`, so the day's
-  hazards see today's age.
-- ⚠️ Known consequence to **log, not fix here**: `life.py:267` sets
-  `in_lf` once at birth and never recomputes it, so unfreezing age
-  creates nonagenarians permanently in the labour force. Retirement is
-  new physics and belongs to a later phase.
-- Invariant: 365 simulated days advances every survivor by exactly one
-  year (`atol` tight), `age_bucket` stays consistent, and age-dependent
-  modules then read the correct age.
+1. **Backup/restore chain — ✅ CLOSED.** Checked-in `earth1-backup.timer`
+   + `earth1-restore-rehearsal.timer` installed AND enabled on the box
+   (old wrong-target unit replaced). Timer-driven backup exit 0. On-box
+   rehearsal PASSED (day-1142 backup → checksums → canonical loader →
+   whole civilization). Two-hop prime materialization PASSED. Corruption
+   controls demonstrated: flipped bit → manifest check exit 1 AND
+   `SnapshotError` from the loader. Two real defects caught and fixed by
+   exercising it: TAINTED-dir selected as "newest" backup; loader ran on
+   system python. **Fourth world found and retired**: `earth1-daily.timer`
+   was ENABLED on the box (old substrate, last success 2026-08-19,
+   wrote only `data/living/` — canonical home proven untouched).
+   Units archived in `ops/legacy_archive/`; `single_writer` gate now
+   scans systemd unit files AND names; box passes as canonical writer.
+   NOTE: `/opt/earth1/data/living/` left in place as inert evidence
+   (rename denied by permission policy); founder may archive/delete.
+   NOTE: prime was NOT granted Storage Box credentials (permission
+   policy); restores to prime relay through the box, which is also a
+   defensible least-credential topology — founder may change.
+2. **Reproducibility — ✅ built.** `earth1/manifest.py` records SHA,
+   snapshot identity, schema, config hash, seeds, machine, workers,
+   wall time, artifacts for every prime experiment.
+3. **Workload — ✅ FROZEN before measurement.**
+   `ops/alive/ENSEMBLE_PROTOCOL_0_7.md`: day-1142 backup, 20 pairs,
+   common random numbers, +0.20 FEAR shock to most populous country,
+   30 days/member, `live_one_day` + `CANONICAL_DAY`, full 4M. Runner
+   `scripts/ensemble_paired.py` proven deterministic (identical runs →
+   identical world_hashes). Prime staged: fresh clone `/opt/earth1-0.7`
+   at the pinned SHA (main `/opt/earth1` checkout left untouched —
+   carries stray lab files), snapshot at
+   `/opt/earth1-data/snapshots/2026-08-20T074529Z-day1142` (checksums
+   verified on prime).
+4. **20-pair < 30 min** — ⏳ calibration subset running; then frozen run.
+5. Optimization (only if miss; equivalence rule) — ⬜
+6. Saturation study — ⬜
+7. Machine-role gates — ◐ systemd scan + canonical allowlist done; run
+   evidence on prime/laptop + prime-cannot-write-production proof due.
+8. Acceptance report → tag `phase0-0.7` — ⬜
 
 ## Governing doctrine
 
-`BIBLE.md` Part XI.A — **NO DEAD-END RESULTS**. A miss is not a
-deliverable; it starts
-`MISS → VERIFY → DIAGNOSE → RESEARCH → IMPLEMENT → CALIBRATE → ABLATE → RETEST → PASS → FREEZE`.
-**Do not stop at "the model failed." Your job starts there.**
-
-Read `V1_UNIFICATION_AUDIT.md` §A for the binding founder rulings and
-Part 7 for defects **N1–N17** before touching any Phase 0 task.
+`BIBLE.md` XI.A — NO DEAD-END RESULTS. Standing Rule 2: a test that
+cannot demonstrate failure is not yet evidence. Git: everything to
+`origin/v1-unification` immediately; `main` untouched until post-0.8.
 
 ## Open founder-side items
 
 | item | status |
 |---|---|
-| RunPod token rotation | ⏳ owner-only (console). Repo is clean — no key in history, `.env` gitignored, no remediation needed |
+| RunPod token rotation | ⏳ owner-only (console) |
 | WVS microdata registration | ⏳ gates R16; longest lead |
 | FRED / ACLED keys | ⏳ |
 | Destitution-bar ruling (34.5% measured vs 25% bar) | ⏳ |
-| Backup restore rehearsal | ✅ tooling built + proven locally; runs for real in deployment steps 10–11 |
+| `data/living.retired` + Storage Box credential topology | see 0.7 notes above |
