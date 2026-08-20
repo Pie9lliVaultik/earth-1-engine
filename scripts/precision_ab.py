@@ -31,8 +31,13 @@ sys.path.insert(0, str(ROOT))
 
 N_PAIRS = 8
 N_CONTROL_PAIRS = 3            # float16-control arm
-SEED_BASE = 710000
-FEAR_SHOCK = 0.20
+# V2 (PRECISION_EQUIVALENCE_PROTOCOL_0_7_V2.md): fresh seeds, and the
+# intervention direction chosen by the pre-registered headroom rule —
+# on the day-1142 snapshot FEAR sits at 0.978, so the discriminating
+# perturbation is DOWNWARD. v1 (+0.20, seeds 710000+i) remains the
+# official rejected attempt.
+SEED_BASE = 720000
+FEAR_SHOCK = -0.20
 DAYS = 30
 HORIZONS = (3, 15, 30)
 
@@ -72,6 +77,7 @@ def run_member(task):
         mask = w.health.alive & (w.civ.country == TARGET[0])
         fcol = w.civ.forces[:, Force.FEAR]
         fcol[mask] = np.clip(fcol[mask] + FEAR_SHOCK, 0.0, 1.0)
+        # FEAR_SHOCK is signed; v2 applies the headroom direction
 
     rng = np.random.default_rng(SEED_BASE + pair)
     cum = {}

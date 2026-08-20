@@ -125,53 +125,102 @@ def evaluate(members, alt_precision, pairs):
             x64_ctrl = np.array(x64_ctrl, dtype=np.float64)
             sd_seed = float(x64_ctrl.std(ddof=1))
             rmse = float(np.sqrt(np.mean(np.square(d_pairs))))
-            resolved = _res(res, float(np.abs(x64_ctrl).mean()))
-            # level gate
-            if sd_seed == 0 and rmse == 0:
-                degenerate.append((h, name, "identical in both precisions"))
-                continue
+            level_scale = float(np.abs(x64_ctrl).mean())
+            resolved = _res(res, level_scale)
+            # V2: deterministic-in-reference rows get a numerical
+            # tolerance (~10x f32 eps), never a bit-identity demand
             if sd_seed == 0:
-                breaches.append((h, name, "level",
-                                 f"SD_seed=0 but rmse={rmse:.3g}"))
+                tol = 1e-6 * max(1.0, level_scale)
+                det_ok = rmse <= tol and (resolved <= 0
+                                          or rmse <= resolved)
+                rows.append({"horizon": h, "observable": name,
+                             "deterministic": True,
+                             "rmse": rmse, "tol": tol,
+                             "pass": bool(det_ok)})
+                if not det_ok:
+                    breaches.append((h, name, "deterministic",
+                                     f"rmse={rmse:.3g} > tol={tol:.3g}"))
+                else:
+                    degenerate.append((h, name,
+                                       f"deterministic, rmse={rmse:.3g}"
+                                       f" within tol"))
                 continue
             r = rmse / sd_seed
             margin = max(sd_seed, resolved)
             t_ok, mdiff, marg = _tost(d_pairs, margin)
             lvl_ok = (r <= R_LIMIT) and t_ok
-            # effect (Δ) gate
-            delta_diff = np.array(d_alt) - np.array(d64)
-            sd_d64 = float(np.array(d64).std(ddof=1))
+            # V2 effect gate: RES-floored denominator, and rows whose
+            # true f64 effect is below scientific resolution are
+            # UNINFORMATIVE — reported, not graded
+            d64a = np.array(d64, dtype=np.float64)
+            delta_diff = np.array(d_alt) - d64a
+            sd_d64 = float(d64a.std(ddof=1))
             rmse_d = float(np.sqrt(np.mean(np.square(delta_diff))))
-            if sd_d64 == 0 and rmse_d == 0:
-                eff_ok, r_d = True, 0.0
-            elif sd_d64 == 0:
-                eff_ok, r_d = False, float("inf")
-            else:
-                r_d = rmse_d / sd_d64
-                t2_ok, _, _ = _tost(delta_diff,
-                                    max(sd_d64, resolved))
+            informative = (resolved > 0
+                           and abs(float(d64a.mean())) > resolved)
+            if informative:
+                floor = max(sd_d64, resolved)
+                r_d = rmse_d / floor
+                t2_ok, _, _ = _tost(delta_diff, floor)
                 eff_ok = (r_d <= R_LIMIT) and t2_ok
+            else:
+                r_d, eff_ok = None, True     # ungraded
             rows.append({"horizon": h, "observable": name,
                          "R_level": round(r, 3),
                          "R_effect": (round(r_d, 3)
-                                      if np.isfinite(r_d) else None),
+                                      if r_d is not None else None),
+                         "effect_informative": bool(informative),
+                         "mean_d64": float(d64a.mean()),
                          "mean_diff": float(mdiff),
                          "sd_seed": sd_seed,
                          "pass": bool(lvl_ok and eff_ok)})
             if not (lvl_ok and eff_ok):
                 breaches.append((h, name, "level" if not lvl_ok
                                  else "effect",
-                                 f"R={r:.3f} R_eff={r_d:.3f}"))
+                                 f"R={r:.3f} R_eff={r_d}"))
     # rankings + effect signs, terminal horizon
     rank_ok, sign_ok, rank_detail = _rankings(by, alt_precision, pairs)
     if not rank_ok:
         breaches.append(("30", "country_rankings", "rank", rank_detail))
     if not sign_ok:
         breaches.append(("30", "effect_signs", "sign", rank_detail))
+    # V2 validity floor: the effect test needs something to test
+    terminal = HORIZONS[-1]
+    informative_rows = [r for r in rows
+                        if r.get("horizon") == terminal
+                        and r.get("effect_informative")]
+    fams = {_family(r["observable"]) for r in informative_rows}
+    valid = len(informative_rows) >= 15 and len(fams) >= 3
     return {"rows": rows, "breaches": breaches,
             "degenerate": degenerate,
             "rank_detail": rank_detail,
-            "pass": not breaches}
+            "informative_terminal": len(informative_rows),
+            "informative_families": sorted(fams),
+            "instrument_identifiable": valid,
+            "pass": (not breaches) and valid}
+
+
+_FAMILIES = (
+    ("demography", ("alive", "cum_deaths", "cum_births")),
+    ("labour", ("employment_rate", "wage_", "tenure_")),
+    ("material", ("wealth_", "deprivation", "destitute")),
+    ("health", ("cum_disease", "mental_", "physical_", "addiction_")),
+    ("housing", ("evicted", "arrears")),
+    ("migration", ("cum_migrants", "cum_workers")),
+    ("institutions", ("policy_", "firm_", "cum_firms")),
+    ("forces", ("force_",)),
+    ("opinion", ("pole_",)),
+    ("network", ("friends_", "weak_", "cum_ties")),
+    ("memory_knowledge", ("memories_", "knowledge_")),
+    ("cascades", ("cum_cascades",)),
+)
+
+
+def _family(name):
+    for fam, prefixes in _FAMILIES:
+        if any(name.startswith(p) for p in prefixes):
+            return fam
+    return "other"
 
 
 def _rankings(by, alt, pairs):
@@ -216,19 +265,24 @@ def _rankings(by, alt, pairs):
                     noise.setdefault(c, []).append(s64[c] - c64[c])
                     effs.setdefault(c, []).append(
                         (s64[c] - c64[c], sal[c] - cal[c]))
+        # V2: a cell qualifies iff |mean Δ64| beats both its own seed
+        # noise and the 0.01 bounded-mean resolution; signs compared
+        # on cell MEANS. Fewer than 10 qualifying cells across both
+        # channels -> Spearman decides family 13 alone.
         for c, pairs_e in effs.items():
-            sd = np.std([d for d, _ in pairs_e], ddof=1) \
-                if len(pairs_e) > 1 else 0.0
-            for d64, dal in pairs_e:
-                if abs(d64) > sd > 0:
-                    total += 1
-                    if np.sign(d64) == np.sign(dal):
-                        agree += 1
+            d64s = np.array([d for d, _ in pairs_e])
+            dals = np.array([d for _, d in pairs_e])
+            sd = d64s.std(ddof=1) if d64s.size > 1 else 0.0
+            if abs(d64s.mean()) > max(sd, 0.01):
+                total += 1
+                if np.sign(d64s.mean()) == np.sign(dals.mean()):
+                    agree += 1
     rho_min = min(rhos) if rhos else None
     share = agree / total if total else None
-    detail = f"spearman_min={rho_min}, sign_agree={share} ({agree}/{total})"
+    detail = (f"spearman_min={rho_min}, qualifying_cells={total}, "
+              f"sign_agree={share}")
     rank_ok = rho_min is not None and rho_min >= 0.9
-    sign_ok = share is None or share >= 0.9
+    sign_ok = (total < 10) or (share is not None and share >= 0.9)
     return rank_ok, sign_ok, detail
 
 
@@ -239,7 +293,11 @@ def main():
     f16 = evaluate(members, "float16-control", [1, 2, 3])
     instrument_valid = not f16["pass"]      # the degraded control MUST fail
     verdict = {
+        "protocol": "v2",
         "f32_pass": f32["pass"],
+        "instrument_identifiable": f32["instrument_identifiable"],
+        "informative_terminal_rows": f32["informative_terminal"],
+        "informative_families": f32["informative_families"],
         "f16_control_rejected": instrument_valid,
         "certified": bool(f32["pass"] and instrument_valid),
         "f32_breaches": f32["breaches"],
@@ -248,10 +306,10 @@ def main():
         "f16_breach_count": len(f16["breaches"]),
         "f16_first_breaches": f16["breaches"][:8],
         "n_rows": len(f32["rows"]),
-        "worst_R_level": max((r["R_level"] for r in f32["rows"]),
-                             default=None),
+        "worst_R_level": max((r["R_level"] for r in f32["rows"]
+                              if "R_level" in r), default=None),
         "worst_R_effect": max((r["R_effect"] for r in f32["rows"]
-                               if r["R_effect"] is not None),
+                               if r.get("R_effect") is not None),
                               default=None),
     }
     (run_dir / "gate_verdict.json").write_text(json.dumps(verdict,
