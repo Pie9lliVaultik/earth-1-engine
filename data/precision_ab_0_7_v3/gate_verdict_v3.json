@@ -1,0 +1,70 @@
+{
+ "protocol": "v3-ensemble-consistency",
+ "B_vs_A_pass (must be true)": false,
+ "B_failed_cells": [
+  [
+   "forces",
+   "3",
+   {
+    "rows": 16,
+    "breach": 5,
+    "severe": 0
+   }
+  ],
+  [
+   "forces",
+   "30",
+   {
+    "rows": 16,
+    "breach": 5,
+    "severe": 0
+   }
+  ],
+  [
+   "material",
+   "3",
+   {
+    "rows": 6,
+    "breach": 2,
+    "severe": 0
+   }
+  ],
+  [
+   "material",
+   "30",
+   {
+    "rows": 6,
+    "breach": 2,
+    "severe": 0
+   }
+  ]
+ ],
+ "C_vs_A_pass (must be false)": false,
+ "C_failed_cell_count": 7,
+ "instrument_valid": false,
+ "X_pass": false,
+ "X_failed_cells": [
+  [
+   "forces",
+   "30",
+   {
+    "rows": 16,
+    "breach": 4,
+    "severe": 0
+   }
+  ],
+  [
+   "material",
+   "30",
+   {
+    "rows": 6,
+    "breach": 3,
+    "severe": 0
+   }
+  ]
+ ],
+ "X_rank_detail": "spearman_min=0.9894736842105262, qualifying_cells=0, sign_agree=None",
+ "X_informative_terminal": 0,
+ "X_informative_families": [],
+ "certified": false
+}

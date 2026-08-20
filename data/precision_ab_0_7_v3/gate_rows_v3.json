@@ -1,0 +1,2982 @@
+{
+ "B": [
+  {
+   "h": "3",
+   "obs": "alive",
+   "kind": "level",
+   "z": 0.64,
+   "margin_sd": 128.092,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_deaths",
+   "kind": "level",
+   "z": 0.397,
+   "margin_sd": 110.312,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_births",
+   "kind": "level",
+   "z": 0.356,
+   "margin_sd": 254.023,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_disease_deaths",
+   "kind": "level",
+   "z": 0.191,
+   "margin_sd": 156.301,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "employment_rate",
+   "kind": "level",
+   "z": 0.144,
+   "margin_sd": 29.894,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "destitute_share",
+   "kind": "level",
+   "z": 1.181,
+   "margin_sd": 384.79,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "evicted_share",
+   "kind": "level",
+   "z": 0.141,
+   "margin_sd": 967.317,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "wage_mean_employed",
+   "kind": "level",
+   "z": 0.375,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "tenure_mean_employed",
+   "kind": "level",
+   "z": 0.005,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "wealth_mean",
+   "kind": "level",
+   "z": 0.818,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "arrears_mean",
+   "kind": "level",
+   "z": 0.27,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "mental_mean",
+   "kind": "level",
+   "z": 0.34,
+   "margin_sd": 602.721,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "physical_mean",
+   "kind": "level",
+   "z": 0.141,
+   "margin_sd": 4803.074,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "addiction_mean",
+   "kind": "level",
+   "z": 0.418,
+   "margin_sd": 5108.922,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "policy_net_mean",
+   "kind": "level",
+   "z": 0.033,
+   "margin_sd": 2215.233,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "firm_health_mean",
+   "kind": "level",
+   "z": 0.319,
+   "margin_sd": 9.619,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "knowledge_stock_mean",
+   "kind": "level",
+   "z": 0.084,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_migrants_rehomed",
+   "kind": "level",
+   "z": 0.436,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_workers_rehomed",
+   "kind": "level",
+   "z": 0.238,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_firms_failed",
+   "kind": "level",
+   "z": 0.23,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_cascades",
+   "kind": "level",
+   "z": 0.336,
+   "margin_sd": 32.214,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "memories_remembered",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.19,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_nnz",
+   "kind": "level",
+   "z": 0.38,
+   "margin_sd": 540.052,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_nnz",
+   "kind": "level",
+   "z": 0.174,
+   "margin_sd": 237.273,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_degree_mean",
+   "kind": "level",
+   "z": 0.38,
+   "margin_sd": 540.052,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_degree_mean",
+   "kind": "level",
+   "z": 0.174,
+   "margin_sd": 237.273,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_w_mean",
+   "kind": "level",
+   "z": 0.978,
+   "margin_sd": 3751.736,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_w_mean",
+   "kind": "level",
+   "z": 0.167,
+   "margin_sd": 2670.797,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.035,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.0017,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_strengthened",
+   "kind": "level",
+   "z": 0.913,
+   "margin_sd": 200.767,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_weakened",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 1e-06,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_pruned",
+   "kind": "level",
+   "z": 0.359,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_rewired",
+   "kind": "level",
+   "z": 0.678,
+   "margin_sd": 10.806,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_mean",
+   "kind": "level",
+   "z": 1.143,
+   "margin_sd": 751.965,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_p10",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_p50",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_p90",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_0",
+   "kind": "level",
+   "z": 0.537,
+   "margin_sd": 42.89,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_0",
+   "kind": "level",
+   "z": 0.591,
+   "margin_sd": 24.307,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_0",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_1",
+   "kind": "level",
+   "z": 2.05,
+   "margin_sd": 268.448,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_1",
+   "kind": "level",
+   "z": 2.188,
+   "margin_sd": 822.606,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_1",
+   "kind": "level",
+   "z": 0.917,
+   "margin_sd": 897.591,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_2",
+   "kind": "level",
+   "z": 0.282,
+   "margin_sd": 1279.94,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_2",
+   "kind": "level",
+   "z": 0.997,
+   "margin_sd": 2411.636,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_2",
+   "kind": "level",
+   "z": 0.559,
+   "margin_sd": 2328.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_3",
+   "kind": "level",
+   "z": 0.535,
+   "margin_sd": 3056.339,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_3",
+   "kind": "level",
+   "z": 0.486,
+   "margin_sd": 572.497,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_3",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_4",
+   "kind": "level",
+   "z": 0.588,
+   "margin_sd": 2770.847,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_4",
+   "kind": "level",
+   "z": 0.451,
+   "margin_sd": 623.247,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_4",
+   "kind": "level",
+   "z": 1.242,
+   "margin_sd": 235828.187,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_5",
+   "kind": "level",
+   "z": 1.547,
+   "margin_sd": 4607.779,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_5",
+   "kind": "level",
+   "z": 1.984,
+   "margin_sd": 3633.307,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_5",
+   "kind": "level",
+   "z": 0.236,
+   "margin_sd": 90080.762,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_6",
+   "kind": "level",
+   "z": 2.778,
+   "margin_sd": 475.058,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_6",
+   "kind": "level",
+   "z": 2.283,
+   "margin_sd": 2603.104,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_6",
+   "kind": "level",
+   "z": 1.697,
+   "margin_sd": 5122.468,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_7",
+   "kind": "level",
+   "z": 2.499,
+   "margin_sd": 3229.018,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_7",
+   "kind": "level",
+   "z": 2.459,
+   "margin_sd": 4397.511,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_7",
+   "kind": "level",
+   "z": 0.64,
+   "margin_sd": 6925369109.161,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "alive",
+   "kind": "level",
+   "z": 0.986,
+   "margin_sd": 38.918,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_deaths",
+   "kind": "level",
+   "z": 0.93,
+   "margin_sd": 44.939,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_births",
+   "kind": "level",
+   "z": 0.372,
+   "margin_sd": 80.33,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_disease_deaths",
+   "kind": "level",
+   "z": 0.497,
+   "margin_sd": 93.715,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "employment_rate",
+   "kind": "level",
+   "z": 0.052,
+   "margin_sd": 15.653,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "destitute_share",
+   "kind": "level",
+   "z": 0.681,
+   "margin_sd": 109.365,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "evicted_share",
+   "kind": "level",
+   "z": 0.835,
+   "margin_sd": 779.152,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "wage_mean_employed",
+   "kind": "level",
+   "z": 0.942,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "tenure_mean_employed",
+   "kind": "level",
+   "z": 0.108,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "wealth_mean",
+   "kind": "level",
+   "z": 0.04,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "arrears_mean",
+   "kind": "level",
+   "z": 1.004,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "mental_mean",
+   "kind": "level",
+   "z": 0.344,
+   "margin_sd": 351.388,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "physical_mean",
+   "kind": "level",
+   "z": 0.084,
+   "margin_sd": 2849.579,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "addiction_mean",
+   "kind": "level",
+   "z": 0.24,
+   "margin_sd": 2355.704,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "policy_net_mean",
+   "kind": "level",
+   "z": 0.465,
+   "margin_sd": 998.686,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "firm_health_mean",
+   "kind": "level",
+   "z": 0.224,
+   "margin_sd": 1.305,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "knowledge_stock_mean",
+   "kind": "level",
+   "z": 0.207,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_migrants_rehomed",
+   "kind": "level",
+   "z": 0.315,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_workers_rehomed",
+   "kind": "level",
+   "z": 0.029,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_firms_failed",
+   "kind": "level",
+   "z": 0.028,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_cascades",
+   "kind": "level",
+   "z": 0.034,
+   "margin_sd": 25.875,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "memories_remembered",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.19,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_nnz",
+   "kind": "level",
+   "z": 0.816,
+   "margin_sd": 218.448,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_nnz",
+   "kind": "level",
+   "z": 0.584,
+   "margin_sd": 82.732,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_degree_mean",
+   "kind": "level",
+   "z": 0.816,
+   "margin_sd": 218.448,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_degree_mean",
+   "kind": "level",
+   "z": 0.584,
+   "margin_sd": 82.732,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_w_mean",
+   "kind": "level",
+   "z": 0.415,
+   "margin_sd": 508.048,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_w_mean",
+   "kind": "level",
+   "z": 0.108,
+   "margin_sd": 3240.324,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.035,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.0017,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_strengthened",
+   "kind": "level",
+   "z": 0.201,
+   "margin_sd": 95.228,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_weakened",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 1e-06,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_pruned",
+   "kind": "level",
+   "z": 0.916,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_rewired",
+   "kind": "level",
+   "z": 0.126,
+   "margin_sd": 25.356,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_mean",
+   "kind": "level",
+   "z": 0.71,
+   "margin_sd": 223.792,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_p10",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_p50",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_p90",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_0",
+   "kind": "level",
+   "z": 0.627,
+   "margin_sd": 87.962,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_0",
+   "kind": "level",
+   "z": 0.47,
+   "margin_sd": 56.355,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_0",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_1",
+   "kind": "level",
+   "z": 0.402,
+   "margin_sd": 30.77,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_1",
+   "kind": "level",
+   "z": 0.586,
+   "margin_sd": 179.143,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_1",
+   "kind": "level",
+   "z": 0.113,
+   "margin_sd": 53.207,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_2",
+   "kind": "level",
+   "z": 0.558,
+   "margin_sd": 169.866,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_2",
+   "kind": "level",
+   "z": 0.804,
+   "margin_sd": 463.05,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_2",
+   "kind": "level",
+   "z": 0.453,
+   "margin_sd": 355.351,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_3",
+   "kind": "level",
+   "z": 0.36,
+   "margin_sd": 2226.485,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_3",
+   "kind": "level",
+   "z": 0.382,
+   "margin_sd": 482.622,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_3",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_4",
+   "kind": "level",
+   "z": 0.645,
+   "margin_sd": 2873.792,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_4",
+   "kind": "level",
+   "z": 0.14,
+   "margin_sd": 531.046,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_4",
+   "kind": "level",
+   "z": 0.715,
+   "margin_sd": 162818.237,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_5",
+   "kind": "level",
+   "z": 0.316,
+   "margin_sd": 479.672,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_5",
+   "kind": "level",
+   "z": 0.388,
+   "margin_sd": 299.362,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_5",
+   "kind": "level",
+   "z": 0.104,
+   "margin_sd": 10719.173,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_6",
+   "kind": "level",
+   "z": 0.709,
+   "margin_sd": 81.397,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_6",
+   "kind": "level",
+   "z": 0.289,
+   "margin_sd": 155.836,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_6",
+   "kind": "level",
+   "z": 0.742,
+   "margin_sd": 425.721,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_7",
+   "kind": "level",
+   "z": 0.737,
+   "margin_sd": 789.37,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_7",
+   "kind": "level",
+   "z": 0.763,
+   "margin_sd": 1083.157,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_7",
+   "kind": "level",
+   "z": 0.986,
+   "margin_sd": 2101464714.972,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "alive",
+   "kind": "level",
+   "z": 0.698,
+   "margin_sd": 22.199,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_deaths",
+   "kind": "level",
+   "z": 0.627,
+   "margin_sd": 20.417,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "cum_births",
+   "kind": "level",
+   "z": 0.055,
+   "margin_sd": 79.257,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_disease_deaths",
+   "kind": "level",
+   "z": 0.542,
+   "margin_sd": 57.638,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "employment_rate",
+   "kind": "level",
+   "z": 0.571,
+   "margin_sd": 9.179,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "destitute_share",
+   "kind": "level",
+   "z": 1.839,
+   "margin_sd": 97.623,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "evicted_share",
+   "kind": "level",
+   "z": 0.684,
+   "margin_sd": 501.109,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "wage_mean_employed",
+   "kind": "level",
+   "z": 0.231,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "tenure_mean_employed",
+   "kind": "level",
+   "z": 0.392,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "wealth_mean",
+   "kind": "level",
+   "z": 0.147,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "arrears_mean",
+   "kind": "level",
+   "z": 0.651,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "mental_mean",
+   "kind": "level",
+   "z": 0.039,
+   "margin_sd": 238.602,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "physical_mean",
+   "kind": "level",
+   "z": 0.751,
+   "margin_sd": 1963.147,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "addiction_mean",
+   "kind": "level",
+   "z": 0.241,
+   "margin_sd": 1438.072,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "policy_net_mean",
+   "kind": "level",
+   "z": 0.472,
+   "margin_sd": 326.562,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "firm_health_mean",
+   "kind": "level",
+   "z": 0.251,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "knowledge_stock_mean",
+   "kind": "level",
+   "z": 0.018,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_migrants_rehomed",
+   "kind": "level",
+   "z": 0.207,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_workers_rehomed",
+   "kind": "level",
+   "z": 0.499,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_firms_failed",
+   "kind": "level",
+   "z": 0.213,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_cascades",
+   "kind": "level",
+   "z": 0.189,
+   "margin_sd": 22.092,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "memories_remembered",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.19,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_nnz",
+   "kind": "level",
+   "z": 0.637,
+   "margin_sd": 126.347,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_nnz",
+   "kind": "level",
+   "z": 1.26,
+   "margin_sd": 132.17,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_degree_mean",
+   "kind": "level",
+   "z": 0.637,
+   "margin_sd": 126.347,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_degree_mean",
+   "kind": "level",
+   "z": 1.26,
+   "margin_sd": 132.17,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_w_mean",
+   "kind": "level",
+   "z": 0.046,
+   "margin_sd": 92.093,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_w_mean",
+   "kind": "level",
+   "z": 0.28,
+   "margin_sd": 1349.177,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.035,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.0017,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_strengthened",
+   "kind": "level",
+   "z": 0.159,
+   "margin_sd": 37.317,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_weakened",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 1e-06,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_pruned",
+   "kind": "level",
+   "z": 0.834,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_rewired",
+   "kind": "level",
+   "z": 1.027,
+   "margin_sd": 35.748,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_mean",
+   "kind": "level",
+   "z": 1.819,
+   "margin_sd": 194.342,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_p10",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_p50",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_p90",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_0",
+   "kind": "level",
+   "z": 0.14,
+   "margin_sd": 19.972,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_0",
+   "kind": "level",
+   "z": 0.351,
+   "margin_sd": 14.13,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_0",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_1",
+   "kind": "level",
+   "z": 0.107,
+   "margin_sd": 13.894,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_1",
+   "kind": "level",
+   "z": 0.206,
+   "margin_sd": 43.033,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_1",
+   "kind": "level",
+   "z": 0.296,
+   "margin_sd": 29.441,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_2",
+   "kind": "level",
+   "z": 0.444,
+   "margin_sd": 60.013,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_2",
+   "kind": "level",
+   "z": 0.162,
+   "margin_sd": 156.95,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_2",
+   "kind": "level",
+   "z": 0.312,
+   "margin_sd": 134.024,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_3",
+   "kind": "level",
+   "z": 0.45,
+   "margin_sd": 842.073,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_3",
+   "kind": "level",
+   "z": 0.479,
+   "margin_sd": 159.708,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_3",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_4",
+   "kind": "level",
+   "z": 0.38,
+   "margin_sd": 339.681,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_4",
+   "kind": "level",
+   "z": 0.346,
+   "margin_sd": 79.451,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_4",
+   "kind": "level",
+   "z": 1.585,
+   "margin_sd": 200409.425,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_5",
+   "kind": "level",
+   "z": 0.275,
+   "margin_sd": 218.458,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_5",
+   "kind": "level",
+   "z": 0.173,
+   "margin_sd": 130.392,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_5",
+   "kind": "level",
+   "z": 0.015,
+   "margin_sd": 4063.61,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_6",
+   "kind": "level",
+   "z": 0.318,
+   "margin_sd": 71.029,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_6",
+   "kind": "level",
+   "z": 0.969,
+   "margin_sd": 120.157,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_6",
+   "kind": "level",
+   "z": 1.149,
+   "margin_sd": 273.391,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_7",
+   "kind": "level",
+   "z": 0.21,
+   "margin_sd": 675.96,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_7",
+   "kind": "level",
+   "z": 0.21,
+   "margin_sd": 857.761,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_7",
+   "kind": "level",
+   "z": 0.698,
+   "margin_sd": 1196800622.435,
+   "pass": true
+  }
+ ],
+ "X": [
+  {
+   "h": "3",
+   "obs": "alive",
+   "kind": "level",
+   "z": 0.656,
+   "margin_sd": 128.092,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_deaths",
+   "kind": "level",
+   "z": 0.499,
+   "margin_sd": 110.312,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_births",
+   "kind": "level",
+   "z": 0.152,
+   "margin_sd": 254.023,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_disease_deaths",
+   "kind": "level",
+   "z": 0.246,
+   "margin_sd": 156.301,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "employment_rate",
+   "kind": "level",
+   "z": 0.663,
+   "margin_sd": 29.894,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "destitute_share",
+   "kind": "level",
+   "z": 0.522,
+   "margin_sd": 384.79,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "evicted_share",
+   "kind": "level",
+   "z": 0.368,
+   "margin_sd": 967.317,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "wage_mean_employed",
+   "kind": "level",
+   "z": 0.043,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "tenure_mean_employed",
+   "kind": "level",
+   "z": 0.131,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "wealth_mean",
+   "kind": "level",
+   "z": 1.477,
+   "margin_sd": 1.25,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "arrears_mean",
+   "kind": "level",
+   "z": 0.323,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "mental_mean",
+   "kind": "level",
+   "z": 0.231,
+   "margin_sd": 602.721,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "physical_mean",
+   "kind": "level",
+   "z": 0.157,
+   "margin_sd": 4803.074,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "addiction_mean",
+   "kind": "level",
+   "z": 0.217,
+   "margin_sd": 5108.922,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "policy_net_mean",
+   "kind": "level",
+   "z": 0.434,
+   "margin_sd": 2215.233,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "firm_health_mean",
+   "kind": "level",
+   "z": 0.732,
+   "margin_sd": 9.619,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "knowledge_stock_mean",
+   "kind": "level",
+   "z": 0.625,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_migrants_rehomed",
+   "kind": "level",
+   "z": 0.977,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_workers_rehomed",
+   "kind": "level",
+   "z": 0.302,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_firms_failed",
+   "kind": "level",
+   "z": 0.406,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_cascades",
+   "kind": "level",
+   "z": 0.168,
+   "margin_sd": 32.214,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "memories_remembered",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.19,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_nnz",
+   "kind": "level",
+   "z": 0.37,
+   "margin_sd": 540.052,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_nnz",
+   "kind": "level",
+   "z": 0.872,
+   "margin_sd": 237.273,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_degree_mean",
+   "kind": "level",
+   "z": 0.37,
+   "margin_sd": 540.052,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_degree_mean",
+   "kind": "level",
+   "z": 0.872,
+   "margin_sd": 237.273,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_w_mean",
+   "kind": "level",
+   "z": 0.975,
+   "margin_sd": 3751.736,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_w_mean",
+   "kind": "level",
+   "z": 0.869,
+   "margin_sd": 2670.797,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "friends_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.035,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "weak_w_max",
+   "kind": "det",
+   "diff": 1.788139358804841e-09,
+   "tol": 0.0017,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_strengthened",
+   "kind": "level",
+   "z": 1.598,
+   "margin_sd": 200.767,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_weakened",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 1e-06,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_pruned",
+   "kind": "level",
+   "z": 0.573,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "cum_ties_rewired",
+   "kind": "level",
+   "z": 0.334,
+   "margin_sd": 10.806,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_mean",
+   "kind": "level",
+   "z": 0.497,
+   "margin_sd": 751.965,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_p10",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_p50",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "deprivation_p90",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_0",
+   "kind": "level",
+   "z": 0.686,
+   "margin_sd": 42.89,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_0",
+   "kind": "level",
+   "z": 0.626,
+   "margin_sd": 24.307,
+   "pass": false
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_0",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_1",
+   "kind": "level",
+   "z": 1.538,
+   "margin_sd": 268.448,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_1",
+   "kind": "level",
+   "z": 1.454,
+   "margin_sd": 822.606,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_1",
+   "kind": "level",
+   "z": 0.83,
+   "margin_sd": 897.591,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_2",
+   "kind": "level",
+   "z": 0.65,
+   "margin_sd": 1279.94,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_2",
+   "kind": "level",
+   "z": 0.232,
+   "margin_sd": 2411.636,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_2",
+   "kind": "level",
+   "z": 0.135,
+   "margin_sd": 2328.01,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_3",
+   "kind": "level",
+   "z": 0.201,
+   "margin_sd": 3056.339,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_3",
+   "kind": "level",
+   "z": 0.12,
+   "margin_sd": 572.497,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_3",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_4",
+   "kind": "level",
+   "z": 0.034,
+   "margin_sd": 2770.847,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_4",
+   "kind": "level",
+   "z": 0.086,
+   "margin_sd": 623.247,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_4",
+   "kind": "level",
+   "z": 0.0,
+   "margin_sd": 235828.187,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_5",
+   "kind": "level",
+   "z": 1.092,
+   "margin_sd": 4607.779,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_5",
+   "kind": "level",
+   "z": 1.381,
+   "margin_sd": 3633.307,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_5",
+   "kind": "level",
+   "z": 0.632,
+   "margin_sd": 90080.762,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_6",
+   "kind": "level",
+   "z": 1.561,
+   "margin_sd": 475.058,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_6",
+   "kind": "level",
+   "z": 0.629,
+   "margin_sd": 2603.104,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_6",
+   "kind": "level",
+   "z": 0.674,
+   "margin_sd": 5122.468,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_mean_7",
+   "kind": "level",
+   "z": 1.437,
+   "margin_sd": 3229.018,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "force_sd_7",
+   "kind": "level",
+   "z": 1.45,
+   "margin_sd": 4397.511,
+   "pass": true
+  },
+  {
+   "h": "3",
+   "obs": "pole_share_7",
+   "kind": "level",
+   "z": 0.656,
+   "margin_sd": 6925369109.161,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "alive",
+   "kind": "level",
+   "z": 0.815,
+   "margin_sd": 38.918,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_deaths",
+   "kind": "level",
+   "z": 0.571,
+   "margin_sd": 44.939,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_births",
+   "kind": "level",
+   "z": 0.663,
+   "margin_sd": 80.33,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_disease_deaths",
+   "kind": "level",
+   "z": 0.654,
+   "margin_sd": 93.715,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "employment_rate",
+   "kind": "level",
+   "z": 0.12,
+   "margin_sd": 15.653,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "destitute_share",
+   "kind": "level",
+   "z": 1.202,
+   "margin_sd": 109.365,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "evicted_share",
+   "kind": "level",
+   "z": 0.019,
+   "margin_sd": 779.152,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "wage_mean_employed",
+   "kind": "level",
+   "z": 1.256,
+   "margin_sd": 1.25,
+   "pass": false
+  },
+  {
+   "h": "15",
+   "obs": "tenure_mean_employed",
+   "kind": "level",
+   "z": 0.145,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "wealth_mean",
+   "kind": "level",
+   "z": 0.51,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "arrears_mean",
+   "kind": "level",
+   "z": 0.07,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "mental_mean",
+   "kind": "level",
+   "z": 0.365,
+   "margin_sd": 351.388,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "physical_mean",
+   "kind": "level",
+   "z": 0.041,
+   "margin_sd": 2849.579,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "addiction_mean",
+   "kind": "level",
+   "z": 0.163,
+   "margin_sd": 2355.704,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "policy_net_mean",
+   "kind": "level",
+   "z": 0.628,
+   "margin_sd": 998.686,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "firm_health_mean",
+   "kind": "level",
+   "z": 0.339,
+   "margin_sd": 1.305,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "knowledge_stock_mean",
+   "kind": "level",
+   "z": 0.478,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_migrants_rehomed",
+   "kind": "level",
+   "z": 0.664,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_workers_rehomed",
+   "kind": "level",
+   "z": 0.016,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_firms_failed",
+   "kind": "level",
+   "z": 0.419,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_cascades",
+   "kind": "level",
+   "z": 0.04,
+   "margin_sd": 25.875,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "memories_remembered",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.19,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_nnz",
+   "kind": "level",
+   "z": 0.488,
+   "margin_sd": 218.448,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_nnz",
+   "kind": "level",
+   "z": 0.672,
+   "margin_sd": 82.732,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_degree_mean",
+   "kind": "level",
+   "z": 0.488,
+   "margin_sd": 218.448,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_degree_mean",
+   "kind": "level",
+   "z": 0.672,
+   "margin_sd": 82.732,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_w_mean",
+   "kind": "level",
+   "z": 0.501,
+   "margin_sd": 508.048,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_w_mean",
+   "kind": "level",
+   "z": 0.216,
+   "margin_sd": 3240.324,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "friends_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.035,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "weak_w_max",
+   "kind": "det",
+   "diff": 1.788139358804841e-09,
+   "tol": 0.0017,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_strengthened",
+   "kind": "level",
+   "z": 0.369,
+   "margin_sd": 95.228,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_weakened",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 1e-06,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_pruned",
+   "kind": "level",
+   "z": 0.688,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "cum_ties_rewired",
+   "kind": "level",
+   "z": 0.027,
+   "margin_sd": 25.356,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_mean",
+   "kind": "level",
+   "z": 1.234,
+   "margin_sd": 223.792,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_p10",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_p50",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "deprivation_p90",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_0",
+   "kind": "level",
+   "z": 0.247,
+   "margin_sd": 87.962,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_0",
+   "kind": "level",
+   "z": 0.489,
+   "margin_sd": 56.355,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_0",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_1",
+   "kind": "level",
+   "z": 0.383,
+   "margin_sd": 30.77,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_1",
+   "kind": "level",
+   "z": 0.804,
+   "margin_sd": 179.143,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_1",
+   "kind": "level",
+   "z": 0.128,
+   "margin_sd": 53.207,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_2",
+   "kind": "level",
+   "z": 0.874,
+   "margin_sd": 169.866,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_2",
+   "kind": "level",
+   "z": 0.137,
+   "margin_sd": 463.05,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_2",
+   "kind": "level",
+   "z": 1.079,
+   "margin_sd": 355.351,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_3",
+   "kind": "level",
+   "z": 0.232,
+   "margin_sd": 2226.485,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_3",
+   "kind": "level",
+   "z": 0.159,
+   "margin_sd": 482.622,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_3",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_4",
+   "kind": "level",
+   "z": 0.235,
+   "margin_sd": 2873.792,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_4",
+   "kind": "level",
+   "z": 0.263,
+   "margin_sd": 531.046,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_4",
+   "kind": "level",
+   "z": 0.286,
+   "margin_sd": 162818.237,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_5",
+   "kind": "level",
+   "z": 0.349,
+   "margin_sd": 479.672,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_5",
+   "kind": "level",
+   "z": 0.349,
+   "margin_sd": 299.362,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_5",
+   "kind": "level",
+   "z": 0.047,
+   "margin_sd": 10719.173,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_6",
+   "kind": "level",
+   "z": 0.448,
+   "margin_sd": 81.397,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_6",
+   "kind": "level",
+   "z": 0.268,
+   "margin_sd": 155.836,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_6",
+   "kind": "level",
+   "z": 0.054,
+   "margin_sd": 425.721,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_mean_7",
+   "kind": "level",
+   "z": 0.817,
+   "margin_sd": 789.37,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "force_sd_7",
+   "kind": "level",
+   "z": 0.808,
+   "margin_sd": 1083.157,
+   "pass": true
+  },
+  {
+   "h": "15",
+   "obs": "pole_share_7",
+   "kind": "level",
+   "z": 0.815,
+   "margin_sd": 2101464714.972,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "alive",
+   "kind": "level",
+   "z": 0.243,
+   "margin_sd": 22.199,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_deaths",
+   "kind": "level",
+   "z": 0.055,
+   "margin_sd": 20.417,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_births",
+   "kind": "level",
+   "z": 0.656,
+   "margin_sd": 79.257,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_disease_deaths",
+   "kind": "level",
+   "z": 0.442,
+   "margin_sd": 57.638,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "employment_rate",
+   "kind": "level",
+   "z": 0.091,
+   "margin_sd": 9.179,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "destitute_share",
+   "kind": "level",
+   "z": 0.572,
+   "margin_sd": 97.623,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "evicted_share",
+   "kind": "level",
+   "z": 0.174,
+   "margin_sd": 501.109,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "wage_mean_employed",
+   "kind": "level",
+   "z": 0.126,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "tenure_mean_employed",
+   "kind": "level",
+   "z": 0.041,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "wealth_mean",
+   "kind": "level",
+   "z": 1.38,
+   "margin_sd": 1.25,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "arrears_mean",
+   "kind": "level",
+   "z": 0.187,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "mental_mean",
+   "kind": "level",
+   "z": 0.191,
+   "margin_sd": 238.602,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "physical_mean",
+   "kind": "level",
+   "z": 0.399,
+   "margin_sd": 1963.147,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "addiction_mean",
+   "kind": "level",
+   "z": 0.039,
+   "margin_sd": 1438.072,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "policy_net_mean",
+   "kind": "level",
+   "z": 0.206,
+   "margin_sd": 326.562,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "firm_health_mean",
+   "kind": "level",
+   "z": 0.612,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "knowledge_stock_mean",
+   "kind": "level",
+   "z": 0.162,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_migrants_rehomed",
+   "kind": "level",
+   "z": 0.565,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_workers_rehomed",
+   "kind": "level",
+   "z": 0.099,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_firms_failed",
+   "kind": "level",
+   "z": 0.21,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_cascades",
+   "kind": "level",
+   "z": 0.604,
+   "margin_sd": 22.092,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "memories_remembered",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.19,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_nnz",
+   "kind": "level",
+   "z": 0.071,
+   "margin_sd": 126.347,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_nnz",
+   "kind": "level",
+   "z": 0.401,
+   "margin_sd": 132.17,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_degree_mean",
+   "kind": "level",
+   "z": 0.071,
+   "margin_sd": 126.347,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_degree_mean",
+   "kind": "level",
+   "z": 0.401,
+   "margin_sd": 132.17,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_w_mean",
+   "kind": "level",
+   "z": 0.048,
+   "margin_sd": 92.093,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_w_mean",
+   "kind": "level",
+   "z": 0.033,
+   "margin_sd": 1349.177,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "friends_w_max",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.035,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "weak_w_max",
+   "kind": "det",
+   "diff": 1.788139358804841e-09,
+   "tol": 0.0017,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_strengthened",
+   "kind": "level",
+   "z": 0.112,
+   "margin_sd": 37.317,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_weakened",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 1e-06,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_pruned",
+   "kind": "level",
+   "z": 0.061,
+   "margin_sd": 1.25,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "cum_ties_rewired",
+   "kind": "level",
+   "z": 0.367,
+   "margin_sd": 35.748,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_mean",
+   "kind": "level",
+   "z": 0.561,
+   "margin_sd": 194.342,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_p10",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_p50",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "deprivation_p90",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.01,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_0",
+   "kind": "level",
+   "z": 0.011,
+   "margin_sd": 19.972,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_0",
+   "kind": "level",
+   "z": 0.273,
+   "margin_sd": 14.13,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_0",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_1",
+   "kind": "level",
+   "z": 0.381,
+   "margin_sd": 13.894,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_1",
+   "kind": "level",
+   "z": 0.453,
+   "margin_sd": 43.033,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_1",
+   "kind": "level",
+   "z": 0.235,
+   "margin_sd": 29.441,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_2",
+   "kind": "level",
+   "z": 1.161,
+   "margin_sd": 60.013,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_2",
+   "kind": "level",
+   "z": 0.726,
+   "margin_sd": 156.95,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_2",
+   "kind": "level",
+   "z": 0.8,
+   "margin_sd": 134.024,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_3",
+   "kind": "level",
+   "z": 0.424,
+   "margin_sd": 842.073,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_3",
+   "kind": "level",
+   "z": 0.422,
+   "margin_sd": 159.708,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_3",
+   "kind": "det",
+   "diff": 0.0,
+   "tol": 0.03,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_4",
+   "kind": "level",
+   "z": 0.36,
+   "margin_sd": 339.681,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_4",
+   "kind": "level",
+   "z": 0.276,
+   "margin_sd": 79.451,
+   "pass": false
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_4",
+   "kind": "level",
+   "z": 0.352,
+   "margin_sd": 200409.425,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_5",
+   "kind": "level",
+   "z": 0.284,
+   "margin_sd": 218.458,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_5",
+   "kind": "level",
+   "z": 0.243,
+   "margin_sd": 130.392,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_5",
+   "kind": "level",
+   "z": 0.264,
+   "margin_sd": 4063.61,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_6",
+   "kind": "level",
+   "z": 0.07,
+   "margin_sd": 71.029,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_6",
+   "kind": "level",
+   "z": 0.35,
+   "margin_sd": 120.157,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_6",
+   "kind": "level",
+   "z": 1.038,
+   "margin_sd": 273.391,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_mean_7",
+   "kind": "level",
+   "z": 0.398,
+   "margin_sd": 675.96,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "force_sd_7",
+   "kind": "level",
+   "z": 0.268,
+   "margin_sd": 857.761,
+   "pass": true
+  },
+  {
+   "h": "30",
+   "obs": "pole_share_7",
+   "kind": "level",
+   "z": 0.243,
+   "margin_sd": 1196800622.435,
+   "pass": true
+  }
+ ]
+}
