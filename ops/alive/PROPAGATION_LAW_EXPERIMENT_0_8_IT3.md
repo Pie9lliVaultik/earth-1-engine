@@ -105,4 +105,13 @@ a joint IT4 (propagation winner × conviction candidates) — NOT a
 reinterpretation of IT3 cells. A cell that passes everything
 outright short-circuits IT4.
 
+> **SUPERSEDED BEFORE EXECUTION BY IT3 EVIDENCE** (founder ruling,
+> 2026-08-20, recorded before any IT4 run): canonical relax=0.25
+> independently makes T1 unreachable, so the pre-registered
+> propagation × conviction experiment is structurally incapable of
+> satisfying the frozen registry. Replaced by IT4-v2 (three-factor
+> joint field recovery, JOINT_FIELD_RECOVERY_0_8_IT4V2.md). This
+> paragraph is an annotation; the original registration text above
+> is preserved unedited.
+
 Sources: [Moussaïd et al. 2013, PLOS ONE](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0078433) · [Lorenz et al., social influence and wisdom of crowds](https://www.researchgate.net/publication/51130820_How_social_influence_can_undermine_the_wisdom_of_crowd_effect) · registry: EMPIRICAL_TARGET_REGISTRY_0_8.md (T1–T8 frozen 288e37b)
