@@ -72,16 +72,24 @@ def plasticity_tick(w, rng, dt_days: float = 1.0) -> dict:
     new_edges_rows, new_edges_cols, new_edges_type = [], [], []
 
     for tname in PLASTIC_TYPES:
-        m = fab.by_type[tname].tocoo()
+        m = fab.by_type[tname].tocsr()
         if m.nnz == 0:
             continue
-        upper = m.row < m.col              # mutual ties: edit once, mirror
-        rows, cols, data = m.row[upper], m.col[upper], m.data[upper]
-        dist = _edge_distance(civ.forces, rows, cols)
+        # 0.7: the law is symmetric per edge (dist and aliveness are the
+        # same for (i,j) and (j,i)), so both stored directions compute
+        # the same new weight independently — no upper-triangle +
+        # mirror + full sorted reconstruction (that rebuild was the
+        # single hottest non-physics cost of a 4M world-day). The edit
+        # runs on CSR arrays in place; pruning is a linear masked
+        # rebuild that preserves canonical form. Bit-identical to the
+        # mirrored construction — proven by trajectory world_hash A/B.
+        indptr, ecols = m.indptr, m.indices
+        erows = np.repeat(np.arange(n), np.diff(indptr))
+        dist = _edge_distance(civ.forces, erows, ecols)
 
         agree = dist < AGREE_DIST
         disagree = dist > DISAGREE_DIST
-        data = data.astype(np.float64)
+        data = m.data.astype(np.float64)
         # growth clamp only: never grow past MAX_WEIGHT, never collapse
         # a pre-existing heavier tie (genesis stacks duplicates up to
         # ~3.5 — a regime the legacy law never saw; collapsing it would
@@ -89,18 +97,16 @@ def plasticity_tick(w, rng, dt_days: float = 1.0) -> dict:
         data[agree] = np.minimum(data[agree] + AGREEMENT_BOOST * dt_days,
                                  np.maximum(data[agree], MAX_WEIGHT))
         data[disagree] = data[disagree] - DISAGREEMENT_DECAY * dt_days
-        keep = (data >= MIN_WEIGHT) & alive[rows] & alive[cols]
-        stats["ties_strengthened"] += int(agree.sum())
-        stats["ties_weakened"] += int(disagree.sum())
-        stats["ties_pruned"] += int((~keep).sum())
+        keep = (data >= MIN_WEIGHT) & alive[erows] & alive[ecols]
+        upper = erows < ecols              # stats count each tie once
+        stats["ties_strengthened"] += int((agree & upper).sum())
+        stats["ties_weakened"] += int((disagree & upper).sum())
+        stats["ties_pruned"] += int((~keep & upper).sum())
 
-        rows, cols, data = rows[keep], cols[keep], data[keep]
-        full_r = np.concatenate([rows, cols])
-        full_c = np.concatenate([cols, rows])
-        full_d = np.concatenate([data, data])
+        csum = np.concatenate(([0], np.cumsum(keep)))
         fab.by_type[tname] = sparse.csr_matrix(
-            (full_d, (full_r, full_c)), shape=(n, n))
-        new_edges_type.append((tname, rows.size))
+            (data[keep], ecols[keep], csum[indptr]), shape=(n, n))
+        new_edges_type.append((tname, int(keep.sum()) // 2))
 
     # ── rewiring: a few agents replace a lost tie with a kindred one ─
     n_rewire = int(n * REWIRE_RATE * dt_days)
