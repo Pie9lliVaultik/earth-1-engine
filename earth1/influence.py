@@ -67,14 +67,14 @@ def propagate(forces: np.ndarray, alpha: np.ndarray, adj,
         # each neighbour's POLE: which side of the midline they are on.
         # this is the term that expands — a source at 0.61 does not pull
         # you to 0.61, it pulls you toward 1.0
-        pole = (f > 0.5).astype(np.float64)
+        pole = (f > 0.5).astype(f.dtype)
 
         # weighted sums over neighbours, all at once — and all in ONE
         # pass over the adjacency (0.7: four separate products streamed
         # the full graph four times per layer; csr_matvecs accumulates
         # each column in the same row order as the separate calls, so
         # stacking is bit-identical)
-        X = np.empty((n, 2 * k + 2), dtype=np.float64)
+        X = np.empty((n, 2 * k + 2), dtype=f.dtype)
         X[:, :k] = a[:, None] * pole
         X[:, k:2 * k] = inv_a[:, None] * f
         X[:, 2 * k] = a
@@ -121,7 +121,7 @@ def update_conviction(forces: np.ndarray, alpha: np.ndarray, adj,
     pre-0.1 code.
     """
     deg = np.maximum(np.asarray(adj.sum(axis=1)).ravel(), 1.0)
-    pole = (forces > 0.5).astype(np.float64)
+    pole = (forces > 0.5).astype(forces.dtype)
     # fraction of neighbours sharing this agent's side, averaged over
     # every force channel
     nb_pole = (adj @ pole) / deg[:, None]

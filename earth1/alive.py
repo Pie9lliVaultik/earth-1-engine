@@ -297,6 +297,12 @@ def live_one_day(w: World, rng, *,
     st["alive"] = alive_at_tick_end
 
     w.day += 1
+    # 0.7 precision modes: fold mid-tick f64 reassignments back to the
+    # world's declared precision at the day boundary. No-op (an
+    # attribute check) for the float64 reference Earth.
+    if getattr(w, "_precision", None) not in (None, "float64"):
+        from earth1.precision import recoerce
+        recoerce(w)
     return st
 
 

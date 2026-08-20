@@ -123,7 +123,7 @@ class Chronicle:
         _B = 8                       # bounds the (n, B) staging buffer
         for s in range(0, len(active), _B):
             block = active[s:s + _B]
-            S = np.empty((civ.n, len(block)), dtype=np.float64)
+            S = np.empty((civ.n, len(block)), dtype=civ.adj.dtype)
             for k, m in enumerate(block):
                 S[:, k] = m.scope
             E = np.asarray(civ.adj @ S)

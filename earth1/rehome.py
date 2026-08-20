@@ -134,8 +134,8 @@ def _add_mutual(mat, rows, cols, weight, n):
         return mat.tocsr()
     r = np.concatenate([rows, cols])
     c = np.concatenate([cols, rows])
-    delta = sparse.csr_matrix((np.full(r.size, weight), (r, c)),
-                              shape=(n, n))
+    delta = sparse.csr_matrix(
+        (np.full(r.size, weight, dtype=mat.dtype), (r, c)), shape=(n, n))
     out = (mat + delta).tocsr()
     # duplicate coordinates sum on addition; clamp to the tie weight so
     # a re-added edge can never silently double

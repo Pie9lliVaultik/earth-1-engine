@@ -130,7 +130,7 @@ def knowledge_tick(civ, life, kn: Knowledge, rng, dt_days: float = 1.0,
     cutoff = float(np.percentile(kn.stock[live], SCIENTIST_PERCENTILE)) \
         if live.any() else 1.0
     scientists = live & (kn.stock >= cutoff)
-    peers = np.asarray(civ.adj @ scientists.astype(np.float64)).ravel()
+    peers = np.asarray(civ.adj @ scientists.astype(civ.adj.dtype)).ravel()
     rate = DISCOVERY_RATE_YR * (1.0 + 0.5 * peers) * dt_yr
     made_discovery = scientists & (rng.random(n) < rate)
     kn.discoveries += made_discovery

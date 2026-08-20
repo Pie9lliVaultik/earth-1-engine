@@ -52,7 +52,7 @@ _CHUNK = 4_000_000          # edge-gather chunk: bounds peak memory
 
 def _edge_distance(forces, rows, cols):
     """Mean |Δforce| per edge, chunked so 4M-scale gathers stay bounded."""
-    out = np.empty(rows.size, dtype=np.float64)
+    out = np.empty(rows.size, dtype=forces.dtype)
     for s in range(0, rows.size, _CHUNK):
         e = min(s + _CHUNK, rows.size)
         out[s:e] = np.abs(forces[rows[s:e]] - forces[cols[s:e]]).mean(axis=1)
@@ -89,7 +89,7 @@ def plasticity_tick(w, rng, dt_days: float = 1.0) -> dict:
 
         agree = dist < AGREE_DIST
         disagree = dist > DISAGREE_DIST
-        data = m.data.astype(np.float64)
+        data = m.data.copy()      # working copy in the graph's own dtype
         # growth clamp only: never grow past MAX_WEIGHT, never collapse
         # a pre-existing heavier tie (genesis stacks duplicates up to
         # ~3.5 — a regime the legacy law never saw; collapsing it would
@@ -135,7 +135,9 @@ def plasticity_tick(w, rng, dt_days: float = 1.0) -> dict:
                 add_c.extend([j, i])
         if add_r:
             delta = sparse.csr_matrix(
-                (np.full(len(add_r), 0.70), (add_r, add_c)), shape=(n, n))
+                (np.full(len(add_r), 0.70,
+                         dtype=fab.by_type["friends"].dtype),
+                 (add_r, add_c)), shape=(n, n))
             # additions target empty slots only (checked above), so no
             # clamp is needed — and a global clamp here would silently
             # rewrite every existing weight (caught by proof 2's run)

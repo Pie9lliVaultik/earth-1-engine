@@ -287,7 +287,8 @@ def rebuild_ties(w, slots, parents):
         n = w.civ.n
         w_house = 1.00                        # TIE_SPEC household weight
         delta = sparse.csr_matrix(
-            (np.full(len(rows), w_house), (rows, cols)), shape=(n, n))
+            (np.full(len(rows), w_house, dtype=adj.dtype), (rows, cols)),
+            shape=(n, n))
         fab.by_type["household"] = (fab.by_type["household"]
                                     + delta).tocsr()
         adj = (adj + delta).tocsr()

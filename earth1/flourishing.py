@@ -204,7 +204,7 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
 
     # MEANING: art made and art received, plus work worth doing
     made = (kn.works_made > 0)
-    art_flow = np.asarray(civ.adj @ made.astype(np.float64)).ravel() / deg
+    art_flow = np.asarray(civ.adj @ made.astype(civ.adj.dtype)).ravel() / deg
     fl.art_received += art_flow * dt_days * 0.01
     mean_target = np.clip(0.25 + 0.35 * np.clip(fl.art_received, 0, 1)
                           + 0.20 * kn.status + 0.20 * fl.belonging, 0, 1)
