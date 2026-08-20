@@ -1,0 +1,322 @@
+{
+ "f32_pass": false,
+ "f16_control_rejected": true,
+ "certified": false,
+ "f32_breaches": [
+  [
+   "3",
+   "wealth_mean",
+   "effect",
+   "R=0.000 R_eff=54.814"
+  ],
+  [
+   "3",
+   "knowledge_stock_mean",
+   "effect",
+   "R=0.019 R_eff=1.332"
+  ],
+  [
+   "3",
+   "weak_w_max",
+   "level",
+   "SD_seed=0 but rmse=1.79e-09"
+  ],
+  [
+   "3",
+   "force_mean_4",
+   "effect",
+   "R=0.000 R_eff=451.894"
+  ],
+  [
+   "3",
+   "force_sd_4",
+   "effect",
+   "R=0.000 R_eff=1376.275"
+  ],
+  [
+   "3",
+   "force_mean_7",
+   "effect",
+   "R=0.001 R_eff=0.541"
+  ],
+  [
+   "3",
+   "force_sd_7",
+   "effect",
+   "R=0.001 R_eff=0.615"
+  ],
+  [
+   "15",
+   "wealth_mean",
+   "effect",
+   "R=0.000 R_eff=27.291"
+  ],
+  [
+   "15",
+   "knowledge_stock_mean",
+   "effect",
+   "R=0.010 R_eff=1.458"
+  ],
+  [
+   "15",
+   "weak_w_max",
+   "level",
+   "SD_seed=0 but rmse=1.79e-09"
+  ],
+  [
+   "15",
+   "force_mean_4",
+   "effect",
+   "R=0.000 R_eff=37.661"
+  ],
+  [
+   "15",
+   "force_sd_4",
+   "effect",
+   "R=0.000 R_eff=110.301"
+  ],
+  [
+   "15",
+   "force_sd_7",
+   "effect",
+   "R=0.000 R_eff=0.671"
+  ],
+  [
+   "30",
+   "wealth_mean",
+   "effect",
+   "R=0.000 R_eff=41.164"
+  ],
+  [
+   "30",
+   "mental_mean",
+   "effect",
+   "R=0.000 R_eff=1.000"
+  ],
+  [
+   "30",
+   "knowledge_stock_mean",
+   "effect",
+   "R=0.004 R_eff=43.126"
+  ],
+  [
+   "30",
+   "weak_w_max",
+   "level",
+   "SD_seed=0 but rmse=1.79e-09"
+  ],
+  [
+   "30",
+   "deprivation_mean",
+   "effect",
+   "R=0.000 R_eff=1.000"
+  ],
+  [
+   "30",
+   "force_mean_4",
+   "effect",
+   "R=0.000 R_eff=87.795"
+  ],
+  [
+   "30",
+   "force_sd_4",
+   "effect",
+   "R=0.000 R_eff=201.212"
+  ],
+  [
+   "30",
+   "force_mean_7",
+   "effect",
+   "R=0.000 R_eff=0.774"
+  ],
+  [
+   "30",
+   "force_sd_7",
+   "effect",
+   "R=0.000 R_eff=0.647"
+  ],
+  [
+   "30",
+   "effect_signs",
+   "sign",
+   "spearman_min=0.9996239894584121, sign_agree=0.1348314606741573 (12/89)"
+  ]
+ ],
+ "f32_degenerate": [
+  [
+   "3",
+   "memories_remembered",
+   "identical in both precisions"
+  ],
+  [
+   "3",
+   "friends_w_max",
+   "identical in both precisions"
+  ],
+  [
+   "3",
+   "cum_ties_weakened",
+   "identical in both precisions"
+  ],
+  [
+   "3",
+   "deprivation_p10",
+   "identical in both precisions"
+  ],
+  [
+   "3",
+   "deprivation_p50",
+   "identical in both precisions"
+  ],
+  [
+   "3",
+   "deprivation_p90",
+   "identical in both precisions"
+  ],
+  [
+   "3",
+   "pole_share_0",
+   "identical in both precisions"
+  ],
+  [
+   "3",
+   "pole_share_3",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "memories_remembered",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "friends_w_max",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "cum_ties_weakened",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "deprivation_p10",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "deprivation_p50",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "deprivation_p90",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "pole_share_0",
+   "identical in both precisions"
+  ],
+  [
+   "15",
+   "pole_share_3",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "memories_remembered",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "friends_w_max",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "cum_ties_weakened",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "deprivation_p10",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "deprivation_p50",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "deprivation_p90",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "pole_share_0",
+   "identical in both precisions"
+  ],
+  [
+   "30",
+   "pole_share_3",
+   "identical in both precisions"
+  ]
+ ],
+ "f32_rank_detail": "spearman_min=0.9996239894584121, sign_agree=0.1348314606741573 (12/89)",
+ "f16_breach_count": 155,
+ "f16_first_breaches": [
+  [
+   "3",
+   "cum_births",
+   "level",
+   "R=5.883 R_eff=0.000"
+  ],
+  [
+   "3",
+   "cum_disease_deaths",
+   "level",
+   "R=2.108 R_eff=0.000"
+  ],
+  [
+   "3",
+   "destitute_share",
+   "level",
+   "R=10.696 R_eff=0.000"
+  ],
+  [
+   "3",
+   "evicted_share",
+   "level",
+   "R=1.631 R_eff=0.000"
+  ],
+  [
+   "3",
+   "wage_mean_employed",
+   "level",
+   "R=2.446 R_eff=0.000"
+  ],
+  [
+   "3",
+   "tenure_mean_employed",
+   "level",
+   "R=1.435 R_eff=0.000"
+  ],
+  [
+   "3",
+   "wealth_mean",
+   "level",
+   "R=1.051 R_eff=39.218"
+  ],
+  [
+   "3",
+   "arrears_mean",
+   "level",
+   "R=1.473 R_eff=0.000"
+  ]
+ ],
+ "n_rows": 159,
+ "worst_R_level": 0.02,
+ "worst_R_effect": 1376.275
+}
