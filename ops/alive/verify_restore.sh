@@ -55,7 +55,11 @@ log "verifying checksums locally"
   || die "checksum mismatch after fetch — the stored copy is corrupt"
 
 log "loading the world through the canonical loader"
-EARTH1_ROOT="$ROOT" SCRATCH="$SCRATCH" python3 - <<'PY' || die "the backup did not load as a world"
+# the canonical loader needs the project venv (numpy/scipy); bare
+# python3 on the box is the system interpreter and cannot load a world
+PYBIN="${EARTH1_PYTHON:-$ROOT/.venv/bin/python3}"
+[ -x "$PYBIN" ] || PYBIN=python3
+EARTH1_ROOT="$ROOT" SCRATCH="$SCRATCH" "$PYBIN" - <<'PY' || die "the backup did not load as a world"
 import json, os, sys
 root = os.environ["EARTH1_ROOT"]; scratch = os.environ["SCRATCH"]
 sys.path.insert(0, root)
