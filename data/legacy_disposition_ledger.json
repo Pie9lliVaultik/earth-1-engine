@@ -87,5 +87,15 @@
    "dynamics.*"
   ],
   "ALREADY REPRESENTED": []
+ },
+ "tie_type_ownership": {
+  "rule": "no unowned tie type - every type has a declared dynamics owner",
+  "household": "0.0b rebirth (join parent household) + 0.0d migration (converts to diaspora). Not interaction-plastic by design: co-residence is a material fact, not a sentiment",
+  "colleagues": "0.0d employment re-homing (daily churn with job loss/hire). Not interaction-plastic: workplace ties follow the job",
+  "neighbours": "0.0d migration re-homing (locality-keyed remove+rebuild). Not interaction-plastic: proximity is physical",
+  "friends": "PORT (this change): interaction-driven plasticity. Also 0.0d converts to diaspora on migration; 0.0b clears at rebirth",
+  "weak": "PORT (this change): interaction-driven plasticity. Also 0.0d remove+rebuild on migration; 0.0b clears at rebirth",
+  "diaspora": "OWNED by 0.0d migration (created by household/friends conversion - 'you keep your people') and 0.0b rebirth (cleared). INTENTIONALLY NON-PLASTIC to interaction by model design: long-distance kinship does not decay from daily non-contact in this model. Making diaspora decay would be NEW physics - registered for later adjudication, not smuggled into this port",
+  "media": "INTENTIONALLY STATIC pending the registered D4-i defect adjudication (fabric symmetrizes broadcaster edges - the asymmetry fix owns any future media-tie dynamics, alongside feed.py which already owns asymmetric media CONSUMPTION). Not plastic in this port"
  }
 }

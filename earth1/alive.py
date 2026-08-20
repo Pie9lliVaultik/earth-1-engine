@@ -221,6 +221,14 @@ def live_one_day(w: World, rng, *,
     civ.forces = np.clip(civ.forces + relax * (target - civ.forces), 0.0, 1.0)
     civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj)
 
+    # 5b tie plasticity (0.5 port) — the fabric responds to the day's
+    # interaction: agreement strengthens friends/weak ties, disagreement
+    # weakens, a few people find kindred replacements. Runs right after
+    # influence+conviction because that IS the interaction. One
+    # execution point; friends+weak only (ledger tie_type_ownership).
+    from earth1.plasticity import plasticity_tick
+    st.update(plasticity_tick(w, rng, dt_days))
+
     # 6 memory — what happened is still happening, and still spreading
     st.update(w.chronicle.tick(civ, dt_days))
     st["memory_spread"] = w.chronicle.spread(civ, rng)

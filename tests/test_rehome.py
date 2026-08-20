@@ -32,6 +32,12 @@ def _migrate_one(w, rng=None, dest_country=None):
     w.life.employed[mover] = False
     w.life.firm[mover] = -1
     rehome_migrants(w, np.array([mover]), rng)
+    # mirror the production wiring (7cc7a73): migration ends the job,
+    # so the mover goes through the employment severing too — the
+    # manual helper previously skipped this and left genesis colleague
+    # ties alive, a helper flaw exposed when plasticity shifted RNG
+    # order and partner churn stopped cleaning them by coincidence
+    rehome_employment(w, np.array([mover]), np.array([], dtype=int), rng)
     return mover, old_country, dest
 
 

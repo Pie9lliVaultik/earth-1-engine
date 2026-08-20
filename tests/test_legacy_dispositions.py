@@ -33,11 +33,15 @@ def test_ledger_exists_and_resolves_every_module():
 
 # ── graph_dynamics: PORT rests on proven ABSENCE ────────────────────
 
-def test_tie_plasticity_absent_from_living_stack(tiny_world, rng):
-    """Quiet live days (no migration, no rebirth) leave every tie
-    bit-identical: nothing in the canonical stack changes weights from
-    agreement. This is the absence that earns the PORT — when the port
-    lands, THIS test flips into its negative control."""
+def test_tie_plasticity_absent_from_living_stack(tiny_world, rng,
+                                                 monkeypatch):
+    """THE PORT HAS LANDED — this is now its negative control, exactly
+    as the ledger promised: with plasticity disabled, NO other canonical
+    mechanism moves social ties by interaction. If this ever fails, a
+    second plasticity has grown somewhere."""
+    import earth1.plasticity as pmod
+    monkeypatch.setattr(pmod, "plasticity_tick",
+                        lambda w, rng, dt_days=1.0: {})
     from earth1.alive import live_one_day
     w = tiny_world
     w.life.deprivation[:] = 0.0            # nobody wants to migrate
