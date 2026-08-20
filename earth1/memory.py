@@ -110,15 +110,29 @@ class Chronicle:
         """
         moved = 0
         deg = np.maximum(np.asarray(civ.adj.sum(axis=1)).ravel(), 1.0)
-        for m in self.events:
-            if m.scope is None or not m.scope.any():
-                continue
-            exposure = np.asarray(civ.adj @ m.scope.astype(np.float64)
-                                  ).ravel() / deg
-            catch = (~m.scope) & (rng.random(civ.n) < rate * exposure)
-            if catch.any():
-                m.scope = m.scope | catch
-                moved += int(catch.sum())
+        # 0.7: one multivector matmul per block of memories instead of a
+        # full-adjacency matvec PER MEMORY (~25 adjacency streams/day at
+        # 4M — the profile's largest single bandwidth cost). Each
+        # memory's exposure reads only its own scope, and scope updates
+        # rebind rather than mutate, so precomputing a block is exact.
+        # csr_matvecs accumulates each column in the same row order as
+        # csr_matvec — bit-identical. RNG draw order unchanged: same
+        # memories, same order, one rng.random(n) each.
+        active = [m for m in self.events
+                  if m.scope is not None and m.scope.any()]
+        _B = 8                       # bounds the (n, B) staging buffer
+        for s in range(0, len(active), _B):
+            block = active[s:s + _B]
+            S = np.empty((civ.n, len(block)), dtype=np.float64)
+            for k, m in enumerate(block):
+                S[:, k] = m.scope
+            E = np.asarray(civ.adj @ S)
+            for k, m in enumerate(block):
+                exposure = E[:, k] / deg
+                catch = (~m.scope) & (rng.random(civ.n) < rate * exposure)
+                if catch.any():
+                    m.scope = m.scope | catch
+                    moved += int(catch.sum())
         return moved
 
 

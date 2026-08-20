@@ -62,17 +62,28 @@ def propagate(forces: np.ndarray, alpha: np.ndarray, adj,
     a = np.clip(alpha, 0.0, 1.0) ** beta        # alignment weight
     inv_a = 1.0 - a
 
+    n, k = forces.shape
     for _ in range(max(1, layers)):
         # each neighbour's POLE: which side of the midline they are on.
         # this is the term that expands — a source at 0.61 does not pull
         # you to 0.61, it pulls you toward 1.0
         pole = (f > 0.5).astype(np.float64)
 
-        # weighted sums over neighbours, all at once
-        align_num = adj @ (a[:, None] * pole)      # (N, K)
-        align_den = np.asarray(adj @ a).ravel()    # (N,)
-        avg_num = adj @ (inv_a[:, None] * f)       # (N, K)
-        avg_den = np.asarray(adj @ inv_a).ravel()  # (N,)
+        # weighted sums over neighbours, all at once — and all in ONE
+        # pass over the adjacency (0.7: four separate products streamed
+        # the full graph four times per layer; csr_matvecs accumulates
+        # each column in the same row order as the separate calls, so
+        # stacking is bit-identical)
+        X = np.empty((n, 2 * k + 2), dtype=np.float64)
+        X[:, :k] = a[:, None] * pole
+        X[:, k:2 * k] = inv_a[:, None] * f
+        X[:, 2 * k] = a
+        X[:, 2 * k + 1] = inv_a
+        Y = np.asarray(adj @ X)
+        align_num = Y[:, :k]                       # (N, K)
+        avg_num = Y[:, k:2 * k]                    # (N, K)
+        align_den = Y[:, 2 * k]                    # (N,)
+        avg_den = Y[:, 2 * k + 1]                  # (N,)
 
         pull_pole = align_num - f * align_den[:, None]
         pull_mean = avg_num - f * avg_den[:, None]
