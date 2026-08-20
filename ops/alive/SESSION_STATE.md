@@ -14,9 +14,11 @@
 
 | phase | state |
 |---|---|
-| WP-0 → 0.6 | ✅ ACCEPTED, tagged (`phase0-0.5`, `phase0-0.6`, …). Acceptance reports in `ops/alive/`. Production world day ~1143, 3.79M alive, running v1-unification. |
-| **0.7 — prime goes to work** | ▶ **IN FLIGHT** — see below |
-| 0.8 | ⬜ next: re-measure physics on the unified loop |
+| WP-0 → 0.6 | ✅ ACCEPTED, tagged (`phase0-0.5`, `phase0-0.6`, …). Acceptance reports in `ops/alive/`. Production world day ~1180+, 3.79M alive, running v1-unification. |
+| **0.7a — current-hardware/software leg** | ✅ **COMPLETE** (founder ruling 2026-08-20): frozen 20-pair workload; restore/reproducibility/topology controls banked; bit-identical optimization done (serial 4M day 48.4s → 35.0s; ensemble projection 64m → 43-50m); prime PROVEN memory-bandwidth bound; <30m NOT achieved on this hardware — by evidence, not by lack of effort. No more prime squeezing. |
+| **0.7b — hardware acceleration / final acceptance** | ▶ **OPEN**. Exit unchanged: 20 paired 4M 30-day futures <30 min wall-to-wall on an executor with earned correctness/equivalence evidence. Plan: rent higher-bandwidth node(s) → same frozen protocol → close. f32-v4 certification is an OPTIONAL acceleration branch (canonical f64 on faster hardware suffices to close). |
+| **Pre-0.8 product-science gate: meaningful-outcome probe** | ▶ IN FLIGHT tonight (NOT a 0.7 deliverable). f64 paired recession probe (firm_health shock via existing mechanisms, India; placebo arm on smallest country). After its causal report: STOP — founder ruling gates both v4 and hardware provisioning. |
+| 0.8 | ⬜ next after 0.7 closes. Queued diagnostics: FEAR≈0.978 saturation; −0.20 force shock ~98% erased in 3 days (over-restoring/pinned force field hypothesis, w/ diffusion-no-value + narrow-trait-variance audit findings); chaos onset seed-dependence (trajectory identity ≠ model equivalence — Technical Architecture paper material). |
 
 ## 0.7 progress (contract: prime = lab, CCX33 = sole writer, <30-min 20-pair ensemble)
 
