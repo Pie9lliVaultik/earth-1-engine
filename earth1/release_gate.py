@@ -72,6 +72,14 @@ GATE = {
     "doctrine_present":
         "tests/test_doctrine_present.py",      # XI.A cannot quietly
                                                # disappear
+    "one_production_earth":
+        "tests/test_api_one_earth.py",         # 0.5: every product path
+                                               # resolves THE world;
+                                               # legacy unreachable
+    "single_writer_world":
+        "tests/test_single_writer.py",         # 0.6: no machine is
+                                               # armed to become a
+                                               # second Earth
     "gate_canary":
         "tests/test_gate_canary.py",           # proves THIS GATE can
                                                # refuse (sabotage hook)

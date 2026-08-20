@@ -65,6 +65,8 @@ def test_gate_covers_the_earned_invariants():
         "fabric_rehoming",
         "mortality_and_cause_accounting",
         "doctrine_present",
+        "one_production_earth",
+        "single_writer_world",
         "gate_canary",
     }
     assert required <= set(GATE), \
