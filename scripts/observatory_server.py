@@ -32,6 +32,16 @@ ROOT = Path(__file__).resolve().parents[1]
 import sys
 sys.path.insert(0, str(ROOT))
 
+# repo convention: keys live in .env (see llm_gateway.py provider
+# auto-detection); load without overriding an exported environment
+_envf = ROOT / ".env"
+if _envf.exists():
+    for _line in _envf.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
+
 from earth1.alive import birth_world, live_one_day   # noqa: E402
 from earth1.branch import Scenario, apply as apply_scenario  # noqa: E402
 from earth1.types import Force                        # noqa: E402
