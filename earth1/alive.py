@@ -256,6 +256,27 @@ def live_one_day(w: World, rng, *,
     import os as _os
     _cresidue_on = _os.environ.get("EARTH1_DECAY_RESIDUE") == "1"
 
+    # ── STAGE-B BROKEN TWINS (TEST-ONLY; Standing Rule 2) ─────────
+    # These flags deliberately reintroduce ruled-out defects so the
+    # acceptance instruments can prove they detect them. They are
+    # never set outside the adversarial battery.
+    if _os.environ.get("EARTH1_TEST_CLOSED_LOOP") == "1" and \
+            _cresidue_on:
+        # B7: the PF-DECAY-1 closed loop, resurrected: residues feed
+        # the target path again
+        _cres = getattr(w.chronicle, "cascade_residues", None)
+        if _cres:
+            _lv, _ = cascade_residue_levels(_cres, w.day)
+            if _lv:
+                _locr = (civ.country.astype(np.int64) * 1000
+                         + civ.region.astype(np.int64) * 2
+                         + civ.urban.astype(np.int64))
+                _sh = np.zeros_like(target)
+                for _lk, _vec in _lv:
+                    _sh[_locr == _lk] += _vec
+                np.clip(_sh, -0.5, 0.5, out=_sh)
+                target = np.clip(target + _sh, 0.0, 1.0)
+
     # 7 influence, 8 circumstance
     from earth1.susceptibility import compute as susceptibility_of
     sus = susceptibility_of(civ, life, w.flourishing)
@@ -343,12 +364,18 @@ def live_one_day(w: World, rng, *,
             _, _surv = cascade_residue_levels(_cres, w.day)
             w.chronicle.cascade_residues = _surv
             st["cascade_residue_active"] = len(_surv)
+    # B8 broken twin (TEST-ONLY): detector reads the EFFECTIVE view —
+    # the contaminated-substrate defect KA10 must catch
+    _det_forces = civ.forces
+    if _os.environ.get("EARTH1_TEST_DETECTOR_EFFECTIVE") == "1" and \
+            _cresidue_on:
+        _det_forces = np.asarray(effective_forces(w))
     for rule in TRANSITION_RULES:
         if rule.region_scope != "regional":
             continue
         met = np.ones(civ.n, dtype=bool)
         for force, op, thresh in rule.conditions:
-            col = civ.forces[:, force.value]
+            col = _det_forces[:, force.value]
             met &= (col > thresh) if op == ">" else (col < thresh)
         frac = np.bincount(li, weights=met.astype(np.float64),
                            minlength=nl) / np.maximum(pop_l, 1.0)

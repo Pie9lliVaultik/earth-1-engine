@@ -96,5 +96,13 @@ consumer audit clean (immutable F_effective; zero physics
 consumers); NO MORE LOCAL PARAMETER OR MECHANISM SEARCH. Acceptance
 battery master registration @334abf5 (stages A-I frozen; dual
 health families; D1→adversarial item; D2→Stage C census; held-out
-10d case in Stage D). Stage A (365d endurance, seeds 9001-9003)
-RUNNING on prime @45564c1.
+10d case in Stage D). Stage B detailed prereg + C/D method lock
+@e89c98a; T2 holdout + historical exposure @c81bd33 (all frozen
+pre-result). Stage A RESULT: FAIL 3/3 seeds — max_t stored sat
+breach, ALL in the COLLECTIVE channel (stationary mean 0.885,
+high-rail tail breathing 0.21-0.36 after d150; every other channel
+0.00-0.02; cascades/diversity/drift/clip excluded by measurement).
+STAGE_A_REPORT.md. Chain STOPPED per discipline — awaiting founder
+ruling on the falsified COLLECTIVE geometry vs gate construct.
+Stage B implemented-in-part (broken twins flag-gated in alive.py),
+NOT run.
