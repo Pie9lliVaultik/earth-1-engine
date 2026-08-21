@@ -1,0 +1,2032 @@
+[
+ {
+  "arm": "ABL_decay",
+  "cfg": {
+   "event": "True",
+   "spread": "False"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": 0.99904,
+    "scope_n": 5000,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.00999,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 2,
+    "salience": 0.99808,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0176,
+    "other_fear_delta": 0.0003
+   },
+   {
+    "day": 3,
+    "salience": 0.99712,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0235,
+    "other_fear_delta": 0.0008
+   },
+   {
+    "day": 4,
+    "salience": 0.99616,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02814,
+    "other_fear_delta": 0.00143
+   },
+   {
+    "day": 5,
+    "salience": 0.9952,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03187,
+    "other_fear_delta": 0.00211
+   },
+   {
+    "day": 6,
+    "salience": 0.99424,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03489,
+    "other_fear_delta": 0.00281
+   },
+   {
+    "day": 7,
+    "salience": 0.99328,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03734,
+    "other_fear_delta": 0.00351
+   },
+   {
+    "day": 8,
+    "salience": 0.99233,
+    "scope_n": 4996,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03939,
+    "other_fear_delta": 0.00418
+   },
+   {
+    "day": 9,
+    "salience": 0.99137,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04114,
+    "other_fear_delta": 0.00484
+   },
+   {
+    "day": 10,
+    "salience": 0.99042,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04263,
+    "other_fear_delta": 0.00552
+   },
+   {
+    "day": 11,
+    "salience": 0.98947,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04392,
+    "other_fear_delta": 0.00615
+   },
+   {
+    "day": 12,
+    "salience": 0.98851,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04506,
+    "other_fear_delta": 0.00675
+   },
+   {
+    "day": 13,
+    "salience": 0.98756,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04601,
+    "other_fear_delta": 0.00729
+   },
+   {
+    "day": 14,
+    "salience": 0.98661,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04686,
+    "other_fear_delta": 0.00782
+   },
+   {
+    "day": 15,
+    "salience": 0.98566,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04757,
+    "other_fear_delta": 0.00829
+   },
+   {
+    "day": 16,
+    "salience": 0.98471,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04825,
+    "other_fear_delta": 0.00879
+   },
+   {
+    "day": 17,
+    "salience": 0.98377,
+    "scope_n": 4994,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05005,
+    "other_fear_delta": 0.01038
+   },
+   {
+    "day": 18,
+    "salience": 0.98282,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0526,
+    "other_fear_delta": 0.01277
+   },
+   {
+    "day": 19,
+    "salience": 0.98187,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05536,
+    "other_fear_delta": 0.01544
+   },
+   {
+    "day": 20,
+    "salience": 0.98093,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05655,
+    "other_fear_delta": 0.01667
+   },
+   {
+    "day": 21,
+    "salience": 0.97999,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05902,
+    "other_fear_delta": 0.01907
+   },
+   {
+    "day": 22,
+    "salience": 0.97904,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0615,
+    "other_fear_delta": 0.02141
+   },
+   {
+    "day": 23,
+    "salience": 0.9781,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06403,
+    "other_fear_delta": 0.02364
+   },
+   {
+    "day": 24,
+    "salience": 0.97716,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06545,
+    "other_fear_delta": 0.02493
+   },
+   {
+    "day": 25,
+    "salience": 0.97622,
+    "scope_n": 4992,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06715,
+    "other_fear_delta": 0.02649
+   },
+   {
+    "day": 26,
+    "salience": 0.97528,
+    "scope_n": 4991,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06754,
+    "other_fear_delta": 0.02679
+   },
+   {
+    "day": 27,
+    "salience": 0.97434,
+    "scope_n": 4991,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06784,
+    "other_fear_delta": 0.02702
+   },
+   {
+    "day": 28,
+    "salience": 0.9734,
+    "scope_n": 4991,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06843,
+    "other_fear_delta": 0.02759
+   },
+   {
+    "day": 29,
+    "salience": 0.97247,
+    "scope_n": 4990,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06898,
+    "other_fear_delta": 0.02816
+   },
+   {
+    "day": 30,
+    "salience": 0.97153,
+    "scope_n": 4990,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06972,
+    "other_fear_delta": 0.0287
+   }
+  ],
+  "peak_d5": 0.03187,
+  "d30": 0.06972,
+  "resid_vs_peak": 2.188,
+  "carrier_d30": 0.97153,
+  "sat_check": 0.1317
+ },
+ {
+  "arm": "ABL_spread",
+  "cfg": {
+   "event": "True"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": 0.99904,
+    "scope_n": 5228,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.00999,
+    "other_fear_delta": 1e-05
+   },
+   {
+    "day": 2,
+    "salience": 0.99808,
+    "scope_n": 5449,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.01764,
+    "other_fear_delta": 0.00038
+   },
+   {
+    "day": 3,
+    "salience": 0.99712,
+    "scope_n": 5687,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02353,
+    "other_fear_delta": 0.00107
+   },
+   {
+    "day": 4,
+    "salience": 0.99616,
+    "scope_n": 5953,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02822,
+    "other_fear_delta": 0.00191
+   },
+   {
+    "day": 5,
+    "salience": 0.9952,
+    "scope_n": 6220,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03201,
+    "other_fear_delta": 0.00291
+   },
+   {
+    "day": 6,
+    "salience": 0.99424,
+    "scope_n": 6483,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03516,
+    "other_fear_delta": 0.00394
+   },
+   {
+    "day": 7,
+    "salience": 0.99328,
+    "scope_n": 6781,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03777,
+    "other_fear_delta": 0.00516
+   },
+   {
+    "day": 8,
+    "salience": 0.99233,
+    "scope_n": 7073,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04002,
+    "other_fear_delta": 0.00636
+   },
+   {
+    "day": 9,
+    "salience": 0.99137,
+    "scope_n": 7380,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04194,
+    "other_fear_delta": 0.00754
+   },
+   {
+    "day": 10,
+    "salience": 0.99042,
+    "scope_n": 7666,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04368,
+    "other_fear_delta": 0.00892
+   },
+   {
+    "day": 11,
+    "salience": 0.98947,
+    "scope_n": 7993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04512,
+    "other_fear_delta": 0.01014
+   },
+   {
+    "day": 12,
+    "salience": 0.98851,
+    "scope_n": 8327,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04604,
+    "other_fear_delta": 0.01079
+   },
+   {
+    "day": 13,
+    "salience": 0.98756,
+    "scope_n": 8648,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02776,
+    "other_fear_delta": -0.0066
+   },
+   {
+    "day": 14,
+    "salience": 0.98661,
+    "scope_n": 8983,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02943,
+    "other_fear_delta": -0.00507
+   },
+   {
+    "day": 15,
+    "salience": 0.98566,
+    "scope_n": 9340,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03121,
+    "other_fear_delta": -0.00327
+   },
+   {
+    "day": 16,
+    "salience": 0.98471,
+    "scope_n": 9695,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03331,
+    "other_fear_delta": -0.00112
+   },
+   {
+    "day": 17,
+    "salience": 0.98377,
+    "scope_n": 10053,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03584,
+    "other_fear_delta": 0.00146
+   },
+   {
+    "day": 18,
+    "salience": 0.98282,
+    "scope_n": 10426,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03808,
+    "other_fear_delta": 0.00392
+   },
+   {
+    "day": 19,
+    "salience": 0.98187,
+    "scope_n": 10832,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04036,
+    "other_fear_delta": 0.00656
+   },
+   {
+    "day": 20,
+    "salience": 0.98093,
+    "scope_n": 11262,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04247,
+    "other_fear_delta": 0.0092
+   },
+   {
+    "day": 21,
+    "salience": 0.97999,
+    "scope_n": 11665,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04455,
+    "other_fear_delta": 0.01158
+   },
+   {
+    "day": 22,
+    "salience": 0.97904,
+    "scope_n": 12077,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0469,
+    "other_fear_delta": 0.01419
+   },
+   {
+    "day": 23,
+    "salience": 0.9781,
+    "scope_n": 12495,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04933,
+    "other_fear_delta": 0.01677
+   },
+   {
+    "day": 24,
+    "salience": 0.97716,
+    "scope_n": 12917,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05173,
+    "other_fear_delta": 0.01962
+   },
+   {
+    "day": 25,
+    "salience": 0.97622,
+    "scope_n": 13341,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05421,
+    "other_fear_delta": 0.02258
+   },
+   {
+    "day": 26,
+    "salience": 0.97528,
+    "scope_n": 13809,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.057,
+    "other_fear_delta": 0.02574
+   },
+   {
+    "day": 27,
+    "salience": 0.97434,
+    "scope_n": 14297,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05921,
+    "other_fear_delta": 0.02867
+   },
+   {
+    "day": 28,
+    "salience": 0.9734,
+    "scope_n": 14767,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06029,
+    "other_fear_delta": 0.03039
+   },
+   {
+    "day": 29,
+    "salience": 0.97247,
+    "scope_n": 15227,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06214,
+    "other_fear_delta": 0.03276
+   },
+   {
+    "day": 30,
+    "salience": 0.97153,
+    "scope_n": 15725,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06387,
+    "other_fear_delta": 0.03485
+   }
+  ],
+  "peak_d5": 0.03201,
+  "d30": 0.06387,
+  "resid_vs_peak": 1.995,
+  "carrier_d30": 0.97153,
+  "sat_check": 0.1414
+ },
+ {
+  "arm": "CAND",
+  "cfg": {
+   "event": "True"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": 0.99904,
+    "scope_n": 5228,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.00999,
+    "other_fear_delta": 1e-05
+   },
+   {
+    "day": 2,
+    "salience": 0.99808,
+    "scope_n": 5449,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.01764,
+    "other_fear_delta": 0.00038
+   },
+   {
+    "day": 3,
+    "salience": 0.99712,
+    "scope_n": 5687,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02353,
+    "other_fear_delta": 0.00107
+   },
+   {
+    "day": 4,
+    "salience": 0.99616,
+    "scope_n": 5953,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02822,
+    "other_fear_delta": 0.00191
+   },
+   {
+    "day": 5,
+    "salience": 0.9952,
+    "scope_n": 6220,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03201,
+    "other_fear_delta": 0.00291
+   },
+   {
+    "day": 6,
+    "salience": 0.99424,
+    "scope_n": 6483,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03516,
+    "other_fear_delta": 0.00394
+   },
+   {
+    "day": 7,
+    "salience": 0.99328,
+    "scope_n": 6781,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03777,
+    "other_fear_delta": 0.00516
+   },
+   {
+    "day": 8,
+    "salience": 0.99233,
+    "scope_n": 7073,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04002,
+    "other_fear_delta": 0.00636
+   },
+   {
+    "day": 9,
+    "salience": 0.99137,
+    "scope_n": 7380,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04194,
+    "other_fear_delta": 0.00754
+   },
+   {
+    "day": 10,
+    "salience": 0.99042,
+    "scope_n": 7666,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04368,
+    "other_fear_delta": 0.00892
+   },
+   {
+    "day": 11,
+    "salience": 0.98947,
+    "scope_n": 7993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04512,
+    "other_fear_delta": 0.01014
+   },
+   {
+    "day": 12,
+    "salience": 0.98851,
+    "scope_n": 8327,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04604,
+    "other_fear_delta": 0.01079
+   },
+   {
+    "day": 13,
+    "salience": 0.98756,
+    "scope_n": 8648,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02776,
+    "other_fear_delta": -0.0066
+   },
+   {
+    "day": 14,
+    "salience": 0.98661,
+    "scope_n": 8983,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02943,
+    "other_fear_delta": -0.00507
+   },
+   {
+    "day": 15,
+    "salience": 0.98566,
+    "scope_n": 9340,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03121,
+    "other_fear_delta": -0.00327
+   },
+   {
+    "day": 16,
+    "salience": 0.98471,
+    "scope_n": 9695,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03331,
+    "other_fear_delta": -0.00112
+   },
+   {
+    "day": 17,
+    "salience": 0.98377,
+    "scope_n": 10053,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03584,
+    "other_fear_delta": 0.00146
+   },
+   {
+    "day": 18,
+    "salience": 0.98282,
+    "scope_n": 10426,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03808,
+    "other_fear_delta": 0.00392
+   },
+   {
+    "day": 19,
+    "salience": 0.98187,
+    "scope_n": 10832,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04036,
+    "other_fear_delta": 0.00656
+   },
+   {
+    "day": 20,
+    "salience": 0.98093,
+    "scope_n": 11262,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04247,
+    "other_fear_delta": 0.0092
+   },
+   {
+    "day": 21,
+    "salience": 0.97999,
+    "scope_n": 11665,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04455,
+    "other_fear_delta": 0.01158
+   },
+   {
+    "day": 22,
+    "salience": 0.97904,
+    "scope_n": 12077,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0469,
+    "other_fear_delta": 0.01419
+   },
+   {
+    "day": 23,
+    "salience": 0.9781,
+    "scope_n": 12495,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04933,
+    "other_fear_delta": 0.01677
+   },
+   {
+    "day": 24,
+    "salience": 0.97716,
+    "scope_n": 12917,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05173,
+    "other_fear_delta": 0.01962
+   },
+   {
+    "day": 25,
+    "salience": 0.97622,
+    "scope_n": 13341,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05421,
+    "other_fear_delta": 0.02258
+   },
+   {
+    "day": 26,
+    "salience": 0.97528,
+    "scope_n": 13809,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.057,
+    "other_fear_delta": 0.02574
+   },
+   {
+    "day": 27,
+    "salience": 0.97434,
+    "scope_n": 14297,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05921,
+    "other_fear_delta": 0.02867
+   },
+   {
+    "day": 28,
+    "salience": 0.9734,
+    "scope_n": 14767,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06029,
+    "other_fear_delta": 0.03039
+   },
+   {
+    "day": 29,
+    "salience": 0.97247,
+    "scope_n": 15227,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06214,
+    "other_fear_delta": 0.03276
+   },
+   {
+    "day": 30,
+    "salience": 0.97153,
+    "scope_n": 15725,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06387,
+    "other_fear_delta": 0.03485
+   }
+  ],
+  "peak_d5": 0.03201,
+  "d30": 0.06387,
+  "resid_vs_peak": 1.995,
+  "carrier_d30": 0.97153,
+  "sat_check": 0.1414
+ },
+ {
+  "arm": "KA0_cont",
+  "cfg": {
+   "event": "False",
+   "seed": "8890"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 2,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 3,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 4,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 5,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 6,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 7,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 8,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 9,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 10,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 11,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 12,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 13,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 14,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 15,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 16,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 17,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 18,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 19,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 20,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 21,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 22,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 23,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 24,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 25,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 26,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 27,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 28,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 29,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 30,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0,
+    "other_fear_delta": 0.0
+   }
+  ],
+  "peak_d5": 0.0,
+  "d30": 0.0,
+  "resid_vs_peak": null,
+  "carrier_d30": null,
+  "sat_check": 0.133
+ },
+ {
+  "arm": "KA4_scope",
+  "cfg": {
+   "event": "True",
+   "spread": "False"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": 0.99904,
+    "scope_n": 5000,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.00999,
+    "other_fear_delta": 0.0
+   },
+   {
+    "day": 2,
+    "salience": 0.99808,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0176,
+    "other_fear_delta": 0.0003
+   },
+   {
+    "day": 3,
+    "salience": 0.99712,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0235,
+    "other_fear_delta": 0.0008
+   },
+   {
+    "day": 4,
+    "salience": 0.99616,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02814,
+    "other_fear_delta": 0.00143
+   },
+   {
+    "day": 5,
+    "salience": 0.9952,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03187,
+    "other_fear_delta": 0.00211
+   },
+   {
+    "day": 6,
+    "salience": 0.99424,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03489,
+    "other_fear_delta": 0.00281
+   },
+   {
+    "day": 7,
+    "salience": 0.99328,
+    "scope_n": 4997,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03734,
+    "other_fear_delta": 0.00351
+   },
+   {
+    "day": 8,
+    "salience": 0.99233,
+    "scope_n": 4996,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03939,
+    "other_fear_delta": 0.00418
+   },
+   {
+    "day": 9,
+    "salience": 0.99137,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04114,
+    "other_fear_delta": 0.00484
+   },
+   {
+    "day": 10,
+    "salience": 0.99042,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04263,
+    "other_fear_delta": 0.00552
+   },
+   {
+    "day": 11,
+    "salience": 0.98947,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04392,
+    "other_fear_delta": 0.00615
+   },
+   {
+    "day": 12,
+    "salience": 0.98851,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04506,
+    "other_fear_delta": 0.00675
+   },
+   {
+    "day": 13,
+    "salience": 0.98756,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04601,
+    "other_fear_delta": 0.00729
+   },
+   {
+    "day": 14,
+    "salience": 0.98661,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04686,
+    "other_fear_delta": 0.00782
+   },
+   {
+    "day": 15,
+    "salience": 0.98566,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04757,
+    "other_fear_delta": 0.00829
+   },
+   {
+    "day": 16,
+    "salience": 0.98471,
+    "scope_n": 4995,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04825,
+    "other_fear_delta": 0.00879
+   },
+   {
+    "day": 17,
+    "salience": 0.98377,
+    "scope_n": 4994,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05005,
+    "other_fear_delta": 0.01038
+   },
+   {
+    "day": 18,
+    "salience": 0.98282,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0526,
+    "other_fear_delta": 0.01277
+   },
+   {
+    "day": 19,
+    "salience": 0.98187,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05536,
+    "other_fear_delta": 0.01544
+   },
+   {
+    "day": 20,
+    "salience": 0.98093,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05655,
+    "other_fear_delta": 0.01667
+   },
+   {
+    "day": 21,
+    "salience": 0.97999,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05902,
+    "other_fear_delta": 0.01907
+   },
+   {
+    "day": 22,
+    "salience": 0.97904,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0615,
+    "other_fear_delta": 0.02141
+   },
+   {
+    "day": 23,
+    "salience": 0.9781,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06403,
+    "other_fear_delta": 0.02364
+   },
+   {
+    "day": 24,
+    "salience": 0.97716,
+    "scope_n": 4993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06545,
+    "other_fear_delta": 0.02493
+   },
+   {
+    "day": 25,
+    "salience": 0.97622,
+    "scope_n": 4992,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06715,
+    "other_fear_delta": 0.02649
+   },
+   {
+    "day": 26,
+    "salience": 0.97528,
+    "scope_n": 4991,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06754,
+    "other_fear_delta": 0.02679
+   },
+   {
+    "day": 27,
+    "salience": 0.97434,
+    "scope_n": 4991,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06784,
+    "other_fear_delta": 0.02702
+   },
+   {
+    "day": 28,
+    "salience": 0.9734,
+    "scope_n": 4991,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06843,
+    "other_fear_delta": 0.02759
+   },
+   {
+    "day": 29,
+    "salience": 0.97247,
+    "scope_n": 4990,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06898,
+    "other_fear_delta": 0.02816
+   },
+   {
+    "day": 30,
+    "salience": 0.97153,
+    "scope_n": 4990,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06972,
+    "other_fear_delta": 0.0287
+   }
+  ],
+  "peak_d5": 0.03187,
+  "d30": 0.06972,
+  "resid_vs_peak": 2.188,
+  "carrier_d30": 0.97153,
+  "sat_check": 0.1317
+ },
+ {
+  "arm": "KA6_neg",
+  "cfg": {
+   "event": "True",
+   "sign": "-1.0"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": 0.99904,
+    "scope_n": 5228,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.00999,
+    "other_fear_delta": 1e-05
+   },
+   {
+    "day": 2,
+    "salience": 0.99808,
+    "scope_n": 5449,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.01758,
+    "other_fear_delta": -0.00039
+   },
+   {
+    "day": 3,
+    "salience": 0.99712,
+    "scope_n": 5687,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.02354,
+    "other_fear_delta": -0.00103
+   },
+   {
+    "day": 4,
+    "salience": 0.99616,
+    "scope_n": 5953,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.02824,
+    "other_fear_delta": -0.00191
+   },
+   {
+    "day": 5,
+    "salience": 0.9952,
+    "scope_n": 6221,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.03206,
+    "other_fear_delta": -0.00289
+   },
+   {
+    "day": 6,
+    "salience": 0.99424,
+    "scope_n": 6484,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.03522,
+    "other_fear_delta": -0.00398
+   },
+   {
+    "day": 7,
+    "salience": 0.99328,
+    "scope_n": 6782,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.03784,
+    "other_fear_delta": -0.00503
+   },
+   {
+    "day": 8,
+    "salience": 0.99233,
+    "scope_n": 7062,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.04002,
+    "other_fear_delta": -0.00627
+   },
+   {
+    "day": 9,
+    "salience": 0.99137,
+    "scope_n": 7348,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.04209,
+    "other_fear_delta": -0.00753
+   },
+   {
+    "day": 10,
+    "salience": 0.99042,
+    "scope_n": 7631,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.04357,
+    "other_fear_delta": -0.00846
+   },
+   {
+    "day": 11,
+    "salience": 0.98947,
+    "scope_n": 7983,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.04535,
+    "other_fear_delta": -0.00988
+   },
+   {
+    "day": 12,
+    "salience": 0.98851,
+    "scope_n": 8314,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.04756,
+    "other_fear_delta": -0.01189
+   },
+   {
+    "day": 13,
+    "salience": 0.98756,
+    "scope_n": 8636,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06773,
+    "other_fear_delta": -0.03109
+   },
+   {
+    "day": 14,
+    "salience": 0.98661,
+    "scope_n": 8966,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06714,
+    "other_fear_delta": -0.03084
+   },
+   {
+    "day": 15,
+    "salience": 0.98566,
+    "scope_n": 9335,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.0667,
+    "other_fear_delta": -0.03068
+   },
+   {
+    "day": 16,
+    "salience": 0.98471,
+    "scope_n": 9688,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06725,
+    "other_fear_delta": -0.03163
+   },
+   {
+    "day": 17,
+    "salience": 0.98377,
+    "scope_n": 10088,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06736,
+    "other_fear_delta": -0.03207
+   },
+   {
+    "day": 18,
+    "salience": 0.98282,
+    "scope_n": 10442,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06743,
+    "other_fear_delta": -0.03242
+   },
+   {
+    "day": 19,
+    "salience": 0.98187,
+    "scope_n": 10846,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06751,
+    "other_fear_delta": -0.03293
+   },
+   {
+    "day": 20,
+    "salience": 0.98093,
+    "scope_n": 11294,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06765,
+    "other_fear_delta": -0.03348
+   },
+   {
+    "day": 21,
+    "salience": 0.97999,
+    "scope_n": 11721,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.0678,
+    "other_fear_delta": -0.03418
+   },
+   {
+    "day": 22,
+    "salience": 0.97904,
+    "scope_n": 12093,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06806,
+    "other_fear_delta": -0.03495
+   },
+   {
+    "day": 23,
+    "salience": 0.9781,
+    "scope_n": 12534,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06834,
+    "other_fear_delta": -0.03564
+   },
+   {
+    "day": 24,
+    "salience": 0.97716,
+    "scope_n": 12968,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06875,
+    "other_fear_delta": -0.03652
+   },
+   {
+    "day": 25,
+    "salience": 0.97622,
+    "scope_n": 13409,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.0693,
+    "other_fear_delta": -0.03741
+   },
+   {
+    "day": 26,
+    "salience": 0.97528,
+    "scope_n": 13851,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.06984,
+    "other_fear_delta": -0.03838
+   },
+   {
+    "day": 27,
+    "salience": 0.97434,
+    "scope_n": 14314,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.07021,
+    "other_fear_delta": -0.03926
+   },
+   {
+    "day": 28,
+    "salience": 0.9734,
+    "scope_n": 14764,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.07088,
+    "other_fear_delta": -0.04051
+   },
+   {
+    "day": 29,
+    "salience": 0.97247,
+    "scope_n": 15242,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.07172,
+    "other_fear_delta": -0.04169
+   },
+   {
+    "day": 30,
+    "salience": 0.97153,
+    "scope_n": 15712,
+    "rehearsals": 0,
+    "cohort_fear_delta": -0.07251,
+    "other_fear_delta": -0.04282
+   }
+  ],
+  "peak_d5": -0.03206,
+  "d30": -0.07251,
+  "resid_vs_peak": 2.262,
+  "carrier_d30": 0.97153,
+  "sat_check": 0.1939
+ },
+ {
+  "arm": "KA2_nodecay",
+  "cfg": {
+   "event": "True",
+   "half_life": "inf"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": 1.0,
+    "scope_n": 5228,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.01,
+    "other_fear_delta": 1e-05
+   },
+   {
+    "day": 2,
+    "salience": 1.0,
+    "scope_n": 5449,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.01767,
+    "other_fear_delta": 0.00039
+   },
+   {
+    "day": 3,
+    "salience": 1.0,
+    "scope_n": 5687,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02358,
+    "other_fear_delta": 0.00108
+   },
+   {
+    "day": 4,
+    "salience": 1.0,
+    "scope_n": 5953,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02829,
+    "other_fear_delta": 0.00191
+   },
+   {
+    "day": 5,
+    "salience": 1.0,
+    "scope_n": 6220,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03211,
+    "other_fear_delta": 0.00292
+   },
+   {
+    "day": 6,
+    "salience": 1.0,
+    "scope_n": 6483,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0353,
+    "other_fear_delta": 0.00395
+   },
+   {
+    "day": 7,
+    "salience": 1.0,
+    "scope_n": 6781,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03795,
+    "other_fear_delta": 0.00518
+   },
+   {
+    "day": 8,
+    "salience": 1.0,
+    "scope_n": 7073,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04024,
+    "other_fear_delta": 0.00639
+   },
+   {
+    "day": 9,
+    "salience": 1.0,
+    "scope_n": 7380,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0422,
+    "other_fear_delta": 0.00757
+   },
+   {
+    "day": 10,
+    "salience": 1.0,
+    "scope_n": 7666,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04398,
+    "other_fear_delta": 0.00897
+   },
+   {
+    "day": 11,
+    "salience": 1.0,
+    "scope_n": 7993,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04547,
+    "other_fear_delta": 0.01021
+   },
+   {
+    "day": 12,
+    "salience": 1.0,
+    "scope_n": 8327,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04643,
+    "other_fear_delta": 0.01087
+   },
+   {
+    "day": 13,
+    "salience": 1.0,
+    "scope_n": 8648,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0282,
+    "other_fear_delta": -0.0065
+   },
+   {
+    "day": 14,
+    "salience": 1.0,
+    "scope_n": 8983,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.02992,
+    "other_fear_delta": -0.00495
+   },
+   {
+    "day": 15,
+    "salience": 1.0,
+    "scope_n": 9340,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03176,
+    "other_fear_delta": -0.00312
+   },
+   {
+    "day": 16,
+    "salience": 1.0,
+    "scope_n": 9695,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03391,
+    "other_fear_delta": -0.00095
+   },
+   {
+    "day": 17,
+    "salience": 1.0,
+    "scope_n": 10053,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03649,
+    "other_fear_delta": 0.00165
+   },
+   {
+    "day": 18,
+    "salience": 1.0,
+    "scope_n": 10426,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.03879,
+    "other_fear_delta": 0.00415
+   },
+   {
+    "day": 19,
+    "salience": 1.0,
+    "scope_n": 10832,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04113,
+    "other_fear_delta": 0.00682
+   },
+   {
+    "day": 20,
+    "salience": 1.0,
+    "scope_n": 11262,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0433,
+    "other_fear_delta": 0.0095
+   },
+   {
+    "day": 21,
+    "salience": 1.0,
+    "scope_n": 11665,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04544,
+    "other_fear_delta": 0.01191
+   },
+   {
+    "day": 22,
+    "salience": 1.0,
+    "scope_n": 12077,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.04786,
+    "other_fear_delta": 0.01456
+   },
+   {
+    "day": 23,
+    "salience": 1.0,
+    "scope_n": 12495,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05035,
+    "other_fear_delta": 0.01719
+   },
+   {
+    "day": 24,
+    "salience": 1.0,
+    "scope_n": 12917,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05282,
+    "other_fear_delta": 0.02008
+   },
+   {
+    "day": 25,
+    "salience": 1.0,
+    "scope_n": 13341,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05536,
+    "other_fear_delta": 0.02309
+   },
+   {
+    "day": 26,
+    "salience": 1.0,
+    "scope_n": 13809,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.05823,
+    "other_fear_delta": 0.0263
+   },
+   {
+    "day": 27,
+    "salience": 1.0,
+    "scope_n": 14297,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06051,
+    "other_fear_delta": 0.02929
+   },
+   {
+    "day": 28,
+    "salience": 1.0,
+    "scope_n": 14767,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06167,
+    "other_fear_delta": 0.03107
+   },
+   {
+    "day": 29,
+    "salience": 1.0,
+    "scope_n": 15227,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.06359,
+    "other_fear_delta": 0.0335
+   },
+   {
+    "day": 30,
+    "salience": 1.0,
+    "scope_n": 15726,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.0654,
+    "other_fear_delta": 0.03565
+   }
+  ],
+  "peak_d5": 0.03211,
+  "d30": 0.0654,
+  "resid_vs_peak": 2.037,
+  "carrier_d30": 1.0,
+  "sat_check": 0.1414
+ },
+ {
+  "arm": "KA1_delete",
+  "cfg": {
+   "event": "True",
+   "delete_after": "1"
+  },
+  "series": [
+   {
+    "day": 1,
+    "salience": 0.99904,
+    "scope_n": 5228,
+    "rehearsals": 0,
+    "cohort_fear_delta": 0.00999,
+    "other_fear_delta": 1e-05
+   },
+   {
+    "day": 2,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00766,
+    "other_fear_delta": 0.00029
+   },
+   {
+    "day": 3,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00591,
+    "other_fear_delta": 0.00049
+   },
+   {
+    "day": 4,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00464,
+    "other_fear_delta": 0.0006
+   },
+   {
+    "day": 5,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00372,
+    "other_fear_delta": 0.00063
+   },
+   {
+    "day": 6,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00305,
+    "other_fear_delta": 0.00067
+   },
+   {
+    "day": 7,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00252,
+    "other_fear_delta": 0.00072
+   },
+   {
+    "day": 8,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.02018,
+    "other_fear_delta": 0.01827
+   },
+   {
+    "day": 9,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.01837,
+    "other_fear_delta": 0.01696
+   },
+   {
+    "day": 10,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.01684,
+    "other_fear_delta": 0.01569
+   },
+   {
+    "day": 11,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.0154,
+    "other_fear_delta": 0.01455
+   },
+   {
+    "day": 12,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.01362,
+    "other_fear_delta": 0.01292
+   },
+   {
+    "day": 13,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": -0.00709,
+    "other_fear_delta": -0.00662
+   },
+   {
+    "day": 14,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": -0.00759,
+    "other_fear_delta": -0.00735
+   },
+   {
+    "day": 15,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.01009,
+    "other_fear_delta": 0.01014
+   },
+   {
+    "day": 16,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00872,
+    "other_fear_delta": 0.00864
+   },
+   {
+    "day": 17,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00813,
+    "other_fear_delta": 0.00789
+   },
+   {
+    "day": 18,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00733,
+    "other_fear_delta": 0.00728
+   },
+   {
+    "day": 19,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00688,
+    "other_fear_delta": 0.0069
+   },
+   {
+    "day": 20,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00638,
+    "other_fear_delta": 0.0065
+   },
+   {
+    "day": 21,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00606,
+    "other_fear_delta": 0.00608
+   },
+   {
+    "day": 22,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00576,
+    "other_fear_delta": 0.00578
+   },
+   {
+    "day": 23,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00548,
+    "other_fear_delta": 0.00537
+   },
+   {
+    "day": 24,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00497,
+    "other_fear_delta": 0.00506
+   },
+   {
+    "day": 25,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00469,
+    "other_fear_delta": 0.00479
+   },
+   {
+    "day": 26,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00438,
+    "other_fear_delta": 0.00454
+   },
+   {
+    "day": 27,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00413,
+    "other_fear_delta": 0.00433
+   },
+   {
+    "day": 28,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00382,
+    "other_fear_delta": 0.00406
+   },
+   {
+    "day": 29,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00354,
+    "other_fear_delta": 0.00384
+   },
+   {
+    "day": 30,
+    "salience": null,
+    "scope_n": 0,
+    "rehearsals": null,
+    "cohort_fear_delta": 0.00322,
+    "other_fear_delta": 0.0035
+   }
+  ],
+  "peak_d5": 0.00372,
+  "d30": 0.00322,
+  "resid_vs_peak": 0.866,
+  "carrier_d30": null,
+  "sat_check": 0.2031
+ }
+]
