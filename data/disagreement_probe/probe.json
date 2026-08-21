@@ -1,0 +1,64 @@
+{
+ "natural_drive": {
+  "drive_mean": 0.7658,
+  "drive_p05": 0.6144,
+  "drive_p50": 0.7771,
+  "frac_negative": 0.0003,
+  "hist": [
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   1,
+   26,
+   127,
+   572,
+   1787,
+   1425,
+   61
+  ]
+ },
+ "gain": 0.003,
+ "phase_days": 4,
+ "cohorts": {
+  "d10": {
+   "drive": -0.1,
+   "P_soften": 1.0,
+   "E_dalpha": -0.000278,
+   "alpha_end_mean": 0.4368
+  },
+  "d25": {
+   "drive": -0.25,
+   "P_soften": 1.0,
+   "E_dalpha": -0.000697,
+   "alpha_end_mean": 0.4402
+  },
+  "d50": {
+   "drive": -0.5,
+   "P_soften": 1.0,
+   "E_dalpha": -0.001381,
+   "alpha_end_mean": 0.4303
+  },
+  "p50": {
+   "drive": 0.5,
+   "P_soften": 0.0,
+   "E_dalpha": 0.001384,
+   "alpha_end_mean": 0.4352
+  },
+  "ctrl": {
+   "drive": null,
+   "P_soften": 0.0,
+   "E_dalpha": 0.002271,
+   "alpha_end_mean": 0.4451
+  }
+ }
+}
