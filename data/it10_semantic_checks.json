@@ -1,0 +1,9 @@
+{
+ "KA2_stationary_max_db": 0.0,
+ "KA2_pass": true,
+ "KA2p_accepted_max_db": 0.0,
+ "KA2p_rejected_max_db": 0.055404967533354596,
+ "KA2p_pass": true,
+ "KA3_step_ratio_mean": 10.0,
+ "KA3_pass": true
+}

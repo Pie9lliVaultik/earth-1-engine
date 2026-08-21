@@ -276,6 +276,8 @@ def run_arm(name):
                 tau["baseline_shift_d30"] = round(float(db), 5)
                 tau["frac_carried_by_baseline"] = round(
                     float(db / deltas[-1]), 3) if deltas[-1] else None
+                tau["live_resid_d30"] = round(
+                    float((deltas[-1] - db) / d0), 3) if d0 else None
             trans = {f"ring{j}_d30": round(float(
                 w2.civ.forces[r_, CH_TRANS].mean()
                 - w.civ.forces[r_, CH_TRANS].mean()), 5)
@@ -313,6 +315,37 @@ def run_arm(name):
                sum(v["neg"] for v in flab.ENC_STATS.values())
                / max(1, sum(v["n"] for v in flab.ENC_STATS.values())),
                4)}
+    rich = None
+    if cfg.get("rich") and lam_adapt is not None:
+        # negative impulse + sustained-exposure forks from day-120
+        # state equivalence is NOT possible (day-90 state consumed);
+        # rich forks run from the CURRENT day-120 state — registered
+        # as the rich-fork protocol (same world, later branch point).
+        import copy as _copy
+        base_b = w.life.force_baseline.copy()
+        gr2 = np.random.default_rng(77)
+        alive_idx2 = np.flatnonzero(w.health.alive)
+        idx2 = gr2.choice(alive_idx2, size=N // 8, replace=False)
+        rich = {}
+        for mode in ("neg", "sustained"):
+            wf = _copy.deepcopy(w)
+            rf = np.random.default_rng(555)
+            mag = -0.15 if mode == "neg" else 0.15
+            colf = wf.civ.forces[:, CH_TAU]
+            colf[idx2] = np.clip(colf[idx2] + mag, 0, 1)
+            for dd in range(1, 31):
+                flab._DAY[0] = DAYS + 40 + dd
+                if mode == "sustained" and 1 < dd <= 15:
+                    colf = wf.civ.forces[:, CH_TAU]
+                    colf[idx2] = np.clip(colf[idx2] + 0.15 / 15, 0, 1)
+                live_one_day(wf, rf, relax=relax)
+                T3 = lifemod.life_force_target(wf.civ, wf.life)
+                b3 = wf.life.force_baseline
+                b3[:] = np.clip(b3 + lam_adapt
+                                * (wf.civ.forces - T3), 0, 1)
+            dbf = float((wf.life.force_baseline[idx2, CH_TAU]
+                         - base_b[idx2, CH_TAU]).mean())
+            rich[mode] = {"baseline_shift_d30": round(dbf, 5)}
     cohort_dalpha = None
     if forced_cohort is not None and 60 in alpha_snaps:
         cohort_dalpha = round(float(
@@ -331,6 +364,7 @@ def run_arm(name):
             "softening_frac_60_90": softening_frac,
             "cohort_dalpha": cohort_dalpha,
             "realized_dose": dose,
+            "rich_forks": rich,
             "samples_n": len(flab.SAMPLES),
             "sample_head": flab.SAMPLES[:5]}
 
