@@ -1,0 +1,9 @@
+{
+ "KA3_one_step_ratio": 0.9990377588337834,
+ "KA3_expected": 0.9990377588337834,
+ "KA3_pass": true,
+ "KA3_10step_pass": true,
+ "KA5_salience_preserved": true,
+ "KA5_continuation_identical": true,
+ "KA5_pass": true
+}
