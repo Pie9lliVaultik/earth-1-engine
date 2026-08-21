@@ -85,8 +85,11 @@ by founder ruling. PF-DECAY-1 (registration @eeb84fe, implementation
 @cb6dbbc): recovered f933c59 decay_half_life contract implemented
 flag-gated (EARTH1_DECAY_RESIDUE); local KA smoke all-pass
 (level recursion exact 3e-16; integrator discriminated; restart
-bitwise). Full-N KA battery + targeted regression R1–R4 on prime →
-if PASS: FREEZE COMPLETE CANDIDATE → MECHANISM DISCOVERY CLOSED →
-full 0.8 acceptance battery (endurance 365d, adversarial, census,
-two-timescale map incl. independent persistence case, transmission,
-India recession rerun, opinion receipt, chaos remeasurement).
+bitwise). Full-N result: KA ALL-PASS (contract exact, implementation exact,
+R4c identity) but REGRESSION FAIL → STOP AND DIAGNOSE
+(PF_DECAY_1_REPORT.md): natural cascade activity is ubiquitous
+(1,570 sites/120d, previously uninstrumented); the target-path
+translation is closed-loop (residue re-arms its own trigger) where
+legacy f933c59 was open-loop by construction (detector read raw
+forces); sat 0.19→0.39/0.50. Loop topology = physics decision →
+awaiting founder ruling. FREEZE NOT PERFORMED.
