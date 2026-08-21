@@ -170,9 +170,13 @@ def _interior_channel(w, cohort, amp):
 
 
 def _ka2_run(mode):
-    """mode 'level': planted residue (production path).
-    mode 'integrator': the planted WRONG law F += L(t) daily, residue
-    path off — same instrument must detect the difference."""
+    """PF-DECAY-2 restatement. mode 'level': planted residue through
+    the production open-loop path — STORED trajectories must stay
+    BITWISE identical to control (the loop never sees the residue)
+    while the EFFECTIVE view differs by exactly the analytic level.
+    mode 'integrator': the planted WRONG law F += L(t) on stored
+    forces — the same instrument must detect it immediately."""
+    from earth1.alive import effective_forces
     am, w = _stripped(SEED, rules_off=True)
     rng = np.random.default_rng(SEED)
     for _ in range(10):                      # settle a few days
@@ -189,93 +193,96 @@ def _ka2_run(mode):
         w.chronicle.cascade_residues = [
             {"rule": "ka2", "loc": big, "day": d0, "effects": eff,
              "h": H_KA2}]
-    series = []
-    delta_prev = 0.0
-    worst_rec = 0.0
+    stored_identical = True
+    stored_diverge_day = None
+    worst_eff = 0.0
+    max_stored_delta = 0.0
+    expiry_seen = None
     for d in range(1, 231):
         am.live_one_day(w, rng, relax=RELAX)
         am.live_one_day(wc, rngc, relax=RELAX)
         if mode == "integrator":
-            dt = (w.day - 1) - d0     # same clock the level sees
+            dt = (w.day - 1) - d0
             L = A_KA2 * 2.0 ** (-dt / H_KA2)
-            if L >= 0.01:             # same expiry as the contract
+            if L >= 0.01:
                 w.civ.forces[cohort, ch] = np.clip(
                     w.civ.forces[cohort, ch] + L, 0, 1)
-        delta = float(w.civ.forces[cohort, ch].mean()
-                      - wc.civ.forces[cohort, ch].mean())
-        dt = (w.day - 1) - d0         # day at which target was read
-        L = A_KA2 * 2.0 ** (-dt / H_KA2)
-        L_active = L if (L >= 0.01) else 0.0
-        # exact level recursion: D_t = (1-r) D_{t-1} + r L(t) — the
-        # discriminating instrument, computed identically in BOTH
-        # modes: the true level satisfies it to machine precision, an
-        # integrator cannot.
-        pred = (1 - RELAX) * delta_prev + RELAX * L_active
-        worst_rec = max(worst_rec, abs(delta - pred))
-        delta_prev = delta
-        if d % 5 == 0 or d <= 3:
-            series.append({"day": d, "delta": round(delta, 6),
-                           "L": round(L_active, 6)})
-    peak = max(abs(s["delta"]) for s in series)
-    final = abs(series[-1]["delta"])
-    return {"mode": mode, "series": series, "channel": int(ch),
+        if not np.array_equal(w.civ.forces, wc.civ.forces):
+            if stored_identical:
+                stored_diverge_day = d
+            stored_identical = False
+            max_stored_delta = max(max_stored_delta, float(np.abs(
+                w.civ.forces[cohort, ch]
+                - wc.civ.forces[cohort, ch]).mean()))
+        if mode == "level":
+            ev = effective_forces(w)
+            base_c = w.civ.forces[cohort, ch]
+            unclipped = base_c + A_KA2 <= 1.0 - 1e-9
+            got = float((ev[cohort, ch][unclipped]
+                         - base_c[unclipped]).mean())
+            dt = w.day - d0
+            L = A_KA2 * 2.0 ** (-dt / H_KA2)
+            L_active = L if (L >= 0.01) else 0.0
+            worst_eff = max(worst_eff, abs(got - L_active))
+            if L_active == 0.0 and expiry_seen is None:
+                expiry_seen = d
+    return {"mode": mode, "channel": int(ch),
             "channel_clip_frac": clip_frac,
-            "peak_delta": round(peak, 6),
-            "final_delta": round(final, 6),
-            "recursion_max_err": worst_rec,
-            "envelope_bound": A_KA2}
+            "stored_identical": bool(stored_identical),
+            "stored_diverge_day": stored_diverge_day,
+            "max_stored_delta": round(max_stored_delta, 6),
+            "effective_max_err": worst_eff,
+            "expiry_day": expiry_seen}
 
 
 def arm_ka2level():
     r = _ka2_run("level")
-    # hard gates: exact recursion; peak bounded by envelope; reverts
-    ok = (r["recursion_max_err"] < 1e-9
-          and r["peak_delta"] <= A_KA2 + 1e-6
-          and r["final_delta"] < 1e-3)
+    # gates: stored worlds bitwise identical for 230 days; effective
+    # overlay equals the analytic level to 1e-12; expiry occurs
+    ok = (r["stored_identical"]
+          and r["effective_max_err"] < 1e-12
+          and r["expiry_day"] is not None)
     r.update({"arm": "KA2LEVEL", "pass": bool(ok)})
     return r
 
 
 def arm_ka2plant():
     r = _ka2_run("integrator")
-    # the instrument must DETECT the wrong law. Reversion is NOT a
-    # discriminator (relax pulls even an accumulator back once input
-    # stops); the level recursion and the envelope bound are: a true
-    # level satisfies the recursion at ~1e-16 and never exceeds max L.
-    detected = (r["peak_delta"] > A_KA2 * 2.0
-                and r["recursion_max_err"] > 1e-3)
+    # the wrong law writes stored state: detected on day 1
+    detected = (not r["stored_identical"]
+                and r["stored_diverge_day"] == 1
+                and r["max_stored_delta"] > 0.01)
     r.update({"arm": "KA2PLANT", "detected": bool(detected),
               "pass": bool(detected)})
     return r
 
 
 def arm_ka6loop():
+    """h<=0: a PERMANENT overlay level — effective view offset stays
+    exactly A forever; stored state untouched; never expires."""
+    from earth1.alive import effective_forces
     am, w = _stripped(SEED, rules_off=True)
     rng = np.random.default_rng(SEED)
     for _ in range(10):
         am.live_one_day(w, rng, relax=RELAX)
-    wc = copy.deepcopy(w)
-    rngc = np.random.default_rng()
-    rngc.bit_generator.state = rng.bit_generator.state
     loc, big, cohort = _biggest_locality(w)
     ch, clip_frac = _interior_channel(w, cohort, A_KA2)
     eff = np.zeros(8); eff[ch] = A_KA2
     w.chronicle.cascade_residues = [
         {"rule": "ka6", "loc": big, "day": int(w.day), "effects": eff,
          "h": 0.0}]
-    deltas = []
+    worst = 0.0
     for d in range(1, 121):
         am.live_one_day(w, rng, relax=RELAX)
-        am.live_one_day(wc, rngc, relax=RELAX)
-        deltas.append(float(w.civ.forces[cohort, ch].mean()
-                            - wc.civ.forces[cohort, ch].mean()))
-    # permanent level: displacement converges to A and STAYS
-    tail = deltas[-30:]
-    ok = (abs(np.mean(tail) - A_KA2) < 5e-3
-          and np.std(tail) < 1e-3
+        ev = effective_forces(w)
+        base_c = w.civ.forces[cohort, ch]
+        unclipped = base_c + A_KA2 <= 1.0 - 1e-9
+        got = float((ev[cohort, ch][unclipped]
+                     - base_c[unclipped]).mean())
+        worst = max(worst, abs(got - A_KA2))
+    ok = (worst < 1e-12
           and len(w.chronicle.cascade_residues) == 1)  # never expires
-    return {"arm": "KA6LOOP", "tail_mean": round(float(np.mean(tail)), 5),
-            "tail_std": round(float(np.std(tail)), 6),
+    return {"arm": "KA6LOOP", "max_err_vs_A": worst,
             "channel": int(ch), "channel_clip_frac": clip_frac,
             "still_active": len(w.chronicle.cascade_residues),
             "pass": bool(ok)}
@@ -391,9 +398,164 @@ def arm_ka5():
             "pass": bool(same_state and same_traj and same_res)}
 
 
+def _panic_residues(w, big):
+    return [r for r in (getattr(w.chronicle, "cascade_residues", None)
+                        or []) if r["rule"] == "panic_cascade"
+            and r["loc"] == big]
+
+
+def _clamp_below(civ, cohort):
+    """panic's ECON condition true, FEAR condition FALSE on stored
+    substrate (0.45 < 0.5)."""
+    civ.forces[cohort, 2] = 0.20
+    civ.forces[cohort, 0] = 0.45
+
+
+def arm_ka8():
+    """SELF-REARM PROHIBITION (decisive): stored fear below trigger,
+    planted panic residue lifts EFFECTIVE fear above 0.5 — panic must
+    NOT fire: the only crossing came from actuation."""
+    from earth1.alive import effective_forces
+    am, w = _stripped(SEED)                 # rules ON
+    rng = np.random.default_rng(SEED)
+    loc, big, cohort = _biggest_locality(w)
+    eff = np.zeros(8); eff[0] = 0.20        # FEAR +0.20 residue
+    w.chronicle.cascade_residues = [
+        {"rule": "planted", "loc": big, "day": int(w.day),
+         "effects": eff, "h": 45.0}]
+    eff_fear_seen = 0.0
+    for d in range(1, 21):
+        _clamp_below(w.civ, cohort)
+        am.live_one_day(w, rng, relax=RELAX)
+        ev = effective_forces(w)
+        eff_fear_seen = max(eff_fear_seen,
+                            float(ev[cohort, 0].mean()))
+    fired = len(_panic_residues(w, big))
+    lf = {k for k in (w.chronicle.cascade_last_fired or {})
+          if k[0] == "panic_cascade" and k[1] == big}
+    ok = (fired == 0 and not lf and eff_fear_seen > 0.5)
+    return {"arm": "KA8", "panic_fired": fired,
+            "effective_fear_max": round(eff_fear_seen, 4),
+            "premise_effective_above_trigger":
+                bool(eff_fear_seen > 0.5),
+            "pass": bool(ok)}
+
+
+def arm_ka9():
+    """Genuine trigger still works: same residue, but the STORED
+    substrate independently crosses threshold from day 6 — panic
+    fires normally, on the cooldown schedule."""
+    am, w = _stripped(SEED)                 # rules ON
+    rng = np.random.default_rng(SEED)
+    loc, big, cohort = _biggest_locality(w)
+    eff = np.zeros(8); eff[0] = 0.20
+    w.chronicle.cascade_residues = [
+        {"rule": "planted", "loc": big, "day": int(w.day),
+         "effects": eff, "h": 45.0}]
+    for d in range(1, 26):
+        if d < 6:
+            _clamp_below(w.civ, cohort)
+        else:
+            w.civ.forces[cohort, 2] = 0.20
+            w.civ.forces[cohort, 0] = 0.60   # genuine crossing
+        am.live_one_day(w, rng, relax=RELAX)
+    days = sorted({r["day"] for r in _panic_residues(w, big)})
+    # first genuine crossing at tick 6 (w.day 5), refire at +14
+    ok = (len(days) == 2 and days[1] - days[0] == 14)
+    return {"arm": "KA9", "fire_days": days, "pass": bool(ok)}
+
+
+def arm_ka10():
+    """Detector invariance — the permanent semantic test: two worlds
+    identical except one carries active residue: stored trajectories
+    bitwise identical AND identical detection records."""
+    am, w = _stripped(SEED)                 # rules ON
+    rng = np.random.default_rng(SEED)
+    w2 = copy.deepcopy(w)
+    rng2 = np.random.default_rng(SEED)
+    loc, big, cohort = _biggest_locality(w)
+    eff = np.zeros(8); eff[0] = 0.20
+    w.chronicle.cascade_residues = [
+        {"rule": "planted", "loc": big, "day": int(w.day),
+         "effects": eff, "h": 45.0}]
+    same_forces = True
+    for d in range(1, 31):
+        # drive REAL firings in both worlds identically
+        _clamp(w.civ, cohort)
+        _clamp(w2.civ, cohort)
+        am.live_one_day(w, rng, relax=RELAX)
+        am.live_one_day(w2, rng2, relax=RELAX)
+        if not np.array_equal(w.civ.forces, w2.civ.forces):
+            same_forces = False
+            break
+    lf1 = {k: v for k, v in
+           (w.chronicle.cascade_last_fired or {}).items()}
+    lf2 = {k: v for k, v in
+           (w2.chronicle.cascade_last_fired or {}).items()}
+    fires1 = sorted((r["rule"], r["loc"], r["day"]) for r in
+                    (w.chronicle.cascade_residues or [])
+                    if r["rule"] != "planted")
+    fires2 = sorted((r["rule"], r["loc"], r["day"]) for r in
+                    (w2.chronicle.cascade_residues or []))
+    ok = (same_forces and lf1 == lf2 and fires1 == fires2
+          and len(fires1) > 0)
+    return {"arm": "KA10", "stored_identical": bool(same_forces),
+            "same_last_fired": bool(lf1 == lf2),
+            "same_fire_records": bool(fires1 == fires2),
+            "n_real_fires": len(fires1), "pass": bool(ok)}
+
+
+def arm_ka11():
+    """Open-loop is not deletion: after a LEGITIMATE firing the
+    effective view carries the residue at the analytic level, human
+    readouts on the effective view change, and it decays."""
+    from earth1.alive import effective_forces
+    am, w = _stripped(SEED)                 # rules ON
+    rng = np.random.default_rng(SEED)
+    loc, big, cohort = _biggest_locality(w)
+    for d in range(1, 4):                   # genuine panic: 1 firing
+        _clamp(w.civ, cohort)
+        am.live_one_day(w, rng, relax=RELAX)
+    res = _panic_residues(w, big)
+    if len(res) != 1:
+        return {"arm": "KA11", "pass": False,
+                "error": f"expected 1 firing, got {len(res)}"}
+    t_f = res[0]["day"]
+    # isolate the ONE event: no further firings (substrate-caused
+    # refires are legitimate physics — KA9/R3 cover them — but this
+    # KA measures a single event's downstream visibility)
+    import earth1.thresholds as th
+    th.TRANSITION_RULES = []
+    checks = []
+    for probe in range(2):
+        for _ in range(10):
+            am.live_one_day(w, rng, relax=RELAX)
+        ev = effective_forces(w)
+        base_c = w.civ.forces[cohort, 0]
+        m = base_c + 0.10 <= 1.0 - 1e-9
+        got = float((ev[cohort, 0][m] - base_c[m]).mean())
+        dt = w.day - t_f
+        want = 0.10 * 2.0 ** (-dt / 45.0)
+        checks.append({"dt": int(dt), "got": round(got, 6),
+                       "want": round(want, 6),
+                       "err": abs(got - want)})
+    # readout visibility: observer stance on effective vs stored
+    wgt = np.zeros(8); wgt[0] = 1.0
+    ev = effective_forces(w)
+    d_read = float(ev[cohort, 0].mean() - w.civ.forces[cohort, 0]
+                   .mean())
+    ok = (all(c["err"] < 1e-9 for c in checks)
+          and checks[1]["got"] < checks[0]["got"]
+          and d_read > 0)
+    return {"arm": "KA11", "decay_checks": checks,
+            "readout_delta": round(d_read, 5), "pass": bool(ok)}
+
+
 ARMS = {"UNIT": arm_unit, "KA0": arm_ka0, "KA2LEVEL": arm_ka2level,
         "KA2PLANT": arm_ka2plant, "KA6LOOP": arm_ka6loop,
-        "KA3": arm_ka3, "KA4": arm_ka4, "KA5": arm_ka5}
+        "KA3": arm_ka3, "KA4": arm_ka4, "KA5": arm_ka5,
+        "KA8": arm_ka8, "KA9": arm_ka9, "KA10": arm_ka10,
+        "KA11": arm_ka11}
 
 
 def _worker(name):

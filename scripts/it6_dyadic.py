@@ -229,7 +229,7 @@ def run_arm(name):
     rng = np.random.default_rng(seed_arm)
     genesis_sd = w.civ.forces[w.health.alive].std(axis=0)
     baseline_d90 = None
-    panels, alpha_snaps = {}, {}
+    panels, alpha_snaps, eff_panels = {}, {}, {}
     tau = trans = None
     for d in range(1, days_arm + 1):
         flab._DAY[0] = d
@@ -237,6 +237,11 @@ def run_arm(name):
             w.civ.forces[pf_cohort, 2] = 0.20   # ECONOMICS < 0.3
             w.civ.forces[pf_cohort, 0] = 0.60   # FEAR > 0.5
         st_day = live_one_day(w, rng, relax=relax)
+        if cfg.get("wipe_residues"):
+            # PF-DECAY-2 KA10-at-scale control: residues deleted every
+            # day — under the open-loop contract this must change
+            # NOTHING (detection never reads them)
+            w.chronicle.cascade_residues = []
         if casfire:
             nf = int(st_day.get("cascades_fired", 0))
             if nf:
@@ -259,6 +264,15 @@ def run_arm(name):
                 if w.life.force_baseline is not None else None
         if d % 10 == 0:
             panels[str(d)] = panel(w, genesis_sd)
+            if os.environ.get("EARTH1_DECAY_RESIDUE") == "1":
+                # effective-view saturation, reported SEPARATELY from
+                # the stored-force gates (never merged into panels)
+                from earth1.alive import effective_forces
+                fe = effective_forces(w)[w.health.alive]
+                eff_panels[str(d)] = round(float(max(
+                    max((fe[:, c] > 0.95).mean(),
+                        (fe[:, c] < 0.05).mean())
+                    for c in range(8))), 4)
         if d == TAU_AT and not cfg.get("no_fork"):
             rng_state = rng.bit_generator.state
             w2 = copy.deepcopy(w)
@@ -414,6 +428,7 @@ def run_arm(name):
                                     None) or {})}
     return {"arm": name, "cfg": {k: str(v) for k, v in cfg.items()},
             "pf": pf, "cascade_state": cascade_state,
+            "eff_sat": eff_panels or None,
             "panels": panels, "tau": tau, "transmission": trans,
             "capability": soft, "encounters": enc,
             "softening_frac_60_90": softening_frac,

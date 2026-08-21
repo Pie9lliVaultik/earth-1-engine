@@ -117,6 +117,31 @@ def cascade_residue_levels(residues, day):
     return levels, surviving
 
 
+def effective_forces(w):
+    """PF-DECAY-2: the EXPRESSION view — stored forces plus the
+    read-time cascade-residue overlay (legacy f933c59
+    effective_deltas semantics: summed active levels per locality,
+    total clipped to ±0.5, result clipped to [0,1]). Consumed by the
+    readout layer only; the dynamic loop and the transition detector
+    read w.civ.forces (the trigger substrate) directly. Derived, not
+    evolved: calling this never mutates state."""
+    civ = w.civ
+    res = getattr(w.chronicle, "cascade_residues", None)
+    if not res:
+        return civ.forces
+    levels, _ = cascade_residue_levels(res, w.day)
+    if not levels:
+        return civ.forces
+    loc = (civ.country.astype(np.int64) * 1000
+           + civ.region.astype(np.int64) * 2
+           + civ.urban.astype(np.int64))
+    shift = np.zeros_like(civ.forces)
+    for lk, vec in levels:
+        shift[loc == lk] += vec
+    np.clip(shift, -0.5, 0.5, out=shift)
+    return np.clip(civ.forces + shift, 0.0, 1.0)
+
+
 def live_one_day(w: World, rng, *,
                  beta: float = CANONICAL_DAY["beta"],
                  residue: float = CANONICAL_DAY["residue"],
@@ -210,31 +235,16 @@ def live_one_day(w: World, rng, *,
         target[hm, Force.COLLECTIVE] = np.clip(
             target[hm, Force.COLLECTIVE] - 0.20, 0, 1)
 
-    # PF-DECAY-1 (founder-authorized, experimental flag): the restored
-    # decay_half_life contract. A fired cascade owns a bounded residue
-    # state; its contribution is a READ-TIME DECAYING LEVEL in the
-    # target path — event fires once → state exists → state contributes
-    # a decaying level → state disappears (legacy 0.01 expiry). Never
-    # F += L. Legacy total clip ±0.5 per agent/channel preserved.
+    # PF-DECAY-2 (founder-ruled open-loop topology): the recovered
+    # decay_half_life residues NEVER enter the dynamic loop. Stored
+    # forces are the trigger substrate B_t (f933c59 semantics: the
+    # detector and every world operator read raw state); the decaying
+    # level is a READ-TIME OVERLAY served by effective_forces() to
+    # the readout layer only. The PF-DECAY-1 target-path application
+    # was the accidental self-excitation edge and is gone. Residue
+    # expiry is maintained in the cascade step below.
     import os as _os
     _cresidue_on = _os.environ.get("EARTH1_DECAY_RESIDUE") == "1"
-    if _cresidue_on:
-        _cres = getattr(w.chronicle, "cascade_residues", None)
-        if _cres:
-            levels, surviving = cascade_residue_levels(_cres, w.day)
-            w.chronicle.cascade_residues = surviving
-            if levels:
-                loc_r = (civ.country.astype(np.int64) * 1000
-                         + civ.region.astype(np.int64) * 2
-                         + civ.urban.astype(np.int64))
-                shift = np.zeros_like(target)
-                for lk, vec in levels:
-                    shift[loc_r == lk] += vec
-                np.clip(shift, -0.5, 0.5, out=shift)
-                target = np.clip(target + shift, 0.0, 1.0)
-                st["cascade_residue_shift_max"] = round(
-                    float(np.abs(shift).max()), 6)
-            st["cascade_residue_active"] = len(surviving)
 
     # 7 influence, 8 circumstance
     from earth1.susceptibility import compute as susceptibility_of
@@ -315,6 +325,14 @@ def live_one_day(w: World, rng, *,
     if _cooldown_on and getattr(w.chronicle, "cascade_last_fired",
                                 None) is None:
         w.chronicle.cascade_last_fired = {}
+    if _cresidue_on:
+        _cres = getattr(w.chronicle, "cascade_residues", None)
+        if _cres:
+            # expiry maintenance only (legacy 0.01 active-set rule);
+            # the levels themselves are never consumed in-loop
+            _, _surv = cascade_residue_levels(_cres, w.day)
+            w.chronicle.cascade_residues = _surv
+            st["cascade_residue_active"] = len(_surv)
     for rule in TRANSITION_RULES:
         if rule.region_scope != "regional":
             continue
