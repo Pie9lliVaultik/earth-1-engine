@@ -241,10 +241,28 @@ def live_one_day(w: World, rng, *,
     from earth1.thresholds import TRANSITION_RULES
     loc = (civ.country.astype(np.int64) * 1000
            + civ.region.astype(np.int64) * 2 + civ.urban.astype(np.int64))
-    _, li = np.unique(loc, return_inverse=True)
+    uloc, li = np.unique(loc, return_inverse=True)
     nl = int(li.max()) + 1
     pop_l = np.bincount(li, minlength=nl).astype(np.float64)
     fired = 0
+    # 0.8 probe-1 CONTRADICTION repair (founder-authorized,
+    # experimental flag): TransitionRule declares cooldown_days but the
+    # incumbent block never read it, so threshold "events" fired every
+    # day a locality stayed hot — a -0.10 event became a -0.10/day
+    # grinder that railed IDENTITY/TEMPERAMENT. With
+    # EARTH1_CASCADE_COOLDOWN=1 a (rule, locality) pair fires at most
+    # once per its declared cooldown. State lives on the chronicle
+    # (cascades are events; the chronicle is the event memory), created
+    # lazily ONLY under the flag so incumbent hashes are untouched, and
+    # persists through the canonical serializer for exact restart.
+    # decay_half_life remains declared-but-unconsumed: its intended
+    # state semantics are ambiguous — recorded as a second unresolved
+    # contradiction, NOT invented here.
+    import os as _os
+    _cooldown_on = _os.environ.get("EARTH1_CASCADE_COOLDOWN") == "1"
+    if _cooldown_on and getattr(w.chronicle, "cascade_last_fired",
+                                None) is None:
+        w.chronicle.cascade_last_fired = {}
     for rule in TRANSITION_RULES:
         if rule.region_scope != "regional":
             continue
@@ -255,6 +273,16 @@ def live_one_day(w: World, rng, *,
         frac = np.bincount(li, weights=met.astype(np.float64),
                            minlength=nl) / np.maximum(pop_l, 1.0)
         hot = (frac >= critical_fraction) & (pop_l >= 10)
+        if _cooldown_on and hot.any():
+            state = w.chronicle.cascade_last_fired
+            for hidx in np.flatnonzero(hot):
+                key = (rule.name, int(uloc[hidx]))
+                last = state.get(key)
+                if last is not None and \
+                        (w.day - last) < rule.cooldown_days:
+                    hot[hidx] = False
+                else:
+                    state[key] = int(w.day)
         if not hot.any():
             continue
         fired += int(hot.sum())
