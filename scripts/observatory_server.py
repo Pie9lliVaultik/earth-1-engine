@@ -533,6 +533,269 @@ def _estimate(event, result):
                 "reason": f"estimation call failed: {e}"}
 
 
+# ── go-to-market message test: each MESSAGE is its own scenario ─────
+# (a frame presses different forces; which message lands is a
+# COMPUTED multi-arm branch against shared controls, not copywriting)
+MESSAGES = {
+    "product-launch": {
+        "status":     {"label": "STATUS — “for the few who know”",
+                       "forces": {"identity": 0.10, "desire": 0.25,
+                                  "culture": 0.15}},
+        "protection": {"label": "PROTECTION — “never lose what "
+                                "you love”",
+                       "forces": {"fear": 0.10, "desire": 0.20,
+                                  "economics": 0.05}},
+        "value":      {"label": "VALUE — “insured in minutes, "
+                                "priced fairly”",
+                       "forces": {"economics": 0.20, "desire": 0.15}},
+    },
+    "political-campaign": {
+        "unity":     {"label": "UNITY — “what we can do together”",
+                      "forces": {"collective": 0.20, "identity": 0.10}},
+        "security":  {"label": "SECURITY — “keep what we have safe”",
+                      "forces": {"fear": 0.10, "identity": 0.15,
+                                 "economics": 0.05}},
+        "prosperity": {"label": "PROSPERITY — “more in your pocket”",
+                       "forces": {"economics": 0.20,
+                                  "collective": 0.10}},
+    },
+}
+GTM_PAIRS = 2
+DEFAULT_PRICE = 120.0     # annual, ESTIMATED default; composer can set
+
+
+def _run_gtm(event, key):
+    """Multi-arm message test: per seed, ONE control + one world per
+    message frame (common dice). Adoption readout per frame; personas
+    pulled from the winning world with per-person stance
+    decomposition (the readout formula's own receipt); revenue =
+    SIMULATED adoption x real scoped adult population x ESTIMATED
+    price — each factor labeled."""
+    eid = event["event_id"]
+    B = BRANCHES[key]
+    try:
+      with BRANCH_GATE:
+        cat = event["category"]
+        msgs = MESSAGES.get(cat)
+        ro_key = CAT_ADAPTER[cat]["readout"]
+        wgt = np.array(READOUTS[ro_key]["weights"])
+        den = max(np.abs(wgt).sum(), 1e-9)
+        if eid in BASES:
+            base = BASES[eid]
+        else:
+            STATE["paused_for_branch"] = True
+            with LOCK:
+                base = copy.deepcopy(W)
+            STATE["paused_for_branch"] = False
+            BASES[eid] = base
+        iso = {c["iso2"]: i for i, c in enumerate(GENESIS_COUNTRIES)}
+        ccs = [c for c in (event["countries"] or []) if c in iso]
+        if ccs:
+            hit = np.isin(base.civ.country, [iso[c] for c in ccs])
+        else:
+            hit = np.ones(base.civ.n, dtype=bool)
+        yrs = base.civ.age * 100.0
+        cohorts = {
+            "low income": base.civ.income == 0,
+            "middle income": base.civ.income == 1,
+            "high income": base.civ.income == 2,
+            "under 30": yrs < 30, "30 to 55": (yrs >= 30) & (yrs < 55),
+            "over 55": yrs >= 55,
+            "urban": base.civ.urban, "rural": ~base.civ.urban}
+
+        total = GTM_PAIRS * (1 + len(msgs)) * BRANCH_DAYS
+        done_days = 0
+        per_msg = {m: [] for m in msgs}
+        last_worlds = {}
+        for p in range(GTM_PAIRS):
+            seed_p = SEED * 2000 + p
+            wc = copy.deepcopy(base)
+            rc = np.random.default_rng(seed_p)
+            for d in range(BRANCH_DAYS):
+                live_one_day(wc, rc)
+                done_days += 1
+                B["progress"] = done_days / total
+            for m, spec in msgs.items():
+                wsm = copy.deepcopy(base)
+                rs = np.random.default_rng(seed_p)   # common dice
+                sc = Scenario(id=f"{key}:{m}",
+                              label=spec["label"][:70],
+                              forces=spec["forces"],
+                              countries=ccs or None,
+                              firm_damage=0.0, trade_shock=0.0,
+                              persists_days=30.0)
+                apply_scenario(wsm, sc, rs)
+                for d in range(BRANCH_DAYS):
+                    live_one_day(wsm, rs)
+                    done_days += 1
+                    B["progress"] = done_days / total
+                mro = hit & wc.health.alive & wsm.health.alive
+                st_s = np.clip(wsm.civ.forces[mro] @ wgt / den, 0, 1)
+                st_c = np.clip(wc.civ.forces[mro] @ wgt / den, 0, 1)
+                thr = float(np.quantile(st_c, 0.75))
+                by = {}
+                for label, cmask in cohorts.items():
+                    cm = cmask & mro
+                    if cm.sum() >= 10:
+                        s2 = np.clip(wsm.civ.forces[cm] @ wgt / den,
+                                     0, 1)
+                        by[label] = float((s2 > thr).mean())
+                per_msg[m].append({
+                    "rate": float((st_s > thr).mean()),
+                    "anchor_rate": float((st_c > thr).mean()),
+                    "by": by, "n": int(mro.sum())})
+                if p == GTM_PAIRS - 1:
+                    last_worlds[m] = (wsm, mro, st_s, thr)
+        # aggregate
+        ranking = []
+        for m, spec in msgs.items():
+            rs_ = per_msg[m]
+            rate = float(np.mean([r["rate"] for r in rs_]))
+            anchor = float(np.mean([r["anchor_rate"] for r in rs_]))
+            spread = [float(min(r["rate"] for r in rs_)),
+                      float(max(r["rate"] for r in rs_))]
+            byavg = {}
+            for label in rs_[0]["by"]:
+                byavg[label] = float(np.mean(
+                    [r["by"].get(label, np.nan) for r in rs_]))
+            best_seg = max(byavg, key=byavg.get) if byavg else None
+            ranking.append({"message": m, "label": spec["label"],
+                            "forces": spec["forces"],
+                            "rate": rate, "push_pp": (rate - anchor)
+                            * 100, "spread": spread,
+                            "by_segment": byavg,
+                            "best_segment": best_seg})
+        ranking.sort(key=lambda x: -x["rate"])
+        win = ranking[0]["message"]
+
+        # personas from the WINNING message's last world — real
+        # earthlings, with the stance formula's own decomposition
+        wsm, mro, st_s, thr = last_worlds[win]
+        idxs = np.flatnonzero(mro)
+        order = np.argsort(-st_s)
+        personas = []
+        used_cohort = set()
+        adult = yrs >= 18
+
+        def _bio(i, stance, adopter):
+            occ = OCCUPATIONS[int(base.life.occupation[i])]
+            contrib = {Force(k).name: round(float(
+                wsm.civ.forces[i, k] * wgt[k] / den), 3)
+                for k in range(8) if wgt[k]}
+            return {"id": int(i), "age": int(round(yrs[i])),
+                    "country": _CNAME[GENESIS_COUNTRIES[
+                        int(base.civ.country[i])]["iso2"]],
+                    "occupation": (occ[0] if isinstance(occ, tuple)
+                                   else str(occ)).replace("_", " "),
+                    "income": ["low", "middle", "high"][
+                        int(base.civ.income[i])],
+                    "urban": bool(base.civ.urban[i]),
+                    "employed": bool(base.life.employed[i]),
+                    "wealth_days": round(float(base.life.wealth[i]),
+                                         1),
+                    "stance": round(float(stance), 3),
+                    "adopter": bool(adopter),
+                    "stance_drivers": contrib}
+        for oi in order:
+            i = idxs[oi]
+            if not adult[i]:
+                continue
+            ck = ("high" if base.civ.income[i] == 2 else
+                  "urban" if base.civ.urban[i] else "other")
+            if ck in used_cohort:
+                continue
+            used_cohort.add(ck)
+            personas.append(_bio(i, st_s[oi], st_s[oi] > thr))
+            if len(personas) == 3:
+                break
+        for oi in order[::-1]:
+            i = idxs[oi]
+            if adult[i]:
+                personas.append(_bio(i, st_s[oi], st_s[oi] > thr))
+                break
+
+        # revenue scenarios: SIMULATED rate x real adult population
+        # of scope x ESTIMATED price
+        price = float(event.get("price") or DEFAULT_PRICE)
+        world_pop = 8.3e9
+        if ccs:
+            adult_pop = sum(GENESIS_COUNTRIES[iso[c]]["pop"]
+                            * (1 - GENESIS_COUNTRIES[iso[c]]["u18"])
+                            for c in ccs) * world_pop
+        else:
+            adult_pop = world_pop * 0.72
+        revenue = []
+        for r_ in ranking:
+            lo, hi = r_["spread"]
+            revenue.append({
+                "message": r_["message"],
+                "adopters_mid": int(r_["rate"] * adult_pop),
+                "adopters_range": [int(lo * adult_pop),
+                                   int(hi * adult_pop)],
+                "revenue_mid_usd": r_["rate"] * adult_pop * price,
+                "revenue_range_usd": [lo * adult_pop * price,
+                                      hi * adult_pop * price]})
+        result = {
+            "kind": "gtm", "event": event["headline"],
+            "category": cat, "pairs": GTM_PAIRS,
+            "horizon_days": BRANCH_DAYS,
+            "scope": event.get("country_names") or ["global"],
+            "adult_population_scope": int(adult_pop),
+            "price_assumed_usd": price,
+            "ranking": ranking, "winner": win,
+            "personas": personas,
+            "revenue": revenue,
+            "labels": {
+                "adoption": "SIMULATED (top-quartile propensity "
+                            "anchor, disclosed)",
+                "population_scaling": "MECHANICAL (real adult "
+                                      "population of scope)",
+                "price": "ESTIMATED (composer default — set your "
+                         "own)",
+                "personas": "REAL simulated people from the winning "
+                            "message's world; stance_drivers is the "
+                            "readout formula's own decomposition"},
+            "model_commit": MODEL_COMMIT}
+        # analyst GTM plan from computed results only
+        keyk = os.environ.get("ANTHROPIC_API_KEY")
+        if keyk:
+            try:
+                pr = ("You are the analyst layer of Earth-1. Using "
+                      "ONLY these computed message-test results, "
+                      "write a go-to-market recommendation: lead "
+                      "message, target segments in order, channel "
+                      "suggestions, one risk. Do not invent numbers "
+                      "not present. Max 130 words.\n"
+                      + json.dumps({"ranking": ranking,
+                                    "revenue": revenue}, default=str))
+                body = json.dumps({"model": EST_MODEL,
+                                   "max_tokens": 400,
+                                   "messages": [{"role": "user",
+                                                 "content": pr}]}
+                                  ).encode()
+                req = urllib.request.Request(
+                    "https://api.anthropic.com/v1/messages",
+                    data=body,
+                    headers={"x-api-key": keyk,
+                             "anthropic-version": "2023-06-01",
+                             "content-type": "application/json"})
+                resp = json.loads(urllib.request.urlopen(
+                    req, timeout=45).read())
+                result["gtm_plan"] = resp["content"][0]["text"]
+                result["gtm_plan_label"] = ("ANALYST LAYER — written "
+                                            "from the computed "
+                                            "results above")
+            except Exception:
+                pass
+        B.update({"status": "done", "result": result})
+    except Exception as e:
+        import traceback
+        B.update({"status": "error", "error": str(e),
+                  "trace": traceback.format_exc()[-1500:]})
+    finally:
+        STATE["paused_for_branch"] = False
+
+
 # ── branching (the product): paired control/scenario, common dice ───
 def _lens_mask(base, lens):
     """Resolve 'US' or 'US-NE' to a population mask. Only geography
@@ -1005,6 +1268,7 @@ async def custom_event(payload: dict):
                            "NOT observed news)"},
             "status": ad.get("status", "HYBRID BRANCH"),
             "missing": None, "custom": True,
+            "price": payload.get("price"),
             "estimated_channels": ad.get("estimated_channels", []),
             "context": CAT_CONTEXT.get(cat),
             "event_id": f"custom{abs(hash(headline)) % 10**8}"}
@@ -1064,6 +1328,27 @@ def branch_status(event_id: str):
     if b is None:
         return {"status": "not_started"}
     return b
+
+
+@app.post("/api/branch/{event_id}/gtm")
+def start_gtm(event_id: str):
+    """Go-to-market message test: multi-arm computed branch."""
+    items = {i["event_id"]: i for i in _all_events()}
+    ev = items.get(event_id)
+    if ev is None:
+        return JSONResponse({"error": "unknown event"}, status_code=404)
+    if ev["category"] not in MESSAGES:
+        return JSONResponse({"error": "message test available for "
+                             "product-launch and political-campaign"},
+                            status_code=400)
+    key = f"{event_id}:gtm"
+    if key in BRANCHES and BRANCHES[key]["status"] in ("running",
+                                                       "done"):
+        return BRANCHES[key]
+    BRANCHES[key] = {"status": "running", "progress": 0.0}
+    threading.Thread(target=_run_gtm, args=(ev, key),
+                     daemon=True).start()
+    return BRANCHES[key]
 
 
 @app.post("/api/branch/{event_id}/remove/{component}")

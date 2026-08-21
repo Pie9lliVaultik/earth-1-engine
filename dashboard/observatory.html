@@ -110,6 +110,7 @@ canvas{display:block}
         <option value="climate">climate / disaster</option>
       </select>
       <input id="c_countries" placeholder="countries iso2, e.g. US,GB (empty = global)" style="width:100%;background:#0e1117;border:1px solid var(--line);color:var(--tx);font:inherit;font-size:11px;padding:6px;margin-bottom:6px">
+      <input id="c_price" placeholder="price $/yr (product launches; default 120)" style="width:100%;background:#0e1117;border:1px solid var(--line);color:var(--tx);font:inherit;font-size:11px;padding:6px;margin-bottom:6px">
       <button style="width:100%" onclick="composeEvent()">CREATE & OPEN</button>
     </div>
     <div id="news">loading real ingestion…</div>
@@ -198,7 +199,7 @@ function openEvent(id){
 function toggleComposer(){const c=$('#composer');c.style.display=c.style.display==='none'?'block':'none'}
 async function composeEvent(){
   const r=await j('/api/custom',{method:'POST',headers:{'content-type':'application/json'},
-    body:JSON.stringify({headline:$('#c_head').value,category:$('#c_cat').value,countries:$('#c_countries').value})});
+    body:JSON.stringify({headline:$('#c_head').value,category:$('#c_cat').value,countries:$('#c_countries').value,price:parseFloat($('#c_price').value)||null})});
   if(r.error){alert(r.error);return}
   await news();toggleComposer();openEvent(r.event_id);explore(r.event_id);
 }
@@ -285,6 +286,10 @@ function render(){
     <button class="hbtn ghost" title="not run at demo scale">D365</button></div>
   <h2>DAY ${day} — EVENT MINUS CONTROL · ${2*r.pairs} futures · population reached ${r.cohort_n.toLocaleString()}</h2>
   ${readoutLed?readoutBlock(r,P):macroTable(r,o)}
+  ${readoutLed?`<h2>GO TO MARKET — which message lands is a computed experiment</h2>
+   <div style="font-size:11px;color:var(--dim);margin-bottom:6px">Each frame presses different forces; Earth-1 runs one branch per message against shared control worlds, common dice.</div>
+   <button onclick="runGtm('${CURRENT}')">TEST 3 MESSAGE FRAMES</button>
+   <div id="gtmout" style="margin-top:10px"></div>`:''}
   ${readoutLed&&P.macroNote?`<details style="margin:8px 0"><summary class="sub" style="cursor:pointer;color:var(--dim)">${P.macroNote}</summary>${macroTable(r,o)}</details>`:''}
   ${readoutLed?'':(r.readout?readoutBlock(r,PROFILES['politics']):'')}
   ${estRows(r)}
@@ -338,6 +343,32 @@ function drawFan(metric){
       line.forEach((v,d)=>{if(v===null)return;d?x.lineTo(X(d),Y(v)):x.moveTo(X(0),Y(v))});
       x.stroke();}}
   x.globalAlpha=1;
+}
+function money(x){return x>=1e9?'$'+(x/1e9).toFixed(2)+'B':x>=1e6?'$'+(x/1e6).toFixed(1)+'M':'$'+Math.round(x).toLocaleString()}
+async function runGtm(id){
+  const el=$('#gtmout');el.innerHTML='running the message experiment…';
+  await j(`/api/branch/${id}/gtm`,{method:'POST'});
+  const t=setInterval(async()=>{
+    const b=await j(`/api/branch/${id}:gtm`);
+    if(b.status==='running'){el.innerHTML=`living ${2*4} futures across 3 messages… ${(100*(b.progress||0)).toFixed(0)}%`;}
+    else if(b.status==='error'){clearInterval(t);el.innerHTML=`<div class="err">${b.error}</div>`;}
+    else if(b.status==='done'){clearInterval(t);const g=b.result;
+      el.innerHTML=`
+      ${g.ranking.map((m,i)=>`<div class="outcome"><span class="n">${i===0?'🏆 ':''}${m.label} <span class="tag sim">SIMULATED</span><br>
+        <span class="sub">best segment: ${m.best_segment} · presses ${Object.keys(m.forces).join('/')}</span></span>
+        <span style="text-align:right"><span class="v" style="color:var(--acc)">${(100*m.rate).toFixed(1)}%</span> <span class="sub">(${m.push_pp>0?'+':''}${m.push_pp.toFixed(2)} pp push)</span><br>
+        <span class="sub">across futures: ${(100*m.spread[0]).toFixed(1)}% … ${(100*m.spread[1]).toFixed(1)}%</span></span></div>`).join('')}
+      <h2>REVENUE SCENARIOS — scope ${g.scope.join(', ')} · ${(g.adult_population_scope/1e6).toFixed(0)}M adults · price $${g.price_assumed_usd}/yr <span class="tag est">HYBRID</span></h2>
+      ${g.revenue.map(v=>`<div class="outcome"><span class="n">${v.message}</span><span style="text-align:right">
+        <span class="v" style="color:var(--warn)">${money(v.revenue_mid_usd)}/yr</span><br>
+        <span class="sub">${money(v.revenue_range_usd[0])} … ${money(v.revenue_range_usd[1])} · ${(v.adopters_mid/1e6).toFixed(1)}M adopters</span></span></div>`).join('')}
+      <div class="sub" style="color:var(--dim);padding:4px 2px">adoption ${g.labels.adoption} · population ${g.labels.population_scaling} · price ${g.labels.price}</div>
+      <h2>PERSONAS — real people from the winning message's world</h2>
+      ${g.personas.map(p=>`<div class="eline"><b>${p.adopter?'BUYS':'DOES NOT BUY'} — EARTHLING #${p.id}</b> · ${p.age}, ${p.country}, ${p.occupation} (${p.income} income, ${p.urban?'urban':'rural'}${p.employed?', employed':''}, ${p.wealth_days}d reserves)<br>
+        <span class="sub">propensity ${p.stance} — drivers: ${Object.entries(p.stance_drivers).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).map(([k,v])=>k+' '+v).join(' · ')}</span></div>`).join('')}
+      <div class="sub" style="color:var(--dim)">${g.labels.personas}</div>
+      ${g.gtm_plan?`<div class="context"><span class="lbl">${g.gtm_plan_label}</span><br>${g.gtm_plan}</div>`:''}`;
+    }},1200);
 }
 async function removeCause(comp){
   const el=$('#attr');el.innerHTML='re-branching without the '+comp+' channel…';
