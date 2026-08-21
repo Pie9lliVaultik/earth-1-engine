@@ -1,11 +1,16 @@
 # FREEZE — COMPLETE CANDIDATE 0.8 / MECHANISM DISCOVERY CLOSED
 
-Declared per the PF-DECAY-2 ruling's decision tree ("KAs pass + IT12
-isolation survives + natural regression healthy ⇒ PF-DECAY-2 PASS ⇒
-then—and only then—FREEZE COMPLETE CANDIDATE"). All three conditions
-met mechanically; receipts below. Two founder-facing disclosures are
-listed at the end; the founder may void this freeze on review of
-either.
+Declared per the PF-DECAY-2 ruling's decision tree, and CONFIRMED
+after the founder-required effective_forces() consumer audit
+(EFFECTIVE_FORCES_CONSUMER_AUDIT.md): zero engine-physics consumers
+of the overlay; the one alias hazard found was closed (immutable
+view, both branches, KAs re-verified). Canonical ontology per
+ruling: F_stored is the only evolving psychological state;
+F_effective = F_stored + C is derived and immutable; the overlay is
+expression/readout content — no behavioral-consequence claims
+without an explicit consuming mechanism. Two disclosures at the end
+remain standing; the founder may void on review of either, or of
+the instrument repair disclosed in the run report.
 
 ## Source of truth
 

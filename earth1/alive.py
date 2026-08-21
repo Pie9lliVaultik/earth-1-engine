@@ -126,12 +126,22 @@ def effective_forces(w):
     read w.civ.forces (the trigger substrate) directly. Derived, not
     evolved: calling this never mutates state."""
     civ = w.civ
+
+    def _ro(a):
+        # the effective view is IMMUTABLE: a consumer that tried to
+        # write through it would otherwise alias canonical state in
+        # the no-residue branch — the exact hidden-feedback path the
+        # consumer-audit ruling forbids. Mutation raises loudly.
+        v = a.view()
+        v.setflags(write=False)
+        return v
+
     res = getattr(w.chronicle, "cascade_residues", None)
     if not res:
-        return civ.forces
+        return _ro(civ.forces)
     levels, _ = cascade_residue_levels(res, w.day)
     if not levels:
-        return civ.forces
+        return _ro(civ.forces)
     loc = (civ.country.astype(np.int64) * 1000
            + civ.region.astype(np.int64) * 2
            + civ.urban.astype(np.int64))
@@ -139,7 +149,7 @@ def effective_forces(w):
     for lk, vec in levels:
         shift[loc == lk] += vec
     np.clip(shift, -0.5, 0.5, out=shift)
-    return np.clip(civ.forces + shift, 0.0, 1.0)
+    return _ro(np.clip(civ.forces + shift, 0.0, 1.0))
 
 
 def live_one_day(w: World, rng, *,
