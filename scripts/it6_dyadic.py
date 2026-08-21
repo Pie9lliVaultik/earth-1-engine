@@ -155,11 +155,17 @@ def run_arm(name):
 
     cap = []          # (net_drive, dalpha) instrument records
     cnv = cfg["cnv"]
+    forced = cfg.get("forced")        # (drive_value,) KAdis arms
+    forced_cohort = None
+    if forced is not None:
+        forced_cohort = np.arange(min(10_000, N // 4))
     if cnv == "dy":
         def conv(forces, alpha, adj):
             n_enc = np.maximum(flab.ENC_COUNT[0], 1)
             drive = flab.DRIVE_ACC[0] / n_enc
             drive[flab.ENC_COUNT[0] == 0] = 0.0
+            if forced_cohort is not None:
+                drive[forced_cohort] = forced
             a = np.clip(alpha, 0.02, 0.98)
             out = np.clip(1 / (1 + np.exp(-(np.log(a / (1 - a))
                                             + GAIN * drive))), 0.02, 1.0)
@@ -170,8 +176,14 @@ def run_arm(name):
             return out
         am.update_conviction = conv
     elif cnv == "meanfield":
-        am.update_conviction = partial(clab.c3_logodds_symmetric,
-                                      gain=GAIN)
+        if forced_cohort is not None:
+            # KAdis_mf: designed exposure destroyed by the mean-field
+            # construct — the cohort's forced drive is NOT consulted
+            am.update_conviction = partial(clab.c3_logodds_symmetric,
+                                          gain=GAIN)
+        else:
+            am.update_conviction = partial(clab.c3_logodds_symmetric,
+                                          gain=GAIN)
     elif cnv == "c3field":
         am.update_conviction = partial(clab.c3_logodds_symmetric,
                                       gain=GAIN)
@@ -255,6 +267,11 @@ def run_arm(name):
                sum(v["neg"] for v in flab.ENC_STATS.values())
                / max(1, sum(v["n"] for v in flab.ENC_STATS.values())),
                4)}
+    cohort_dalpha = None
+    if forced_cohort is not None and 60 in alpha_snaps:
+        cohort_dalpha = round(float(
+            (w.civ.alpha[forced_cohort]
+             - alpha_snaps[60][forced_cohort]).mean()), 5)
     a60 = alpha_snaps.get(60)
     a90 = alpha_snaps.get(90)
     softening_frac = None
@@ -266,6 +283,7 @@ def run_arm(name):
             "panels": panels, "tau": tau, "transmission": trans,
             "capability": soft, "encounters": enc,
             "softening_frac_60_90": softening_frac,
+            "cohort_dalpha": cohort_dalpha,
             "samples_n": len(flab.SAMPLES),
             "sample_head": flab.SAMPLES[:5]}
 
