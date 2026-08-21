@@ -98,6 +98,20 @@ canvas{display:block}
 <main>
   <section id="left">
     <h2>TODAY — EVENTS SHAPING POSSIBLE FUTURES</h2>
+    <button style="width:100%;margin-bottom:8px" onclick="toggleComposer()">+ COMPOSE A HYPOTHETICAL</button>
+    <div id="composer" style="display:none;border:1px solid var(--line);border-radius:4px;padding:10px;margin-bottom:10px">
+      <input id="c_head" placeholder="headline, e.g. Vaultik launches AI authenticator in the US" style="width:100%;background:#0e1117;border:1px solid var(--line);color:var(--tx);font:inherit;font-size:11px;padding:6px;margin-bottom:6px">
+      <select id="c_cat" style="width:100%;background:#0e1117;border:1px solid var(--line);color:var(--tx);font:inherit;font-size:11px;padding:5px;margin-bottom:6px">
+        <option value="product-launch">product launch → adoption readout</option>
+        <option value="political-campaign">political campaign → approval readout</option>
+        <option value="politics">policy / election</option>
+        <option value="conflict">conflict</option>
+        <option value="economics">economic shock</option>
+        <option value="climate">climate / disaster</option>
+      </select>
+      <input id="c_countries" placeholder="countries iso2, e.g. US,GB (empty = global)" style="width:100%;background:#0e1117;border:1px solid var(--line);color:var(--tx);font:inherit;font-size:11px;padding:6px;margin-bottom:6px">
+      <button style="width:100%" onclick="composeEvent()">CREATE & OPEN</button>
+    </div>
     <div id="news">loading real ingestion…</div>
   </section>
   <section id="center" style="display:flex;flex-direction:column"><div id="stage">
@@ -109,7 +123,10 @@ canvas{display:block}
     <b style="color:var(--tx)">matched futures</b> — several where the event
     happens, several where it never does, same people, same dice — and let
     all of them live forward.</p>
-    <canvas id="globe" width="420" height="420"></canvas>
+    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+      <canvas id="globe" width="360" height="360"></canvas>
+      <div id="evolution" style="flex:1;min-width:340px;margin-top:10px"></div>
+    </div>
   </div></section>
   <section id="right">
     <h2>LIVE CIVILIZATION PULSE</h2>
@@ -150,6 +167,7 @@ async function news(){
   el.innerHTML=n.items.map(i=>{
     const cls=i.status.split(' ')[0];
     let badge='';
+    if(i.custom)badge+=`<span class="chip DONE">COMPOSED</span>`;
     if(i.branch&&i.branch.status==='done')
       badge=`<span class="chip DONE">${i.branch.futures} FUTURES COMPUTED${i.branch.headline_outcome?' · '+i.branch.headline_outcome:''}</span>`;
     else if(i.branch&&i.branch.status==='running')
@@ -172,14 +190,28 @@ function openEvent(id){
      <span class="k">adapter</span><span>${EV.world_event.adapter}</span>
    </div>
    <button onclick="explore('${id}')">EXPLORE FUTURES</button>
+   <span style="margin-left:10px"><input id="lens" placeholder="impact lens: US or US-NE" style="background:#0e1117;border:1px solid var(--line);color:var(--tx);font:inherit;font-size:10px;padding:5px;width:170px">
+   <button class="hbtn" onclick="explore('${id}',document.getElementById('lens').value)">THROUGH LENS</button></span>
    <div id="branchout" style="margin-top:16px"></div>`;
   poll(id);
 }
-async function explore(id){await j('/api/branch/'+id,{method:'POST'});poll(id)}
-function poll(id){
+function toggleComposer(){const c=$('#composer');c.style.display=c.style.display==='none'?'block':'none'}
+async function composeEvent(){
+  const r=await j('/api/custom',{method:'POST',headers:{'content-type':'application/json'},
+    body:JSON.stringify({headline:$('#c_head').value,category:$('#c_cat').value,countries:$('#c_countries').value})});
+  if(r.error){alert(r.error);return}
+  await news();toggleComposer();openEvent(r.event_id);explore(r.event_id);
+}
+async function explore(id,lens){
+  const key=lens?`${id}:lens-${lens.trim().toUpperCase()}`:id;
+  await j('/api/branch/'+id+(lens?`?lens=${encodeURIComponent(lens.trim())}`:''),{method:'POST'});
+  poll(id,key);
+}
+function poll(id,key){
+  key=key||id;
   if(POLL)clearInterval(POLL);
   POLL=setInterval(async()=>{
-    const b=await j('/api/branch/'+id);
+    const b=await j('/api/branch/'+key);
     const out=$('#branchout');if(!out||CURRENT!==id){clearInterval(POLL);return}
     if(b.status==='running'){out.innerHTML=
       `<div style="font-size:11px;color:var(--dim);white-space:pre;line-height:1.8">WORLD NOW (day ${IDENT.world_day})
@@ -229,6 +261,21 @@ function render(){
       <button class="hbtn" onclick="drawFan('fear')">fear</button>
       <button class="hbtn" onclick="drawFan('deprivation')">deprivation</button>
       <i style="background:var(--ctl)"></i>control futures <i style="background:var(--acc)"></i>event futures</div></div>
+  ${r.readout?`<h2>${r.readout.label} — computed opinion readout <span class="tag sim">SIMULATED</span></h2>
+   <div style="display:flex;gap:30px;align-items:baseline;margin:6px 0 10px">
+     <span><span class="v" style="font-size:26px;color:var(--acc)">${(100*r.readout.scenario_rate).toFixed(1)}%</span><br><span class="sub">would say yes — ${r.readout.buyers_in_cohort.toLocaleString()} people of ${r.readout.asked_n.toLocaleString()} asked</span></span>
+     <span><span class="v" style="font-size:18px;color:var(--ctl)">${(100*r.readout.control_rate).toFixed(1)}%</span><br><span class="sub">in the world where it never happened</span></span>
+     <span><span class="v ${r.readout.delta_pp>0?'neg':'pos'}" style="font-size:18px">${r.readout.delta_pp>0?'+':''}${r.readout.delta_pp.toFixed(2)} pp</span><br><span class="sub">the event's own effect</span></span>
+   </div>
+   <div class="who">${Object.entries(r.readout.by_cohort).sort((a,b)=>b[1].scenario-a[1].scenario).map(([k,v])=>{
+     const w=Math.min(v.scenario*140,140);
+     return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:var(--acc)"></div></div><span>${(100*v.scenario).toFixed(1)}% (${v.delta_pp>0?'+':''}${v.delta_pp.toFixed(2)} pp) · n=${v.n}</span>`}).join('')}</div>
+   <div class="sub" style="color:var(--dim);margin:4px 0 8px">${r.readout.method} · weights ${JSON.stringify(r.readout.weights)} · top rows = most likely, bottom = least likely</div>`:''}
+  ${r.lens?`<h2>THROUGH THE LENS — ${r.lens.resolved} · population ${r.lens.cohort_n.toLocaleString()} <span class="tag sim">SIMULATED</span></h2>
+   ${[['employment_pp','Employment',100,' pp',2],['reserves_days','Household reserves',1,' days',2],['deprivation','Deprivation',1,'',4],['fear','FEAR',1,'',4],['mortality','Excess deaths',-1,'',1]].map(([k,name,sc,u,dec])=>{
+     const f=fmtv(r.outcomes_lens[HOR][k],sc,u,dec);
+     return f?`<div class="outcome"><span class="n">${name}</span><span style="text-align:right">${f}</span></div>`:''}).join('')}
+   <div class="sub" style="color:var(--dim);padding:4px 2px">same futures, measured on a different population — whatever transmission the engine's channels carry is what you see; a small number is an honest small number</div>`:''}
   <div class="summary"><span class="lbl">EARTH-1 SUMMARY — COMPUTED</span><br>${r.summary_computed}</div>
   ${r.analyst_context?`<div class="context"><span class="lbl">ANALYST CONTEXT — channels not yet computed (no numbers invented)</span><br>${r.analyst_context}</div>`:''}
   <h2>HUMAN RESPONSE — the 8-force field, event minus control (day ${r.horizon_days}) <span class="tag sim">SIMULATED</span></h2>
@@ -320,6 +367,36 @@ function globe(){const c=$('#globe');if(!c)return;const x=c.getContext('2d');
   for(let i=1;i<5;i++){x.beginPath();x.ellipse(cx,cy,R,R*i/5,0,0,7);x.stroke();}
   x.beginPath();x.arc(cx,cy,R,0,7);x.strokeStyle='rgba(79,209,197,.6)';x.stroke();
  },50);}
-identity();news();globe();pulse();
+function spark(id,vals,color,label,fmt){
+  const w=330,h=44;
+  const v=vals.filter(x=>x!==null);if(v.length<2)return '';
+  const lo=Math.min(...v),hi=Math.max(...v),pad=(hi-lo)*.15||.001;
+  const pts=vals.map((x,i)=>`${(i/(vals.length-1)*w).toFixed(1)},${(h-6-((x-lo+pad)/(hi-lo+2*pad))*(h-12)).toFixed(1)}`).join(' ');
+  const last=v[v.length-1];
+  return `<div style="display:flex;align-items:center;gap:10px;margin:4px 0">
+   <span style="width:118px;font-size:10px;color:var(--dim)">${label}</span>
+   <svg width="${w}" height="${h}" style="flex:none"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.4"/></svg>
+   <span style="font-size:11px">${fmt(last)}</span></div>`;
+}
+async function evolution(){
+  if(CURRENT)return;
+  const el=$('#evolution');if(!el)return;
+  const h=await j('/api/history');const H=h.history;if(!H.length)return;
+  const F=h.force_names;
+  el.innerHTML=`<h2>THE WORLD, EVOLVING — every point one lived day</h2>
+   <div style="font-size:11px;color:var(--dim);margin-bottom:6px">
+   since observation began: <b style="color:var(--tx)">${h.births_total.toLocaleString()}</b> born ·
+   <b style="color:var(--tx)">${h.deaths_total.toLocaleString()}</b> died ·
+   <b style="color:var(--tx)">${h.news_ingested}</b> real headlines entered its memory</div>
+   ${spark('p',H.map(x=>x.alive),'#4fd1c5','population',v=>v.toLocaleString())}
+   ${spark('e',H.map(x=>x.employment),'#7ec97e','employment',v=>(100*v).toFixed(1)+'%')}
+   ${spark('d',H.map(x=>x.deprivation),'#e06c75','deprivation',v=>v.toFixed(3))}
+   ${spark('w',H.map(x=>x.wealth),'#e8b34b','household reserves',v=>v.toFixed(1)+'d')}
+   ${spark('m',H.map(x=>x.memories),'#8892a6','standing memories',v=>v)}
+   ${[0,1,2,4].map(k=>spark('f'+k,H.map(x=>x.forces[k]),'#4fd1c5',F[k],v=>v.toFixed(3))).join('')}
+   <div class="sub" style="color:var(--dim)">social dynamics, physics, births, deaths, news — the same engine that branches into futures is living these days</div>`;
+}
+identity();news();globe();pulse();evolution();
 setInterval(identity,6000);setInterval(pulse,1800);setInterval(news,15000);
+setInterval(evolution,5000);
 </script></body></html>

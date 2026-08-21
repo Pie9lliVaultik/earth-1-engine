@@ -64,7 +64,10 @@ MODEL_COMMIT = subprocess.run(
 LOCK = threading.Lock()
 BRANCH_GATE = threading.Semaphore(1)     # one branch computation at a time
 PULSE: deque = deque(maxlen=400)
-STATE = {"born_at": None, "ticks": 0, "paused_for_branch": False}
+HISTORY: deque = deque(maxlen=5000)      # daily aggregates of the world
+CUSTOM_EVENTS: list = []                 # user-composed hypotheticals
+STATE = {"born_at": None, "ticks": 0, "paused_for_branch": False,
+         "births_total": 0, "deaths_total": 0, "news_ingested": 0}
 BRANCHES: dict = {}          # branch_key -> {"status", "result", ...}
 BASES: dict = {}             # event_id -> frozen base world for
                              # counterfactual component removal
@@ -136,6 +139,24 @@ def _pulse_tick():
         PULSE.append({"t": ts, "day": day, "line": line})
     if not ev:
         PULSE.append({"t": ts, "day": day, "line": "a quiet day"})
+    if _prev:
+        STATE["deaths_total"] += int((_prev["alive"]
+                                      & ~cur["alive"]).sum())
+        STATE["births_total"] += int(st.get("births", 0))
+    with LOCK:
+        a = W.health.alive
+        lf = a & W.life.in_lf
+        HISTORY.append({
+            "day": day,
+            "alive": int(a.sum()),
+            "employment": round(float(W.life.employed[lf].mean()), 4),
+            "deprivation": round(float(
+                W.life.deprivation[a].mean()), 4),
+            "wealth": round(float(W.life.wealth[a].mean()), 2),
+            "memories": len(W.chronicle.events),
+            "forces": [round(float(x), 4) for x in
+                       W.civ.forces[a].mean(axis=0)],
+        })
     _prev = cur
     STATE["ticks"] += 1
 
@@ -232,7 +253,34 @@ CAT_ADAPTER = {
     "politics":   {"forces": {"identity": 0.15, "collective": 0.10},
                    "status": "HYBRID BRANCH",
                    "estimated_channels": ["policy direction"]
-                   + _EST_ECON},
+                   + _EST_ECON,
+                   "readout": "approval"},
+    # custom-event categories (composer): both carry an OPINION
+    # READOUT — the engine's own observer.ask, run identically on
+    # scenario and control cohorts at the end of the branch
+    "product-launch": {"forces": {"desire": 0.25, "culture": 0.10,
+                                  "economics": 0.05},
+                       "status": "FULL BRANCH",
+                       "estimated_channels": [
+                           "unit sales direction", "price positioning",
+                           "competitor response"],
+                       "readout": "adoption"},
+    "political-campaign": {"forces": {"identity": 0.20,
+                                      "collective": 0.10},
+                           "status": "FULL BRANCH",
+                           "estimated_channels": [
+                               "turnout direction", "media reach"],
+                           "readout": "approval"},
+}
+# readout question weight vectors (the instrument, disclosed in the
+# result): stance = forces . w / sum|w|, adopters/supporters = >0.5
+READOUTS = {
+    "adoption": {"label": "WOULD THEY BUY IT?",
+                 "weights": [0.0, 0.45, 0.25, 0.10, 0.0, 0.20,
+                             0.0, 0.0]},
+    "approval": {"label": "DO THEY SUPPORT IT?",
+                 "weights": [-0.15, 0.0, 0.25, 0.35, 0.25, 0.0,
+                             0.0, 0.0]},
 }
 # Qualitative analyst context per category for channels Earth-1 does
 # not compute. NO magnitudes — direction/mechanism language only,
@@ -342,17 +390,58 @@ def _rank_and_structure(raw):
     return top
 
 
+def _ingest_into_world(items):
+    """Top headlines enter the LIVING world's memory through the
+    canonical chronicle path — the same mechanism scenarios use.
+    Small salience: today's news is ambient, not a shock."""
+    from earth1.memory import Memory
+    iso = {c["iso2"]: i for i, c in enumerate(GENESIS_COUNTRIES)}
+    ingested = 0
+    with LOCK:
+        have = {m.id for m in W.chronicle.events}
+        for it in items[:3]:
+            mid = f"news:{it['event_id']}"
+            if mid in have or not it["world_event"].get("forces"):
+                continue
+            sig = np.zeros(8)
+            for k, v in it["world_event"]["forces"].items():
+                f = getattr(Force, k.upper(), None)
+                if f is not None:
+                    sig[f] = v * 0.15          # ambient, not a shock
+            if it["countries"]:
+                scope = np.isin(W.civ.country,
+                                [iso[c] for c in it["countries"]])
+            else:
+                scope = np.ones(W.civ.n, dtype=bool)
+            W.chronicle.remember(Memory(
+                id=mid, label=it["headline"][:70], day=float(W.day),
+                force_signature=sig, scope=scope, salience=0.4,
+                half_life=10.0, origin="news"))
+            ingested += 1
+    if ingested:
+        STATE["news_ingested"] += ingested
+        PULSE.append({"t": time.strftime("%H:%M:%S"),
+                      "day": int(W.day),
+                      "line": f"{ingested} real-world headlines "
+                              f"entered the world's memory"})
+
+
 def _news():
     now = time.time()
     if now - NEWS_CACHE["at"] > 600:
         try:
             NEWS_CACHE["items"] = _rank_and_structure(_fetch_news())
             NEWS_CACHE["error"] = None
+            _ingest_into_world(NEWS_CACHE["items"])
         except Exception as e:
             NEWS_CACHE["error"] = (f"news ingestion unavailable: {e} "
                                    "(no canned headlines are shown)")
         NEWS_CACHE["at"] = now
     return NEWS_CACHE
+
+
+def _all_events():
+    return CUSTOM_EVENTS + NEWS_CACHE["items"]
 
 
 # ── narration (explains computed output; adds no numbers) ───────────
@@ -445,7 +534,30 @@ def _estimate(event, result):
 
 
 # ── branching (the product): paired control/scenario, common dice ───
-def _run_branch(event, branch_key=None, remove=None):
+def _lens_mask(base, lens):
+    """Resolve 'US' or 'US-NE' to a population mask. Only geography
+    Earth-1 actually represents; returns (mask, description)."""
+    from earth1.regions import get_regions
+    iso = {c["iso2"]: i for i, c in enumerate(GENESIS_COUNTRIES)}
+    part = lens.strip().upper()
+    cc = part.split("-")[0]
+    if cc not in iso:
+        return None, f"unknown country {cc}"
+    m = base.civ.country == iso[cc]
+    desc = _CNAME[cc]
+    if "-" in part:
+        codes = [r.code for r in get_regions(cc)]
+        if part in codes:
+            m = m & (base.civ.region == codes.index(part))
+            desc = f"{part} ({_CNAME[cc]})"
+        else:
+            desc = (f"{_CNAME[cc]} — region {part} not modeled; "
+                    f"nearest modeled geography is country level "
+                    f"(regions: {', '.join(codes)})")
+    return m, desc
+
+
+def _run_branch(event, branch_key=None, remove=None, lens=None):
     """remove='material' zeroes firm_damage/trade_shock (memory-only
     scenario); remove='informational' zeroes the force signature
     (material-only). A removal reuses the SAME frozen base world and
@@ -487,6 +599,9 @@ def _run_branch(event, branch_key=None, remove=None):
         else:
             hit = np.ones(base.civ.n, dtype=bool)
         scope0 = hit & base.health.alive
+        lmask, ldesc = (None, None)
+        if lens:
+            lmask, ldesc = _lens_mask(base, lens)
 
         # WHO cohorts, defined on the BASE world (pre-outcome)
         yrs = base.civ.age * 100.0
@@ -558,6 +673,19 @@ def _run_branch(event, branch_key=None, remove=None):
                                     np.unique(base.civ.country[hit]))
                         ].mean()),
                         "alive": int(a.sum()),
+                        **({} if lmask is None else (lambda la, llf: {
+                            "l_employment": float(
+                                w_.life.employed[llf].mean())
+                            if llf.any() else None,
+                            "l_deprivation": float(
+                                w_.life.deprivation[la].mean()),
+                            "l_wealth": float(
+                                w_.life.wealth[la].mean()),
+                            "l_fear": float(
+                                w_.civ.forces[la, Force.FEAR].mean()),
+                            "l_alive": int(la.sum()),
+                        })(w_.health.alive & lmask,
+                           w_.health.alive & lmask & w_.life.in_lf)),
                         "earthlings": [{
                             "id": i,
                             "employed": bool(w_.life.employed[i]),
@@ -571,6 +699,35 @@ def _run_branch(event, branch_key=None, remove=None):
                     })
                 B["progress"] = (p * BRANCH_DAYS + d) / (
                     BRANCH_PAIRS * BRANCH_DAYS)
+            # opinion readout (product adoption / approval): the
+            # observer's stance construction (observer.py) with the
+            # disclosed question weights, run IDENTICALLY on both
+            # worlds' cohorts at the end of the pair
+            ro_key = CAT_ADAPTER.get(event["category"], {}).get(
+                "readout")
+            ro_p = None
+            if ro_key:
+                wgt = np.array(READOUTS[ro_key]["weights"])
+                den = max(np.abs(wgt).sum(), 1e-9)
+                mro = hit & wc.health.alive & ws.health.alive
+                st_s = np.clip(ws.civ.forces[mro] @ wgt / den, 0, 1)
+                st_c = np.clip(wc.civ.forces[mro] @ wgt / den, 0, 1)
+                ro_p = {"scenario_rate": float((st_s > 0.5).mean()),
+                        "control_rate": float((st_c > 0.5).mean()),
+                        "n": int(mro.sum()), "by": {}}
+                for label, cmask in cohorts.items():
+                    cm = (cmask & hit & wc.health.alive
+                          & ws.health.alive)
+                    if cm.sum() >= 10:
+                        s2 = np.clip(ws.civ.forces[cm] @ wgt / den,
+                                     0, 1)
+                        c2 = np.clip(wc.civ.forces[cm] @ wgt / den,
+                                     0, 1)
+                        ro_p["by"][label] = {
+                            "scenario": float((s2 > 0.5).mean()),
+                            "delta": float((s2 > 0.5).mean()
+                                           - (c2 > 0.5).mean()),
+                            "n": int(cm.sum())}
             # full 8-force human response at final day, this pair
             mboth = hit & wc.health.alive & ws.health.alive
             fdiff = (ws.civ.forces[mboth].mean(axis=0)
@@ -589,7 +746,7 @@ def _run_branch(event, branch_key=None, remove=None):
                             ws.civ.forces[m, Force.FEAR].mean()
                             - wc.civ.forces[m, Force.FEAR].mean()),
                         "n": int(lfm.sum())}
-            pairs.append({"days": days, "who": who_p,
+            pairs.append({"days": days, "who": who_p, "readout": ro_p,
                           "forces_final": [float(x) for x in fdiff]})
 
         def diff(metric, day_idx):
@@ -668,6 +825,58 @@ def _run_branch(event, branch_key=None, remove=None):
                             "deprivation", "force state",
                             "conviction / opinion"],
         }
+        # lens outcomes
+        if lmask is not None:
+            result["lens"] = {"query": lens, "resolved": ldesc,
+                              "cohort_n": int((lmask
+                                               & base.health.alive
+                                               ).sum())}
+            result["outcomes_lens"] = {
+                "d7": {"employment_pp": diff("l_employment", 6),
+                       "reserves_days": diff("l_wealth", 6),
+                       "deprivation": diff("l_deprivation", 6),
+                       "fear": diff("l_fear", 6),
+                       "mortality": diff("l_alive", 6)},
+                "d30": {"employment_pp": diff("l_employment",
+                                              BRANCH_DAYS - 1),
+                        "reserves_days": diff("l_wealth",
+                                              BRANCH_DAYS - 1),
+                        "deprivation": diff("l_deprivation",
+                                            BRANCH_DAYS - 1),
+                        "fear": diff("l_fear", BRANCH_DAYS - 1),
+                        "mortality": diff("l_alive",
+                                          BRANCH_DAYS - 1)}}
+        # opinion readout aggregated over pairs
+        ros = [p_["readout"] for p_ in pairs if p_.get("readout")]
+        if ros:
+            ro_key = CAT_ADAPTER[event["category"]]["readout"]
+            by = {}
+            for label in ros[0]["by"]:
+                vals = [r_["by"][label] for r_ in ros
+                        if label in r_["by"]]
+                by[label] = {
+                    "scenario": float(np.mean(
+                        [v["scenario"] for v in vals])),
+                    "delta_pp": float(np.mean(
+                        [v["delta"] for v in vals])) * 100,
+                    "n": vals[0]["n"]}
+            sr = float(np.mean([r_["scenario_rate"] for r_ in ros]))
+            cr = float(np.mean([r_["control_rate"] for r_ in ros]))
+            result["readout"] = {
+                "type": ro_key,
+                "label": READOUTS[ro_key]["label"],
+                "weights": {Force(k).name: w for k, w in
+                            enumerate(READOUTS[ro_key]["weights"])
+                            if w},
+                "scenario_rate": sr, "control_rate": cr,
+                "delta_pp": (sr - cr) * 100,
+                "asked_n": ros[0]["n"],
+                "buyers_in_cohort": int(round(sr * ros[0]["n"])),
+                "by_cohort": by,
+                "method": "observer stance construction "
+                          "(observer.py) with the disclosed question "
+                          "weights, computed identically on scenario "
+                          "and control worlds"}
         result["human_response"] = {
             Force(k).name: float(np.mean(
                 [p_["forces_final"][k] for p_ in pairs]))
@@ -744,11 +953,60 @@ def pulse():
             "paused_for_branch": STATE["paused_for_branch"]}
 
 
+@app.get("/api/history")
+def history():
+    return {"history": list(HISTORY),
+            "births_total": STATE["births_total"],
+            "deaths_total": STATE["deaths_total"],
+            "news_ingested": STATE["news_ingested"],
+            "force_names": [Force(k).name for k in range(8)]}
+
+
+@app.post("/api/custom")
+async def custom_event(payload: dict):
+    """Compose a hypothetical event: product launch, campaign, or any
+    adapter category. Branches through the identical machinery."""
+    cat = payload.get("category", "product-launch")
+    if cat not in CAT_ADAPTER:
+        return JSONResponse({"error": f"unknown category {cat}",
+                             "known": list(CAT_ADAPTER)},
+                            status_code=400)
+    headline = (payload.get("headline") or "").strip()
+    if not headline:
+        return JSONResponse({"error": "headline required"},
+                            status_code=400)
+    raw = payload.get("countries") or []
+    if isinstance(raw, str):
+        raw = [x.strip().upper() for x in raw.split(",") if x.strip()]
+    countries = [c for c in raw if c in _CNAME]
+    ad = CAT_ADAPTER[cat]
+    item = {"headline": headline, "source": "COMPOSED HYPOTHETICAL",
+            "published": time.strftime("%Y-%m-%dT%H:%M:%SZ",
+                                       time.gmtime()),
+            "link": "", "category": cat, "relevance": 99,
+            "countries": countries,
+            "country_names": [_CNAME[c] for c in countries],
+            "world_event": {
+                "forces": ad.get("forces"),
+                "firm_damage": ad.get("firm_damage", 0.0),
+                "trade_shock": ad.get("trade_shock", 0.0),
+                "persists_days": 30.0,
+                "adapter": f"{cat} adapter (composed hypothetical — "
+                           "NOT observed news)"},
+            "status": ad.get("status", "HYBRID BRANCH"),
+            "missing": None, "custom": True,
+            "estimated_channels": ad.get("estimated_channels", []),
+            "context": CAT_CONTEXT.get(cat),
+            "event_id": f"custom{abs(hash(headline)) % 10**8}"}
+    CUSTOM_EVENTS.insert(0, item)
+    return item
+
+
 @app.get("/api/news")
 def news():
     n = _news()
     items = []
-    for i in n["items"]:
+    for i in _all_events():
         b = BRANCHES.get(i["event_id"])
         badge = None
         if b and b.get("status") == "done":
@@ -774,17 +1032,20 @@ def news():
 
 
 @app.post("/api/branch/{event_id}")
-def start_branch(event_id: str):
-    items = {i["event_id"]: i for i in NEWS_CACHE["items"]}
+def start_branch(event_id: str, lens: str = None):
+    items = {i["event_id"]: i for i in _all_events()}
     ev = items.get(event_id)
     if ev is None:
         return JSONResponse({"error": "unknown event"}, status_code=404)
-    if event_id in BRANCHES and BRANCHES[event_id]["status"] in (
+    key = event_id + (f":lens-{lens.strip().upper()}" if lens else "")
+    if key in BRANCHES and BRANCHES[key]["status"] in (
             "running", "done"):
-        return BRANCHES[event_id]
-    BRANCHES[event_id] = {"status": "running", "progress": 0.0}
-    threading.Thread(target=_run_branch, args=(ev,), daemon=True).start()
-    return BRANCHES[event_id]
+        return BRANCHES[key]
+    BRANCHES[key] = {"status": "running", "progress": 0.0}
+    threading.Thread(target=_run_branch,
+                     args=(ev, key, None, lens),
+                     daemon=True).start()
+    return BRANCHES[key]
 
 
 @app.get("/api/branch/{event_id}")
@@ -805,7 +1066,7 @@ def remove_component(event_id: str, component: str):
     if BRANCHES.get(event_id, {}).get("status") != "done":
         return JSONResponse({"error": "run the full branch first"},
                             status_code=409)
-    items = {i["event_id"]: i for i in NEWS_CACHE["items"]}
+    items = {i["event_id"]: i for i in _all_events()}
     ev = items.get(event_id)
     if ev is None:
         return JSONResponse({"error": "unknown event"}, status_code=404)
