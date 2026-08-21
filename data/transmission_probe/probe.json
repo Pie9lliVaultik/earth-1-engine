@@ -1,0 +1,1127 @@
+[
+ {
+  "arm": "cluster_sl",
+  "cfg": {
+   "relax": 0.02,
+   "cluster": true,
+   "fork_relax": null
+  },
+  "series": [
+   {
+    "day": 1,
+    "seed_delta": 0.26475,
+    "ring1": 0.00533,
+    "ring2": 8e-05,
+    "ring3": 7e-05
+   },
+   {
+    "day": 2,
+    "seed_delta": 0.23479,
+    "ring1": 0.0096,
+    "ring2": 0.00018,
+    "ring3": 0.00015
+   },
+   {
+    "day": 3,
+    "seed_delta": 0.20945,
+    "ring1": 0.01308,
+    "ring2": 0.00028,
+    "ring3": 0.00021
+   },
+   {
+    "day": 4,
+    "seed_delta": 0.18759,
+    "ring1": 0.01585,
+    "ring2": 0.00039,
+    "ring3": 0.00028
+   },
+   {
+    "day": 5,
+    "seed_delta": 0.16887,
+    "ring1": 0.018,
+    "ring2": 0.00049,
+    "ring3": 0.00034
+   },
+   {
+    "day": 6,
+    "seed_delta": 0.15257,
+    "ring1": 0.01974,
+    "ring2": 0.00059,
+    "ring3": 0.0004
+   },
+   {
+    "day": 7,
+    "seed_delta": 0.1385,
+    "ring1": 0.0211,
+    "ring2": 0.00069,
+    "ring3": 0.00046
+   },
+   {
+    "day": 8,
+    "seed_delta": 0.12631,
+    "ring1": 0.02214,
+    "ring2": 0.00078,
+    "ring3": 0.00051
+   },
+   {
+    "day": 9,
+    "seed_delta": 0.11565,
+    "ring1": 0.02292,
+    "ring2": 0.00087,
+    "ring3": 0.00056
+   },
+   {
+    "day": 10,
+    "seed_delta": 0.10638,
+    "ring1": 0.02344,
+    "ring2": 0.00095,
+    "ring3": 0.00062
+   },
+   {
+    "day": 11,
+    "seed_delta": 0.09808,
+    "ring1": 0.02381,
+    "ring2": 0.00103,
+    "ring3": 0.00067
+   },
+   {
+    "day": 12,
+    "seed_delta": 0.0908,
+    "ring1": 0.024,
+    "ring2": 0.0011,
+    "ring3": 0.00071
+   },
+   {
+    "day": 13,
+    "seed_delta": 0.08436,
+    "ring1": 0.0241,
+    "ring2": 0.00117,
+    "ring3": 0.00076
+   },
+   {
+    "day": 14,
+    "seed_delta": 0.07864,
+    "ring1": 0.02408,
+    "ring2": 0.00123,
+    "ring3": 0.0008
+   },
+   {
+    "day": 15,
+    "seed_delta": 0.0735,
+    "ring1": 0.02397,
+    "ring2": 0.00129,
+    "ring3": 0.00084
+   },
+   {
+    "day": 16,
+    "seed_delta": 0.06891,
+    "ring1": 0.02378,
+    "ring2": 0.00134,
+    "ring3": 0.00088
+   },
+   {
+    "day": 17,
+    "seed_delta": 0.06474,
+    "ring1": 0.02356,
+    "ring2": 0.00138,
+    "ring3": 0.00092
+   },
+   {
+    "day": 18,
+    "seed_delta": 0.06108,
+    "ring1": 0.02328,
+    "ring2": 0.00142,
+    "ring3": 0.00095
+   },
+   {
+    "day": 19,
+    "seed_delta": 0.05775,
+    "ring1": 0.02295,
+    "ring2": 0.00146,
+    "ring3": 0.00098
+   },
+   {
+    "day": 20,
+    "seed_delta": 0.05471,
+    "ring1": 0.0226,
+    "ring2": 0.0015,
+    "ring3": 0.00101
+   },
+   {
+    "day": 21,
+    "seed_delta": 0.05195,
+    "ring1": 0.02222,
+    "ring2": 0.00153,
+    "ring3": 0.00104
+   },
+   {
+    "day": 22,
+    "seed_delta": 0.04947,
+    "ring1": 0.02183,
+    "ring2": 0.00155,
+    "ring3": 0.00107
+   },
+   {
+    "day": 23,
+    "seed_delta": 0.04717,
+    "ring1": 0.02141,
+    "ring2": 0.00158,
+    "ring3": 0.00109
+   },
+   {
+    "day": 24,
+    "seed_delta": 0.04509,
+    "ring1": 0.02099,
+    "ring2": 0.0016,
+    "ring3": 0.00112
+   },
+   {
+    "day": 25,
+    "seed_delta": 0.04318,
+    "ring1": 0.02056,
+    "ring2": 0.00162,
+    "ring3": 0.00114
+   },
+   {
+    "day": 26,
+    "seed_delta": 0.04141,
+    "ring1": 0.02013,
+    "ring2": 0.00163,
+    "ring3": 0.00116
+   },
+   {
+    "day": 27,
+    "seed_delta": 0.03978,
+    "ring1": 0.01968,
+    "ring2": 0.00164,
+    "ring3": 0.00118
+   },
+   {
+    "day": 28,
+    "seed_delta": 0.03825,
+    "ring1": 0.01924,
+    "ring2": 0.00165,
+    "ring3": 0.00119
+   },
+   {
+    "day": 29,
+    "seed_delta": 0.03682,
+    "ring1": 0.0188,
+    "ring2": 0.00166,
+    "ring3": 0.00121
+   },
+   {
+    "day": 30,
+    "seed_delta": 0.03554,
+    "ring1": 0.01836,
+    "ring2": 0.00167,
+    "ring3": 0.00122
+   }
+  ],
+  "n_ring1": 25949,
+  "mean_seeded_neighbors_ring1": 3.6,
+  "encounters_with_seed_total": 904251,
+  "dose_from_seed_total": 9575.68,
+  "p_encounter_seed_per_day": 1.1616
+ },
+ {
+  "arm": "cluster",
+  "cfg": {
+   "relax": 0.045,
+   "cluster": true,
+   "fork_relax": null
+  },
+  "series": [
+   {
+    "day": 1,
+    "seed_delta": 0.25798,
+    "ring1": 0.00516,
+    "ring2": 8e-05,
+    "ring3": 8e-05
+   },
+   {
+    "day": 2,
+    "seed_delta": 0.22302,
+    "ring1": 0.00903,
+    "ring2": 0.00017,
+    "ring3": 0.00014
+   },
+   {
+    "day": 3,
+    "seed_delta": 0.19406,
+    "ring1": 0.01198,
+    "ring2": 0.00025,
+    "ring3": 0.0002
+   },
+   {
+    "day": 4,
+    "seed_delta": 0.16962,
+    "ring1": 0.01408,
+    "ring2": 0.00034,
+    "ring3": 0.00026
+   },
+   {
+    "day": 5,
+    "seed_delta": 0.14907,
+    "ring1": 0.01556,
+    "ring2": 0.00042,
+    "ring3": 0.00031
+   },
+   {
+    "day": 6,
+    "seed_delta": 0.13157,
+    "ring1": 0.01659,
+    "ring2": 0.0005,
+    "ring3": 0.00035
+   },
+   {
+    "day": 7,
+    "seed_delta": 0.11673,
+    "ring1": 0.01722,
+    "ring2": 0.00056,
+    "ring3": 0.00039
+   },
+   {
+    "day": 8,
+    "seed_delta": 0.10414,
+    "ring1": 0.01755,
+    "ring2": 0.00062,
+    "ring3": 0.00043
+   },
+   {
+    "day": 9,
+    "seed_delta": 0.09335,
+    "ring1": 0.01765,
+    "ring2": 0.00067,
+    "ring3": 0.00046
+   },
+   {
+    "day": 10,
+    "seed_delta": 0.08406,
+    "ring1": 0.01755,
+    "ring2": 0.00072,
+    "ring3": 0.00049
+   },
+   {
+    "day": 11,
+    "seed_delta": 0.07602,
+    "ring1": 0.01731,
+    "ring2": 0.00076,
+    "ring3": 0.00052
+   },
+   {
+    "day": 12,
+    "seed_delta": 0.06907,
+    "ring1": 0.01695,
+    "ring2": 0.00079,
+    "ring3": 0.00054
+   },
+   {
+    "day": 13,
+    "seed_delta": 0.06302,
+    "ring1": 0.01653,
+    "ring2": 0.00081,
+    "ring3": 0.00056
+   },
+   {
+    "day": 14,
+    "seed_delta": 0.05773,
+    "ring1": 0.01604,
+    "ring2": 0.00083,
+    "ring3": 0.00058
+   },
+   {
+    "day": 15,
+    "seed_delta": 0.05308,
+    "ring1": 0.0155,
+    "ring2": 0.00085,
+    "ring3": 0.00059
+   },
+   {
+    "day": 16,
+    "seed_delta": 0.04898,
+    "ring1": 0.01493,
+    "ring2": 0.00086,
+    "ring3": 0.0006
+   },
+   {
+    "day": 17,
+    "seed_delta": 0.04536,
+    "ring1": 0.01435,
+    "ring2": 0.00086,
+    "ring3": 0.00061
+   },
+   {
+    "day": 18,
+    "seed_delta": 0.04222,
+    "ring1": 0.01376,
+    "ring2": 0.00086,
+    "ring3": 0.00062
+   },
+   {
+    "day": 19,
+    "seed_delta": 0.03942,
+    "ring1": 0.01317,
+    "ring2": 0.00086,
+    "ring3": 0.00062
+   },
+   {
+    "day": 20,
+    "seed_delta": 0.03693,
+    "ring1": 0.01258,
+    "ring2": 0.00086,
+    "ring3": 0.00062
+   },
+   {
+    "day": 21,
+    "seed_delta": 0.03471,
+    "ring1": 0.012,
+    "ring2": 0.00085,
+    "ring3": 0.00062
+   },
+   {
+    "day": 22,
+    "seed_delta": 0.03271,
+    "ring1": 0.01143,
+    "ring2": 0.00084,
+    "ring3": 0.00062
+   },
+   {
+    "day": 23,
+    "seed_delta": 0.03091,
+    "ring1": 0.01086,
+    "ring2": 0.00083,
+    "ring3": 0.00061
+   },
+   {
+    "day": 24,
+    "seed_delta": 0.02931,
+    "ring1": 0.01031,
+    "ring2": 0.00081,
+    "ring3": 0.00061
+   },
+   {
+    "day": 25,
+    "seed_delta": 0.02789,
+    "ring1": 0.00977,
+    "ring2": 0.0008,
+    "ring3": 0.00061
+   },
+   {
+    "day": 26,
+    "seed_delta": 0.02656,
+    "ring1": 0.00927,
+    "ring2": 0.00078,
+    "ring3": 0.00061
+   },
+   {
+    "day": 27,
+    "seed_delta": 0.02537,
+    "ring1": 0.00877,
+    "ring2": 0.00078,
+    "ring3": 0.00061
+   },
+   {
+    "day": 28,
+    "seed_delta": 0.02428,
+    "ring1": 0.0083,
+    "ring2": 0.00075,
+    "ring3": 0.0006
+   },
+   {
+    "day": 29,
+    "seed_delta": 0.02329,
+    "ring1": 0.00786,
+    "ring2": 0.00074,
+    "ring3": 0.00059
+   },
+   {
+    "day": 30,
+    "seed_delta": 0.02241,
+    "ring1": 0.0074,
+    "ring2": 0.00072,
+    "ring3": 0.00058
+   }
+  ],
+  "n_ring1": 26186,
+  "mean_seeded_neighbors_ring1": 3.566,
+  "encounters_with_seed_total": 903719,
+  "dose_from_seed_total": 17165.97,
+  "p_encounter_seed_per_day": 1.1504
+ },
+ {
+  "arm": "ref",
+  "cfg": {
+   "relax": 0.045,
+   "cluster": false,
+   "fork_relax": null
+  },
+  "series": [
+   {
+    "day": 1,
+    "seed_delta": 0.23815,
+    "ring1": 0.00184,
+    "ring2": 0.00011,
+    "ring3": 0.0
+   },
+   {
+    "day": 2,
+    "seed_delta": 0.19672,
+    "ring1": 0.00312,
+    "ring2": 0.0003,
+    "ring3": 3e-05
+   },
+   {
+    "day": 3,
+    "seed_delta": 0.16337,
+    "ring1": 0.00399,
+    "ring2": 0.00052,
+    "ring3": 0.00026
+   },
+   {
+    "day": 4,
+    "seed_delta": 0.13639,
+    "ring1": 0.00456,
+    "ring2": 0.00076,
+    "ring3": 0.00027
+   },
+   {
+    "day": 5,
+    "seed_delta": 0.11454,
+    "ring1": 0.00491,
+    "ring2": 0.001,
+    "ring3": 0.0003
+   },
+   {
+    "day": 6,
+    "seed_delta": 0.09676,
+    "ring1": 0.00507,
+    "ring2": 0.00121,
+    "ring3": 0.00037
+   },
+   {
+    "day": 7,
+    "seed_delta": 0.08223,
+    "ring1": 0.00513,
+    "ring2": 0.0014,
+    "ring3": 0.00046
+   },
+   {
+    "day": 8,
+    "seed_delta": 0.07033,
+    "ring1": 0.00509,
+    "ring2": 0.00157,
+    "ring3": 0.00055
+   },
+   {
+    "day": 9,
+    "seed_delta": 0.06052,
+    "ring1": 0.005,
+    "ring2": 0.0017,
+    "ring3": 0.00062
+   },
+   {
+    "day": 10,
+    "seed_delta": 0.05242,
+    "ring1": 0.00487,
+    "ring2": 0.00181,
+    "ring3": 0.00073
+   },
+   {
+    "day": 11,
+    "seed_delta": 0.04574,
+    "ring1": 0.00471,
+    "ring2": 0.0019,
+    "ring3": 0.0008
+   },
+   {
+    "day": 12,
+    "seed_delta": 0.0402,
+    "ring1": 0.00453,
+    "ring2": 0.00196,
+    "ring3": 0.00091
+   },
+   {
+    "day": 13,
+    "seed_delta": 0.03556,
+    "ring1": 0.00434,
+    "ring2": 0.002,
+    "ring3": 0.00098
+   },
+   {
+    "day": 14,
+    "seed_delta": 0.03168,
+    "ring1": 0.00415,
+    "ring2": 0.00202,
+    "ring3": 0.00105
+   },
+   {
+    "day": 15,
+    "seed_delta": 0.02844,
+    "ring1": 0.00396,
+    "ring2": 0.00203,
+    "ring3": 0.00111
+   },
+   {
+    "day": 16,
+    "seed_delta": 0.02571,
+    "ring1": 0.00377,
+    "ring2": 0.00202,
+    "ring3": 0.00113
+   },
+   {
+    "day": 17,
+    "seed_delta": 0.02341,
+    "ring1": 0.00359,
+    "ring2": 0.00201,
+    "ring3": 0.00115
+   },
+   {
+    "day": 18,
+    "seed_delta": 0.02146,
+    "ring1": 0.00341,
+    "ring2": 0.00198,
+    "ring3": 0.00116
+   },
+   {
+    "day": 19,
+    "seed_delta": 0.01981,
+    "ring1": 0.00324,
+    "ring2": 0.00195,
+    "ring3": 0.00118
+   },
+   {
+    "day": 20,
+    "seed_delta": 0.01842,
+    "ring1": 0.00308,
+    "ring2": 0.0019,
+    "ring3": 0.00118
+   },
+   {
+    "day": 21,
+    "seed_delta": 0.01723,
+    "ring1": 0.00292,
+    "ring2": 0.00186,
+    "ring3": 0.00118
+   },
+   {
+    "day": 22,
+    "seed_delta": 0.01622,
+    "ring1": 0.00277,
+    "ring2": 0.00181,
+    "ring3": 0.00118
+   },
+   {
+    "day": 23,
+    "seed_delta": 0.01535,
+    "ring1": 0.00263,
+    "ring2": 0.00175,
+    "ring3": 0.00117
+   },
+   {
+    "day": 24,
+    "seed_delta": 0.01459,
+    "ring1": 0.0025,
+    "ring2": 0.00169,
+    "ring3": 0.00116
+   },
+   {
+    "day": 25,
+    "seed_delta": 0.01395,
+    "ring1": 0.00237,
+    "ring2": 0.00164,
+    "ring3": 0.00113
+   },
+   {
+    "day": 26,
+    "seed_delta": 0.01338,
+    "ring1": 0.00225,
+    "ring2": 0.00158,
+    "ring3": 0.00112
+   },
+   {
+    "day": 27,
+    "seed_delta": 0.01291,
+    "ring1": 0.00213,
+    "ring2": 0.00152,
+    "ring3": 0.00109
+   },
+   {
+    "day": 28,
+    "seed_delta": 0.0125,
+    "ring1": 0.00202,
+    "ring2": 0.00145,
+    "ring3": 0.00107
+   },
+   {
+    "day": 29,
+    "seed_delta": 0.01215,
+    "ring1": 0.00191,
+    "ring2": 0.00139,
+    "ring3": 0.00104
+   },
+   {
+    "day": 30,
+    "seed_delta": 0.01183,
+    "ring1": 0.00181,
+    "ring2": 0.00133,
+    "ring3": 0.001
+   }
+  ],
+  "n_ring1": 97846,
+  "mean_seeded_neighbors_ring1": 1.401,
+  "encounters_with_seed_total": 901526,
+  "dose_from_seed_total": 17447.06,
+  "p_encounter_seed_per_day": 0.3071
+ },
+ {
+  "arm": "nopull",
+  "cfg": {
+   "relax": 0.045,
+   "cluster": false,
+   "fork_relax": 0.0
+  },
+  "series": [
+   {
+    "day": 1,
+    "seed_delta": 0.24937,
+    "ring1": 0.00193,
+    "ring2": 0.00011,
+    "ring3": 0.0
+   },
+   {
+    "day": 2,
+    "seed_delta": 0.21547,
+    "ring1": 0.00344,
+    "ring2": 0.00033,
+    "ring3": 3e-05
+   },
+   {
+    "day": 3,
+    "seed_delta": 0.18695,
+    "ring1": 0.00461,
+    "ring2": 0.0006,
+    "ring3": 0.0003
+   },
+   {
+    "day": 4,
+    "seed_delta": 0.1628,
+    "ring1": 0.00554,
+    "ring2": 0.00093,
+    "ring3": 0.00033
+   },
+   {
+    "day": 5,
+    "seed_delta": 0.14236,
+    "ring1": 0.00625,
+    "ring2": 0.00127,
+    "ring3": 0.0004
+   },
+   {
+    "day": 6,
+    "seed_delta": 0.12506,
+    "ring1": 0.00678,
+    "ring2": 0.00163,
+    "ring3": 0.0005
+   },
+   {
+    "day": 7,
+    "seed_delta": 0.11024,
+    "ring1": 0.0072,
+    "ring2": 0.00198,
+    "ring3": 0.00066
+   },
+   {
+    "day": 8,
+    "seed_delta": 0.09753,
+    "ring1": 0.00751,
+    "ring2": 0.00232,
+    "ring3": 0.00085
+   },
+   {
+    "day": 9,
+    "seed_delta": 0.08661,
+    "ring1": 0.00773,
+    "ring2": 0.00265,
+    "ring3": 0.001
+   },
+   {
+    "day": 10,
+    "seed_delta": 0.07723,
+    "ring1": 0.00791,
+    "ring2": 0.00297,
+    "ring3": 0.00121
+   },
+   {
+    "day": 11,
+    "seed_delta": 0.06917,
+    "ring1": 0.00802,
+    "ring2": 0.00327,
+    "ring3": 0.0014
+   },
+   {
+    "day": 12,
+    "seed_delta": 0.06218,
+    "ring1": 0.0081,
+    "ring2": 0.00355,
+    "ring3": 0.00166
+   },
+   {
+    "day": 13,
+    "seed_delta": 0.05608,
+    "ring1": 0.00815,
+    "ring2": 0.00381,
+    "ring3": 0.00186
+   },
+   {
+    "day": 14,
+    "seed_delta": 0.05079,
+    "ring1": 0.00818,
+    "ring2": 0.00406,
+    "ring3": 0.0021
+   },
+   {
+    "day": 15,
+    "seed_delta": 0.04615,
+    "ring1": 0.00819,
+    "ring2": 0.00429,
+    "ring3": 0.00234
+   },
+   {
+    "day": 16,
+    "seed_delta": 0.04212,
+    "ring1": 0.00819,
+    "ring2": 0.0045,
+    "ring3": 0.00252
+   },
+   {
+    "day": 17,
+    "seed_delta": 0.03856,
+    "ring1": 0.00818,
+    "ring2": 0.00469,
+    "ring3": 0.00269
+   },
+   {
+    "day": 18,
+    "seed_delta": 0.03542,
+    "ring1": 0.00816,
+    "ring2": 0.00488,
+    "ring3": 0.00288
+   },
+   {
+    "day": 19,
+    "seed_delta": 0.03267,
+    "ring1": 0.00814,
+    "ring2": 0.00504,
+    "ring3": 0.00307
+   },
+   {
+    "day": 20,
+    "seed_delta": 0.03023,
+    "ring1": 0.00811,
+    "ring2": 0.0052,
+    "ring3": 0.00324
+   },
+   {
+    "day": 21,
+    "seed_delta": 0.02808,
+    "ring1": 0.00808,
+    "ring2": 0.00534,
+    "ring3": 0.00342
+   },
+   {
+    "day": 22,
+    "seed_delta": 0.02616,
+    "ring1": 0.00805,
+    "ring2": 0.00547,
+    "ring3": 0.00359
+   },
+   {
+    "day": 23,
+    "seed_delta": 0.02445,
+    "ring1": 0.00803,
+    "ring2": 0.00559,
+    "ring3": 0.00376
+   },
+   {
+    "day": 24,
+    "seed_delta": 0.02292,
+    "ring1": 0.00799,
+    "ring2": 0.0057,
+    "ring3": 0.00391
+   },
+   {
+    "day": 25,
+    "seed_delta": 0.02155,
+    "ring1": 0.00797,
+    "ring2": 0.00581,
+    "ring3": 0.00407
+   },
+   {
+    "day": 26,
+    "seed_delta": 0.02032,
+    "ring1": 0.00794,
+    "ring2": 0.0059,
+    "ring3": 0.00421
+   },
+   {
+    "day": 27,
+    "seed_delta": 0.01923,
+    "ring1": 0.0079,
+    "ring2": 0.00599,
+    "ring3": 0.00435
+   },
+   {
+    "day": 28,
+    "seed_delta": 0.01822,
+    "ring1": 0.00787,
+    "ring2": 0.00607,
+    "ring3": 0.00446
+   },
+   {
+    "day": 29,
+    "seed_delta": 0.01733,
+    "ring1": 0.00785,
+    "ring2": 0.00615,
+    "ring3": 0.00456
+   },
+   {
+    "day": 30,
+    "seed_delta": 0.01652,
+    "ring1": 0.00782,
+    "ring2": 0.00621,
+    "ring3": 0.00467
+   }
+  ],
+  "n_ring1": 97846,
+  "mean_seeded_neighbors_ring1": 1.401,
+  "encounters_with_seed_total": 900791,
+  "dose_from_seed_total": 7130.93,
+  "p_encounter_seed_per_day": 0.3069
+ },
+ {
+  "arm": "slow",
+  "cfg": {
+   "relax": 0.02,
+   "cluster": false,
+   "fork_relax": null
+  },
+  "series": [
+   {
+    "day": 1,
+    "seed_delta": 0.24958,
+    "ring1": 0.00192,
+    "ring2": 0.00011,
+    "ring3": 0.0
+   },
+   {
+    "day": 2,
+    "seed_delta": 0.21145,
+    "ring1": 0.00336,
+    "ring2": 0.00032,
+    "ring3": 1e-05
+   },
+   {
+    "day": 3,
+    "seed_delta": 0.17999,
+    "ring1": 0.00441,
+    "ring2": 0.00058,
+    "ring3": 7e-05
+   },
+   {
+    "day": 4,
+    "seed_delta": 0.15386,
+    "ring1": 0.00517,
+    "ring2": 0.00087,
+    "ring3": 0.00053
+   },
+   {
+    "day": 5,
+    "seed_delta": 0.13217,
+    "ring1": 0.00572,
+    "ring2": 0.00117,
+    "ring3": 0.00056
+   },
+   {
+    "day": 6,
+    "seed_delta": 0.11412,
+    "ring1": 0.00608,
+    "ring2": 0.00146,
+    "ring3": 0.00063
+   },
+   {
+    "day": 7,
+    "seed_delta": 0.09897,
+    "ring1": 0.00632,
+    "ring2": 0.00173,
+    "ring3": 0.00073
+   },
+   {
+    "day": 8,
+    "seed_delta": 0.0862,
+    "ring1": 0.00645,
+    "ring2": 0.00199,
+    "ring3": 0.00094
+   },
+   {
+    "day": 9,
+    "seed_delta": 0.07545,
+    "ring1": 0.00651,
+    "ring2": 0.00223,
+    "ring3": 0.00104
+   },
+   {
+    "day": 10,
+    "seed_delta": 0.06638,
+    "ring1": 0.00651,
+    "ring2": 0.00244,
+    "ring3": 0.00117
+   },
+   {
+    "day": 11,
+    "seed_delta": 0.05872,
+    "ring1": 0.00648,
+    "ring2": 0.00263,
+    "ring3": 0.00127
+   },
+   {
+    "day": 12,
+    "seed_delta": 0.0522,
+    "ring1": 0.0064,
+    "ring2": 0.00279,
+    "ring3": 0.0014
+   },
+   {
+    "day": 13,
+    "seed_delta": 0.04662,
+    "ring1": 0.00631,
+    "ring2": 0.00293,
+    "ring3": 0.00156
+   },
+   {
+    "day": 14,
+    "seed_delta": 0.04184,
+    "ring1": 0.0062,
+    "ring2": 0.00305,
+    "ring3": 0.00171
+   },
+   {
+    "day": 15,
+    "seed_delta": 0.03773,
+    "ring1": 0.00609,
+    "ring2": 0.00316,
+    "ring3": 0.0018
+   },
+   {
+    "day": 16,
+    "seed_delta": 0.03421,
+    "ring1": 0.00596,
+    "ring2": 0.00324,
+    "ring3": 0.00191
+   },
+   {
+    "day": 17,
+    "seed_delta": 0.03115,
+    "ring1": 0.00583,
+    "ring2": 0.00331,
+    "ring3": 0.002
+   },
+   {
+    "day": 18,
+    "seed_delta": 0.02851,
+    "ring1": 0.0057,
+    "ring2": 0.00336,
+    "ring3": 0.00208
+   },
+   {
+    "day": 19,
+    "seed_delta": 0.02622,
+    "ring1": 0.00557,
+    "ring2": 0.0034,
+    "ring3": 0.00215
+   },
+   {
+    "day": 20,
+    "seed_delta": 0.02423,
+    "ring1": 0.00544,
+    "ring2": 0.00343,
+    "ring3": 0.00221
+   },
+   {
+    "day": 21,
+    "seed_delta": 0.0225,
+    "ring1": 0.00531,
+    "ring2": 0.00345,
+    "ring3": 0.00228
+   },
+   {
+    "day": 22,
+    "seed_delta": 0.02098,
+    "ring1": 0.00518,
+    "ring2": 0.00346,
+    "ring3": 0.00233
+   },
+   {
+    "day": 23,
+    "seed_delta": 0.01964,
+    "ring1": 0.00506,
+    "ring2": 0.00346,
+    "ring3": 0.00238
+   },
+   {
+    "day": 24,
+    "seed_delta": 0.01845,
+    "ring1": 0.00494,
+    "ring2": 0.00345,
+    "ring3": 0.00242
+   },
+   {
+    "day": 25,
+    "seed_delta": 0.01741,
+    "ring1": 0.00482,
+    "ring2": 0.00344,
+    "ring3": 0.00245
+   },
+   {
+    "day": 26,
+    "seed_delta": 0.01649,
+    "ring1": 0.00471,
+    "ring2": 0.00342,
+    "ring3": 0.00247
+   },
+   {
+    "day": 27,
+    "seed_delta": 0.01568,
+    "ring1": 0.0046,
+    "ring2": 0.0034,
+    "ring3": 0.00251
+   },
+   {
+    "day": 28,
+    "seed_delta": 0.01494,
+    "ring1": 0.00449,
+    "ring2": 0.00337,
+    "ring3": 0.00249
+   },
+   {
+    "day": 29,
+    "seed_delta": 0.01428,
+    "ring1": 0.00438,
+    "ring2": 0.00334,
+    "ring3": 0.00248
+   },
+   {
+    "day": 30,
+    "seed_delta": 0.0137,
+    "ring1": 0.00428,
+    "ring2": 0.0033,
+    "ring3": 0.00249
+   }
+  ],
+  "n_ring1": 97829,
+  "mean_seeded_neighbors_ring1": 1.401,
+  "encounters_with_seed_total": 899313,
+  "dose_from_seed_total": 9988.07,
+  "p_encounter_seed_per_day": 0.3064
+ }
+]
