@@ -240,19 +240,53 @@ const OUTS=[
  ['deprivation','Household deprivation','unmet basic need, 0–1',1,'',4],
  ['firm_health','Firm health','mean health of firms in affected countries',1,'',4],
  ['mortality','Excess deaths','affected cohort, scenario minus control',-1,'',1]];
+const PROFILES={
+ 'product-launch':{lead:'readout',big:'IN THE HIGH-PROPENSITY SEGMENT',
+   who:'POTENTIAL CUSTOMERS — computed propensity by segment',
+   folk:'MEET A POTENTIAL CUSTOMER — same person, with and without the launch',
+   macroNote:'macro side-effects — computed near zero, as expected: a product launch has no material-damage channel'},
+ 'political-campaign':{lead:'readout',big:'IN THE SUPPORT SEGMENT',
+   who:'THE ELECTORATE — computed support by segment',
+   folk:'MEET A VOTER — same person, with and without the campaign',
+   macroNote:'macro side-effects — computed near zero, as expected: a campaign has no material-damage channel'},
+ 'politics':{lead:'readout',big:'IN THE SUPPORT SEGMENT',
+   who:'THE ELECTORATE — computed support by segment',
+   folk:'MEET A CITIZEN — same person in both worlds',macroNote:null}};
+function macroTable(r,o){
+  return OUTS.map(([k,name,sub,sc,u,dec])=>{const f=fmtv(o[k],sc,u,dec);
+    return f?`<div class="outcome"><span class="n">${name} <span class="tag sim">SIMULATED</span><br><span class="sub">${sub}</span></span><span style="text-align:right">${f}</span></div>`:''}).join('');
+}
+function readoutBlock(r,P){
+  if(!r.readout)return '';
+  const ro=r.readout;
+  return `<h2>${ro.label} <span class="tag sim">SIMULATED</span></h2>
+   <div style="display:flex;gap:30px;align-items:baseline;margin:6px 0 10px">
+     <span><span class="v" style="font-size:30px;color:var(--acc)">${(100*ro.scenario_rate).toFixed(1)}%</span><br><span class="sub">${P.big} — ${ro.buyers_in_cohort.toLocaleString()} of ${ro.asked_n.toLocaleString()} people</span></span>
+     <span><span class="v" style="font-size:18px;color:var(--ctl)">${(100*ro.control_rate).toFixed(1)}%</span><br><span class="sub">in the world without it (anchor)</span></span>
+     <span><span class="v ${ro.delta_pp>0?'neg':'pos'}" style="font-size:18px">${ro.delta_pp>0?'+':''}${ro.delta_pp.toFixed(2)} pp</span><br><span class="sub">the event's own push</span></span>
+   </div>
+   <h2>${P.who}</h2>
+   <div class="who">${Object.entries(ro.by_cohort).sort((a,b)=>b[1].scenario-a[1].scenario).map(([k,v])=>{
+     const w=Math.min(v.scenario*280,140);
+     return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:var(--acc)"></div></div><span>${(100*v.scenario).toFixed(1)}% (${v.delta_pp>0?'+':''}${v.delta_pp.toFixed(2)} pp) · n=${v.n}</span>`}).join('')}</div>
+   <div class="sub" style="color:var(--dim);margin:4px 0 8px">top = most likely, bottom = least likely · where: ${(r.scenario.country_names||[]).join(', ')||'global'} — add a lens above for any other geography · ${ro.method} · adopter = propensity above the control world's 75th percentile (disclosed anchor) · weights ${JSON.stringify(ro.weights)}</div>`;
+}
 function render(){
   const r=RES,out=$('#branchout');
   const o=r.outcomes[HOR];
   const day=HOR==='d7'?7:r.horizon_days;
+  const P=PROFILES[EV&&EV.category]||null;
+  const readoutLed=P&&P.lead==='readout'&&r.readout;
   out.innerHTML=`
   <div style="margin:6px 0 2px"><span class="lbl">HORIZON</span>
     <button class="hbtn ${HOR==='d7'?'on':''}" onclick="HOR='d7';render()">DAY 7</button>
     <button class="hbtn ${HOR==='d30'?'on':''}" onclick="HOR='d30';render()">DAY 30</button>
     <button class="hbtn ghost" title="not run at demo scale">D90</button>
     <button class="hbtn ghost" title="not run at demo scale">D365</button></div>
-  <h2>DAY ${day} — EVENT MINUS CONTROL · ${2*r.pairs} futures · affected population ${r.cohort_n.toLocaleString()}</h2>
-  ${OUTS.map(([k,name,sub,sc,u,dec])=>{const f=fmtv(o[k],sc,u,dec);
-    return f?`<div class="outcome"><span class="n">${name} <span class="tag sim">SIMULATED</span><br><span class="sub">${sub}</span></span><span style="text-align:right">${f}</span></div>`:''}).join('')}
+  <h2>DAY ${day} — EVENT MINUS CONTROL · ${2*r.pairs} futures · population reached ${r.cohort_n.toLocaleString()}</h2>
+  ${readoutLed?readoutBlock(r,P):macroTable(r,o)}
+  ${readoutLed&&P.macroNote?`<details style="margin:8px 0"><summary class="sub" style="cursor:pointer;color:var(--dim)">${P.macroNote}</summary>${macroTable(r,o)}</details>`:''}
+  ${readoutLed?'':(r.readout?readoutBlock(r,PROFILES['politics']):'')}
   ${estRows(r)}
   <div class="fanwrap"><span class="lbl">THE FUTURES THEMSELVES — every line is one future actually lived</span>
     <canvas id="fan" width="640" height="220"></canvas>
@@ -261,16 +295,6 @@ function render(){
       <button class="hbtn" onclick="drawFan('fear')">fear</button>
       <button class="hbtn" onclick="drawFan('deprivation')">deprivation</button>
       <i style="background:var(--ctl)"></i>control futures <i style="background:var(--acc)"></i>event futures</div></div>
-  ${r.readout?`<h2>${r.readout.label} — computed opinion readout <span class="tag sim">SIMULATED</span></h2>
-   <div style="display:flex;gap:30px;align-items:baseline;margin:6px 0 10px">
-     <span><span class="v" style="font-size:26px;color:var(--acc)">${(100*r.readout.scenario_rate).toFixed(1)}%</span><br><span class="sub">would say yes — ${r.readout.buyers_in_cohort.toLocaleString()} people of ${r.readout.asked_n.toLocaleString()} asked</span></span>
-     <span><span class="v" style="font-size:18px;color:var(--ctl)">${(100*r.readout.control_rate).toFixed(1)}%</span><br><span class="sub">in the world where it never happened</span></span>
-     <span><span class="v ${r.readout.delta_pp>0?'neg':'pos'}" style="font-size:18px">${r.readout.delta_pp>0?'+':''}${r.readout.delta_pp.toFixed(2)} pp</span><br><span class="sub">the event's own effect</span></span>
-   </div>
-   <div class="who">${Object.entries(r.readout.by_cohort).sort((a,b)=>b[1].scenario-a[1].scenario).map(([k,v])=>{
-     const w=Math.min(v.scenario*140,140);
-     return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:var(--acc)"></div></div><span>${(100*v.scenario).toFixed(1)}% (${v.delta_pp>0?'+':''}${v.delta_pp.toFixed(2)} pp) · n=${v.n}</span>`}).join('')}</div>
-   <div class="sub" style="color:var(--dim);margin:4px 0 8px">${r.readout.method} · weights ${JSON.stringify(r.readout.weights)} · top rows = most likely, bottom = least likely</div>`:''}
   ${r.lens?`<h2>THROUGH THE LENS — ${r.lens.resolved} · population ${r.lens.cohort_n.toLocaleString()} <span class="tag sim">SIMULATED</span></h2>
    ${[['employment_pp','Employment',100,' pp',2],['reserves_days','Household reserves',1,' days',2],['deprivation','Deprivation',1,'',4],['fear','FEAR',1,'',4],['mortality','Excess deaths',-1,'',1]].map(([k,name,sc,u,dec])=>{
      const f=fmtv(r.outcomes_lens[HOR][k],sc,u,dec);
@@ -282,10 +306,10 @@ function render(){
   <div class="who">${Object.entries(r.human_response||{}).map(([k,v])=>{
     const w=Math.min(Math.abs(v)*1200,140);
     return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:${v>0?'var(--bad)':'var(--ok)'}"></div></div><span>${v>0?'+':''}${v.toFixed(4)}</span>`}).join('')}</div>
-  <h2>WHO — computed cohort decomposition (employment, day ${r.horizon_days})</h2>
+  ${readoutLed?'':`<h2>WHO — computed cohort decomposition (employment, day ${r.horizon_days})</h2>
   <div class="who">${Object.entries(r.who).map(([k,v])=>{
     const pp=v.employment_pp*100,w=Math.min(Math.abs(pp)*40,140);
-    return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:${pp<0?'var(--bad)':'var(--ok)'}"></div></div><span>${pp>0?'+':''}${pp.toFixed(2)} pp · n=${v.n}</span>`}).join('')}</div>
+    return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:${pp<0?'var(--bad)':'var(--ok)'}"></div></div><span>${pp>0?'+':''}${pp.toFixed(2)} pp · n=${v.n}</span>`}).join('')}</div>`}
   <h2>WHY — ${r.causal_path_label}</h2>
   <div class="path">${r.causal_path.map(p=>`<span>${p}</span>`).join('<em>→</em>')}</div>
   <h2>REMOVE THIS CAUSE — computed counterfactual attribution</h2>
@@ -293,7 +317,7 @@ function render(){
   <button onclick="removeCause('material')">WITHOUT MATERIAL DAMAGE</button>
   <button onclick="removeCause('informational')">WITHOUT THE MEMORY / FEAR CHANNEL</button>
   <div id="attr"></div>
-  <h2>MEET AN EARTHLING — same person, same past, different world</h2>
+  <h2>${(P&&P.folk)||'MEET AN EARTHLING — same person, same past, different world'}</h2>
   <div id="folk">${r.earthlings.map((b,i)=>earthling(b,i)).join('')}</div>
   <div class="src" style="margin-top:12px">base world day ${r.base_day} · ${r.pairs} matched pairs (common dice) · horizon ${r.horizon_days}d · commit ${r.model_commit} · ${r.physics}</div>`;
   drawFan('employment');

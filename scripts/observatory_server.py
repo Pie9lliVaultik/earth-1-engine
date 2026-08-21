@@ -712,8 +712,18 @@ def _run_branch(event, branch_key=None, remove=None, lens=None):
                 mro = hit & wc.health.alive & ws.health.alive
                 st_s = np.clip(ws.civ.forces[mro] @ wgt / den, 0, 1)
                 st_c = np.clip(wc.civ.forces[mro] @ wgt / den, 0, 1)
-                ro_p = {"scenario_rate": float((st_s > 0.5).mean()),
-                        "control_rate": float((st_c > 0.5).mean()),
+                # the propensity scale is unanchored in absolute
+                # terms; "adopter/supporter" is anchored at the
+                # CONTROL world's top quartile (disclosed instrument
+                # — control rate is ~25% by construction, the
+                # scenario rate shows the event's own push across a
+                # fixed bar)
+                thr = float(np.quantile(st_c, 0.75))
+                ro_p = {"scenario_rate": float((st_s > thr).mean()),
+                        "control_rate": float((st_c > thr).mean()),
+                        "stance_shift": float(st_s.mean()
+                                              - st_c.mean()),
+                        "anchor": thr,
                         "n": int(mro.sum()), "by": {}}
                 for label, cmask in cohorts.items():
                     cm = (cmask & hit & wc.health.alive
@@ -724,9 +734,9 @@ def _run_branch(event, branch_key=None, remove=None, lens=None):
                         c2 = np.clip(wc.civ.forces[cm] @ wgt / den,
                                      0, 1)
                         ro_p["by"][label] = {
-                            "scenario": float((s2 > 0.5).mean()),
-                            "delta": float((s2 > 0.5).mean()
-                                           - (c2 > 0.5).mean()),
+                            "scenario": float((s2 > thr).mean()),
+                            "delta": float((s2 > thr).mean()
+                                           - (c2 > thr).mean()),
                             "n": int(cm.sum())}
             # full 8-force human response at final day, this pair
             mboth = hit & wc.health.alive & ws.health.alive
