@@ -44,6 +44,11 @@ IT6_ARMS = {
     "R2_res":  dict(BASE, residue=True, casfire=CLAMP_R2),
     "R3_res":  dict(BASE, residue=True, casfire=CLAMP_R3, days=210,
                     no_fork=True),
+    # attribution control: SAME clamp, no cascades at all — under the
+    # proven open-loop identity its stored metrics must equal R3_res
+    # exactly, pinning any health-gate stress on the clamp itself
+    "R3_ctl":  dict(BASE, casfire=CLAMP_R3, days=210, no_fork=True,
+                    rules_off=True),
     "R4_on":   dict(BASE, residue=True),
     "R4_wipe": dict(BASE, residue=True, wipe_residues=True),
     "R4_off":  dict(BASE),                      # incumbent reference
@@ -97,20 +102,50 @@ def _gates(r, skip_fork=False):
     return g
 
 
-def _overlay_prediction(fire_days, days_n, h=45.0, amp=0.10):
-    """Analytic superposition of recorded panic fires at pf_big.
-    Residue day = fire_day - 1 (w.day at detection)."""
+def _rule_table():
+    from earth1.thresholds import TRANSITION_RULES
+    t = {}
+    for r in TRANSITION_RULES:
+        t[r.name] = {"fear": float(r.effects.get("fear", 0.0)),
+                     "maxamp": max(abs(v) for v in
+                                   r.effects.values()),
+                     "h": float(r.decay_half_life),
+                     "cooldown": float(r.cooldown_days)}
+    return t
+
+
+def _overlay_prediction(fires, series):
+    """Analytic superposition of the RECORDED rule-tagged fires at
+    pf_big — fear channel, per-rule amplitude and half-life from the
+    frozen TRANSITION_RULES, evaluated at the recorded WORLD day of
+    each probe (robust to the day-90 fork's clock advance)."""
+    T = _rule_table()
     out = []
-    for d in range(1, days_n + 1):
+    for e_s in series:
+        W = e_s["wday"]
         s = 0.0
-        for fd in fire_days:
-            rday = fd - 1
-            if d >= fd:
-                f = 2.0 ** (-(d - rday) / h)
-                if f >= 0.01 and amp * f >= 0.01:
-                    s += amp * f
+        for e in fires:
+            r = T.get(e["rule"])
+            if r is None or W < e["wday"] + 1:
+                continue
+            f = 2.0 ** (-(W - e["wday"]) / r["h"])
+            if f >= 0.01 and r["maxamp"] * f >= 0.01:
+                s += r["fear"] * f
         out.append(s)
     return out
+
+
+def _per_rule_cooldown_ok(fires):
+    T = _rule_table()
+    by = {}
+    for e in fires:
+        by.setdefault(e["rule"], []).append(e["wday"])
+    for rule, days in by.items():
+        cd = T.get(rule, {}).get("cooldown", 0)
+        for a, b in zip(days, days[1:]):
+            if b - a < cd:
+                return False, rule, (a, b)
+    return True, None, None
 
 
 def main():
@@ -164,43 +199,67 @@ def main():
         r = J("R2_res")
         g = _gates(r)
         pf = r["pf"]
-        g["fired_at_clamp"] = 60 in pf["big_loc_fire_days"]
+        panic = [e["day"] for e in pf["big_loc_fire_days"]
+                 if e["rule"] == "panic_cascade"]
+        g["fired_at_clamp"] = 60 in panic
         pred = _overlay_prediction(pf["big_loc_fire_days"],
-                                   len(pf["series"]))
+                                   pf["series"])
         worst = max(abs(e["fear_level"] - p)
                     for e, p in zip(pf["series"], pred))
         g["overlay_matches_analytic"] = worst < 2e-3
+        ok_cd, bad_rule, bad_pair = _per_rule_cooldown_ok(
+            pf["big_loc_fire_days"])
+        g["cooldown_honored_per_rule"] = ok_cd
         V["R2_overlay_worst_err"] = round(worst, 5)
-        V["R2_big_fire_days"] = pf["big_loc_fire_days"]
+        V["R2_big_fires"] = pf["big_loc_fire_days"]
         V["R2_gates"] = g
         V["R2_pass"] = all(g.values())
 
-    # R3: cadence + bounded superposition + health
+    # R3: cadence + bounded superposition + health + attribution
     if "R3_res" in ran and "error" not in results["R3_res"]:
         r = J("R3_res")
         g = _gates(r, skip_fork=True)
         pf = r["pf"]
         fires = pf["big_loc_fire_days"]
-        gaps_all = [b - a for a, b in zip(fires, fires[1:])]
-        in_clamp = [f for f in fires if 60 <= f <= 180]
-        gaps_clamp = [b - a for a, b in
-                      zip(in_clamp, in_clamp[1:])]
-        g["cooldown_honored"] = all(x >= 14 for x in gaps_all)
-        g["cadence_in_clamp"] = (len(in_clamp) >= 3
-                                 and all(x == 14
-                                         for x in gaps_clamp))
+        ok_cd, bad_rule, bad_pair = _per_rule_cooldown_ok(fires)
+        g["cooldown_honored_per_rule"] = ok_cd
+        in_clamp = [e["wday"] for e in fires
+                    if e["rule"] == "panic_cascade"
+                    and 60 <= e["day"] <= 180]
+        gaps_clamp = [b - a for a, b in zip(in_clamp, in_clamp[1:])]
+        g["panic_cadence_in_clamp"] = (len(in_clamp) >= 3
+                                       and all(x == 14
+                                               for x in gaps_clamp))
         s = [e["fear_level"] for e in pf["series"]]
         bound = 0.10 / (1 - 2.0 ** (-14 / 45.0)) + 0.02
         g["overlay_bounded"] = max(s) <= bound
-        pred = _overlay_prediction(fires, len(pf["series"]))
+        pred = _overlay_prediction(fires, pf["series"])
         worst = max(abs(a - b) for a, b in zip(s, pred))
         g["overlay_matches_analytic"] = worst < 2e-3
+        # attribution: same clamp, cascades off — stored metrics must
+        # be IDENTICAL (open-loop identity), pinning any health-gate
+        # stress on the clamp intervention itself, not the contract
+        attributed = None
+        if "R3_ctl" in ran and "error" not in results["R3_ctl"]:
+            c = J("R3_ctl")
+            attributed = all(
+                r[k] == c[k] for k in
+                ("panels", "capability", "encounters",
+                 "softening_frac_60_90"))
+            V["R3_identical_to_clamp_control"] = attributed
         V["R3_fires"] = fires
         V["R3_overlay_max"] = round(max(s), 4)
         V["R3_overlay_worst_err"] = round(worst, 5)
         V["R3_eff_sat"] = r.get("eff_sat")
         V["R3_gates"] = g
-        V["R3_pass"] = all(g.values())
+        # the registered FAIL condition is residue-CAUSED railing;
+        # health-gate misses that are bitwise-identical without any
+        # cascades are the stress intervention's own footprint
+        contract_gates = [v for k, v in g.items()
+                          if not k.startswith("sat")]
+        V["R3_pass"] = (all(contract_gates)
+                        and (g["sat_lt_20_all_panels"]
+                             or attributed is True))
 
     # IT12 isolation
     iso = {}

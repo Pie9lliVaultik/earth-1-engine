@@ -251,10 +251,13 @@ def run_arm(name):
             resl = getattr(w.chronicle, "cascade_residues", None) or []
             lv, _ = cascade_residue_levels(resl, w.day)
             lvl = float(sum(v[0] for lk, v in lv if lk == pf_big))
-            if any(r["loc"] == pf_big and r["day"] == w.day - 1
-                   for r in resl):
-                pf_big_fire_days.append(d)
-            pf_series.append({"day": d, "fear_level": round(lvl, 5),
+            for r in resl:
+                if r["loc"] == pf_big and r["day"] == w.day - 1:
+                    pf_big_fire_days.append({"day": d,
+                                             "wday": int(r["day"]),
+                                             "rule": r["rule"]})
+            pf_series.append({"day": d, "wday": int(w.day),
+                              "fear_level": round(lvl, 5),
                               "n_residues": len(resl)})
         _adapt()
         if d in (60, 90):
