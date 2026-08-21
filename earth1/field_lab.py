@@ -130,3 +130,89 @@ def flourishing_level_map(orig_target):
             t[:, Force.EXPERIENCE] + 0.10 * fl.curiosity, 0, 1)
         return t
     return target
+
+
+# ── IT6: the encounter as causal object ─────────────────────────────
+# Dyadic conviction rides the SAME encounters that carry influence
+# (never recomputed from aggregates — the mean-field information loss
+# must not re-enter through another route). DRIVE_ACC accumulates the
+# day's signed encounter drives per agent; the patched conviction law
+# consumes and resets it. SAMPLES holds full causal-object records
+# for a registered 1000-encounter/day sample on instrument days.
+
+DRIVE_ACC = [None]        # (N,) float accumulated drive
+ENC_COUNT = [None]        # (N,) int encounters today
+SAMPLES = []
+SAMPLE_DAYS = set()
+ENC_STATS = {}            # day -> {"n": int, "neg": int}
+
+
+def _accumulate_drive(f_pre, partner, has, layer, mu, day):
+    tgt = f_pre[np.clip(partner, 0, f_pre.shape[0] - 1)]
+    d_e = np.abs(f_pre - tgt).mean(axis=1)
+    drive = np.clip((0.5 - d_e) / 0.5, -1.0, 1.0)
+    drive[~has] = 0.0
+    DRIVE_ACC[0] += drive
+    ENC_COUNT[0] += has.astype(np.int64)
+    s = ENC_STATS.setdefault(int(day), {"n": 0, "neg": 0})
+    s["n"] += int(has.sum())
+    s["neg"] += int((drive[has] < 0).sum())
+    if day in SAMPLE_DAYS and len(SAMPLES) < 1000 * len(SAMPLE_DAYS):
+        idx = np.flatnonzero(has)[:50]
+        for i in idx:
+            SAMPLES.append({
+                "day": int(day), "layer": layer, "recipient": int(i),
+                "source": int(partner[i]),
+                "pre_distance": round(float(d_e[i]), 4),
+                "drive": round(float(drive[i]), 4),
+                "strength": mu})
+
+
+def make_dyadic_propagate_v6(k=3, mu=0.05, influence=True):
+    """IT6 operator: dyadic influence + drive accumulation from the
+    same encounters. influence=False gives the dyCNV-only arm
+    (encounters sampled for conviction evidence, forces untouched by
+    this operator)."""
+    def op(forces, alpha, adj, beta=1.0, layers=None,
+           susceptibility=None, **kw):
+        f = forces.copy()
+        csr = adj if hasattr(adj, "indptr") else adj.tocsr()
+        rng = np.random.default_rng(920_000 + _DAY[0])
+        for _ in range(k):
+            partner, has = _sample_partners(csr, rng)
+            _accumulate_drive(f, partner, has, "tie", mu, _DAY[0])
+            if influence:
+                f = np.clip(f + dyadic_move(f, partner, has, mu,
+                                            susceptibility), 0, 1)
+        return f
+    return op
+
+
+def make_dyadic_feed_v6(mu=0.05, influence=True):
+    def tick(civ, feed, alpha, susceptibility=None, **kw):
+        f = civ.forces
+        csr = feed if hasattr(feed, "indptr") else feed.tocsr()
+        rng = np.random.default_rng(930_000 + _DAY[0])
+        partner, has = _sample_partners(csr, rng)
+        _accumulate_drive(f, partner, has, "feed", mu, _DAY[0])
+        if influence:
+            move = dyadic_move(f, partner, has, mu, susceptibility,
+                               weights=AROUSAL)
+            civ.forces = np.clip(f + move, 0.0, 1.0)
+        return {"feed_readers": int(has.sum())}
+    return tick
+
+
+def dyadic_conviction(forces, alpha, adj, gain=0.003, lam=0.0):
+    """C3 log-odds form driven by the day's ACCUMULATED encounter
+    evidence (mean drive over today's encounters; no encounters ->
+    no update)."""
+    n_enc = np.maximum(ENC_COUNT[0], 1)
+    drive = DRIVE_ACC[0] / n_enc
+    drive[ENC_COUNT[0] == 0] = 0.0
+    a = np.clip(alpha, 0.02, 0.98)
+    logit = np.log(a / (1.0 - a)) + gain * drive
+    out = np.clip(1.0 / (1.0 + np.exp(-logit)), 0.02, 1.0)
+    DRIVE_ACC[0][:] = 0.0
+    ENC_COUNT[0][:] = 0
+    return out
