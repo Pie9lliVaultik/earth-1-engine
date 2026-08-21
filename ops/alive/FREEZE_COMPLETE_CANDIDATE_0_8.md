@@ -12,10 +12,27 @@ without an explicit consuming mechanism. Two disclosures at the end
 remain standing; the founder may void on review of either, or of
 the instrument repair disclosed in the run report.
 
-## Source of truth
+## Source of truth (founder-corrected hash bookkeeping)
 
-- Source commit: f718b0f (engine + candidate assembly + instruments)
+    candidate_executable_commit: 1ae8740   (contains the immutable
+                                            effective_forces repair —
+                                            THE reproducible machine)
+    pf_decay2_registration:      dfbdad9
+    pf_decay2_implementation:    f2574b8
+    pf_decay2_instrument_repair: f718b0f   (first full-N run preserved:
+                                            INSTRUMENT-DEFECTIVE /
+                                            NON-SCORABLE for affected
+                                            observables — not FAIL)
+    consumer_audit + manifest:   1ae8740
+    scored_evidence:             data/pf_decay2/regression2_v2.json
 - Flags: EARTH1_CASCADE_COOLDOWN=1, EARTH1_DECAY_RESIDUE=1
+- R3_ctl classification (per ruling): POST-HOC DIAGNOSTIC /
+  ATTRIBUTION CONTROL — never a preregistered confirmatory gate. The
+  original registered FAIL condition ("the natural open-loop world
+  still rails on STORED forces") was not triggered independently of
+  R3_ctl: the natural world (R4) passed every stored gate; the sat
+  miss occurred only in the artificial sustained-clamp stress arm
+  and is recorded as a literal miss with post-hoc attribution.
 - Candidate assembly: the it6 engine "ALL" configuration
   (scripts/it6_dyadic.py run_arm cfg op=dy cnv=dy flr=True cas=True
   relax=0.045) — the lab monkeypatch set IS the candidate definition
