@@ -120,10 +120,19 @@ def run_arm(name):
                      half_life=cfg.get("half_life", HALF_LIFE),
                      origin="scenario")
         w2.chronicle.remember(mem)
+    followups = set(cfg.get("followups", ()))
 
     series = []
     for d in range(1, WINDOW + 1):
         flab._DAY[0] = DAYS + d
+        if d in followups:
+            fu = Memory(id=f"it12:fu{d}", label="follow-up",
+                        day=float(w2.day), force_signature=mem
+                        .force_signature.copy(),
+                        scope=scope.copy(), salience=0.5,
+                        half_life=cfg.get("half_life", HALF_LIFE),
+                        origin="scenario")
+            w2.chronicle.remember(fu)
         if cfg.get("delete_after") and d == cfg["delete_after"] + 1:
             w2.chronicle.events = [m for m in w2.chronicle.events
                                    if m.id != "it11:canonical"]
@@ -151,6 +160,9 @@ def run_arm(name):
             "peak_d5": d5, "d30": d30,
             "resid_vs_peak": round(d30 / d5, 3) if d5 else None,
             "carrier_d30": series[-1]["salience"],
+            "carrier_sum_d30": round(sum(
+                m.salience for m in w2.chronicle.events
+                if m.id.startswith(("it11", "it12"))), 4),
             "sat_check": round(float(max(
                 max((w2.civ.forces[w2.health.alive][:, c] > 0.95
                      ).mean(),
