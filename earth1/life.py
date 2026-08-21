@@ -147,6 +147,21 @@ DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 # experience permanent rather than a transient the world relaxes away.
 TRAIT_MEMORY = 1.0
 
+# COLLECTIVE-GEO-1 (founder-authorized, flag-gated experimental
+# candidate): centered-deviation COLLECTIVE target. Baseline encodes
+# normal state; modifiers encode DEPARTURES from the registered
+# reference centers (measured once from birth_world(200000, 424242)
+# at day 0 — FIXED constants, never recomputed from the running
+# population). Slopes unchanged; see ops/alive/COLLECTIVE_GEO_1.md.
+GEO1_REF_DS = 0.0
+GEO1_REF_POL = 0.3998
+GEO1_REF_SN = 0.2855
+
+
+def _geo1_on():
+    import os
+    return os.environ.get("EARTH1_COLLECTIVE_CENTERED") == "1"
+
 # ── prevalence anchors, from real epidemiology ───────────────────────
 # These are population base rates, not tuned values. Onset hazards below
 # are modulated by deprivation and isolation, both of which the model
@@ -652,8 +667,13 @@ def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
         base[:, Force.FEAR] + 0.35 * precarity + 0.25 * dep, 0.0, 1.0)
     t[:, Force.DESIRE] = np.clip(
         base[:, Force.DESIRE] - 0.30 * dep, 0.0, 1.0)
-    t[:, Force.COLLECTIVE] = np.clip(
-        base[:, Force.COLLECTIVE] + 0.40 * dep * shared, 0.0, 1.0)
+    if _geo1_on():
+        t[:, Force.COLLECTIVE] = np.clip(
+            base[:, Force.COLLECTIVE]
+            + 0.40 * (dep * shared - GEO1_REF_DS), 0.0, 1.0)
+    else:
+        t[:, Force.COLLECTIVE] = np.clip(
+            base[:, Force.COLLECTIVE] + 0.40 * dep * shared, 0.0, 1.0)
 
     # THE BODY BECOMES OPINION.
     #   mental health modulates how much fear a person carries at all
@@ -666,9 +686,16 @@ def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
             t[:, Force.FEAR] + 0.30 * (1.0 - life.mental), 0.0, 1.0)
         t[:, Force.DESIRE] = np.clip(
             t[:, Force.DESIRE] + 0.45 * life.addiction, 0.0, 1.0)
-        t[:, Force.COLLECTIVE] = np.clip(
-            t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
-            + 0.25 * life.political - 0.20 * life.social_need, 0.0, 1.0)
+        if _geo1_on():
+            t[:, Force.COLLECTIVE] = np.clip(
+                t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
+                + 0.25 * (life.political - GEO1_REF_POL)
+                - 0.20 * (life.social_need - GEO1_REF_SN), 0.0, 1.0)
+        else:
+            t[:, Force.COLLECTIVE] = np.clip(
+                t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
+                + 0.25 * life.political - 0.20 * life.social_need,
+                0.0, 1.0)
         t[:, Force.IDENTITY] = np.clip(
             t[:, Force.IDENTITY] + 0.25 * life.social_need
             - 0.15 * life.relationship, 0.0, 1.0)

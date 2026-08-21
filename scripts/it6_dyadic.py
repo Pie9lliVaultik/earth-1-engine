@@ -308,6 +308,15 @@ def run_arm(name):
                         w.life.deprivation[a_].mean()), 4),
                     "wealth_days": round(float(
                         w.life.wealth[a_].mean()), 2),
+                    # GEO-1A criterion probe: the COLLECTIVE target
+                    # distribution itself (lifemod.life_force_target
+                    # is the candidate-wrapped law at this point)
+                    "T_col_mean": round(float(
+                        lifemod.life_force_target(w.civ, w.life)
+                        [a_, 3].mean()), 4),
+                    "frac_T95_col": round(float(
+                        (lifemod.life_force_target(w.civ, w.life)
+                         [a_, 3] > 0.95).mean()), 4),
                 }
             if os.environ.get("EARTH1_DECAY_RESIDUE") == "1":
                 # effective-view saturation, reported SEPARATELY from

@@ -122,8 +122,16 @@ def flourishing_level_map(orig_target):
         t[:, Force.DESIRE] = np.clip(
             t[:, Force.DESIRE] + 0.20 * fl.hope
             + 0.15 * fl.curiosity - 0.25 * need, 0, 1)
-        t[:, Force.COLLECTIVE] = np.clip(
-            t[:, Force.COLLECTIVE] + 0.20 * fl.belonging, 0, 1)
+        import os as _os
+        if _os.environ.get("EARTH1_COLLECTIVE_CENTERED") == "1":
+            # COLLECTIVE-GEO-1: belonging as a DEPARTURE from the
+            # registered reference center (COLLECTIVE_GEO_1.md)
+            t[:, Force.COLLECTIVE] = np.clip(
+                t[:, Force.COLLECTIVE]
+                + 0.20 * (fl.belonging - 0.6416), 0, 1)
+        else:
+            t[:, Force.COLLECTIVE] = np.clip(
+                t[:, Force.COLLECTIVE] + 0.20 * fl.belonging, 0, 1)
         t[:, Force.CULTURE] = np.clip(
             t[:, Force.CULTURE] + 0.20 * fl.meaning, 0, 1)
         t[:, Force.EXPERIENCE] = np.clip(
