@@ -75,3 +75,18 @@ cannot demonstrate failure is not yet evidence. Git: everything to
 | FRED / ACLED keys | ⏳ |
 | Destitution-bar ruling (34.5% measured vs 25% bar) | ⏳ |
 | `data/living.retired` + Storage Box credential topology | see 0.7 notes above |
+
+## 0.8 status (2026-08-21)
+
+IT1–IT12 complete. IT12 PASS @16919e4 (Chronicle h*=10d news-class,
+CALIBRATED not validated; recurrence amplifies/extends, necessity
+NOT established — diagnostic disclosed). Architecture search CLOSED
+by founder ruling. PF-DECAY-1 (registration @eeb84fe, implementation
+@cb6dbbc): recovered f933c59 decay_half_life contract implemented
+flag-gated (EARTH1_DECAY_RESIDUE); local KA smoke all-pass
+(level recursion exact 3e-16; integrator discriminated; restart
+bitwise). Full-N KA battery + targeted regression R1–R4 on prime →
+if PASS: FREEZE COMPLETE CANDIDATE → MECHANISM DISCOVERY CLOSED →
+full 0.8 acceptance battery (endurance 365d, adversarial, census,
+two-timescale map incl. independent persistence case, transmission,
+India recession rerun, opinion receipt, chaos remeasurement).
