@@ -194,15 +194,26 @@ def run_arm(name):
     # cnv == "inc": leave the incumbent ratchet law
 
     relax = cfg["relax"]
+    lam_adapt = cfg.get("lam")        # IT9 adaptive baseline (or None)
+    def _adapt():
+        if lam_adapt:
+            T = lifemod.life_force_target(w.civ, w.life)
+            b = w.life.force_baseline
+            b[:] = np.clip(b + lam_adapt * (w.civ.forces - T), 0, 1)
     rng = np.random.default_rng(seed_arm)
     genesis_sd = w.civ.forces[w.health.alive].std(axis=0)
+    baseline_d90 = None
     panels, alpha_snaps = {}, {}
     tau = trans = None
     for d in range(1, DAYS + 1):
         flab._DAY[0] = d
         live_one_day(w, rng, relax=relax)
+        _adapt()
         if d in (60, 90):
             alpha_snaps[d] = w.civ.alpha.copy()
+        if d == TAU_AT:
+            baseline_d90 = w.life.force_baseline.copy() \
+                if w.life.force_baseline is not None else None
         if d % 10 == 0:
             panels[str(d)] = panel(w, genesis_sd)
         if d == TAU_AT:
@@ -235,10 +246,18 @@ def run_arm(name):
                 np.union1d(np.union1d(seeds, ring1), ring2))
             deltas = [float(w2.civ.forces[idx, CH_TAU].mean()
                             - w.civ.forces[idx, CH_TAU].mean())]
+            def _adapt2():
+                if lam_adapt:
+                    T2 = lifemod.life_force_target(w2.civ, w2.life)
+                    b2 = w2.life.force_baseline
+                    b2[:] = np.clip(b2 + lam_adapt
+                                    * (w2.civ.forces - T2), 0, 1)
             for _ in range(TAU_DAYS):
                 flab._DAY[0] += 1
                 live_one_day(w, rng, relax=relax)
+                _adapt()
                 live_one_day(w2, rng2, relax=relax)
+                _adapt2()
                 deltas.append(float(
                     w2.civ.forces[idx, CH_TAU].mean()
                     - w.civ.forces[idx, CH_TAU].mean()))
@@ -250,6 +269,13 @@ def run_arm(name):
                     break
             tau = {"half_life_d": half,
                    "resid_d30": round(deltas[-1] / d0, 3) if d0 else None}
+            if lam_adapt is not None and \
+                    w.life.force_baseline is not None:
+                db = (w2.life.force_baseline[idx, CH_TAU]
+                      - w.life.force_baseline[idx, CH_TAU]).mean()
+                tau["baseline_shift_d30"] = round(float(db), 5)
+                tau["frac_carried_by_baseline"] = round(
+                    float(db / deltas[-1]), 3) if deltas[-1] else None
             trans = {f"ring{j}_d30": round(float(
                 w2.civ.forces[r_, CH_TRANS].mean()
                 - w.civ.forces[r_, CH_TRANS].mean()), 5)
