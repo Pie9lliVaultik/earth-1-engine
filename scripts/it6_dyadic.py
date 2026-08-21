@@ -94,11 +94,12 @@ def run_arm(name):
     from earth1.types import Force
 
     cfg = dict(ARMS[name])
+    seed_arm = int(cfg.get("seed", SEED))
     if cfg.get("cas"):
         os.environ["EARTH1_CASCADE_COOLDOWN"] = "1"
     else:
         os.environ.pop("EARTH1_CASCADE_COOLDOWN", None)
-    w = birth_world(N, SEED)
+    w = birth_world(N, seed_arm)
     clab.ALPHA0 = w.civ.alpha.copy()
     flab.FLOUR_REF[0] = w.flourishing
     flab.AROUSAL = np.array(
@@ -107,6 +108,7 @@ def run_arm(name):
     flab.ENC_COUNT[0] = np.zeros(N, dtype=np.int64)
     flab.SAMPLES.clear()
     flab.ENC_STATS.clear()
+    flab.DOSE_STATS.clear()
     flab.SAMPLE_DAYS.clear()
     flab.SAMPLE_DAYS.update((1, 60, 90, 120))
 
@@ -118,9 +120,11 @@ def run_arm(name):
         _recompose_adj(w)
 
     op = cfg["op"]
+    k_arm = int(cfg.get("k", 3))
+    mu_arm = float(cfg.get("mu", 0.05))
     if op == "dy":
-        am.propagate = flab.make_dyadic_propagate_v6(3, 0.05)
-        feedmod.feed_tick = flab.make_dyadic_feed_v6(0.05)
+        am.propagate = flab.make_dyadic_propagate_v6(k_arm, mu_arm)
+        feedmod.feed_tick = flab.make_dyadic_feed_v6(mu_arm)
         cont.CONTAGION_GAIN = 0.0
     elif op == "dy_noinf_incprop":
         _orig_prop = am.propagate
@@ -190,7 +194,7 @@ def run_arm(name):
     # cnv == "inc": leave the incumbent ratchet law
 
     relax = cfg["relax"]
-    rng = np.random.default_rng(SEED)
+    rng = np.random.default_rng(seed_arm)
     genesis_sd = w.civ.forces[w.health.alive].std(axis=0)
     panels, alpha_snaps = {}, {}
     tau = trans = None
@@ -262,6 +266,22 @@ def run_arm(name):
             "P_harden_given_posdrive": round(float(
                 (da[pos] > 0).mean()), 4) if pos.any() else None,
             "frac_agents_negdrive": round(float(neg.mean()), 4)}
+    dose = None
+    if flab.DOSE_STATS:
+        days_d = [v for v in flab.DOSE_STATS.values() if "dose_abs" in v]
+        if days_d:
+            dose = {
+                "enc_pp_day": round(float(np.mean(
+                    [v["enc"] / N for v in flab.DOSE_STATS.values()
+                     if "enc" in v])), 3),
+                "dose_abs_pp_day": round(float(np.mean(
+                    [v["dose_abs"] / N for v in days_d])), 5),
+                "dist_mean": round(float(
+                    sum(v.get("dist_sum", 0.0)
+                        for v in flab.DOSE_STATS.values())
+                    / max(1, sum(v.get("enc", 0)
+                                 for v in flab.DOSE_STATS.values()))), 4),
+            }
     enc = {"total": sum(v["n"] for v in flab.ENC_STATS.values()),
            "frac_neg_encounters": round(
                sum(v["neg"] for v in flab.ENC_STATS.values())
@@ -284,6 +304,7 @@ def run_arm(name):
             "capability": soft, "encounters": enc,
             "softening_frac_60_90": softening_frac,
             "cohort_dalpha": cohort_dalpha,
+            "realized_dose": dose,
             "samples_n": len(flab.SAMPLES),
             "sample_head": flab.SAMPLES[:5]}
 

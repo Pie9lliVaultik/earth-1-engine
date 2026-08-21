@@ -145,6 +145,7 @@ ENC_COUNT = [None]        # (N,) int encounters today
 SAMPLES = []
 SAMPLE_DAYS = set()
 ENC_STATS = {}            # day -> {"n": int, "neg": int}
+DOSE_STATS = {}           # day -> realized-dose bookkeeping
 
 
 def _accumulate_drive(f_pre, partner, has, layer, mu, day):
@@ -157,6 +158,9 @@ def _accumulate_drive(f_pre, partner, has, layer, mu, day):
     s = ENC_STATS.setdefault(int(day), {"n": 0, "neg": 0})
     s["n"] += int(has.sum())
     s["neg"] += int((drive[has] < 0).sum())
+    ds = DOSE_STATS.setdefault(int(day), {"enc": 0, "dist_sum": 0.0})
+    ds["enc"] += int(has.sum())
+    ds["dist_sum"] += float(d_e[has].sum())
     if day in SAMPLE_DAYS and len(SAMPLES) < 1000 * len(SAMPLE_DAYS):
         idx = np.flatnonzero(has)[:50]
         for i in idx:
@@ -182,8 +186,13 @@ def make_dyadic_propagate_v6(k=3, mu=0.05, influence=True):
             partner, has = _sample_partners(csr, rng)
             _accumulate_drive(f, partner, has, "tie", mu, _DAY[0])
             if influence:
-                f = np.clip(f + dyadic_move(f, partner, has, mu,
-                                            susceptibility), 0, 1)
+                mv = dyadic_move(f, partner, has, mu, susceptibility)
+                ds = DOSE_STATS.setdefault(int(_DAY[0]), {})
+                ds["dose_abs"] = ds.get("dose_abs", 0.0) + float(
+                    np.abs(mv).mean(axis=1).sum())
+                ds["var_pre"] = ds.get("var_pre", float(f.var()))
+                f = np.clip(f + mv, 0, 1)
+                ds["var_post"] = float(f.var())
         return f
     return op
 
