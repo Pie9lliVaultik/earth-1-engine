@@ -166,35 +166,63 @@ CATS = [
     ("politics", ["election", "vote", "parliament", "president",
                   "coup", "protest"]),
 ]
+# Every category has an ingestion adapter (editorial mapping from
+# headline class to the engine's Scenario inputs), so EVERY event
+# branches through the real engine. Channels the engine does not
+# compute are named in estimated_channels and covered by the LLM
+# estimation layer, each row tagged ESTIMATED in the UI.
+_EST_ECON = ["consumer inflation (pp)", "government approval (pp)",
+             "recession probability within 12m (%)"]
 CAT_ADAPTER = {
     "conflict":   {"forces": {"fear": 0.35, "collective": 0.15},
                    "firm_damage": 0.10, "trade_shock": 0.02,
-                   "status": "READY TO BRANCH"},
+                   "status": "FULL BRANCH",
+                   "estimated_channels": ["oil price (%)",
+                                          "migration pressure (%)"]
+                   + _EST_ECON},
     "climate":    {"forces": {"fear": 0.25}, "firm_damage": 0.12,
-                   "status": "READY TO BRANCH"},
+                   "status": "FULL BRANCH",
+                   "estimated_channels": ["reconstruction cost",
+                                          "migration pressure (%)"]
+                   + _EST_ECON},
     "economics":  {"forces": {"economics": -0.20, "fear": 0.15},
                    "firm_damage": 0.08, "trade_shock": 0.03,
-                   "status": "READY TO BRANCH"},
+                   "status": "FULL BRANCH",
+                   "estimated_channels": _EST_ECON},
     "corporate":  {"forces": {"economics": -0.10}, "firm_damage": 0.15,
-                   "status": "PARTIAL MODEL COVERAGE",
-                   "missing": "sector-level firm exposure adapter"},
+                   "status": "HYBRID BRANCH",
+                   "estimated_channels": ["sector contagion"]
+                   + _EST_ECON},
     "health":     {"forces": {"fear": 0.30}, "firm_damage": 0.05,
-                   "status": "PARTIAL MODEL COVERAGE",
-                   "missing": "epidemiological transmission adapter"},
+                   "status": "HYBRID BRANCH",
+                   "estimated_channels": ["case load direction"]
+                   + _EST_ECON},
     "geopolitics": {"forces": {"fear": 0.15, "identity": 0.10},
                     "trade_shock": 0.02,
-                    "status": "PARTIAL MODEL COVERAGE",
-                    "missing": "alliance/deterrence adapter"},
-    "energy":     {"status": "INSUFFICIENT CAUSAL ADAPTER",
-                   "missing": "energy/shipping chokepoint network, "
-                              "commodity prices, pass-through"},
-    "central-bank": {"status": "INSUFFICIENT CAUSAL ADAPTER",
-                     "missing": "monetary/credit transmission"},
-    "technology": {"status": "INSUFFICIENT CAUSAL ADAPTER",
-                   "missing": "innovation-diffusion adapter"},
-    "politics":   {"status": "PARTIAL MODEL COVERAGE",
-                   "forces": {"identity": 0.15, "collective": 0.10},
-                   "missing": "institutional/electoral adapter"},
+                    "status": "HYBRID BRANCH",
+                    "estimated_channels": ["escalation likelihood (%)"]
+                    + _EST_ECON},
+    "energy":     {"forces": {"fear": 0.15, "economics": -0.15},
+                   "firm_damage": 0.06, "trade_shock": 0.04,
+                   "status": "HYBRID BRANCH",
+                   "estimated_channels": ["oil price (%)",
+                                          "shipping/freight cost (%)"]
+                   + _EST_ECON},
+    "central-bank": {"forces": {"economics": -0.10},
+                     "trade_shock": 0.01,
+                     "status": "HYBRID BRANCH",
+                     "estimated_channels": ["policy rate path",
+                                            "credit conditions"]
+                     + _EST_ECON},
+    "technology": {"forces": {"desire": 0.10, "economics": 0.05},
+                   "status": "HYBRID BRANCH",
+                   "estimated_channels": ["sector valuation",
+                                          "productivity direction"]
+                   + _EST_ECON},
+    "politics":   {"forces": {"identity": 0.15, "collective": 0.10},
+                   "status": "HYBRID BRANCH",
+                   "estimated_channels": ["policy direction"]
+                   + _EST_ECON},
 }
 # Qualitative analyst context per category for channels Earth-1 does
 # not compute. NO magnitudes — direction/mechanism language only,
@@ -270,9 +298,9 @@ def _rank_and_structure(raw):
         countries = [iso for iso, pat in _COUNTRY_PAT.items()
                      if pat.search(it["headline"])]
         ad = CAT_ADAPTER.get(cat, {})
-        status = ad.get("status", "INSUFFICIENT CAUSAL ADAPTER")
-        if status == "READY TO BRANCH" and not countries:
-            status = "PARTIAL MODEL COVERAGE"
+        status = ad.get("status", "HYBRID BRANCH")
+        if status == "FULL BRANCH" and not countries:
+            status = "HYBRID BRANCH"
             ad = dict(ad)
             ad["missing"] = "geographic scope not resolved from headline"
         out.append({**it, "category": cat, "relevance": score,
@@ -288,6 +316,8 @@ def _rank_and_structure(raw):
                                    "simulation output)"},
                     "status": status,
                     "missing": ad.get("missing"),
+                    "estimated_channels": ad.get("estimated_channels",
+                                                 []),
                     "context": CAT_CONTEXT.get(cat),
                     "event_id": f"news{abs(hash(it['headline'])) % 10**8}"})
     out.sort(key=lambda x: -x["relevance"])
@@ -348,6 +378,60 @@ def _narrate(result, event):
         f". The spread between futures is the honest width of the "
         f"forecast: this world is measurably chaotic.")
     return computed
+
+
+# ── LLM estimation layer (clearly labeled; never mixed with
+#    simulated rows). Receives ONLY the computed outputs + headline;
+#    estimates the named non-simulated channels with intervals. ──────
+EST_MODEL = os.environ.get("EARTH1_OBS_EST_MODEL", "claude-sonnet-5")
+
+
+def _estimate(event, result):
+    key = os.environ.get("ANTHROPIC_API_KEY")
+    if not key:
+        return {"available": False,
+                "reason": "estimation layer offline — export "
+                          "ANTHROPIC_API_KEY before launch"}
+    o = result["outcomes"]["d30"]
+    computed = {k: (round(v["mean"], 4) if v else None)
+                for k, v in o.items()}
+    channels = event.get("estimated_channels", [])
+    prompt = (
+        "You are the ESTIMATION LAYER of Earth-1, a civilization "
+        "simulator. The engine computed these 30-day treatment-"
+        "control differences for the event below; estimate ONLY the "
+        "listed non-simulated channels. Rules: stay directionally "
+        "consistent with the computed outputs; be conservative; "
+        "give a central value and a wide interval; one short basis "
+        "phrase each (outside-view/analog reasoning). These will be "
+        "displayed to users tagged as ESTIMATED, next to rows tagged "
+        "SIMULATED. Return STRICT JSON only: "
+        '[{"metric": str, "value": str, "interval": str, '
+        '"basis": str}]\n\n'
+        f"EVENT: {event['headline']}\n"
+        f"CLASS: {event['category']}; scope: "
+        f"{event.get('country_names') or 'global'}\n"
+        f"COMPUTED (30d, scenario minus control): "
+        f"{json.dumps(computed)}\n"
+        f"ESTIMATE THESE CHANNELS: {json.dumps(channels)}")
+    body = json.dumps({"model": EST_MODEL, "max_tokens": 800,
+                       "messages": [{"role": "user",
+                                     "content": prompt}]}).encode()
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages", data=body,
+        headers={"x-api-key": key, "anthropic-version": "2023-06-01",
+                 "content-type": "application/json"})
+    try:
+        resp = json.loads(urllib.request.urlopen(
+            req, timeout=45).read())
+        txt = resp["content"][0]["text"]
+        rows = json.loads(txt[txt.index("["):txt.rindex("]") + 1])
+        return {"available": True, "model": EST_MODEL, "rows": rows,
+                "label": "ESTIMATED by LLM from computed outputs + "
+                         "outside-view reasoning — NOT simulated"}
+    except Exception as e:
+        return {"available": False,
+                "reason": f"estimation call failed: {e}"}
 
 
 # ── branching (the product): paired control/scenario, common dice ───
@@ -456,6 +540,7 @@ def _run_branch(event, branch_key=None, remove=None):
                         else None,
                         "deprivation": float(
                             w_.life.deprivation[a].mean()),
+                        "wealth": float(w_.life.wealth[a].mean()),
                         "fear": float(
                             w_.civ.forces[a, Force.FEAR].mean()),
                         "firm_health": float(w_.life.firm_health[
@@ -476,6 +561,10 @@ def _run_branch(event, branch_key=None, remove=None):
                     })
                 B["progress"] = (p * BRANCH_DAYS + d) / (
                     BRANCH_PAIRS * BRANCH_DAYS)
+            # full 8-force human response at final day, this pair
+            mboth = hit & wc.health.alive & ws.health.alive
+            fdiff = (ws.civ.forces[mboth].mean(axis=0)
+                     - wc.civ.forces[mboth].mean(axis=0))
             # WHO decomposition at final day, this pair
             who_p = {}
             for label, mask in cohorts.items():
@@ -490,7 +579,8 @@ def _run_branch(event, branch_key=None, remove=None):
                             ws.civ.forces[m, Force.FEAR].mean()
                             - wc.civ.forces[m, Force.FEAR].mean()),
                         "n": int(lfm.sum())}
-            pairs.append({"days": days, "who": who_p})
+            pairs.append({"days": days, "who": who_p,
+                          "forces_final": [float(x) for x in fdiff]})
 
         def diff(metric, day_idx):
             ds = [p_["days"]["s"][day_idx][metric] for p_ in pairs
@@ -507,6 +597,7 @@ def _run_branch(event, branch_key=None, remove=None):
         def outcome_block(day_idx):
             return {
                 "employment_pp": diff("employment", day_idx),
+                "reserves_days": diff("wealth", day_idx),
                 "deprivation": diff("deprivation", day_idx),
                 "fear": diff("fear", day_idx),
                 "firm_health": diff("firm_health", day_idx),
@@ -554,17 +645,7 @@ def _run_branch(event, branch_key=None, remove=None):
             "who": who,
             "series": pairs[0]["days"],
             "earthlings": bios,
-            "not_yet_computable": [
-                {"metric": "Oil price",
-                 "missing": "energy/shipping chokepoint adapter"},
-                {"metric": "Inflation",
-                 "missing": "calibrated price pass-through"},
-                {"metric": "Migration",
-                 "missing": "event-conditional migration adapter"},
-                {"metric": "Opinion readout",
-                 "missing": "observer pass not wired into demo "
-                            "horizon"},
-            ],
+            "estimated_channels": event.get("estimated_channels", []),
             "removed_component": remove,
             "analyst_context": event.get("context"),
             "causal_path_label": "MODEL ARCHITECTURE (executable "
@@ -577,7 +658,13 @@ def _run_branch(event, branch_key=None, remove=None):
                             "deprivation", "force state",
                             "conviction / opinion"],
         }
+        result["human_response"] = {
+            Force(k).name: float(np.mean(
+                [p_["forces_final"][k] for p_ in pairs]))
+            for k in range(8)}
         result["summary_computed"] = _narrate(result, event)
+        if remove is None:
+            result["estimated"] = _estimate(event, result)
         B.update({"status": "done", "result": result})
     except Exception as e:
         import traceback
@@ -682,10 +769,6 @@ def start_branch(event_id: str):
     ev = items.get(event_id)
     if ev is None:
         return JSONResponse({"error": "unknown event"}, status_code=404)
-    if ev["status"] == "INSUFFICIENT CAUSAL ADAPTER":
-        return JSONResponse({"error": "insufficient causal adapter",
-                             "missing": ev.get("missing")},
-                            status_code=409)
     if event_id in BRANCHES and BRANCHES[event_id]["status"] in (
             "running", "done"):
         return BRANCHES[event_id]

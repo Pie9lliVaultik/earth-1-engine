@@ -29,10 +29,14 @@ padding:10px;margin-bottom:8px;cursor:pointer;transition:border-color .2s}
 .card .src{color:var(--dim);font-size:10px}
 .chip{display:inline-block;font-size:9px;letter-spacing:.08em;padding:1px 7px;
 border-radius:8px;border:1px solid;margin-top:6px;margin-right:5px}
-.READY{color:var(--ok);border-color:var(--ok)}
-.PARTIAL{color:var(--warn);border-color:var(--warn)}
-.INSUFFICIENT{color:var(--bad);border-color:var(--bad)}
+.FULL{color:var(--ok);border-color:var(--ok)}
+.HYBRID{color:var(--acc);border-color:var(--acc)}
 .DONE{color:var(--acc);border-color:var(--acc)}
+.tag{font-size:8px;letter-spacing:.12em;padding:1px 5px;border-radius:3px;
+border:1px solid var(--line);color:var(--dim);vertical-align:middle}
+.tag.sim{color:var(--ok);border-color:#2a4a2a}
+.tag.est{color:var(--warn);border-color:#4a3a1a}
+.outcome .v.est{color:var(--warn);font-size:15px}
 #pulse div{padding:2px 0;border-bottom:1px dotted #10151d;font-size:11px;
 opacity:0;animation:fadein .6s forwards}
 @keyframes fadein{to{opacity:1}}
@@ -161,14 +165,6 @@ async function news(){
 }
 function openEvent(id){
   CURRENT=id;EV=window._news[id];const st=$('#stage');
-  if(EV.status==='INSUFFICIENT CAUSAL ADAPTER'){
-    st.innerHTML=`<div class="big">${EV.headline}</div>
-    <p style="margin:16px 0" class="err">EVENT UNDERSTOOD — PHYSICAL ADAPTER NOT YET AVAILABLE</p>
-    <p style="color:var(--dim);max-width:540px">Missing: ${EV.missing}.</p>
-    ${EV.context?`<div class="context"><span class="lbl">ANALYST CONTEXT — not a simulation output</span><br>${EV.context}</div>`:''}
-    <p style="color:var(--dim);max-width:540px;margin-top:10px">Earth-1 answers
-    with computed futures or says what it cannot yet compute. It does not guess.</p>`;
-    return}
   st.innerHTML=`<div class="big">${EV.headline}</div>
    <div class="kv">
      <span class="k">event class</span><span>${EV.category} · ${(EV.country_names||[]).join(', ')||'scope unresolved'}</span>
@@ -194,16 +190,24 @@ function poll(id){
     else if(b.status==='error'){clearInterval(POLL);out.innerHTML=`<div class="err">branch error: ${b.error}</div>`;}
   },900);
 }
+function estRows(r){
+  const e=r.estimated;
+  if(!e)return '';
+  if(!e.available)return `<div class="outcome nyc"><span class="n">Estimated channels (${(r.estimated_channels||[]).join(', ')||'—'})</span><span class="v">${e.reason}</span></div>`;
+  return e.rows.map(x=>`<div class="outcome"><span class="n">${x.metric} <span class="tag est">ESTIMATED</span><br><span class="sub">${x.basis||''}</span></span>
+   <span style="text-align:right"><span class="v est">${x.value}</span><br><span class="sub">${x.interval||''}</span></span></div>`).join('')
+   +`<div class="sub" style="color:var(--dim);padding:4px 2px">${e.label} · model ${e.model}</div>`;
+}
 function fmtv(o,scale,unit,dec){if(!o)return null;
   const m=o.mean*scale,s=o.spread.map(x=>x*scale);
   return `<span class="v ${m>0?'pos':'neg'}">${m>0?'+':''}${m.toFixed(dec)}${unit}</span><br>
   <span class="sub">across futures: ${s[0].toFixed(dec)} … ${s[1].toFixed(dec)}</span>`}
 const OUTS=[
  ['employment_pp','Employment','share of the affected labour force in work',100,' pp',2],
+ ['reserves_days','Household reserves','days of survival in reserve',1,' days',2],
  ['deprivation','Household deprivation','unmet basic need, 0–1',1,'',4],
- ['fear','FEAR','psychological force field, 0–1',1,'',4],
  ['firm_health','Firm health','mean health of firms in affected countries',1,'',4],
- ['mortality','People alive','affected cohort',1,'',1]];
+ ['mortality','Excess deaths','affected cohort, scenario minus control',-1,'',1]];
 function render(){
   const r=RES,out=$('#branchout');
   const o=r.outcomes[HOR];
@@ -216,8 +220,8 @@ function render(){
     <button class="hbtn ghost" title="not run at demo scale">D365</button></div>
   <h2>DAY ${day} — EVENT MINUS CONTROL · ${2*r.pairs} futures · affected population ${r.cohort_n.toLocaleString()}</h2>
   ${OUTS.map(([k,name,sub,sc,u,dec])=>{const f=fmtv(o[k],sc,u,dec);
-    return f?`<div class="outcome"><span class="n">${name}<br><span class="sub">${sub}</span></span><span style="text-align:right">${f}</span></div>`:''}).join('')}
-  ${r.not_yet_computable.map(x=>`<div class="outcome nyc"><span class="n">${x.metric}</span><span class="v">NOT YET COMPUTABLE — ${x.missing}</span></div>`).join('')}
+    return f?`<div class="outcome"><span class="n">${name} <span class="tag sim">SIMULATED</span><br><span class="sub">${sub}</span></span><span style="text-align:right">${f}</span></div>`:''}).join('')}
+  ${estRows(r)}
   <div class="fanwrap"><span class="lbl">THE FUTURES THEMSELVES — every line is one future actually lived</span>
     <canvas id="fan" width="640" height="220"></canvas>
     <div class="legend">metric:
@@ -227,6 +231,10 @@ function render(){
       <i style="background:var(--ctl)"></i>control futures <i style="background:var(--acc)"></i>event futures</div></div>
   <div class="summary"><span class="lbl">EARTH-1 SUMMARY — COMPUTED</span><br>${r.summary_computed}</div>
   ${r.analyst_context?`<div class="context"><span class="lbl">ANALYST CONTEXT — channels not yet computed (no numbers invented)</span><br>${r.analyst_context}</div>`:''}
+  <h2>HUMAN RESPONSE — the 8-force field, event minus control (day ${r.horizon_days}) <span class="tag sim">SIMULATED</span></h2>
+  <div class="who">${Object.entries(r.human_response||{}).map(([k,v])=>{
+    const w=Math.min(Math.abs(v)*1200,140);
+    return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:${v>0?'var(--bad)':'var(--ok)'}"></div></div><span>${v>0?'+':''}${v.toFixed(4)}</span>`}).join('')}</div>
   <h2>WHO — computed cohort decomposition (employment, day ${r.horizon_days})</h2>
   <div class="who">${Object.entries(r.who).map(([k,v])=>{
     const pp=v.employment_pp*100,w=Math.min(Math.abs(pp)*40,140);
