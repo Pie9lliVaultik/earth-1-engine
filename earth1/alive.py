@@ -96,6 +96,27 @@ CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
                      relax=0.25, layers=2)
 
 
+def cascade_residue_levels(residues, day):
+    """Recovered f933c59 EventLog semantics (PF-DECAY-1, frozen):
+    factor = 2^(-(day - t_f)/h); h <= 0 means factor 1.0 — a PERMANENT
+    level, not zero; a residue leaves the active set when factor < 0.01
+    or max|effect|*factor < 0.01. Returns (levels, surviving) where
+    levels is a list of (loc_key, signed level vector) over the active
+    set. Pure — the PF-DECAY-1 KAs test this function against the
+    analytic law directly."""
+    levels, surviving = [], []
+    for r in residues:
+        dt = day - r["day"]
+        h = r["h"]
+        factor = 1.0 if h <= 0 else 2.0 ** (-dt / h)
+        mx = float(np.max(np.abs(r["effects"])))
+        if factor < 0.01 or mx * factor < 0.01:
+            continue
+        surviving.append(r)
+        levels.append((r["loc"], r["effects"] * factor))
+    return levels, surviving
+
+
 def live_one_day(w: World, rng, *,
                  beta: float = CANONICAL_DAY["beta"],
                  residue: float = CANONICAL_DAY["residue"],
@@ -189,6 +210,32 @@ def live_one_day(w: World, rng, *,
         target[hm, Force.COLLECTIVE] = np.clip(
             target[hm, Force.COLLECTIVE] - 0.20, 0, 1)
 
+    # PF-DECAY-1 (founder-authorized, experimental flag): the restored
+    # decay_half_life contract. A fired cascade owns a bounded residue
+    # state; its contribution is a READ-TIME DECAYING LEVEL in the
+    # target path — event fires once → state exists → state contributes
+    # a decaying level → state disappears (legacy 0.01 expiry). Never
+    # F += L. Legacy total clip ±0.5 per agent/channel preserved.
+    import os as _os
+    _cresidue_on = _os.environ.get("EARTH1_DECAY_RESIDUE") == "1"
+    if _cresidue_on:
+        _cres = getattr(w.chronicle, "cascade_residues", None)
+        if _cres:
+            levels, surviving = cascade_residue_levels(_cres, w.day)
+            w.chronicle.cascade_residues = surviving
+            if levels:
+                loc_r = (civ.country.astype(np.int64) * 1000
+                         + civ.region.astype(np.int64) * 2
+                         + civ.urban.astype(np.int64))
+                shift = np.zeros_like(target)
+                for lk, vec in levels:
+                    shift[loc_r == lk] += vec
+                np.clip(shift, -0.5, 0.5, out=shift)
+                target = np.clip(target + shift, 0.0, 1.0)
+                st["cascade_residue_shift_max"] = round(
+                    float(np.abs(shift).max()), 6)
+            st["cascade_residue_active"] = len(surviving)
+
     # 7 influence, 8 circumstance
     from earth1.susceptibility import compute as susceptibility_of
     sus = susceptibility_of(civ, life, w.flourishing)
@@ -258,8 +305,13 @@ def live_one_day(w: World, rng, *,
     # decay_half_life remains declared-but-unconsumed: its intended
     # state semantics are ambiguous — recorded as a second unresolved
     # contradiction, NOT invented here.
-    import os as _os
     _cooldown_on = _os.environ.get("EARTH1_CASCADE_COOLDOWN") == "1"
+    if _cresidue_on and not _cooldown_on:
+        # the legacy contract ALWAYS gated firing on the cooldown; a
+        # residue per hot day would be the probe-1 grinder in level
+        # form. Fail loudly rather than silently recreate the bug.
+        raise RuntimeError("EARTH1_DECAY_RESIDUE=1 requires "
+                           "EARTH1_CASCADE_COOLDOWN=1")
     if _cooldown_on and getattr(w.chronicle, "cascade_last_fired",
                                 None) is None:
         w.chronicle.cascade_last_fired = {}
@@ -286,6 +338,23 @@ def live_one_day(w: World, rng, *,
         if not hot.any():
             continue
         fired += int(hot.sum())
+        if _cresidue_on:
+            # PF-DECAY-1: the firing creates bounded residue state; the
+            # decaying level is applied read-side in the target path
+            # (see cascade_residue_levels). No instant permanent write.
+            if getattr(w.chronicle, "cascade_residues", None) is None:
+                w.chronicle.cascade_residues = []
+            eff = np.zeros(civ.forces.shape[1])
+            for fname, delta in rule.effects.items():
+                k = getattr(Force, fname.upper(), None)
+                if k is not None:
+                    eff[k] = delta
+            for hidx in np.flatnonzero(hot):
+                w.chronicle.cascade_residues.append(
+                    {"rule": rule.name, "loc": int(uloc[hidx]),
+                     "day": int(w.day), "effects": eff.copy(),
+                     "h": float(rule.decay_half_life)})
+            continue
         m = hot[li]
         for fname, delta in rule.effects.items():
             k = getattr(Force, fname.upper(), None)

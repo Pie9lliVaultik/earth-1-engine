@@ -193,6 +193,32 @@ def run_arm(name):
                                       gain=GAIN)
     # cnv == "inc": leave the incumbent ratchet law
 
+    # PF-DECAY-1 additive hooks (conformance regression only; every
+    # key absent => byte-identical behavior): residue (env flag),
+    # casfire (clamp days: biggest locality held in panic condition
+    # pre-tick), days (arm horizon), no_fork (skip the day-90 fork)
+    if cfg.get("residue"):
+        os.environ["EARTH1_DECAY_RESIDUE"] = "1"
+    else:
+        os.environ.pop("EARTH1_DECAY_RESIDUE", None)
+    if cfg.get("rules_off"):
+        # R4 no-trigger control: a world where no rule CAN fire
+        import earth1.thresholds as _th
+        _th.TRANSITION_RULES = []
+    days_arm = int(cfg.get("days", DAYS))
+    casfire = cfg.get("casfire") or ()
+    pf_cohort = pf_big = None
+    pf_series, pf_fire_days, pf_big_fire_days = [], [], []
+    pf_fired = 0
+    if casfire:
+        locv = (w.civ.country.astype(np.int64) * 1000
+                + w.civ.region.astype(np.int64) * 2
+                + w.civ.urban.astype(np.int64))
+        ai = np.flatnonzero(w.health.alive)
+        vv, cc = np.unique(locv[ai], return_counts=True)
+        pf_big = int(vv[np.argmax(cc)])
+        pf_cohort = ai[locv[ai] == pf_big]
+
     relax = cfg["relax"]
     lam_adapt = cfg.get("lam")        # IT9 adaptive baseline (or None)
     def _adapt():
@@ -205,9 +231,26 @@ def run_arm(name):
     baseline_d90 = None
     panels, alpha_snaps = {}, {}
     tau = trans = None
-    for d in range(1, DAYS + 1):
+    for d in range(1, days_arm + 1):
         flab._DAY[0] = d
-        live_one_day(w, rng, relax=relax)
+        if casfire and d in casfire:
+            w.civ.forces[pf_cohort, 2] = 0.20   # ECONOMICS < 0.3
+            w.civ.forces[pf_cohort, 0] = 0.60   # FEAR > 0.5
+        st_day = live_one_day(w, rng, relax=relax)
+        if casfire:
+            nf = int(st_day.get("cascades_fired", 0))
+            if nf:
+                pf_fired += nf
+                pf_fire_days.append(d)
+            from earth1.alive import cascade_residue_levels
+            resl = getattr(w.chronicle, "cascade_residues", None) or []
+            lv, _ = cascade_residue_levels(resl, w.day)
+            lvl = float(sum(v[0] for lk, v in lv if lk == pf_big))
+            if any(r["loc"] == pf_big and r["day"] == w.day - 1
+                   for r in resl):
+                pf_big_fire_days.append(d)
+            pf_series.append({"day": d, "fear_level": round(lvl, 5),
+                              "n_residues": len(resl)})
         _adapt()
         if d in (60, 90):
             alpha_snaps[d] = w.civ.alpha.copy()
@@ -216,7 +259,7 @@ def run_arm(name):
                 if w.life.force_baseline is not None else None
         if d % 10 == 0:
             panels[str(d)] = panel(w, genesis_sd)
-        if d == TAU_AT:
+        if d == TAU_AT and not cfg.get("no_fork"):
             rng_state = rng.bit_generator.state
             w2 = copy.deepcopy(w)
             rng2 = np.random.default_rng()
@@ -358,7 +401,19 @@ def run_arm(name):
         alive = w.health.alive
         softening_frac = round(float(
             (a90[alive] < a60[alive] - 1e-6).mean()), 4)
+    pf = None
+    if casfire:
+        pf = {"big_loc": pf_big, "cohort_n": int(pf_cohort.size),
+              "fired_total": pf_fired, "fire_days": pf_fire_days,
+              "big_loc_fire_days": pf_big_fire_days,
+              "series": pf_series}
+    cascade_state = {
+        "n_residues": len(getattr(w.chronicle, "cascade_residues",
+                                  None) or []),
+        "n_last_fired": len(getattr(w.chronicle, "cascade_last_fired",
+                                    None) or {})}
     return {"arm": name, "cfg": {k: str(v) for k, v in cfg.items()},
+            "pf": pf, "cascade_state": cascade_state,
             "panels": panels, "tau": tau, "transmission": trans,
             "capability": soft, "encounters": enc,
             "softening_frac_60_90": softening_frac,
