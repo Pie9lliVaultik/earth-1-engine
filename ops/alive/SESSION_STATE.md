@@ -91,8 +91,10 @@ instruments @f718b0f): KA 12/12 PASS; regression PASS (R4 identity
 trio bitwise with 1562 firings; overlay analytic-exact 0.0; panic
 cadence exact; R3 stress-arm sat miss bitwise-attributed to the
 clamp; IT12 isolation survives at 0.595 in band).
-FREEZE COMPLETE CANDIDATE declared per ruling
-(FREEZE_COMPLETE_CANDIDATE_0_8.md) — MECHANISM DISCOVERY CLOSED.
-Disclosures standing: D1 clamp-stress margin; D2 effective-view
-saturation 0.64 at natural firing rates (cascade census = top open
-question). Next: full 0.8 acceptance battery registration.
+FREEZE CONFIRMED by founder; candidate executable = 1ae8740;
+consumer audit clean (immutable F_effective; zero physics
+consumers); NO MORE LOCAL PARAMETER OR MECHANISM SEARCH. Acceptance
+battery master registration @334abf5 (stages A-I frozen; dual
+health families; D1→adversarial item; D2→Stage C census; held-out
+10d case in Stage D). Stage A (365d endurance, seeds 9001-9003)
+RUNNING on prime @45564c1.
