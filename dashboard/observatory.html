@@ -4,7 +4,8 @@
 <title>EARTH-1 — LIVE CIVILIZATION OBSERVATORY</title>
 <style>
 :root{--bg:#050608;--panel:#0a0d12;--line:#1b2330;--tx:#c9d4e3;
---dim:#5d6b80;--acc:#4fd1c5;--warn:#e8b34b;--bad:#e06c75;--ok:#7ec97e}
+--dim:#5d6b80;--acc:#4fd1c5;--warn:#e8b34b;--bad:#e06c75;--ok:#7ec97e;
+--ctl:#8892a6}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:radial-gradient(1200px 800px at 60% -10%,#0b1220 0%,var(--bg) 55%);
 color:var(--tx);font:13px/1.5 "SF Mono","JetBrains Mono",Menlo,monospace;
@@ -15,57 +16,75 @@ header h1{font-size:15px;letter-spacing:.35em;font-weight:600}
 header .live{color:var(--acc);animation:pulse 2.2s infinite}
 @keyframes pulse{50%{opacity:.35}}
 header .meta{color:var(--dim);font-size:11px;margin-left:auto;text-align:right}
-#mode{color:var(--warn);font-size:10px;padding:2px 22px;border-bottom:1px solid var(--line);
-letter-spacing:.05em}
+#mode{color:var(--warn);font-size:10px;padding:2px 22px;border-bottom:1px solid var(--line)}
 main{flex:1;display:grid;grid-template-columns:330px 1fr 300px;min-height:0}
 section{border-right:1px solid var(--line);overflow-y:auto;padding:14px}
 section:last-child{border-right:none}
-h2{font-size:10px;letter-spacing:.25em;color:var(--dim);margin-bottom:10px}
+h2{font-size:10px;letter-spacing:.25em;color:var(--dim);margin:14px 0 8px}
+h2:first-child{margin-top:0}
 .card{border:1px solid var(--line);background:var(--panel);border-radius:4px;
 padding:10px;margin-bottom:8px;cursor:pointer;transition:border-color .2s}
 .card:hover{border-color:var(--acc)}
 .card .hl{font-size:12px;margin-bottom:6px}
 .card .src{color:var(--dim);font-size:10px}
 .chip{display:inline-block;font-size:9px;letter-spacing:.08em;padding:1px 7px;
-border-radius:8px;border:1px solid;margin-top:6px}
+border-radius:8px;border:1px solid;margin-top:6px;margin-right:5px}
 .READY{color:var(--ok);border-color:var(--ok)}
 .PARTIAL{color:var(--warn);border-color:var(--warn)}
 .INSUFFICIENT{color:var(--bad);border-color:var(--bad)}
-#pulse div{padding:2px 0;border-bottom:1px dotted #10151d;color:var(--tx);
-font-size:11px;opacity:0;animation:fadein .6s forwards}
+.DONE{color:var(--acc);border-color:var(--acc)}
+#pulse div{padding:2px 0;border-bottom:1px dotted #10151d;font-size:11px;
+opacity:0;animation:fadein .6s forwards}
 @keyframes fadein{to{opacity:1}}
 #pulse .t{color:var(--dim)}
 .force{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:10px}
 .force .bar{flex:1;height:4px;background:#10151d;border-radius:2px;overflow:hidden}
 .force .fill{height:100%;background:var(--acc);transition:width 1s}
-#center{display:flex;flex-direction:column}
-#stage{flex:1;padding:20px;overflow-y:auto}
-.big{font-size:26px;font-weight:600}
-.kv{display:grid;grid-template-columns:auto auto;gap:2px 26px;margin:14px 0;
-font-size:12px}
+#stage{flex:1;padding:20px 26px;overflow-y:auto}
+.big{font-size:24px;font-weight:600;line-height:1.25}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 26px;margin:14px 0;font-size:11px}
 .kv .k{color:var(--dim)}
 .outcome{display:flex;justify-content:space-between;align-items:baseline;
-border-bottom:1px solid var(--line);padding:9px 2px}
-.outcome .v{font-size:17px}
+border-bottom:1px solid var(--line);padding:10px 2px;gap:14px}
+.outcome .n{min-width:210px}
+.outcome .sub{color:var(--dim);font-size:10px}
+.outcome .v{font-size:19px;white-space:nowrap}
 .pos{color:var(--bad)}.neg{color:var(--ok)}
-.nyc{color:var(--dim);font-style:italic}
-.nyc .v{font-size:11px;color:var(--warn)}
+.nyc .v{font-size:10px;color:var(--warn)}
 button{background:none;border:1px solid var(--acc);color:var(--acc);
-font:inherit;padding:6px 16px;border-radius:3px;cursor:pointer;letter-spacing:.15em}
+font:inherit;font-size:11px;padding:6px 14px;border-radius:3px;cursor:pointer;
+letter-spacing:.12em;margin-right:8px}
 button:hover{background:#0f2724}
-.tree{font-size:11px;color:var(--dim);white-space:pre;line-height:1.7;margin:14px 0}
-.path{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:11px}
-.path span{border:1px solid var(--line);background:var(--panel);padding:3px 8px;
-border-radius:3px}
+button.ghost{border-color:var(--line);color:var(--dim)}
+.hbtn{padding:3px 10px;font-size:10px}
+.hbtn.on{background:#0f2724}
+.path{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:11px;margin-top:6px}
+.path span{border:1px solid var(--line);background:var(--panel);padding:3px 8px;border-radius:3px}
 .path em{color:var(--acc);font-style:normal}
-.eline{border:1px solid var(--line);border-radius:4px;padding:8px;margin:6px 0;
-font-size:11px}
+.summary{border-left:2px solid var(--acc);padding:10px 14px;margin:14px 0;
+font-size:13px;line-height:1.7;background:var(--panel)}
+.context{border-left:2px solid var(--warn);padding:10px 14px;margin:10px 0;
+font-size:11px;line-height:1.6;color:#b9a77a;background:var(--panel)}
 .lbl{font-size:9px;letter-spacing:.2em;color:var(--dim)}
+.who{display:grid;grid-template-columns:130px 1fr auto;gap:4px 10px;
+align-items:center;font-size:11px;margin-top:8px}
+.who .wbar{height:8px;border-radius:2px}
+.eline{border:1px solid var(--line);border-radius:4px;padding:12px;margin:8px 0;font-size:11px}
+.eline b{font-size:12px}
+.tl{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.tl h4{font-size:9px;letter-spacing:.2em;margin-bottom:5px}
+.tl .c h4{color:var(--ctl)} .tl .s h4{color:var(--acc)}
+.tl div.ev{padding:1px 0;color:var(--tx)}
+.tl .d{color:var(--dim)}
+.attr{border:1px solid var(--line);border-radius:4px;padding:10px;margin:8px 0;font-size:11px}
 footer{border-top:1px solid var(--line);padding:8px 22px;color:var(--dim);
-font-size:10px;display:flex;gap:28px}
+font-size:10px;display:flex;gap:28px;flex-wrap:wrap}
 footer b{color:var(--tx)}
-canvas{display:block;margin:0 auto}
+canvas{display:block}
 .err{color:var(--bad);font-size:11px}
+.fanwrap{margin:14px 0}
+.legend{font-size:10px;color:var(--dim);margin-top:4px}
+.legend i{display:inline-block;width:16px;height:2px;vertical-align:middle;margin:0 4px 0 10px}
 </style></head><body>
 <header>
   <h1>EARTH-1</h1><span class="live">● LIVE CIVILIZATION</span>
@@ -77,13 +96,15 @@ canvas{display:block;margin:0 auto}
     <h2>TODAY — EVENTS SHAPING POSSIBLE FUTURES</h2>
     <div id="news">loading real ingestion…</div>
   </section>
-  <section id="center"><div id="stage">
-    <div class="big" style="letter-spacing:.1em">A CIVILIZATION,<br>ALREADY ALIVE.</div>
-    <p style="color:var(--dim);margin-top:14px;max-width:520px">
-    Underneath this interface a synthetic civilization is living through
-    days — jobs, firms, memories, fear — via the canonical Earth-1
-    engine. Select a world event on the left to branch this civilization
-    into matched control / scenario futures with common dice.</p>
+  <section id="center" style="display:flex;flex-direction:column"><div id="stage">
+    <div class="big" style="letter-spacing:.08em">A CIVILIZATION,<br>ALREADY ALIVE.</div>
+    <p style="color:var(--dim);margin-top:14px;max-width:540px">
+    Beneath this interface a synthetic civilization is living through days —
+    jobs, firms, memories, fear — via the canonical Earth-1 engine.
+    Pick a world event on the left. Earth-1 will fork this civilization into
+    <b style="color:var(--tx)">matched futures</b> — several where the event
+    happens, several where it never does, same people, same dice — and let
+    all of them live forward.</p>
     <canvas id="globe" width="420" height="420"></canvas>
   </div></section>
   <section id="right">
@@ -95,14 +116,13 @@ canvas{display:block;margin:0 auto}
 <footer id="foot"></footer>
 <script>
 const $=q=>document.querySelector(q);
-let IDENT=null, CURRENT=null, POLL=null;
-
+let IDENT=null,CURRENT=null,POLL=null,HOR='d30',RES=null,EV=null;
 async function j(u,opt){const r=await fetch(u,opt);return r.json()}
 
 async function identity(){
   IDENT=await j('/api/identity');
-  $('#hmeta').innerHTML=`world day <b>${IDENT.world_day}</b> · pop ${IDENT.population.toLocaleString()} (${IDENT.alive.toLocaleString()} alive) · ${IDENT.countries} countries · commit ${IDENT.model_commit} · seed ${IDENT.seed}`;
-  $('#mode').textContent='⚠ '+IDENT.mode+' — physics: '+IDENT.physics;
+  $('#hmeta').innerHTML=`world day <b>${IDENT.world_day}</b> · pop ${IDENT.population.toLocaleString()} · ${IDENT.countries} countries · commit ${IDENT.model_commit} · seed ${IDENT.seed}`;
+  $('#mode').textContent='⚠ '+IDENT.mode+' — '+IDENT.physics;
   const fdiv=$('#forces');fdiv.innerHTML='<h2>FORCE FIELD (population mean)</h2>';
   for(const [k,v] of Object.entries(IDENT.forces)){
     fdiv.innerHTML+=`<div class="force"><span style="width:96px">${k}</span>
@@ -111,103 +131,187 @@ async function identity(){
   $('#foot').innerHTML=`<span>standing memories <b>${IDENT.memories_standing}</b></span>
   <span>employment <b>${(IDENT.employment*100).toFixed(1)}%</b></span>
   <span>mean deprivation <b>${IDENT.deprivation.toFixed(3)}</b></span>
-  <span>engine ticks <b>${IDENT.ticks}</b></span>
-  <span>NOW → D7 → D30 (computed) · D90 · D365 (not run at demo scale)</span>`;
+  <span>engine days lived <b>${IDENT.ticks}</b></span>
+  <span>horizons: NOW → D7 → D30 computed · D90/D365 not run at demo scale</span>`;
 }
 async function pulse(){
   const p=await j('/api/pulse');const el=$('#pulse');
-  el.innerHTML=p.pulse.slice(-28).reverse().map(e=>
+  el.innerHTML=(p.paused_for_branch?'<div style="color:var(--warn)">world paused — branching…</div>':'')
+   +p.pulse.slice(-28).reverse().map(e=>
    `<div><span class="t">${e.t} · d${e.day}</span> — ${e.line}</div>`).join('');
-  if(p.paused_for_branch)el.innerHTML='<div style="color:var(--warn)">world paused — branching in progress…</div>'+el.innerHTML;
 }
 async function news(){
   const n=await j('/api/news');const el=$('#news');
   if(n.error){el.innerHTML=`<div class="err">${n.error}</div>`;return}
   el.innerHTML=n.items.map(i=>{
     const cls=i.status.split(' ')[0];
+    let badge='';
+    if(i.branch&&i.branch.status==='done')
+      badge=`<span class="chip DONE">${i.branch.futures} FUTURES COMPUTED${i.branch.headline_outcome?' · '+i.branch.headline_outcome:''}</span>`;
+    else if(i.branch&&i.branch.status==='running')
+      badge=`<span class="chip DONE">branching… ${(100*(i.branch.progress||0)).toFixed(0)}%</span>`;
     return `<div class="card" onclick="openEvent('${i.event_id}')">
       <div class="hl">${i.headline}</div>
-      <div class="src">${i.source||''} · ${i.category} · ${(i.countries||[]).join(', ')||'scope unresolved'}</div>
-      <span class="chip ${cls}">${i.status}</span>
+      <div class="src">${i.source||''} · ${i.category} · ${(i.country_names||[]).join(', ')||'scope unresolved'}</div>
+      <span class="chip ${cls}">${i.status}</span>${badge}
       ${i.missing?`<div class="src" style="margin-top:4px">missing: ${i.missing}</div>`:''}
     </div>`}).join('')
     +`<div class="src" style="margin-top:8px">${n.layer}<br>ingested ${n.ingested_at}</div>`;
   window._news=Object.fromEntries(n.items.map(i=>[i.event_id,i]));
 }
-async function openEvent(id){
-  CURRENT=id;const ev=window._news[id];const st=$('#stage');
-  if(ev.status==='INSUFFICIENT CAUSAL ADAPTER'){
-    st.innerHTML=`<div class="big">${ev.headline}</div>
+function openEvent(id){
+  CURRENT=id;EV=window._news[id];const st=$('#stage');
+  if(EV.status==='INSUFFICIENT CAUSAL ADAPTER'){
+    st.innerHTML=`<div class="big">${EV.headline}</div>
     <p style="margin:16px 0" class="err">EVENT UNDERSTOOD — PHYSICAL ADAPTER NOT YET AVAILABLE</p>
-    <p style="color:var(--dim)">Missing: ${ev.missing}. Earth-1 does not
-    fabricate consequences it cannot compute.</p>`;return}
-  st.innerHTML=`<div class="big">${ev.headline}</div>
+    <p style="color:var(--dim);max-width:540px">Missing: ${EV.missing}.</p>
+    ${EV.context?`<div class="context"><span class="lbl">ANALYST CONTEXT — not a simulation output</span><br>${EV.context}</div>`:''}
+    <p style="color:var(--dim);max-width:540px;margin-top:10px">Earth-1 answers
+    with computed futures or says what it cannot yet compute. It does not guess.</p>`;
+    return}
+  st.innerHTML=`<div class="big">${EV.headline}</div>
    <div class="kv">
-     <span class="k">event class</span><span>${ev.category}</span>
-     <span class="k">scope</span><span>${(ev.countries||[]).join(', ')||'unresolved'}</span>
-     <span class="k">WorldEvent candidate</span><span>${JSON.stringify(ev.world_event.forces)}, firm_damage ${ev.world_event.firm_damage}, trade_shock ${ev.world_event.trade_shock}</span>
-     <span class="k">adapter</span><span>${ev.world_event.adapter}</span>
-     <span class="k">status</span><span class="chip ${ev.status.split(' ')[0]}">${ev.status}</span>
+     <span class="k">event class</span><span>${EV.category} · ${(EV.country_names||[]).join(', ')||'scope unresolved'}</span>
+     <span class="k">structured WorldEvent</span><span>forces ${JSON.stringify(EV.world_event.forces)} · firm damage ${EV.world_event.firm_damage} · cost-of-living shock ${EV.world_event.trade_shock}</span>
+     <span class="k">adapter</span><span>${EV.world_event.adapter}</span>
    </div>
    <button onclick="explore('${id}')">EXPLORE FUTURES</button>
-   <div id="branchout" style="margin-top:18px"></div>`;
+   <div id="branchout" style="margin-top:16px"></div>`;
+  poll(id);
 }
-async function explore(id){
-  await j('/api/branch/'+id,{method:'POST'});
+async function explore(id){await j('/api/branch/'+id,{method:'POST'});poll(id)}
+function poll(id){
   if(POLL)clearInterval(POLL);
   POLL=setInterval(async()=>{
     const b=await j('/api/branch/'+id);
-    const out=$('#branchout');if(!out)return;
+    const out=$('#branchout');if(!out||CURRENT!==id){clearInterval(POLL);return}
     if(b.status==='running'){out.innerHTML=
-      `<div class="tree">WORLD NOW (day ${IDENT.world_day})
-      |
-      +---- CONTROL FUTURES   (event does not occur)
-      |
-      +---- EVENT FUTURES     (event occurs)</div>
-      branching… ${(100*(b.progress||0)).toFixed(0)}% — paired worlds, common dice`;}
-    else if(b.status==='done'){clearInterval(POLL);render(b.result);}
-    else if(b.status==='error'){clearInterval(POLL);
-      out.innerHTML=`<div class="err">branch error: ${b.error}</div>`;}
+      `<div style="font-size:11px;color:var(--dim);white-space:pre;line-height:1.8">WORLD NOW (day ${IDENT.world_day})
+  ├── ${'CONTROL FUTURES'.padEnd(20)} the event never happens
+  └── ${'EVENT FUTURES'.padEnd(20)} the event happens today</div>
+      <p style="margin-top:10px">living both sets of futures forward… ${(100*(b.progress||0)).toFixed(0)}%</p>`;}
+    else if(b.status==='done'){clearInterval(POLL);RES=b.result;render();}
+    else if(b.status==='error'){clearInterval(POLL);out.innerHTML=`<div class="err">branch error: ${b.error}</div>`;}
   },900);
 }
-function fmt(o,scale,unit,dec){if(!o)return null;
-  const m=(o.mean*scale);const s=o.spread.map(x=>x*scale);
-  return `<span class="v ${m>0?'pos':'neg'}">${m>0?'+':''}${m.toFixed(dec)}${unit}</span>
-  <span class="src">pair spread [${s[0].toFixed(dec)}, ${s[1].toFixed(dec)}] · ${o.pairs} pairs</span>`}
-function render(r){
-  const o=r.outcomes_day_final;const out=$('#branchout');
-  out.innerHTML=`<h2>DAY ${r.horizon_days} — EVENT MINUS CONTROL (affected cohort, n=${r.cohort_n.toLocaleString()})</h2>
-  ${[['Employment',fmt(o.employment_pp,100,' pp',2)],
-     ['Household deprivation',fmt(o.deprivation,1,'',4)],
-     ['FEAR (force field)',fmt(o.fear,1,'',4)],
-     ['Firm health',fmt(o.firm_health,1,'',4)],
-     ['Population alive',fmt(o.mortality,1,'',1)]]
-    .filter(x=>x[1]).map(x=>`<div class="outcome"><span>${x[0]}</span><span style="text-align:right">${x[1]}</span></div>`).join('')}
-  ${r.not_yet_computable.map(x=>`<div class="outcome nyc"><span>${x.metric}</span><span class="v">NOT YET COMPUTABLE — missing: ${x.missing}</span></div>`).join('')}
-  <div style="margin:16px 0"><span class="lbl">WHY — ${r.causal_path_label}</span>
-    <div class="path" style="margin-top:6px">${r.causal_path.map(p=>`<span>${p}</span>`).join('<em>→</em>')}</div></div>
-  <div><span class="lbl">MEET AN EARTHLING — same person, same past, different world</span>
-    <div id="folk">${r.series.s[r.series.s.length-1].earthlings.map((e,i)=>{
-      const c=r.series.c[r.series.c.length-1].earthlings[i];
-      const c0=r.series.c[0].earthlings[i];
-      return `<div class="eline"><b>EARTHLING #${e.id}</b> — employed at day 0: ${c0.employed}
-      <br>CONTROL d${r.horizon_days}: employed ${c.employed} · wealth ${c.wealth_days}d · deprivation ${c.deprivation} · fear ${c.fear}
-      <br>SCENARIO d${r.horizon_days}: employed ${e.employed} · wealth ${e.wealth_days}d · deprivation ${e.deprivation} · fear ${e.fear}</div>`}).join('')}</div></div>
-  <div class="src" style="margin-top:10px">scenario: ${JSON.stringify(r.scenario)}<br>
-  base world day ${r.base_day} · ${r.pairs} matched pairs · horizon ${r.horizon_days}d · commit ${r.model_commit}<br>${r.physics}</div>`;
+function fmtv(o,scale,unit,dec){if(!o)return null;
+  const m=o.mean*scale,s=o.spread.map(x=>x*scale);
+  return `<span class="v ${m>0?'pos':'neg'}">${m>0?'+':''}${m.toFixed(dec)}${unit}</span><br>
+  <span class="sub">across futures: ${s[0].toFixed(dec)} … ${s[1].toFixed(dec)}</span>`}
+const OUTS=[
+ ['employment_pp','Employment','share of the affected labour force in work',100,' pp',2],
+ ['deprivation','Household deprivation','unmet basic need, 0–1',1,'',4],
+ ['fear','FEAR','psychological force field, 0–1',1,'',4],
+ ['firm_health','Firm health','mean health of firms in affected countries',1,'',4],
+ ['mortality','People alive','affected cohort',1,'',1]];
+function render(){
+  const r=RES,out=$('#branchout');
+  const o=r.outcomes[HOR];
+  const day=HOR==='d7'?7:r.horizon_days;
+  out.innerHTML=`
+  <div style="margin:6px 0 2px"><span class="lbl">HORIZON</span>
+    <button class="hbtn ${HOR==='d7'?'on':''}" onclick="HOR='d7';render()">DAY 7</button>
+    <button class="hbtn ${HOR==='d30'?'on':''}" onclick="HOR='d30';render()">DAY 30</button>
+    <button class="hbtn ghost" title="not run at demo scale">D90</button>
+    <button class="hbtn ghost" title="not run at demo scale">D365</button></div>
+  <h2>DAY ${day} — EVENT MINUS CONTROL · ${2*r.pairs} futures · affected population ${r.cohort_n.toLocaleString()}</h2>
+  ${OUTS.map(([k,name,sub,sc,u,dec])=>{const f=fmtv(o[k],sc,u,dec);
+    return f?`<div class="outcome"><span class="n">${name}<br><span class="sub">${sub}</span></span><span style="text-align:right">${f}</span></div>`:''}).join('')}
+  ${r.not_yet_computable.map(x=>`<div class="outcome nyc"><span class="n">${x.metric}</span><span class="v">NOT YET COMPUTABLE — ${x.missing}</span></div>`).join('')}
+  <div class="fanwrap"><span class="lbl">THE FUTURES THEMSELVES — every line is one future actually lived</span>
+    <canvas id="fan" width="640" height="220"></canvas>
+    <div class="legend">metric:
+      <button class="hbtn" onclick="drawFan('employment')">employment</button>
+      <button class="hbtn" onclick="drawFan('fear')">fear</button>
+      <button class="hbtn" onclick="drawFan('deprivation')">deprivation</button>
+      <i style="background:var(--ctl)"></i>control futures <i style="background:var(--acc)"></i>event futures</div></div>
+  <div class="summary"><span class="lbl">EARTH-1 SUMMARY — COMPUTED</span><br>${r.summary_computed}</div>
+  ${r.analyst_context?`<div class="context"><span class="lbl">ANALYST CONTEXT — channels not yet computed (no numbers invented)</span><br>${r.analyst_context}</div>`:''}
+  <h2>WHO — computed cohort decomposition (employment, day ${r.horizon_days})</h2>
+  <div class="who">${Object.entries(r.who).map(([k,v])=>{
+    const pp=v.employment_pp*100,w=Math.min(Math.abs(pp)*40,140);
+    return `<span>${k}</span><div><div class="wbar" style="width:${w}px;background:${pp<0?'var(--bad)':'var(--ok)'}"></div></div><span>${pp>0?'+':''}${pp.toFixed(2)} pp · n=${v.n}</span>`}).join('')}</div>
+  <h2>WHY — ${r.causal_path_label}</h2>
+  <div class="path">${r.causal_path.map(p=>`<span>${p}</span>`).join('<em>→</em>')}</div>
+  <h2>REMOVE THIS CAUSE — computed counterfactual attribution</h2>
+  <div style="font-size:11px;color:var(--dim);margin-bottom:6px">Earth-1 re-branches the same base world with one causal channel removed — attribution by computation, never by guessing percentages.</div>
+  <button onclick="removeCause('material')">WITHOUT MATERIAL DAMAGE</button>
+  <button onclick="removeCause('informational')">WITHOUT THE MEMORY / FEAR CHANNEL</button>
+  <div id="attr"></div>
+  <h2>MEET AN EARTHLING — same person, same past, different world</h2>
+  <div id="folk">${r.earthlings.map((b,i)=>earthling(b,i)).join('')}</div>
+  <div class="src" style="margin-top:12px">base world day ${r.base_day} · ${r.pairs} matched pairs (common dice) · horizon ${r.horizon_days}d · commit ${r.model_commit} · ${r.physics}</div>`;
+  drawFan('employment');
+}
+function drawFan(metric){
+  const c=$('#fan');if(!c)return;const x=c.getContext('2d');
+  const f=RES.fan[metric];x.clearRect(0,0,640,220);
+  const all=[...f.c.flat(),...f.s.flat()].filter(v=>v!==null);
+  const lo=Math.min(...all),hi=Math.max(...all),pad=(hi-lo)*0.1||0.01;
+  const Y=v=>200-((v-lo+pad)/(hi-lo+2*pad))*180,X=d=>30+(d/(f.c[0].length-1))*590;
+  x.strokeStyle='#1b2330';x.beginPath();x.moveTo(30,200);x.lineTo(620,200);x.stroke();
+  x.fillStyle='#5d6b80';x.font='9px monospace';
+  x.fillText('branch',26,214);x.fillText('day '+RES.horizon_days,586,214);
+  x.fillText(hi.toFixed(3),0,Y(hi)+3);x.fillText(lo.toFixed(3),0,Y(lo)+3);
+  for(const [arm,color] of [['c','#8892a6'],['s','#4fd1c5']]){
+    x.strokeStyle=color;x.globalAlpha=0.85;
+    for(const line of f[arm]){x.beginPath();
+      line.forEach((v,d)=>{if(v===null)return;d?x.lineTo(X(d),Y(v)):x.moveTo(X(0),Y(v))});
+      x.stroke();}}
+  x.globalAlpha=1;
+}
+async function removeCause(comp){
+  const el=$('#attr');el.innerHTML='re-branching without the '+comp+' channel…';
+  await j(`/api/branch/${CURRENT}/remove/${comp}`,{method:'POST'});
+  const t=setInterval(async()=>{
+    const b=await j(`/api/branch/${CURRENT}:no-${comp}`);
+    if(b.status==='running'){el.innerHTML=`re-branching without the ${comp} channel… ${(100*(b.progress||0)).toFixed(0)}%`;}
+    else if(b.status==='done'){clearInterval(t);
+      const full=RES.outcomes.d30,part=b.result.outcomes.d30;
+      el.innerHTML=`<div class="attr"><span class="lbl">COMPUTED ATTRIBUTION — day 30 (event minus control)</span>
+      ${OUTS.slice(0,4).map(([k,name,,sc,u,dec])=>{
+        if(!full[k]||!part[k])return '';
+        const a=full[k].mean*sc,b2=part[k].mean*sc,ch=a-b2;
+        return `<div style="display:flex;justify-content:space-between;padding:3px 0">
+        <span>${name}</span><span>all channels ${a>0?'+':''}${a.toFixed(dec)}${u} · without ${comp} ${b2>0?'+':''}${b2.toFixed(dec)}${u} · <b style="color:var(--acc)">${comp} channel carries ${ch>0?'+':''}${ch.toFixed(dec)}${u}</b></span></div>`}).join('')}
+      <div class="sub" style="color:var(--dim);margin-top:4px">both branches share the same frozen base world and dice — this is a lived counterfactual, not subtraction of guesses</div></div>`;}
+    else if(b.status==='error'){clearInterval(t);el.innerHTML=`<div class="err">${b.error}</div>`;}
+  },900);
+}
+function earthling(b,i){
+  const S=RES.series.s.map(d=>d.earthlings[i]),C=RES.series.c.map(d=>d.earthlings[i]);
+  const story=(arr,other)=>{
+    const ev=[`<div class="ev"><span class="d">day 0</span> — ${C[0].employed?'employed':'out of work'}, ${C[0].wealth_days} days of reserves</div>`];
+    for(let d=1;d<arr.length;d++){
+      if(arr[d].employed!==arr[d-1].employed)
+        ev.push(`<div class="ev"><span class="d">day ${d+1}</span> — ${arr[d].employed?'finds work':'loses their job'}</div>`);
+      if(arr[d-1].wealth_days>=5&&arr[d].wealth_days<5)
+        ev.push(`<div class="ev"><span class="d">day ${d+1}</span> — reserves fall below 5 days</div>`);
+      if(arr[d-1].wealth_days<5&&arr[d].wealth_days>=5)
+        ev.push(`<div class="ev"><span class="d">day ${d+1}</span> — rebuilds a small reserve</div>`);
+      if(Math.abs(arr[d].fear-arr[0].fear)>0.05&&(ev.length<2||!ev[ev.length-1].includes('fear')))
+        ev.push(`<div class="ev"><span class="d">day ${d+1}</span> — fear ${arr[d].fear>arr[0].fear?'rises':'eases'} to ${arr[d].fear}</div>`);
+      if(ev.length>=6)break;
+    }
+    const last=arr[arr.length-1];
+    ev.push(`<div class="ev"><span class="d">day ${arr.length}</span> — ${last.employed?'employed':'out of work'}, ${last.wealth_days}d reserves, fear ${last.fear}</div>`);
+    return ev.join('')};
+  return `<div class="eline"><b>EARTHLING #${b.id}</b> — ${b.age}, ${b.country}, ${b.occupation} (${b.income} income, ${b.urban?'urban':'rural'})
+    <div class="tl">
+      <div class="c"><h4>CONTROL — the event never happens</h4>${story(C,S)}</div>
+      <div class="s"><h4>SCENARIO — the event happens</h4>${story(S,C)}</div>
+    </div>
+    <div class="sub" style="color:var(--dim);margin-top:6px">selected before outcomes were inspected · every line is this person's actual simulated state</div></div>`;
 }
 function globe(){const c=$('#globe');if(!c)return;const x=c.getContext('2d');
  const R=150,cx=210,cy=210;let t=0;
- setInterval(()=>{if(!$('#globe'))return;t+=.004;x.clearRect(0,0,420,420);
+ setInterval(()=>{const g=$('#globe');if(!g)return;t+=.004;x.clearRect(0,0,420,420);
   x.strokeStyle='rgba(79,209,197,.25)';
   for(let i=0;i<9;i++){x.beginPath();
-   const w=Math.abs(Math.cos(t+i*.35))*R;
-   x.ellipse(cx,cy,w,R,0,0,7);x.stroke();}
-  for(let i=1;i<5;i++){x.beginPath();
-   x.ellipse(cx,cy,R,R*i/5,0,0,7);x.stroke();}
+   x.ellipse(cx,cy,Math.abs(Math.cos(t+i*.35))*R,R,0,0,7);x.stroke();}
+  for(let i=1;i<5;i++){x.beginPath();x.ellipse(cx,cy,R,R*i/5,0,0,7);x.stroke();}
   x.beginPath();x.arc(cx,cy,R,0,7);x.strokeStyle='rgba(79,209,197,.6)';x.stroke();
  },50);}
-identity();news();globe();
-setInterval(identity,6000);setInterval(pulse,1800);setInterval(news,600000);
-pulse();
+identity();news();globe();pulse();
+setInterval(identity,6000);setInterval(pulse,1800);setInterval(news,15000);
 </script></body></html>
