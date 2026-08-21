@@ -358,10 +358,10 @@ async function runGtm(id){
         <span class="sub">best segment: ${m.best_segment} · presses ${Object.keys(m.forces).join('/')}</span></span>
         <span style="text-align:right"><span class="v" style="color:var(--acc)">${(100*m.rate).toFixed(1)}%</span> <span class="sub">(${m.push_pp>0?'+':''}${m.push_pp.toFixed(2)} pp push)</span><br>
         <span class="sub">across futures: ${(100*m.spread[0]).toFixed(1)}% … ${(100*m.spread[1]).toFixed(1)}%</span></span></div>`).join('')}
-      <h2>REVENUE SCENARIOS — scope ${g.scope.join(', ')} · ${(g.adult_population_scope/1e6).toFixed(0)}M adults · price $${g.price_assumed_usd}/yr <span class="tag est">HYBRID</span></h2>
+      <h2>MARKET CEILING — value of the high-propensity segment · ${g.scope.join(', ')} · ${(g.adult_population_scope/1e6).toFixed(0)}M adults · $${g.price_assumed_usd}/yr <span class="tag est">HYBRID</span></h2>
       ${g.revenue.map(v=>`<div class="outcome"><span class="n">${v.message}</span><span style="text-align:right">
-        <span class="v" style="color:var(--warn)">${money(v.revenue_mid_usd)}/yr</span><br>
-        <span class="sub">${money(v.revenue_range_usd[0])} … ${money(v.revenue_range_usd[1])} · ${(v.adopters_mid/1e6).toFixed(1)}M adopters</span></span></div>`).join('')}
+        <span class="v" style="color:var(--warn)">${money(v.revenue_mid_usd)}/yr ceiling</span><br>
+        <span class="sub">${money(v.revenue_range_usd[0])} … ${money(v.revenue_range_usd[1])} · ${(v.adopters_mid/1e6).toFixed(1)}M in segment — a TAM-style ceiling: realized revenue = ceiling × capture rate</span></span></div>`).join('')}
       <div class="sub" style="color:var(--dim);padding:4px 2px">adoption ${g.labels.adoption} · population ${g.labels.population_scaling} · price ${g.labels.price}</div>
       <h2>PERSONAS — real people from the winning message's world</h2>
       ${g.personas.map(p=>`<div class="eline"><b>${p.adopter?'BUYS':'DOES NOT BUY'} — EARTHLING #${p.id}</b> · ${p.age}, ${p.country}, ${p.occupation} (${p.income} income, ${p.urban?'urban':'rural'}${p.employed?', employed':''}, ${p.wealth_days}d reserves)<br>
