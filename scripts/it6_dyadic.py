@@ -229,7 +229,7 @@ def run_arm(name):
     rng = np.random.default_rng(seed_arm)
     genesis_sd = w.civ.forces[w.health.alive].std(axis=0)
     baseline_d90 = None
-    panels, alpha_snaps, eff_panels = {}, {}, {}
+    panels, alpha_snaps, eff_panels, end_panels = {}, {}, {}, {}
     tau = trans = None
     for d in range(1, days_arm + 1):
         flab._DAY[0] = d
@@ -267,6 +267,48 @@ def run_arm(name):
                 if w.life.force_baseline is not None else None
         if d % 10 == 0:
             panels[str(d)] = panel(w, genesis_sd)
+            if cfg.get("endurance"):
+                # Stage A extended census: both health families,
+                # cascade/chronicle/material state, clamp occupancy
+                from earth1.alive import effective_forces
+                a_ = w.health.alive
+                f_ = w.civ.forces[a_]
+                fe_ = np.asarray(effective_forces(w))[a_]
+                resl_ = getattr(w.chronicle, "cascade_residues",
+                                None) or []
+                lf_ = a_ & w.life.in_lf
+                end_panels[str(d)] = {
+                    "alive": int(a_.sum()),
+                    "sat_stored": [round(float(max(
+                        (f_[:, c] > 0.95).mean(),
+                        (f_[:, c] < 0.05).mean())), 4)
+                        for c in range(8)],
+                    "sat_eff": [round(float(max(
+                        (fe_[:, c] > 0.95).mean(),
+                        (fe_[:, c] < 0.05).mean())), 4)
+                        for c in range(8)],
+                    "mean_stored": [round(float(f_[:, c].mean()), 4)
+                                    for c in range(8)],
+                    "mean_eff": [round(float(fe_[:, c].mean()), 4)
+                                 for c in range(8)],
+                    "at_bound_stored": round(float(
+                        ((f_ <= 1e-9) | (f_ >= 1 - 1e-9)).mean()), 5),
+                    "overlay_clip_frac": round(float(
+                        (np.abs(fe_ - f_) >= 0.499).mean()), 5),
+                    "n_residues": len(resl_),
+                    "fired_cum": len(getattr(
+                        w.chronicle, "cascade_last_fired", None)
+                        or {}),
+                    "memories": len(w.chronicle.events),
+                    "employment": round(float(
+                        w.life.employed[lf_].mean()), 4),
+                    "firm_health": round(float(
+                        w.life.firm_health.mean()), 4),
+                    "deprivation": round(float(
+                        w.life.deprivation[a_].mean()), 4),
+                    "wealth_days": round(float(
+                        w.life.wealth[a_].mean()), 2),
+                }
             if os.environ.get("EARTH1_DECAY_RESIDUE") == "1":
                 # effective-view saturation, reported SEPARATELY from
                 # the stored-force gates (never merged into panels)
@@ -432,6 +474,7 @@ def run_arm(name):
     return {"arm": name, "cfg": {k: str(v) for k, v in cfg.items()},
             "pf": pf, "cascade_state": cascade_state,
             "eff_sat": eff_panels or None,
+            "endurance": end_panels or None,
             "panels": panels, "tau": tau, "transmission": trans,
             "capability": soft, "encounters": enc,
             "softening_frac_60_90": softening_frac,
