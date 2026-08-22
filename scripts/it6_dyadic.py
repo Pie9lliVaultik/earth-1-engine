@@ -357,10 +357,12 @@ def run_arm(name):
                     # distribution itself (lifemod.life_force_target
                     # is the candidate-wrapped law at this point)
                     "T_col_mean": round(float(
-                        lifemod.life_force_target(w.civ, w.life)
+                        lifemod.life_force_target(w.civ, w.life,
+                                                  w.flourishing)
                         [a_, 3].mean()), 4),
                     "frac_T95_col": round(float(
-                        (lifemod.life_force_target(w.civ, w.life)
+                        (lifemod.life_force_target(w.civ, w.life,
+                                                   w.flourishing)
                          [a_, 3] > 0.95).mean()), 4),
                 }
             if os.environ.get("EARTH1_DECAY_RESIDUE") == "1":
