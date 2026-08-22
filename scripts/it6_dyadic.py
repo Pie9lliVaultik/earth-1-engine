@@ -205,6 +205,8 @@ def run_arm(name):
         # R4 no-trigger control: a world where no rule CAN fire
         import earth1.thresholds as _th
         _th.TRANSITION_RULES = []
+    for _ek, _ev in (cfg.get("env") or {}).items():
+        os.environ[_ek] = _ev            # per-arm env (Stage B twins)
     days_arm = int(cfg.get("days", DAYS))
     casfire = cfg.get("casfire") or ()
     pf_cohort = pf_big = None
@@ -237,6 +239,21 @@ def run_arm(name):
             w.civ.forces[pf_cohort, 2] = 0.20   # ECONOMICS < 0.3
             w.civ.forces[pf_cohort, 0] = 0.60   # FEAR > 0.5
         st_day = live_one_day(w, rng, relax=relax)
+        _brk = cfg.get("broken")
+        if _brk == "consensus":
+            # STAGE B B1 broken twin: daily global mean reversion
+            _fa = w.civ.forces[w.health.alive].mean(axis=0)
+            w.civ.forces = np.clip(
+                w.civ.forces + 0.05 * (_fa[None, :] - w.civ.forces),
+                0, 1)
+        elif _brk == "accumulator" and d >= 60:
+            # B6 broken twin: unconditional daily global event write
+            w.civ.forces[:, 0] = np.clip(
+                w.civ.forces[:, 0] + 0.10, 0, 1)
+        elif _brk == "bigevents" and d <= 90 and d % 10 == 0:
+            # B11 broken twin: 5x event impulses -> clip load-bearing
+            w.civ.forces[:, 0] = np.clip(
+                w.civ.forces[:, 0] + 0.75, 0, 1)
         if cfg.get("wipe_residues"):
             # PF-DECAY-2 KA10-at-scale control: residues deleted every
             # day — under the open-loop contract this must change
