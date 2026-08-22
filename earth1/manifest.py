@@ -43,6 +43,14 @@ def file_sha256(path: Path, chunk: int = 1 << 22) -> str:
     return h.hexdigest()
 
 
+def physics_identity() -> dict:
+    """The accepted physics version is part of every commitment
+    identity (Phase 0.5 Program 3): no env flag selects physics."""
+    from earth1.alive import PHYSICS_VERSION, CANONICAL_DAY
+    return {"physics_version": PHYSICS_VERSION,
+            "canonical_day": dict(CANONICAL_DAY)}
+
+
 def machine_spec() -> dict:
     spec = {"hostname": platform.node(),
             "platform": platform.platform(),

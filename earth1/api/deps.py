@@ -61,7 +61,9 @@ def _load():
     st_path = ALIVE_HOME / "state.json"
     if st_path.exists():
         st = json.loads(st_path.read_text())
-    identity = {"world_day": int(w.day),
+    from earth1.alive import PHYSICS_VERSION
+    identity = {"physics_version": PHYSICS_VERSION,
+                "world_day": int(w.day),
                 "alive": int(w.health.alive.sum()),
                 "population": int(w.civ.n),
                 "schema_version": info["schema_version"],

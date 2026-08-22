@@ -231,8 +231,10 @@ def save_world(w, path, rng: Optional[np.random.Generator] = None,
     if fab is not None and "fabric" in payload:
         payload["fabric"] = fab
 
+    from earth1.alive import PHYSICS_VERSION
     blob = {
         "schema_version": SCHEMA_VERSION,
+        "physics_version": PHYSICS_VERSION,
         "fields": payload,
         "field_names": sorted(PERSISTENT_FIELDS),
         "rng_state": (None if rng is None

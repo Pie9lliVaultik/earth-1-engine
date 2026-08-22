@@ -28,7 +28,17 @@ QUARANTINED = {
     "earth1.diffusion", "earth1.forces", "earth1.dynamics",
     "earth1.coupling", "earth1.graph_dynamics", "earth1.event_generation",
     "earth1.perishability",
+    # Phase 0.5 Program 3: LEGACY_COMPARISON_ONLY modules (opt-in import
+    # guard) and the archived 0.8 laboratory assembly — none may define
+    # present Earth or be an official benchmark/scoring target
+    "earth1.legacy_benchmark", "earth1.legacy_predictions",
+    "earth1.legacy_answer", "earth1.lab_archive",
+    "earth1.lab_archive.field_lab", "earth1.lab_archive.conviction_lab",
+    "earth1.lab_archive.propagation_lab",
 }
+# Paths that ARE the legacy/archive (they may import the family; they are
+# never production and are excluded from the scan by name)
+LEGACY_WHITELIST = ("legacy_", "lab_archive", "routes_legacy")
 
 # The production import surface: the canonical world and everything
 # that serves it. tests/ and scripts/ may import legacy explicitly
@@ -44,9 +54,12 @@ PRODUCTION = [
     "earth1/fabric.py", "earth1/genesis.py", "earth1/types.py",
     "earth1/thresholds.py", "earth1/timeline.py", "earth1/branch.py",
     "earth1/assimilate.py", "earth1/observe.py", "earth1/observer.py",
-    # answer.py: audited orphan (zero importers) awaiting its
-    # Benchmark-A rebuild on the living readout; re-enters this list
-    # the moment it serves a production path
+    # Program 3: the canonical living answer path and the official
+    # one-ontology benchmark entry points (answer.py retired ->
+    # legacy_answer.py, quarantined)
+    "earth1/answer_living.py", "earth1/benchmark_living.py",
+    "earth1/benchmark_questions.py", "earth1/confidence.py",
+    "scripts/benchmark_living.py", "scripts/observatory_server.py",
     "earth1/integration.py",
     "scripts/world_alive.py",
     # the whole product API package, enumerated at scan time
@@ -76,7 +89,8 @@ def scan() -> list:
         p = ROOT / entry
         if p.is_dir():
             files.extend(f for f in sorted(p.rglob("*.py"))
-                         if "routes_legacy" not in f.parts)
+                         if not any(t in part for t in LEGACY_WHITELIST
+                                    for part in f.parts))
         elif p.exists():
             files.append(p)
     violations = []
