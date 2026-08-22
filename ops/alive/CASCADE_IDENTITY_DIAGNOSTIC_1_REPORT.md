@@ -14,7 +14,11 @@ overlay (`alive.py:372-384`, `_det_forces = civ.forces`; the
 contaminated-detector twin exists only behind `EARTH1_TEST_*`).
 
 **Locality.** `loc = country·1000 + region·2 + urban` (`alive.py:340-342`):
-country × genesis region × urban flag — ≈2,300 localities at 200k.
+country × genesis region × urban flag. CORRECTION (38ef1f1 follow-up):
+the "≈2,300" first written here was an unmeasured estimate; the measured
+count is 879 occupied localities at 200k (194 countries × 1–7 observed
+regions × 2 = 886 theoretical cells), summing to all 200,000 agents every
+day; 869 are cascade-eligible (pop ≥ 10) and hold 199,955 agents.
 
 **Trigger equation** (`alive.py:378-387`), evaluated EVERY DAY:
     met_i = ∧_c [ F_i[force_c] (op_c) thresh_c ]        per agent
