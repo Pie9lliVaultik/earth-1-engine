@@ -28,7 +28,8 @@ OUT = Path(os.environ.get("EARTH1_PF_OUT",
                           str(ROOT / "data" / "acceptance_0_8" /
                               "stageA")))
 DAYS = int(os.environ.get("EARTH1_STAGEA_DAYS", "365"))
-SEEDS = (9001, 9002, 9003)
+SEEDS = tuple(int(x) for x in os.environ.get(
+    "EARTH1_STAGEA_SEEDS", "9001,9002,9003").split(","))
 BASE = dict(op="dy", cnv="dy", flr=True, cas=True, relax=0.045,
             residue=True, days=DAYS, no_fork=True, endurance=True)
 ARMS = {f"END_{s}": dict(BASE, seed=s) for s in SEEDS}
