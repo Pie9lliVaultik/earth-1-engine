@@ -37,8 +37,8 @@ OUT = Path(os.environ.get("EARTH1_PF_OUT",
 SEED_REG = 8905
 CLAMP_R2 = tuple(range(60, 63))
 CLAMP_R3 = tuple(range(60, 181))
-BASE = dict(op="dy", cnv="dy", flr=True, cas=True, relax=0.045,
-            seed=SEED_REG)
+BASE = dict(op="canon", cnv="canon", flr=False, cas=False,
+            relax=0.045, seed=SEED_REG)
 
 IT6_ARMS = {
     "R2_res":  dict(BASE, residue=True, casfire=CLAMP_R2),

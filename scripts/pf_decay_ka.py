@@ -84,13 +84,15 @@ def arm_unit():
 
 # ── KA0: flag-off continuity through the it6 engine ─────────────────
 def arm_ka0():
-    os.environ.pop("EARTH1_DECAY_RESIDUE", None)
+    """POST-CANONICALIZATION continuity: the flagless canonical loop
+    (it6 op=canon) must reproduce the candidate-v2 lab record
+    data/geo1/it6_all.json exactly (Program 2, case 4)."""
     sys.path.insert(0, str(ROOT / "scripts"))
     import it6_dyadic as it6
-    got = json.loads(json.dumps(it6.run_arm("ALL")))  # normalize keys
-    rec = [x for x in json.load(open(ROOT / "data" / "it6_dyadic" /
-                                     "arms.json"))
-           if x.get("arm") == "ALL"][0]
+    it6.ARMS["CANON"] = dict(op="canon", cnv="canon", flr=False,
+                             cas=False, relax=0.045)
+    got = json.loads(json.dumps(it6.run_arm("CANON")))  # normalize keys
+    rec = json.load(open(ROOT / "data" / "geo1" / "it6_all.json"))
     same_panels = got["panels"] == rec["panels"]
     same_tau = got["tau"] == rec["tau"]
     same_trans = got["transmission"] == rec["transmission"]
@@ -125,7 +127,7 @@ def _stripped(seed, rules_off=False):
     w.feed = None
     w.climate = None
     am.propagate = lambda forces, alpha, adj, **kw: forces
-    am.update_conviction = lambda forces, alpha, adj: alpha
+    am.update_conviction = lambda forces, alpha, adj, **kw: alpha
     am._be_born = lambda *a, **k: {}
     inst.govern = lambda *a, **k: {}
     inst.apply_policy_and_war = lambda *a, **k: {}

@@ -48,7 +48,11 @@ from earth1.types import Force
 # Affect contagion is fast and pre-cognitive. This gain is per DAY but
 # represents many sub-second exchanges, which is why it dwarfs the
 # opinion-propagation rate.
-CONTAGION_GAIN = 0.30
+CONTAGION_GAIN = 0.0   # CANONICAL (candidate 76a574c): ambient
+                       # country-mean smoothing is OFF — the 0.8
+                       # census found contagion:210 to be a
+                       # mean-reversion writer (IT5); the incumbent
+                       # value was 0.30 (LEGACY, comparison only)
 # Only the arousing channels are contagious. You catch fear from a
 # frightened crowd; you do not catch their economic analysis.
 CONTAGIOUS = {Force.FEAR: 1.00, Force.COLLECTIVE: 0.80,

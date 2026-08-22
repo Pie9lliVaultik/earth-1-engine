@@ -33,46 +33,13 @@ EVERY = 10
 
 
 def run_seed(seed):
-    os.environ["EARTH1_CASCADE_COOLDOWN"] = "1"
-    os.environ["EARTH1_DECAY_RESIDUE"] = "1"
-    os.environ["EARTH1_COLLECTIVE_CENTERED"] = "1"
+    # canonical physics (post-canonicalization): flagless live_one_day
     import earth1.alive as am
-    import earth1.contagion as cont
-    import earth1.feed as feedmod
-    import earth1.flourishing as flmod
-    import earth1.life as lifemod
-    import earth1.conviction_lab as clab
-    import earth1.field_lab as flab
     from earth1.alive import (birth_world, live_one_day,
                               effective_forces, cascade_residue_levels)
     from earth1.types import Force
     from earth1.thresholds import TRANSITION_RULES
     w = birth_world(N, seed)
-    clab.ALPHA0 = w.civ.alpha.copy()
-    flab.FLOUR_REF[0] = w.flourishing
-    flab.AROUSAL = np.array(
-        [feedmod.AROUSAL_WEIGHT[Force(k)] for k in range(8)])
-    flab.DRIVE_ACC[0] = np.zeros(N)
-    flab.ENC_COUNT[0] = np.zeros(N, dtype=np.int64)
-    am.propagate = flab.make_dyadic_propagate_v6(3, 0.05)
-    feedmod.feed_tick = flab.make_dyadic_feed_v6(0.05)
-    cont.CONTAGION_GAIN = 0.0
-    lifemod.life_force_target = flab.flourishing_level_map(
-        lifemod.life_force_target)
-    flmod.flourishing_tick = flab.flourishing_writes_disabled(
-        flmod.flourishing_tick)
-
-    def conv(forces, alpha, adj):
-        n_enc = np.maximum(flab.ENC_COUNT[0], 1)
-        drive = flab.DRIVE_ACC[0] / n_enc
-        drive[flab.ENC_COUNT[0] == 0] = 0.0
-        a = np.clip(alpha, 0.02, 0.98)
-        out = np.clip(1 / (1 + np.exp(-(np.log(a / (1 - a))
-                                        + 0.003 * drive))), 0.02, 1.0)
-        flab.DRIVE_ACC[0][:] = 0.0
-        flab.ENC_COUNT[0][:] = 0
-        return out
-    am.update_conviction = conv
     rng = np.random.default_rng(seed)
 
     civ = w.civ
@@ -97,8 +64,7 @@ def run_seed(seed):
                "rural": ~civ.urban.astype(bool)}
     panels = {}
     for d in range(1, DAYS + 1):
-        flab._DAY[0] = d
-        live_one_day(w, rng, relax=0.045)
+        live_one_day(w, rng)
         a = w.health.alive
         C = np.asarray(effective_forces(w)) - civ.forces
         absC = np.abs(C)

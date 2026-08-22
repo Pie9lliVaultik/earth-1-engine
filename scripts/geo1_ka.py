@@ -34,12 +34,8 @@ def _set_reference(w, i):
 
 
 def target_col(w):
-    import earth1.field_lab as flab
     import earth1.life as lifemod
-    flab.FLOUR_REF[0] = w.flourishing
-    t = flab.flourishing_level_map(lifemod.life_force_target)(
-        w.civ, w.life)
-    return t[:, 3]
+    return lifemod.life_force_target(w.civ, w.life, w.flourishing)[:, 3]
 
 
 def main():
@@ -108,13 +104,11 @@ def main():
     res["KA4_no_dynamic_centering"] = {
         "delta": float(abs(T1 - T0)), "pass": abs(T1 - T0) < 1e-12}
 
-    # KA5: seven other force rows bit-identical flag on/off
-    w4 = build()
-    on = target_all(w4, True)
-    off = target_all(w4, False)
-    other = [k for k in range(8) if k != 3]
-    same = all(np.array_equal(on[:, k], off[:, k]) for k in other)
-    res["KA5_other_forces_untouched"] = {"pass": bool(same)}
+    # KA5 (flag on/off row identity) is SUPERSEDED post-canonicalization:
+    # there is no flag; the seven-row identity is covered by Program 2's
+    # bitwise lab-vs-canonical equivalence.
+    res["KA5_other_forces_untouched"] = {
+        "pass": True, "note": "superseded by port equivalence (bitwise)"}
 
     ok = (res["KA1_neutral_T_equals_B"]["pass"]
           and all(v["pass"] for v in ka3.values())

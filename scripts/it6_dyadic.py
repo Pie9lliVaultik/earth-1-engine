@@ -1,5 +1,13 @@
 """0.8 IT6 — DYADIC FIELD INTEGRATION runner (frozen registration:
 IT6_DYADIC_FIELD_INTEGRATION.md). 13 ablation arms + 8 KA arms.
+
+POST-CANONICALIZATION (Phase 0.5): the validated candidate 76a574c IS
+the flagless canonical live_one_day. op="canon"/cnv="canon" runs it
+unpatched; this is the only configuration that remains meaningful.
+The historical lab branches ("dy", "dy_noinf_incprop", "c3field",
+"meanfield") are RETIRED with field_lab and no longer executable
+against the canonical loop; "zero" and "inc" map to explicitly
+LEGACY_COMPARISON_ONLY operators for the Stage-B broken twins.
 """
 import copy
 import json
@@ -122,10 +130,12 @@ def run_arm(name):
     op = cfg["op"]
     k_arm = int(cfg.get("k", 3))
     mu_arm = float(cfg.get("mu", 0.05))
-    if op == "dy":
-        am.propagate = flab.make_dyadic_propagate_v6(k_arm, mu_arm)
-        feedmod.feed_tick = flab.make_dyadic_feed_v6(mu_arm)
-        cont.CONTAGION_GAIN = 0.0
+    if op == "canon":
+        pass                      # canonical physics, nothing patched
+    elif op == "dy":
+        raise RuntimeError('op="dy" is the retired lab assembly; the '
+                           'canonical loop IS the dyadic candidate — '
+                           'use op="canon"')
     elif op == "dy_noinf_incprop":
         _orig_prop = am.propagate
         _sampler = flab.make_dyadic_propagate_v6(3, 0.05,
@@ -135,10 +145,20 @@ def run_arm(name):
             return _orig_prop(forces, alpha, adj, **kw)
         am.propagate = combo
     elif op == "zero":
-        am.propagate = flab.make_dyadic_propagate_v6(0, 0.0)
-        feedmod.feed_tick = flab.make_dyadic_feed_v6(0.0,
-                                                     influence=False)
-        cont.CONTAGION_GAIN = 0.0
+        # Stage-B B3 broken twin: no social influence at all (encounter
+        # evidence still sampled so conviction remains defined)
+        import earth1.influence as _inf
+        _orig_feed = feedmod.feed_tick
+        def _zero_prop(forces, alpha, adj, *, day, scratch,
+                       susceptibility=None, **kw):
+            return _inf.propagate(forces, alpha, adj, day=day,
+                                  scratch=scratch,
+                                  susceptibility=susceptibility, mu=0.0)
+        def _zero_feed(civ, feed, alpha, *, day, scratch, **kw):
+            return _orig_feed(civ, feed, alpha, day=day,
+                              scratch=scratch, mu=0.0)
+        am.propagate = _zero_prop
+        feedmod.feed_tick = _zero_feed
     elif op == "instant":
         am.propagate = flab.make_dyadic_propagate_v6(10, 0.9)
         feedmod.feed_tick = flab.make_dyadic_feed_v6(0.9)
@@ -163,7 +183,15 @@ def run_arm(name):
     forced_cohort = None
     if forced is not None:
         forced_cohort = np.arange(min(10_000, N // 4))
-    if cnv == "dy":
+    if cnv == "canon":
+        pass                      # canonical dyadic conviction
+    elif cnv == "inc":
+        # Stage-B B2 broken twin: the retired incumbent ratchet
+        import earth1.influence as _inf
+        am.update_conviction = (lambda f, a, adj, **kw:
+                                _inf.update_conviction_ratchet_legacy(
+                                    f, a, adj))
+    elif cnv == "dy":
         def conv(forces, alpha, adj):
             n_enc = np.maximum(flab.ENC_COUNT[0], 1)
             drive = flab.DRIVE_ACC[0] / n_enc

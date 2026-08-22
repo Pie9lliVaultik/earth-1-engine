@@ -23,8 +23,8 @@ sys.path.insert(0, str(ROOT))
 OUT = Path(os.environ.get("EARTH1_PF_OUT",
                           str(ROOT / "data" / "acceptance_0_8" /
                               "stageB")))
-ALL = dict(op="dy", cnv="dy", flr=True, cas=True, relax=0.045,
-           residue=True)
+ALL = dict(op="canon", cnv="canon", flr=False, cas=False,
+           relax=0.045)
 
 IT6_JOBS = {
     # broken twins

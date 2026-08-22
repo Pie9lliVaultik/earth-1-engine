@@ -26,7 +26,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from earth1.influence import propagate, update_conviction
+from earth1.influence import propagate, update_conviction, new_day_scratch
 from earth1.types import Force
 
 
@@ -93,7 +93,14 @@ def birth_world(pop: int, seed: int = 42) -> World:
 # disagreed. Every entry point now consumes THIS dict; experiments may
 # override explicitly, but a default is always this default.
 CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
-                     relax=0.25, layers=2)
+                     relax=0.045, layers=2)   # relax: IT6 (candidate 76a574c)
+
+# ONE ACCEPTED PHYSICS VERSION. Canonical Earth-1 physics == the
+# validated laboratory candidate 76a574c (Phase 0.5 canonicalization,
+# ops/alive/CANONICALIZATION_PROGRAM.md). No environment flag selects
+# physics; EARTH1_TEST_* flags exist only for the Stage-B broken twins
+# and are excluded from production by the release gate.
+PHYSICS_VERSION = "0.8-candidate-v2/76a574c-canonical"
 
 
 def cascade_residue_levels(residues, day):
@@ -236,7 +243,9 @@ def live_one_day(w: World, rng, *,
             welfare=w.gov.welfare[civ.country],
             soil=w.climate.soil if w.climate is not None else None))
 
-    target = life_force_target(civ, life)
+    target = life_force_target(civ, life, w.flourishing)
+    # the day's encounter evidence (consumed by update_conviction)
+    scratch = new_day_scratch(civ.n)
     # a homeless person's circumstances are not their wage: being on the
     # street is its own condition and it dominates
     if w.klass.homeless.any():
@@ -254,14 +263,12 @@ def live_one_day(w: World, rng, *,
     # was the accidental self-excitation edge and is gone. Residue
     # expiry is maintained in the cascade step below.
     import os as _os
-    _cresidue_on = _os.environ.get("EARTH1_DECAY_RESIDUE") == "1"
 
     # ── STAGE-B BROKEN TWINS (TEST-ONLY; Standing Rule 2) ─────────
     # These flags deliberately reintroduce ruled-out defects so the
     # acceptance instruments can prove they detect them. They are
     # never set outside the adversarial battery.
-    if _os.environ.get("EARTH1_TEST_CLOSED_LOOP") == "1" and \
-            _cresidue_on:
+    if _os.environ.get("EARTH1_TEST_CLOSED_LOOP") == "1":
         # B7: the PF-DECAY-1 closed loop, resurrected: residues feed
         # the target path again
         _cres = getattr(w.chronicle, "cascade_residues", None)
@@ -280,8 +287,9 @@ def live_one_day(w: World, rng, *,
     # 7 influence, 8 circumstance
     from earth1.susceptibility import compute as susceptibility_of
     sus = susceptibility_of(civ, life, w.flourishing)
-    civ.forces = propagate(civ.forces, civ.alpha, civ.adj, beta=beta,
-                           layers=layers, susceptibility=sus)
+    civ.forces = propagate(civ.forces, civ.alpha, civ.adj,
+                           day=w.day + 1, scratch=scratch,
+                           susceptibility=sus)
     # ── BODIES IN THE SAME PLACE ─────────────────────────────────────
     # Contagion runs AFTER the conviction kernel and before the feed,
     # because that is the real order of a day: you are among people, you
@@ -306,12 +314,14 @@ def live_one_day(w: World, rng, *,
     # THE FEED — a different physics, applied after conversation
     if w.feed is not None:
         from earth1.feed import feed_tick
-        st.update(feed_tick(civ, w.feed, civ.alpha, susceptibility=sus,
-                            beta=beta, dt_days=dt_days))
+        st.update(feed_tick(civ, w.feed, civ.alpha,
+                            day=w.day + 1, scratch=scratch,
+                            susceptibility=sus))
     st["mean_susceptibility_fear"] = float(sus[:, Force.FEAR].mean())
     st["susceptibility_spread"] = float(sus.std())
     civ.forces = np.clip(civ.forces + relax * (target - civ.forces), 0.0, 1.0)
-    civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj)
+    civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj,
+                                  scratch=scratch)
 
     # 5b tie plasticity (0.5 port) — the fabric responds to the day's
     # interaction: agreement strengthens friends/weak ties, disagreement
@@ -346,29 +356,24 @@ def live_one_day(w: World, rng, *,
     # decay_half_life remains declared-but-unconsumed: its intended
     # state semantics are ambiguous — recorded as a second unresolved
     # contradiction, NOT invented here.
-    _cooldown_on = _os.environ.get("EARTH1_CASCADE_COOLDOWN") == "1"
-    if _cresidue_on and not _cooldown_on:
-        # the legacy contract ALWAYS gated firing on the cooldown; a
-        # residue per hot day would be the probe-1 grinder in level
-        # form. Fail loudly rather than silently recreate the bug.
-        raise RuntimeError("EARTH1_DECAY_RESIDUE=1 requires "
-                           "EARTH1_CASCADE_COOLDOWN=1")
-    if _cooldown_on and getattr(w.chronicle, "cascade_last_fired",
-                                None) is None:
+    # CANONICAL (candidate 76a574c): cooldown per (rule, locality),
+    # strict-<, restart-persistent (probe-1 contract, f933c59
+    # semantics); a firing creates bounded residue state whose decaying
+    # level is a READ-TIME OVERLAY (effective_forces) — open-loop
+    # (PF-DECAY-2): nothing here writes stored forces. The legacy
+    # instant permanent write is gone.
+    if getattr(w.chronicle, "cascade_last_fired", None) is None:
         w.chronicle.cascade_last_fired = {}
-    if _cresidue_on:
-        _cres = getattr(w.chronicle, "cascade_residues", None)
-        if _cres:
-            # expiry maintenance only (legacy 0.01 active-set rule);
-            # the levels themselves are never consumed in-loop
-            _, _surv = cascade_residue_levels(_cres, w.day)
-            w.chronicle.cascade_residues = _surv
-            st["cascade_residue_active"] = len(_surv)
+    _cres = getattr(w.chronicle, "cascade_residues", None)
+    if _cres:
+        # expiry maintenance only (legacy 0.01 active-set rule)
+        _, _surv = cascade_residue_levels(_cres, w.day)
+        w.chronicle.cascade_residues = _surv
+        st["cascade_residue_active"] = len(_surv)
     # B8 broken twin (TEST-ONLY): detector reads the EFFECTIVE view —
     # the contaminated-substrate defect KA10 must catch
     _det_forces = civ.forces
-    if _os.environ.get("EARTH1_TEST_DETECTOR_EFFECTIVE") == "1" and \
-            _cresidue_on:
+    if _os.environ.get("EARTH1_TEST_DETECTOR_EFFECTIVE") == "1":
         _det_forces = np.asarray(effective_forces(w))
     for rule in TRANSITION_RULES:
         if rule.region_scope != "regional":
@@ -380,7 +385,7 @@ def live_one_day(w: World, rng, *,
         frac = np.bincount(li, weights=met.astype(np.float64),
                            minlength=nl) / np.maximum(pop_l, 1.0)
         hot = (frac >= critical_fraction) & (pop_l >= 10)
-        if _cooldown_on and hot.any():
+        if hot.any():
             state = w.chronicle.cascade_last_fired
             for hidx in np.flatnonzero(hot):
                 key = (rule.name, int(uloc[hidx]))
@@ -393,28 +398,18 @@ def live_one_day(w: World, rng, *,
         if not hot.any():
             continue
         fired += int(hot.sum())
-        if _cresidue_on:
-            # PF-DECAY-1: the firing creates bounded residue state; the
-            # decaying level is applied read-side in the target path
-            # (see cascade_residue_levels). No instant permanent write.
-            if getattr(w.chronicle, "cascade_residues", None) is None:
-                w.chronicle.cascade_residues = []
-            eff = np.zeros(civ.forces.shape[1])
-            for fname, delta in rule.effects.items():
-                k = getattr(Force, fname.upper(), None)
-                if k is not None:
-                    eff[k] = delta
-            for hidx in np.flatnonzero(hot):
-                w.chronicle.cascade_residues.append(
-                    {"rule": rule.name, "loc": int(uloc[hidx]),
-                     "day": int(w.day), "effects": eff.copy(),
-                     "h": float(rule.decay_half_life)})
-            continue
-        m = hot[li]
+        if getattr(w.chronicle, "cascade_residues", None) is None:
+            w.chronicle.cascade_residues = []
+        eff = np.zeros(civ.forces.shape[1])
         for fname, delta in rule.effects.items():
             k = getattr(Force, fname.upper(), None)
             if k is not None:
-                civ.forces[m, k] = np.clip(civ.forces[m, k] + delta, 0, 1)
+                eff[k] = delta
+        for hidx in np.flatnonzero(hot):
+            w.chronicle.cascade_residues.append(
+                {"rule": rule.name, "loc": int(uloc[hidx]),
+                 "day": int(w.day), "effects": eff.copy(),
+                 "h": float(rule.decay_half_life)})
     st["cascades_fired"] = fired
 
     # 10 feedback — local, never global

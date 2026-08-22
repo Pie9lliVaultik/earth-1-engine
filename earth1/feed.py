@@ -106,7 +106,7 @@ def build_feed(civ, knowledge, seed: int = 0):
     return m
 
 
-def feed_tick(civ, feed, alpha, susceptibility=None,
+def feed_tick_legacy(civ, feed, alpha, susceptibility=None,
               beta: float = 1.0, dt_days: float = 1.0) -> dict:
     """One day of the feed. Deliberately ASYMMETRIC — no reciprocity.
 
@@ -148,3 +148,32 @@ def feed_tick(civ, feed, alpha, susceptibility=None,
             "extreme_online": round(extreme, 4),
             "extreme_offline": round(extreme_off, 4),
             "polarisation_gap": round(extreme - extreme_off, 4)}
+
+
+# ═══════════════════════════════════════════════════════════════════
+# CANONICAL FEED — the validated candidate 76a574c, ported verbatim from
+# field_lab.make_dyadic_feed_v6 (Phase 0.5 canonicalization).
+# The feed is one more encounter per day, drawn from the asymmetric feed
+# graph, moving the reader MU toward the source's value weighted by the
+# channel arousal vector, and feeding the same conviction evidence as
+# tie encounters. feed_tick_legacy above is LEGACY_COMPARISON_ONLY (the
+# retired second-pole operator; never on the canonical path).
+# ═══════════════════════════════════════════════════════════════════
+AROUSAL = np.array([AROUSAL_WEIGHT[Force(k)] for k in range(8)])
+MU_FEED = 0.05
+
+
+def feed_tick(civ, feed, alpha, *, day: int, scratch,
+              susceptibility=None, mu: float = MU_FEED,
+              **_ignored) -> dict:
+    from earth1.influence import (ENCOUNTER_SEED_FEED, sample_partners,
+                                  accumulate_drive, dyadic_move)
+    f = civ.forces
+    csr = feed if hasattr(feed, "indptr") else feed.tocsr()
+    rng = np.random.default_rng(ENCOUNTER_SEED_FEED + int(day))
+    partner, has = sample_partners(csr, rng)
+    accumulate_drive(scratch, f, partner, has)
+    move = dyadic_move(f, partner, has, mu, susceptibility,
+                       weights=AROUSAL)
+    civ.forces = np.clip(f + move, 0.0, 1.0)
+    return {"feed_readers": int(has.sum())}

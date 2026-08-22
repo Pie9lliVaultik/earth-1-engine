@@ -156,11 +156,13 @@ TRAIT_MEMORY = 1.0
 GEO1_REF_DS = 0.0
 GEO1_REF_POL = 0.3998
 GEO1_REF_SN = 0.2855
-
-
-def _geo1_on():
-    import os
-    return os.environ.get("EARTH1_COLLECTIVE_CENTERED") == "1"
+GEO1_REF_BEL = 0.6416
+# Parameter registry (Bible III.6): the four COLLECTIVE modifier slopes
+# (0.40 shared-hardship, 0.25 political, 0.20 social_need, 0.20
+# belonging) are AUTHORED / EXPERIMENTAL — requires parameter
+# provenance; the reference centers are reference-population-derived;
+# the genesis baseline is empirical. Canonical == validated candidate
+# 76a574c (COLLECTIVE-GEO-1 PASS); canonical does not mean validated.
 
 # ── prevalence anchors, from real epidemiology ───────────────────────
 # These are population base rates, not tuned values. Onset hazards below
@@ -623,7 +625,8 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     return stats
 
 
-def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
+def life_force_target(civ: Civilization, life: Life,
+                      flourishing=None) -> np.ndarray:
     """The force state this agent's CIRCUMSTANCES imply, right now.
 
     Returned rather than applied, because the social layer needs it as a
@@ -667,13 +670,9 @@ def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
         base[:, Force.FEAR] + 0.35 * precarity + 0.25 * dep, 0.0, 1.0)
     t[:, Force.DESIRE] = np.clip(
         base[:, Force.DESIRE] - 0.30 * dep, 0.0, 1.0)
-    if _geo1_on():
-        t[:, Force.COLLECTIVE] = np.clip(
-            base[:, Force.COLLECTIVE]
-            + 0.40 * (dep * shared - GEO1_REF_DS), 0.0, 1.0)
-    else:
-        t[:, Force.COLLECTIVE] = np.clip(
-            base[:, Force.COLLECTIVE] + 0.40 * dep * shared, 0.0, 1.0)
+    t[:, Force.COLLECTIVE] = np.clip(
+        base[:, Force.COLLECTIVE]
+        + 0.40 * (dep * shared - GEO1_REF_DS), 0.0, 1.0)
 
     # THE BODY BECOMES OPINION.
     #   mental health modulates how much fear a person carries at all
@@ -686,22 +685,36 @@ def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
             t[:, Force.FEAR] + 0.30 * (1.0 - life.mental), 0.0, 1.0)
         t[:, Force.DESIRE] = np.clip(
             t[:, Force.DESIRE] + 0.45 * life.addiction, 0.0, 1.0)
-        if _geo1_on():
-            t[:, Force.COLLECTIVE] = np.clip(
-                t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
-                + 0.25 * (life.political - GEO1_REF_POL)
-                - 0.20 * (life.social_need - GEO1_REF_SN), 0.0, 1.0)
-        else:
-            t[:, Force.COLLECTIVE] = np.clip(
-                t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
-                + 0.25 * life.political - 0.20 * life.social_need,
-                0.0, 1.0)
+        t[:, Force.COLLECTIVE] = np.clip(
+            t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
+            + 0.25 * (life.political - GEO1_REF_POL)
+            - 0.20 * (life.social_need - GEO1_REF_SN), 0.0, 1.0)
         t[:, Force.IDENTITY] = np.clip(
             t[:, Force.IDENTITY] + 0.25 * life.social_need
             - 0.15 * life.relationship, 0.0, 1.0)
         t[:, Force.EXPERIENCE] = np.clip(
             t[:, Force.EXPERIENCE] + 0.10 * np.clip(life.n_events / 8.0,
                                                     0, 1), 0.0, 1.0)
+    # FLOURISHING LEVEL MAP (canonical; candidate 76a574c, ported
+    # verbatim from field_lab.flourishing_level_map): hope, need,
+    # curiosity, belonging and meaning are bounded LEVEL contributions
+    # to the lived target, never daily increments. Belonging enters as
+    # a departure from its reference center (COLLECTIVE-GEO-1).
+    fl = flourishing
+    if fl is not None and fl.hope is not None:
+        need = np.clip(0.6 * fl.hunger + 0.4 * fl.thirst, 0, 1)
+        t[:, Force.FEAR] = np.clip(
+            t[:, Force.FEAR] + 0.30 * need - 0.20 * fl.hope, 0, 1)
+        t[:, Force.DESIRE] = np.clip(
+            t[:, Force.DESIRE] + 0.20 * fl.hope
+            + 0.15 * fl.curiosity - 0.25 * need, 0, 1)
+        t[:, Force.COLLECTIVE] = np.clip(
+            t[:, Force.COLLECTIVE]
+            + 0.20 * (fl.belonging - GEO1_REF_BEL), 0, 1)
+        t[:, Force.CULTURE] = np.clip(
+            t[:, Force.CULTURE] + 0.20 * fl.meaning, 0, 1)
+        t[:, Force.EXPERIENCE] = np.clip(
+            t[:, Force.EXPERIENCE] + 0.10 * fl.curiosity, 0, 1)
     return t
 
 
