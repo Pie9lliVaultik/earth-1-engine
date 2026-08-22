@@ -40,6 +40,20 @@ def run_seed(seed):
     from earth1.types import Force
     from earth1.thresholds import TRANSITION_RULES
     w = birth_world(N, seed)
+    # ── CASCADE_IDENTITY_DIAGNOSTIC_1 instruments (instrument-side only;
+    #    stored physics untouched — open-loop) ──────────────────────
+    import earth1.thresholds as _th
+    _suppress = [x for x in os.environ.get(
+        "EARTH1_DIAG_SUPPRESS", "").split(",") if x]
+    if _suppress:
+        _th.TRANSITION_RULES = [r for r in _th.TRANSITION_RULES
+                                if r.name not in _suppress]
+    _hot_on = os.environ.get("EARTH1_DIAG_HOTHISTORY") == "1"
+    _HOT_M = (0.5, 1.0, 2.0)
+    _ALL_RULES = list(TRANSITION_RULES)     # unfiltered, for history
+    hot_hist = []      # per day: {(rule, m): array of hot loc keys}
+    loc_hist = []      # per day: (uloc, pop_l)
+    fire_log = []      # every residue created: (rule, loc, day)
     rng = np.random.default_rng(seed)
 
     civ = w.civ
@@ -66,6 +80,37 @@ def run_seed(seed):
     for d in range(1, DAYS + 1):
         live_one_day(w, rng)
         a = w.health.alive
+        if _hot_on:
+            resl_now = getattr(w.chronicle, "cascade_residues", None) or []
+            for r in resl_now:
+                if r["day"] == w.day - 1:
+                    fire_log.append((r["rule"], int(r["loc"]),
+                                     int(r["day"])))
+            locd = (civ.country.astype(np.int64) * 1000
+                    + civ.region.astype(np.int64) * 2
+                    + civ.urban.astype(np.int64))
+            uloc, li = np.unique(locd, return_inverse=True)
+            nl = int(li.max()) + 1
+            pop_l = np.bincount(li, minlength=nl).astype(np.float64)
+            loc_hist.append((uloc.astype(np.int64),
+                             pop_l.astype(np.int32)))
+            day_rec = {}
+            for rule in _ALL_RULES:
+                if rule.region_scope != "regional":
+                    continue
+                for m in _HOT_M:
+                    met = np.ones(civ.n, dtype=bool)
+                    for force, op, thresh in rule.conditions:
+                        # preregistered transform: scale margin from 0.5
+                        t2 = 0.5 + m * (thresh - 0.5) if op == ">" \
+                            else 0.5 - m * (0.5 - thresh)
+                        col = civ.forces[:, force.value]
+                        met &= (col > t2) if op == ">" else (col < t2)
+                    frac = np.bincount(li, weights=met.astype(np.float64),
+                                       minlength=nl) / np.maximum(pop_l, 1.0)
+                    hot = (frac >= 0.12) & (pop_l >= 10)
+                    day_rec[(rule.name, m)] = uloc[hot].astype(np.int64)
+            hot_hist.append(day_rec)
         C = np.asarray(effective_forces(w)) - civ.forces
         absC = np.abs(C)
         big = absC > BINS[0]
@@ -201,6 +246,18 @@ def run_seed(seed):
                 float(np.median(days_exposed[a, k][ex]) / DAYS), 4)
             if ex.any() else 0.0,
         }
+    if _hot_on:
+        import pickle
+        tag = os.environ.get("EARTH1_DIAG_TAG", "A")
+        (OUT).mkdir(parents=True, exist_ok=True)
+        with open(OUT / f"hot_history_{tag}_{seed}.pkl", "wb") as fh:
+            pickle.dump({"seed": seed, "hot": hot_hist, "loc": loc_hist,
+                         "fires": fire_log,
+                         "rules": [(r.name, r.conditions, r.effects,
+                                    r.cooldown_days, r.decay_half_life)
+                                   for r in _ALL_RULES],
+                         "critical_fraction": 0.12, "multipliers": _HOT_M},
+                        fh, protocol=pickle.HIGHEST_PROTOCOL)
     # instrument recovery check: C is derived -> delete residues -> 0
     w.chronicle.cascade_residues = []
     Cz = np.abs(np.asarray(effective_forces(w)) - civ.forces).max()
@@ -230,7 +287,8 @@ def main():
     for r in res:
         if "error" not in r and r["recovery_check_maxC_after_expiry"] > 1e-12:
             verdict = "VOID"
-    (OUT / "census.json").write_text(json.dumps(
+    tag = os.environ.get("EARTH1_DIAG_TAG", "")
+    (OUT / (f"census_{tag}.json" if tag else "census.json")).write_text(json.dumps(
         {"verdict": verdict, "results": res}, indent=1, default=str))
     print(json.dumps({"verdict": verdict,
                       "errors": [e.get("error") for e in errs]},
