@@ -47,7 +47,7 @@ ENC = {}          # per-day encounter bookkeeping
 
 
 def make_instrumented_propagate(k, mu, seeded_mask_holder):
-    import earth1.field_lab as flab
+    import earth1.lab_archive.field_lab as flab
 
     def op(forces, alpha, adj, beta=1.0, layers=None,
            susceptibility=None, **kw):
@@ -78,8 +78,8 @@ def run_arm(name):
     import earth1.feed as feedmod
     import earth1.flourishing as flmod
     import earth1.life as lifemod
-    import earth1.conviction_lab as clab
-    import earth1.field_lab as flab
+    import earth1.lab_archive.conviction_lab as clab
+    import earth1.lab_archive.field_lab as flab
     from earth1.alive import birth_world, live_one_day
     from earth1.types import Force
 

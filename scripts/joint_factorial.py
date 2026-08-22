@@ -90,7 +90,7 @@ def panel(w, genesis_sd):
 def run_cell(task):
     akey, bkey = task
     import earth1.alive as am
-    import earth1.conviction_lab as lab
+    import earth1.lab_archive.conviction_lab as lab
     from earth1.alive import birth_world, live_one_day
 
     conv = CONVICTION[akey]

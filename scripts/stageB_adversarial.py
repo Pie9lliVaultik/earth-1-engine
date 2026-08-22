@@ -152,36 +152,14 @@ def _worker(job):
 
 def _b10():
     """Duplicate causality: memory-only vs memory+instant impulse."""
-    os.environ["EARTH1_CASCADE_COOLDOWN"] = "1"
-    os.environ["EARTH1_DECAY_RESIDUE"] = "1"
     import earth1.alive as am
-    import earth1.contagion as cont
-    import earth1.feed as feedmod
-    import earth1.flourishing as flmod
-    import earth1.life as lifemod
-    import earth1.conviction_lab as clab
-    import earth1.field_lab as flab
     from earth1.memory import Memory
     from earth1.types import Force
     N = int(os.environ.get("EARTH1_B10_N", "200000"))
     w = am.birth_world(N, 9109)
-    clab.ALPHA0 = w.civ.alpha.copy()
-    flab.FLOUR_REF[0] = w.flourishing
-    flab.AROUSAL = np.array(
-        [feedmod.AROUSAL_WEIGHT[Force(k)] for k in range(8)])
-    flab.DRIVE_ACC[0] = np.zeros(N)
-    flab.ENC_COUNT[0] = np.zeros(N, dtype=np.int64)
-    am.propagate = flab.make_dyadic_propagate_v6(3, 0.05)
-    feedmod.feed_tick = flab.make_dyadic_feed_v6(0.05)
-    cont.CONTAGION_GAIN = 0.0
-    lifemod.life_force_target = flab.flourishing_level_map(
-        lifemod.life_force_target)
-    flmod.flourishing_tick = flab.flourishing_writes_disabled(
-        flmod.flourishing_tick)
     rng = np.random.default_rng(9109)
     for d in range(1, 31):
-        flab._DAY[0] = d
-        am.live_one_day(w, rng, relax=0.045)
+        am.live_one_day(w, rng)
     loc = (w.civ.country.astype(np.int64) * 1000
            + w.civ.region.astype(np.int64) * 2
            + w.civ.urban.astype(np.int64))
@@ -208,9 +186,8 @@ def _b10():
                 ws.civ.forces[cohort, 0] + 0.5, 0, 1)
         peaks = []
         for d in range(1, 16):
-            flab._DAY[0] = 30 + d
-            am.live_one_day(wc, r1, relax=0.045)
-            am.live_one_day(ws, r2, relax=0.045)
+            am.live_one_day(wc, r1)
+            am.live_one_day(ws, r2)
             peaks.append(float(ws.civ.forces[cohort, 0].mean()
                                - wc.civ.forces[cohort, 0].mean()))
         return max(peaks)

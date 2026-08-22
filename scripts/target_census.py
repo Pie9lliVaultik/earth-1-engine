@@ -114,7 +114,7 @@ def synthetic_arms(w):
 
 def dynamic_attribution(days=60, n=200_000, relax=0.25):
     import earth1.alive as am
-    import earth1.propagation_lab as plab
+    import earth1.lab_archive.propagation_lab as plab
     from earth1.alive import birth_world, live_one_day
     from earth1.life import life_force_target
 

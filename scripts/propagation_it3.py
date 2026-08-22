@@ -101,7 +101,7 @@ def contraction_summary(log):
 
 def run_arm(arm):
     import earth1.alive as am
-    import earth1.propagation_lab as plab
+    import earth1.lab_archive.propagation_lab as plab
     from earth1.alive import birth_world, live_one_day
 
     kwargs, relax, randomize = ARMS[arm]

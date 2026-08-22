@@ -77,8 +77,8 @@ def run(mode, n, seed, days, every, out):
         import earth1.feed as feedmod
         import earth1.flourishing as flmod
         import earth1.life as lifemod
-        import earth1.conviction_lab as clab
-        import earth1.field_lab as flab
+        import earth1.lab_archive.conviction_lab as clab
+        import earth1.lab_archive.field_lab as flab
         from earth1.types import Force
         w = am.birth_world(n, seed)
         clab.ALPHA0 = w.civ.alpha.copy()

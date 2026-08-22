@@ -43,8 +43,8 @@ def main():
     import earth1.feed as feedmod
     import earth1.flourishing as flmod
     import earth1.life as lifemod
-    import earth1.conviction_lab as clab
-    import earth1.field_lab as flab
+    import earth1.lab_archive.conviction_lab as clab
+    import earth1.lab_archive.field_lab as flab
     from earth1.alive import birth_world, live_one_day
     from earth1.types import Force
 

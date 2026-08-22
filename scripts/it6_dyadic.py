@@ -96,8 +96,6 @@ def run_arm(name):
     import earth1.feed as feedmod
     import earth1.flourishing as flmod
     import earth1.life as lifemod
-    import earth1.conviction_lab as clab
-    import earth1.field_lab as flab
     from earth1.alive import birth_world, live_one_day
     from earth1.types import Force
 
@@ -108,26 +106,32 @@ def run_arm(name):
     else:
         os.environ.pop("EARTH1_CASCADE_COOLDOWN", None)
     w = birth_world(N, seed_arm)
-    clab.ALPHA0 = w.civ.alpha.copy()
-    flab.FLOUR_REF[0] = w.flourishing
-    flab.AROUSAL = np.array(
-        [feedmod.AROUSAL_WEIGHT[Force(k)] for k in range(8)])
-    flab.DRIVE_ACC[0] = np.zeros(N)
-    flab.ENC_COUNT[0] = np.zeros(N, dtype=np.int64)
-    flab.SAMPLES.clear()
-    flab.ENC_STATS.clear()
-    flab.DOSE_STATS.clear()
-    flab.SAMPLE_DAYS.clear()
-    flab.SAMPLE_DAYS.update((1, 60, 90, 120))
+    op = cfg["op"]
+    cnv = cfg.get("cnv", "canon")
+    if op not in ("canon", "zero") or cnv not in ("canon", "inc") \
+            or cfg.get("flr") or cfg.get("extra"):
+        # retired 0.8 lab branches: archive import (opt-in guarded)
+        import earth1.lab_archive.conviction_lab as clab
+        import earth1.lab_archive.field_lab as flab
+        clab.ALPHA0 = w.civ.alpha.copy()
+        flab.FLOUR_REF[0] = w.flourishing
+        flab.AROUSAL = np.array(
+            [feedmod.AROUSAL_WEIGHT[Force(k)] for k in range(8)])
+        flab.DRIVE_ACC[0] = np.zeros(N)
+        flab.ENC_COUNT[0] = np.zeros(N, dtype=np.int64)
+        flab.SAMPLES.clear(); flab.ENC_STATS.clear()
+        flab.DOSE_STATS.clear(); flab.SAMPLE_DAYS.clear()
+        flab.SAMPLE_DAYS.update((1, 60, 90, 120))
+    else:
+        flab = None
 
     if cfg.get("extra") == "fastmix":
-        import earth1.propagation_lab as plab
+        import earth1.lab_archive.propagation_lab as plab
         for i, (t, m) in enumerate(w.fabric.by_type.items()):
             w.fabric.by_type[t] = plab.randomized_graph(m, seed=911 + i)
         from earth1.rehome import _recompose_adj
         _recompose_adj(w)
 
-    op = cfg["op"]
     k_arm = int(cfg.get("k", 3))
     mu_arm = float(cfg.get("mu", 0.05))
     if op == "canon":
@@ -262,7 +266,8 @@ def run_arm(name):
     panels, alpha_snaps, eff_panels, end_panels = {}, {}, {}, {}
     tau = trans = None
     for d in range(1, days_arm + 1):
-        flab._DAY[0] = d
+        if flab is not None:
+            flab._DAY[0] = d
         if casfire and d in casfire:
             w.civ.forces[pf_cohort, 2] = 0.20   # ECONOMICS < 0.3
             w.civ.forces[pf_cohort, 0] = 0.60   # FEAR > 0.5
@@ -411,7 +416,8 @@ def run_arm(name):
                     b2[:] = np.clip(b2 + lam_adapt
                                     * (w2.civ.forces - T2), 0, 1)
             for _ in range(TAU_DAYS):
-                flab._DAY[0] += 1
+                if flab is not None:
+                    flab._DAY[0] += 1
                 live_one_day(w, rng, relax=relax)
                 _adapt()
                 live_one_day(w2, rng2, relax=relax)
@@ -453,7 +459,7 @@ def run_arm(name):
                 (da[pos] > 0).mean()), 4) if pos.any() else None,
             "frac_agents_negdrive": round(float(neg.mean()), 4)}
     dose = None
-    if flab.DOSE_STATS:
+    if flab is not None and flab.DOSE_STATS:
         days_d = [v for v in flab.DOSE_STATS.values() if "dose_abs" in v]
         if days_d:
             dose = {
@@ -468,11 +474,13 @@ def run_arm(name):
                     / max(1, sum(v.get("enc", 0)
                                  for v in flab.DOSE_STATS.values()))), 4),
             }
-    enc = {"total": sum(v["n"] for v in flab.ENC_STATS.values()),
-           "frac_neg_encounters": round(
-               sum(v["neg"] for v in flab.ENC_STATS.values())
-               / max(1, sum(v["n"] for v in flab.ENC_STATS.values())),
-               4)}
+    enc = None
+    if flab is not None:
+        enc = {"total": sum(v["n"] for v in flab.ENC_STATS.values()),
+               "frac_neg_encounters": round(
+                   sum(v["neg"] for v in flab.ENC_STATS.values())
+                   / max(1, sum(v["n"] for v in flab.ENC_STATS.values())),
+                   4)}
     rich = None
     if cfg.get("rich") and lam_adapt is not None:
         # negative impulse + sustained-exposure forks from day-120
@@ -492,7 +500,8 @@ def run_arm(name):
             colf = wf.civ.forces[:, CH_TAU]
             colf[idx2] = np.clip(colf[idx2] + mag, 0, 1)
             for dd in range(1, 31):
-                flab._DAY[0] = DAYS + 40 + dd
+                if flab is not None:
+                    flab._DAY[0] = DAYS + 40 + dd
                 if mode == "sustained" and 1 < dd <= 15:
                     colf = wf.civ.forces[:, CH_TAU]
                     colf[idx2] = np.clip(colf[idx2] + 0.15 / 15, 0, 1)
@@ -537,8 +546,8 @@ def run_arm(name):
             "cohort_dalpha": cohort_dalpha,
             "realized_dose": dose,
             "rich_forks": rich,
-            "samples_n": len(flab.SAMPLES),
-            "sample_head": flab.SAMPLES[:5]}
+            "samples_n": len(flab.SAMPLES) if flab is not None else 0,
+            "sample_head": flab.SAMPLES[:5] if flab is not None else []}
 
 
 def main():

@@ -71,8 +71,8 @@ def panel(w, genesis_sd):
 
 def run_cell(name):
     import earth1.alive as am
-    import earth1.propagation_lab as plab
-    import earth1.conviction_lab as clab
+    import earth1.lab_archive.propagation_lab as plab
+    import earth1.lab_archive.conviction_lab as clab
     from earth1.alive import birth_world, live_one_day
 
     op_kwargs, relax, conv = CELLS[name]

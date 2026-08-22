@@ -51,8 +51,8 @@ def main():
     import earth1.knowledge as kmod
     import earth1.weather as wmod
     import earth1.mobility as mobmod
-    import earth1.conviction_lab as clab
-    import earth1.field_lab as flab
+    import earth1.lab_archive.conviction_lab as clab
+    import earth1.lab_archive.field_lab as flab
     from earth1.alive import birth_world, live_one_day
     from earth1.types import Force
 

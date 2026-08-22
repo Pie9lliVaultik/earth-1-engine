@@ -120,16 +120,5 @@ def main():
     print(json.dumps(res, indent=1, default=bool))
 
 
-def target_all(w, flag):
-    import earth1.field_lab as flab
-    import earth1.life as lifemod
-    os.environ["EARTH1_COLLECTIVE_CENTERED"] = "1" if flag else "0"
-    flab.FLOUR_REF[0] = w.flourishing
-    t = flab.flourishing_level_map(lifemod.life_force_target)(
-        w.civ, w.life)
-    os.environ["EARTH1_COLLECTIVE_CENTERED"] = "1"
-    return t
-
-
 if __name__ == "__main__":
     main()
