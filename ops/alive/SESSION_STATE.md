@@ -112,6 +112,13 @@ regressions green) -> CANDIDATE v2 FROZEN @76a574c (flags: cooldown,
 residue, collective_centered). STAGE A v2: PASS 3/3 fresh seeds
 9301-9303 (sat max_t 0.002-0.021!). STAGE B: PASS 13/13 adversarial
 (@a177d05; B11 scored by amendment; B7 KA8-variant instrument
-VOID->repaired to KA10-pair). Stage C census sub-registered (seeds
-9501-9502); next: build census instrument, run, then Stage D T2
-holdout (historical exposure stream @c81bd33).
+VOID->repaired to KA10-pair). Stage C CHARACTERIZED @e2bf34d (IDENTITY overlay broad+persistent;
+E3 concern ledgered). BIBLE REALIGNMENT (audit @72edd1e): returned to
+v4.1 sequence. Program 1 port @42b61c3; Program 2 PASS @fb78729
+(canonical == lab 76a574c BITWISE over 365d/200k); Program 3 One-
+Earth CODE-PATH COMPLETE @5e323e1 (answer_living, benchmark_living,
+legacy opt-in guards, lab archived, gate extended, PHYSICS_VERSION
+identity, routing report PASS). LIVE-PRODUCTION invariant PENDING
+(Epoch 1 on CCX33 untouched). Next: Stage C cascade E3 issue via Bible
+miss protocol on the unified implementation -> 0.7 close -> true 0.8
+-> Epoch 2 -> benchmarks.
