@@ -130,6 +130,17 @@
     "DETECTED": null,
     "CLEAN": null,
     "detail": "N/A per frozen prereg: dt=1 day is the only integrator; no synthetic test fabricated"
+   },
+   "B11": {
+    "DETECTED": true,
+    "CLEAN": true,
+    "pass": true,
+    "detail": {
+     "broken_at_bound_sustained_d10_d90": 0.125,
+     "broken_recovery_post_impulse_d100": 0.00031,
+     "healthy_at_bound_all_run": 0.0,
+     "note": "scored post-hoc from the recorded arm data - the runner's verdict assembler lacked the B11 block (arm ran as registered; amendment adds scoring only, criteria unchanged from prereg)"
+    }
    }
   },
   "STAGE_B": "PASS"

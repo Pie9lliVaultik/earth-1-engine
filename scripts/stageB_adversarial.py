@@ -351,6 +351,23 @@ def main():
         det = r["ratio"] is not None and r["ratio"] > 1.6
         cln = r["peak_single"] > 0
         add("B10", det, cln, r)
+    if {"B11_bigev", "H_9106"} <= ran:
+        b, h = J("B11_bigev"), J("H_9106")
+        Eb = b["endurance"]
+        ab = [(int(k), v["at_bound_stored"]) for k, v in
+              sorted(Eb.items(), key=lambda x: int(x[0]))]
+        # sustained >=5% for >=30d: 4 consecutive 10d census points
+        runs = 0
+        det = False
+        for _, v in ab:
+            runs = runs + 1 if v >= 0.05 else 0
+            if runs >= 4:
+                det = True
+        Eh = h["endurance"]
+        healthy_max = max(v["at_bound_stored"] for v in Eh.values())
+        add("B11", det, healthy_max < 0.05,
+            {"broken_at_bound": dict(ab),
+             "healthy_at_bound_max": healthy_max})
     V["tests"]["B13_dt_invariance"] = {
         "pass": True, "DETECTED": None, "CLEAN": None,
         "detail": "N/A per frozen prereg: dt=1 day is the only "
