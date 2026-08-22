@@ -48,49 +48,24 @@ def run_arm(name):
     import earth1.feed as feedmod
     import earth1.flourishing as flmod
     import earth1.life as lifemod
-    import earth1.conviction_lab as clab
-    import earth1.field_lab as flab
     from earth1.alive import birth_world, live_one_day
     from earth1.memory import Memory, Chronicle
     from earth1.types import Force
 
     cfg = dict(ARMS[name])
     seed = int(cfg.get("seed", SEED))
-    os.environ["EARTH1_CASCADE_COOLDOWN"] = "1"
+    # POST-CANONICALIZATION: the candidate IS the flagless canonical
+    # loop; no lab patches. (The historical assembly — dyadic v6 ops,
+    # flourishing map/write-suppression, conv closure, env flags — is
+    # retired with field_lab.)
     w = birth_world(N, seed)
-    clab.ALPHA0 = w.civ.alpha.copy()
-    flab.FLOUR_REF[0] = w.flourishing
-    flab.AROUSAL = np.array(
-        [feedmod.AROUSAL_WEIGHT[Force(k)] for k in range(8)])
-    flab.DRIVE_ACC[0] = np.zeros(N)
-    flab.ENC_COUNT[0] = np.zeros(N, dtype=np.int64)
-    am.propagate = flab.make_dyadic_propagate_v6(3, 0.05)
-    feedmod.feed_tick = flab.make_dyadic_feed_v6(0.05)
-    cont.CONTAGION_GAIN = 0.0
-    lifemod.life_force_target = flab.flourishing_level_map(
-        lifemod.life_force_target)
-    flmod.flourishing_tick = flab.flourishing_writes_disabled(
-        flmod.flourishing_tick)
-
-    def conv(forces, alpha, adj):
-        n_enc = np.maximum(flab.ENC_COUNT[0], 1)
-        drive = flab.DRIVE_ACC[0] / n_enc
-        drive[flab.ENC_COUNT[0] == 0] = 0.0
-        a = np.clip(alpha, 0.02, 0.98)
-        out = np.clip(1 / (1 + np.exp(-(np.log(a / (1 - a))
-                                        + 0.003 * drive))), 0.02, 1.0)
-        flab.DRIVE_ACC[0][:] = 0.0
-        flab.ENC_COUNT[0][:] = 0
-        return out
-    am.update_conviction = conv
 
     if cfg.get("spread") is False:
         Chronicle.spread = lambda self, civ, rng, rate=0.06: 0
 
     rng = np.random.default_rng(seed)
     for d in range(1, DAYS + 1):
-        flab._DAY[0] = d
-        live_one_day(w, rng, relax=0.045)
+        live_one_day(w, rng)
 
     # paired fork: event world vs control world
     rng_state = rng.bit_generator.state
@@ -124,7 +99,6 @@ def run_arm(name):
 
     series = []
     for d in range(1, WINDOW + 1):
-        flab._DAY[0] = DAYS + d
         if d in followups:
             fu = Memory(id=f"it12:fu{d}", label="follow-up",
                         day=float(w2.day), force_signature=mem
@@ -136,8 +110,8 @@ def run_arm(name):
         if cfg.get("delete_after") and d == cfg["delete_after"] + 1:
             w2.chronicle.events = [m for m in w2.chronicle.events
                                    if m.id != "it11:canonical"]
-        live_one_day(w, rng, relax=0.045)
-        live_one_day(w2, rng2, relax=0.045)
+        live_one_day(w, rng)
+        live_one_day(w2, rng2)
         mm = next((m for m in w2.chronicle.events
                    if m.id == "it11:canonical"), None)
         series.append({
