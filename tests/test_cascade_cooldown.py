@@ -102,18 +102,23 @@ def test_restart_preserves_cooldown_state(flag, tmp_path):
     assert not refired
 
 
-def test_disabled_flag_recreates_daily_firing(monkeypatch):
-    monkeypatch.delenv("EARTH1_CASCADE_COOLDOWN", raising=False)
+def test_cooldown_is_unconditional_post_canonicalization(monkeypatch):
+    """Phase 0.5 Program 3: the cooldown contract is canonical physics —
+    no environment flag can switch it off. The pathological
+    daily-refiring reference lives on only as the Stage-B broken twin
+    (the resurrected accumulator), never as a runtime option."""
+    monkeypatch.setenv("EARTH1_CASCADE_COOLDOWN", "0")
     w = birth_world(2000, 3)
     rng = np.random.default_rng(3)
-    st1 = _run_day(w, rng)
-    st2 = _run_day(w, rng)
-    assert st1["cascades_fired"] > 0 and st2["cascades_fired"] > 0, \
-        "incumbent behavior (daily refiring) not reproduced with " \
-        "the flag off — the pathological reference must remain " \
-        "demonstrable"
-    assert getattr(w.chronicle, "cascade_last_fired", None) is None, \
-        "flag-off run must not create cooldown state (hash purity)"
+    _run_day(w, rng)
+    _run_day(w, rng)
+    assert isinstance(getattr(w.chronicle, "cascade_last_fired", None),
+                      dict), "cooldown state must exist regardless of env"
+    # a (rule, locality) that fired cannot fire again within its cooldown
+    from earth1.thresholds import TRANSITION_RULES
+    cd = {r.name: r.cooldown_days for r in TRANSITION_RULES}
+    for (rule, loc), last in list(w.chronicle.cascade_last_fired.items()):
+        assert w.day - last <= cd[rule]
 
 
 def test_never_triggered_rule_has_no_state(flag):

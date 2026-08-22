@@ -1,3 +1,16 @@
+from __future__ import annotations
+"""LEGACY_COMPARISON_ONLY — the retired civ-based opinion readout
+(`answer()`), built on the pre-living Civilization ontology and
+`earth1.tick`. Formally RETIRED in Phase 0.5 Program 3: it consumed no
+living state and had zero importers. The canonical living answer path
+is `earth1.answer_living` (reads only `alive.World`). Importing this
+module requires EARTH1_LEGACY_COMPARISON=1.
+"""
+import os as _os
+if _os.environ.get("EARTH1_LEGACY_COMPARISON") != "1":
+    raise ImportError("earth1.legacy_answer is LEGACY_COMPARISON_ONLY "
+                      "(retired civ-based readout); the canonical path "
+                      "is earth1.answer_living.")
 """THE ANSWER PATH — the population always speaks; the tier is the receipt.
 
 The reframe (2026-08-18, Pietro): grounding does not CREATE the answer.
@@ -27,7 +40,6 @@ and then projected forward by the dynamics. A prediction is therefore
 a MEASUREMENT OF THE PRESENT plus a DYNAMICS CLAIM about where the
 present is heading — each with its own receipt.
 """
-from __future__ import annotations
 
 import hashlib
 import json

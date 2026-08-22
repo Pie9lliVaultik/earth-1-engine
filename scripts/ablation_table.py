@@ -29,7 +29,7 @@ for label, flags in TIERS:
     import earth1.genesis
     importlib.reload(earth1.genesis)
     civ = earth1.genesis.genesis(200_000, seed=42)
-    from earth1.benchmark import run_goqa_benchmark
+    from earth1.legacy_benchmark import run_goqa_benchmark
     r = run_goqa_benchmark(civ, goqa)
     results[label] = {"engine_cv": r.engine_cv_mae, "naive_cv": r.naive_cv_mae,
                       "wins": r.engine_wins, "n": r.n_questions}

@@ -37,7 +37,7 @@ VARS = {
 
 
 def main() -> None:
-    from earth1.benchmark import ISO3_TO_ISO2
+    from earth1.benchmark_questions import ISO3_TO_ISO2
     con = duckdb.connect()
     con.execute(f"""CREATE VIEW w AS SELECT * FROM read_csv('{RAW}',
       header=true, delim=',', quote='"', escape='"', strict_mode=false,

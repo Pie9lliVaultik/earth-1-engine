@@ -46,7 +46,8 @@ def test_entry_points_interchangeable_mid_stream(tiny_world):
 def test_reduced_stepper_would_fail_parity(tiny_world):
     """Failing control: a reduced (civ,life)-only stepper — the OLD
     world_step's physics — must diverge from the canonical loop."""
-    from earth1.influence import propagate, update_conviction
+    from earth1.influence import (propagate, update_conviction,
+                                  new_day_scratch)
     from earth1.life import life_force_target, life_tick
 
     a = copy.deepcopy(tiny_world)
@@ -56,11 +57,14 @@ def test_reduced_stepper_would_fail_parity(tiny_world):
     # the reduced day: matter + influence + conviction only
     civ, life = b.civ, b.life
     life_tick(civ, life, rb, dt_days=1.0, couple_forces=False)
-    target = life_force_target(civ, life)
+    target = life_force_target(civ, life, b.flourishing)
+    scratch = new_day_scratch(civ.n)
     civ.forces = propagate(civ.forces, civ.alpha, civ.adj,
-                           beta=CANONICAL_DAY["beta"], layers=2)
-    civ.forces = np.clip(civ.forces + 0.25 * (target - civ.forces), 0, 1)
-    civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj)
+                           day=b.day + 1, scratch=scratch)
+    civ.forces = np.clip(civ.forces + CANONICAL_DAY["relax"]
+                         * (target - civ.forces), 0, 1)
+    civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj,
+                                  scratch=scratch)
     assert persistence.world_hash(a) != persistence.world_hash(b), \
         "the parity instrument cannot distinguish reduced physics"
 
@@ -71,7 +75,10 @@ def test_historical_beta_would_fail_parity(tiny_world):
     a = copy.deepcopy(tiny_world)
     b = copy.deepcopy(tiny_world)
     world_step(a, np.random.default_rng(7))
-    world_step(b, np.random.default_rng(7), beta=1.0)   # the old default
+    # post-canonicalization the social law has no beta; the historical
+    # divergent default that the canonical day still consumes is relax
+    # (0.25 incumbent vs 0.045 canonical)
+    world_step(b, np.random.default_rng(7), relax=0.25)
     assert persistence.world_hash(a) != persistence.world_hash(b)
 
 

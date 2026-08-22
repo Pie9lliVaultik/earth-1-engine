@@ -172,6 +172,8 @@ def test_reintroduced_legacy_import_is_refused(tmp_path, monkeypatch):
 def test_quarantine_list_covers_the_engine_family():
     required = {"earth1.engine", "earth1.tick", "earth1.living",
                 "earth1.advance", "earth1.diffusion", "earth1.forces",
+                "earth1.legacy_benchmark", "earth1.legacy_predictions",
+                "earth1.legacy_answer", "earth1.lab_archive",
                 "earth1.dynamics", "earth1.coupling",
                 "earth1.graph_dynamics", "earth1.event_generation",
                 "earth1.perishability"}

@@ -7,7 +7,7 @@ import pytest
 
 from earth1.confidence import score_confidence, _cosine, _keyword_overlap, _content_tokens
 from earth1.types import Question
-from earth1.benchmark import BENCHMARK_QUESTIONS
+from earth1.benchmark_questions import BENCHMARK_QUESTIONS
 from earth1.questions import _w
 
 

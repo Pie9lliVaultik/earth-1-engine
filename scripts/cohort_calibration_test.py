@@ -22,7 +22,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from earth1.benchmark import ISO3_TO_ISO2
+from earth1.benchmark_questions import ISO3_TO_ISO2
 from earth1.calibration import _build_features, _get_country_index
 from earth1.genesis import genesis
 from earth1.rng import logit, sigmoid

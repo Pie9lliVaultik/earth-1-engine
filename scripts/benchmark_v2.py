@@ -25,7 +25,7 @@ def main():
     args = ap.parse_args()
 
     from earth1.genesis import genesis
-    from earth1.benchmark import run_goqa_benchmark, format_goqa
+    from earth1.legacy_benchmark import run_goqa_benchmark, format_goqa
 
     goqa_data = json.loads(GOQA.read_text())
     print(f"Building v2 manifold: {args.pop:,} agents, seed {args.seed}...")

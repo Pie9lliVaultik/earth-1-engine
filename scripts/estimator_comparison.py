@@ -4,7 +4,7 @@ import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ["EARTH1_PINNED_FOLDS"] = "data/cv_folds.json"
 from earth1.genesis import genesis
-from earth1.benchmark import run_goqa_benchmark
+from earth1.legacy_benchmark import run_goqa_benchmark
 
 gt = json.load(open("data/benchmark/goqa_ground_truth.json"))
 civ = genesis(200000, 42)

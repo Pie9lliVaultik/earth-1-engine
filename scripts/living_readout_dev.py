@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from earth1.alive import CANONICAL_DAY, birth_world, live_one_day
-from earth1.benchmark import ISO3_TO_ISO2
+from earth1.benchmark_questions import ISO3_TO_ISO2
 from earth1.calibration import (LIVING_FEATURES, _build_features,
                                 living_features)
 from earth1.genesis import GENESIS_COUNTRY_CODES

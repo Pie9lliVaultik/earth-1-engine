@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Prediction market validation — resolved outcomes vs engine predictions.
 
 Tests the engine against questions where the real-world outcome is known.
@@ -9,7 +10,14 @@ For each resolved prediction, we compare:
 The force anatomy shows WHY the engine predicted what it predicted,
 which forces drove it, and whether the decomposition makes sense.
 """
-from __future__ import annotations
+"""LEGACY_COMPARISON_ONLY — retired predictions harness over the retired
+engine family. Not an official Earth-1 scoring path; importing requires
+EARTH1_LEGACY_COMPARISON=1.
+"""
+import os as _os
+if _os.environ.get("EARTH1_LEGACY_COMPARISON") != "1":
+    raise ImportError("earth1.legacy_predictions is LEGACY_COMPARISON_ONLY; "
+                      "set EARTH1_LEGACY_COMPARISON=1 to import it.")
 
 import time
 from dataclasses import dataclass, field

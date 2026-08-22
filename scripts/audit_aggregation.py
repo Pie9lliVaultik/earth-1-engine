@@ -17,7 +17,7 @@ import json
 
 import numpy as np
 
-from earth1.benchmark import ISO3_TO_ISO2
+from earth1.benchmark_questions import ISO3_TO_ISO2
 from earth1.calibration import (_build_features, _get_country_index,
                                 calibrate_single, calibrate_single_aggregated)
 from earth1.genesis import genesis

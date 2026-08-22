@@ -103,6 +103,11 @@ def test_trajectory_hash_unchanged_by_optimizations():
                        capture_output=True, text=True, cwd=root,
                        env=clean_env)
     assert p.returncode == 0, p.stderr[-500:]
+    # PINNED TRAJECTORY of the CANONICAL physics (Phase 0.5, candidate
+    # 76a574c canonicalized at 42b61c3). The previous pin
+    # (7a55444a…55f06) was the incumbent physics; it is superseded by
+    # the accepted physics, not by an optimization — any future change
+    # to this value without a physics ruling is a regression.
     assert p.stdout.strip() == (
-        "7a55444a6d2e57bd87808b17b4b7bb7c"
-        "bbfac02507427c887e7924255bb55f06")
+        "6b289fb1f0b578b753278b356e73a04a"
+        "3594905d620eded15cad5f46a9eb929a")

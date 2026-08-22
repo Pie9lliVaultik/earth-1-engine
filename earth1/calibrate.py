@@ -16,7 +16,7 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 
 from earth1.types import Civilization, Force, NUM_FORCES
-from earth1.predictions import (
+from earth1.legacy_predictions import (
     RESOLVED_PREDICTIONS,
     ResolvedPrediction,
     run_prediction_validation,
@@ -283,7 +283,7 @@ if __name__ == "__main__":
     civ = build_civilization(args.pop, seed=args.seed)
 
     print("Running prediction validation...")
-    from earth1.predictions import run_prediction_validation
+    from earth1.legacy_predictions import run_prediction_validation
     report = run_prediction_validation(civ)
 
     print("Running leave-one-out calibration test...\n")

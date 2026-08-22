@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from earth1.genesis import genesis
-from earth1.benchmark import run_goqa_benchmark
+from earth1.legacy_benchmark import run_goqa_benchmark
 
 os.environ.setdefault("EARTH1_PINNED_FOLDS", "data/cv_folds.json")
 

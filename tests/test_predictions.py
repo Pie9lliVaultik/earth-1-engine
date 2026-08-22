@@ -1,3 +1,5 @@
+import os as _os  # LEGACY_COMPARISON_ONLY test: explicit opt-in (tests may)
+_os.environ.setdefault("EARTH1_LEGACY_COMPARISON", "1")
 """Tests for Build 27 — Prediction market validation."""
 import sys
 sys.path.insert(0, ".")
@@ -5,7 +7,7 @@ sys.path.insert(0, ".")
 import numpy as np
 import pytest
 
-from earth1.predictions import (
+from earth1.legacy_predictions import (
     RESOLVED_PREDICTIONS,
     ResolvedPrediction,
     PredictionResult,

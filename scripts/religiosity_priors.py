@@ -50,7 +50,7 @@ GROUP BY cc HAVING SUM(W_WEIGHT) >= 200
 
 
 def main() -> None:
-    from earth1.benchmark import ISO3_TO_ISO2
+    from earth1.benchmark_questions import ISO3_TO_ISO2
     out: dict = {}
     for cc, p, nw in con.execute(MARGINAL_SQL).fetchall():
         iso2 = ISO3_TO_ISO2.get(cc)

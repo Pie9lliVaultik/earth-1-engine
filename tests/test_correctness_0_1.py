@@ -88,7 +88,8 @@ def test_untreated_falls_now_occur(tiny_world, rng):
 def test_conviction_decay_disabled_and_bit_exact(tiny_world):
     """Code and docs agree: decay is OFF (0.8 A/B experiment). Output
     must be bit-identical to the bare formula with no decay term."""
-    from earth1.influence import CONVICTION_GAIN, update_conviction
+    from earth1.influence import CONVICTION_GAIN
+    from earth1.influence import update_conviction_ratchet_legacy as update_conviction  # 0.1 bug #3 targets the RETIRED law
     w = tiny_world
     forces, alpha, adj = w.civ.forces, w.civ.alpha, w.civ.adj
 
@@ -106,7 +107,7 @@ def test_conviction_decay_disabled_and_bit_exact(tiny_world):
 def test_enabling_decay_is_detectable(tiny_world):
     """The control that must fail if decay were switched on: the
     experimental path produces a DIFFERENT trajectory."""
-    from earth1.influence import update_conviction
+    from earth1.influence import update_conviction_ratchet_legacy as update_conviction  # retired law
     w = tiny_world
     off = update_conviction(w.civ.forces, w.civ.alpha, w.civ.adj)
     on = update_conviction(w.civ.forces, w.civ.alpha, w.civ.adj,
@@ -118,7 +119,7 @@ def test_enabling_decay_is_detectable(tiny_world):
 
 def test_docstring_says_disabled():
     from earth1 import influence
-    doc = influence.update_conviction.__doc__
+    doc = influence.update_conviction_ratchet_legacy.__doc__  # the retired law's contract
     assert "DISABLED" in doc and "0.8" in doc, \
         "docs must state decay is disabled pending the 0.8 A/B"
 
