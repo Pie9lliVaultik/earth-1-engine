@@ -59,3 +59,23 @@ candidate abstractly; the only binding change (COLLECTIVE target
 law) does not intersect any Stage-B test definition. Stage B arms
 run with the three candidate flags plus their per-test broken flag.
 Gates unchanged.
+
+## AMENDMENT 2026-08-22 (found by Program 2 port equivalence)
+
+INSTRUMENT-DEFECTIVE regression lines, disclosed: the it6 "ALL" arm
+configuration carried no `residue` key, so `run_arm` popped
+`EARTH1_DECAY_RESIDUE`; the recorded "IT6-ALL @8890 flag on" line
+above (`data/geo1/it6_all.json`: tau 5, rings 0.00699/0.00076/
+0.00059, sdr 0.665, sat d120 0.048) therefore ran candidate v2 WITH
+INSTANT-WRITE CASCADES, not the open-loop contract. The GEO-1 IT12
+rerun (`data/geo1/it12_arms.json`) shared the gap (the it11 engine
+set only the cooldown flag). Both lines are NON-SCORABLE for the
+candidate as frozen. Unaffected (residue set explicitly): all GEO-1
+KAs, GEO-1A, Stage A v2, Stage B, Stage C, PF-DECAY-2 KAs. The
+GEO-1 verdict's third condition (regression healthy) is re-evidenced
+on the CANONICAL loop (Program 2, 42b61c3+): it6 canonical @8890 —
+tau 5 / resid 0.065, rings 0.00704/0.00073/0.00055 (in band), sdr
+0.599, α interior, unanimity 0.033, sat d120 0.0018 — every frozen
+IT6 gate green; IT12 arms re-run on canonical recorded in
+`data/port_eq/it12_arms_canonical.json` (see PORT_EQUIVALENCE_REPORT).
+GEO-1 PASS stands; the superseded lines are labeled, not rewritten.

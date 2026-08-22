@@ -1,0 +1,138 @@
+{
+ "verdict": "VOID",
+ "results": [
+  {
+   "ka1_max_abs_err": 0.0,
+   "ka1_pass": true,
+   "expiry_active_at_149": true,
+   "expiry_gone_at_150": true,
+   "expiry_pass": true,
+   "ka6_pass": true,
+   "ka7_pass": true,
+   "arm": "UNIT",
+   "pass": true
+  },
+  {
+   "arm": "KA0",
+   "same_panels": false,
+   "same_tau": true,
+   "same_transmission": false,
+   "got_tau": {
+    "half_life_d": 5,
+    "resid_d30": 0.065
+   },
+   "rec_tau": {
+    "half_life_d": 5,
+    "resid_d30": 0.065
+   },
+   "got_sat120": 0.0018,
+   "pass": false
+  },
+  {
+   "mode": "level",
+   "channel": 4,
+   "channel_clip_frac": 0.0,
+   "stored_identical": true,
+   "stored_diverge_day": null,
+   "max_stored_delta": 0.0,
+   "effective_max_err": 4.163336342344337e-17,
+   "expiry_day": 150,
+   "arm": "KA2LEVEL",
+   "pass": true
+  },
+  {
+   "mode": "integrator",
+   "channel": 4,
+   "channel_clip_frac": 0.0,
+   "stored_identical": false,
+   "stored_diverge_day": 1,
+   "max_stored_delta": 0.559599,
+   "effective_max_err": 0.0,
+   "expiry_day": null,
+   "arm": "KA2PLANT",
+   "detected": true,
+   "pass": true
+  },
+  {
+   "arm": "KA6LOOP",
+   "max_err_vs_A": 2.7755575615628914e-17,
+   "channel": 4,
+   "channel_clip_frac": 0.0,
+   "still_active": 1,
+   "pass": true
+  },
+  {
+   "arm": "KA3",
+   "fire_days": [
+    0,
+    14,
+    28
+   ],
+   "expected": [
+    0,
+    14,
+    28
+   ],
+   "pass": true
+  },
+  {
+   "arm": "KA4",
+   "x_fire_days": [
+    0
+   ],
+   "y_fire_days": [
+    5
+   ],
+   "pass": true
+  },
+  {
+   "arm": "KA5",
+   "same_state": true,
+   "same_trajectory_20d": true,
+   "same_residue_count": true,
+   "pass": true
+  },
+  {
+   "arm": "KA8",
+   "panic_fired": 0,
+   "effective_fear_max": 0.6544,
+   "premise_effective_above_trigger": true,
+   "pass": true
+  },
+  {
+   "arm": "KA9",
+   "fire_days": [
+    5,
+    19
+   ],
+   "pass": true
+  },
+  {
+   "arm": "KA10",
+   "stored_identical": true,
+   "same_last_fired": true,
+   "same_fire_records": true,
+   "n_real_fires": 1738,
+   "pass": true
+  },
+  {
+   "arm": "KA11",
+   "decay_checks": [
+    {
+     "dt": 13,
+     "got": 0.081853,
+     "want": 0.081853,
+     "err": 1.3877787807814457e-17
+    },
+    {
+     "dt": 23,
+     "got": 0.070168,
+     "want": 0.070168,
+     "err": 0.0
+    }
+   ],
+   "readout_delta": 0.07017,
+   "pass": true
+  }
+ ]
+}
