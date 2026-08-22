@@ -104,5 +104,14 @@ high-rail tail breathing 0.21-0.36 after d150; every other channel
 0.00-0.02; cascades/diversity/drift/clip excluded by measurement).
 STAGE_A_REPORT.md. Chain STOPPED per discipline — awaiting founder
 ruling on the falsified COLLECTIVE geometry vs gate construct.
-Stage B implemented-in-part (broken twins flag-gated in alive.py),
-NOT run.
+GEO-0 diagnosis: target-law
+bias (writers sum +0.23 onto healthy genesis 0.63; 41.8% of target
+above rail). GEO-1 centered-deviation law: PASS (T=B invariant
+exact; known-failure seeds healed 0.21-0.36 -> 0.02-0.11; all
+regressions green) -> CANDIDATE v2 FROZEN @76a574c (flags: cooldown,
+residue, collective_centered). STAGE A v2: PASS 3/3 fresh seeds
+9301-9303 (sat max_t 0.002-0.021!). STAGE B: PASS 13/13 adversarial
+(@a177d05; B11 scored by amendment; B7 KA8-variant instrument
+VOID->repaired to KA10-pair). Stage C census sub-registered (seeds
+9501-9502); next: build census instrument, run, then Stage D T2
+holdout (historical exposure stream @c81bd33).
