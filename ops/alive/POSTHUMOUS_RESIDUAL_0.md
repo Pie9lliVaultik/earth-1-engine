@@ -39,3 +39,9 @@ below 0.01 at 1–2 % dead, material at Epoch-1-like 17 % dead.
 
 ## Bookkeeping correction
 Escalation reserve = **+8 actual runs** (A +2, C +1, FSLE remaining +5), not +4.
+
+## Closure (founder ruling: one semantic correction, minimal patch)
+Rule applied: **current social computation uses living neighbours; explicit legacy substrates persist.**
+Membership-ablation check (dead edge present vs excluded, same world/RNG): knowledge and flourishing respond to membership alone (Δ 8e-6 / 2.6e-4); `class_tick` inert; `life_force_target` responds to the dead alter's state when the ego is deprived (Δ +0.047).
+Patch (v4.1 RC): one living view built per tick after deaths/rehoming and passed to `knowledge_tick` (neighbour stock + scientist peers), `flourishing_tick` (near-knowing, art_flow — durable works persist through `living_works`/`global_stock`), `life_force_target` (shared hardship; optional `adj=` kwarg, default unchanged), propagate/conviction/feedback/feed (already); plus two more same-bug manifestations found by the invariant test: `mobility` flight mixing drew a random host from ALL rows (now living hosts), and `institutions.govern` aggregated national deprivation/FEAR over all rows (now living; the institution's state persists). `Chronicle.spread` unchanged (explicit memory substrate); `couple_life_to_forces` unchanged (inert). No coefficient, reference, half-life or ontology change.
+Invariant test G (`tests/test_posthumous.py`): perturbing every personal field of 40 deceased rows (forces, alpha, deprivation, wealth, stock, works, traits) leaves every living row's next state bit-identical across forces, alpha, knowledge, flourishing, life; a memory held only by the dead still spreads to the living. Estate 1,107 pass.

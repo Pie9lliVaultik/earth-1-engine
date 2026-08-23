@@ -163,7 +163,9 @@ def mobility_tick(civ, life, mob: Mobility, health, fl, rng,
         # neighbours'. Every other channel is homophilous and therefore
         # convergent; this one is the sole source of genuine mixing.
         idx = np.flatnonzero(flying)
-        dest = rng.integers(0, n, idx.size)
+        # POSTHUMOUS rule: the traveller meets a LIVING host somewhere else
+        living = np.flatnonzero(live)
+        dest = living[rng.integers(0, living.size, idx.size)]
         civ.forces[idx, Force.CULTURE] = np.clip(
             civ.forces[idx, Force.CULTURE]
             + CULTURAL_MIXING * (civ.forces[dest, Force.CULTURE]

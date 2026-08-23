@@ -138,7 +138,7 @@ def _water_access(civ, soil) -> np.ndarray:
 
 
 def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
-                     dt_days: float = 1.0, alive=None,
+                     dt_days: float = 1.0, alive=None, adj=None,
                      discoveries_today: int = 0,
                      works_today: int = 0,
                      welfare: np.ndarray | None = None,
@@ -194,8 +194,12 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
     fl.hope += 0.05 * (hope_target * headroom - fl.hope) * dt_days
 
     # CURIOSITY: fed by discovery and by proximity to people who know
-    deg = np.maximum(np.asarray(civ.adj.sum(axis=1)).ravel(), 1.0)
-    near_knowing = np.asarray(civ.adj @ kn.stock).ravel() / deg
+    # POSTHUMOUS rule: near-knowing and art received through one's
+    # circle are current-social reads; the caller passes the living view.
+    # (Durable works persist through knowledge.living_works/global_stock.)
+    adj = civ.adj if adj is None else adj
+    deg = np.maximum(np.asarray(adj.sum(axis=1)).ravel(), 1.0)
+    near_knowing = np.asarray(adj @ kn.stock).ravel() / deg
     cur_target = np.clip(0.35 * civ.openness + 0.35 * near_knowing
                          + 0.30 * world_learning, 0, 1)
     fl.curiosity += 0.04 * (cur_target * headroom
@@ -204,7 +208,7 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
 
     # MEANING: art made and art received, plus work worth doing
     made = (kn.works_made > 0)
-    art_flow = np.asarray(civ.adj @ made.astype(civ.adj.dtype)).ravel() / deg
+    art_flow = np.asarray(adj @ made.astype(adj.dtype)).ravel() / deg
     fl.art_received += art_flow * dt_days * 0.01
     mean_target = np.clip(0.25 + 0.35 * np.clip(fl.art_received, 0, 1)
                           + 0.20 * kn.status + 0.20 * fl.belonging, 0, 1)

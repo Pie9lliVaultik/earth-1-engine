@@ -156,3 +156,39 @@ def test_F_persistence(tmp_path):
         assert np.array_equal(_frozen_state(w2, dead)[k], v)
         assert np.array_equal(_frozen_state(w3, dead)[k], v)
     assert (~w2.health.alive[dead]).all() and (w2.health.cause_of_death[dead] == 1).all()
+
+
+def test_G_no_current_social_agency_any_consumer():
+    """POSTHUMOUS-RESIDUAL-0 closure: changing a deceased person's personal
+    live-state fields cannot alter ANY living person's next state through a
+    current-social calculation; explicit legacy substrates still work."""
+    w, rng = _world(days=4, n=3000)
+    dead = np.flatnonzero(w.health.alive)[:40]
+    _kill(w, dead)
+    live_one_day(w, rng)                       # frozen from here
+    w.life.relationship[:] = 0.0               # no births: the slots stay deceased
+    w2 = copy.deepcopy(w); rng2 = copy.deepcopy(rng)
+    # perturb every personal field of the deceased that a consumer could read
+    w2.civ.forces[dead] = np.clip(w2.civ.forces[dead] + 0.4, 0, 1)
+    w2.civ.alpha[dead] = 1.0
+    w2.life.deprivation[dead] = 1.0; w2.life.wealth[dead] = -999.0
+    w2.knowledge.stock[dead] = 1.0; w2.knowledge.works_made[dead] = 50
+    w2.civ.openness[dead] = 1.0
+    live_one_day(w, rng); live_one_day(w2, rng2)
+    alive = w.health.alive & w2.health.alive
+    assert np.array_equal(w.civ.forces[alive], w2.civ.forces[alive])
+    assert np.array_equal(w.civ.alpha[alive], w2.civ.alpha[alive])
+    assert np.array_equal(w.knowledge.stock[alive], w2.knowledge.stock[alive])
+    for n in ("curiosity", "art_received", "meaning", "hope"):
+        assert np.array_equal(getattr(w.flourishing, n)[alive], getattr(w2.flourishing, n)[alive]), n
+    for n in ("deprivation", "wealth", "mental", "social_need"):
+        assert np.array_equal(getattr(w.life, n)[alive], getattr(w2.life, n)[alive]), n
+    assert np.array_equal(w.civ.openness[alive], w2.civ.openness[alive])
+    # legacy substrate still works: a memory held only by the dead spreads
+    # to the living who knew them (Chronicle is the explicit channel)
+    sig = np.zeros(8); sig[Force.FEAR] = 1.0
+    sc = np.zeros(w.civ.n, bool); sc[dead] = True
+    w.chronicle.remember(Memory(id="legacy", label="legacy", day=float(w.day), force_signature=sig, scope=sc))
+    for _ in range(20):
+        w.chronicle.spread(w.civ, np.random.default_rng(5), rate=1.0)
+    assert (w.chronicle.events[-1].scope & w.health.alive).any()

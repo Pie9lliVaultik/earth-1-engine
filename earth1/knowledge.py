@@ -91,18 +91,21 @@ def birth_knowledge(civ, life, seed: int = 0) -> Knowledge:
 
 
 def knowledge_tick(civ, life, kn: Knowledge, rng, dt_days: float = 1.0,
-                   alive: np.ndarray | None = None) -> dict:
+                   alive: np.ndarray | None = None, adj=None) -> dict:
     """One day of learning, earning standing, discovering and making."""
     n = civ.n
     dt_yr = dt_days / 365.0
     live = alive if alive is not None else np.ones(n, dtype=bool)
-    deg = np.maximum(np.asarray(civ.adj.sum(axis=1)).ravel(), 1.0)
+    # POSTHUMOUS rule: a dead person's personal stock is not a current
+    # neighbour's knowledge; the caller passes the living view
+    adj = civ.adj if adj is None else adj
+    deg = np.maximum(np.asarray(adj.sum(axis=1)).ravel(), 1.0)
 
     # ── learning from the people you know ────────────────────────────
     # you move toward what your neighbours know, but only UPWARD and
     # only as fast as your own openness allows. Nobody unlearns by
     # meeting someone ignorant.
-    nb = np.asarray(civ.adj @ kn.stock).ravel() / deg
+    nb = np.asarray(adj @ kn.stock).ravel() / deg
     gap = np.maximum(nb - kn.stock, 0.0)
     # access to the commons matters only if you are connected to it
     reach = np.where(kn.connected, 1.0, 0.25)
@@ -130,7 +133,7 @@ def knowledge_tick(civ, life, kn: Knowledge, rng, dt_days: float = 1.0,
     cutoff = float(np.percentile(kn.stock[live], SCIENTIST_PERCENTILE)) \
         if live.any() else 1.0
     scientists = live & (kn.stock >= cutoff)
-    peers = np.asarray(civ.adj @ scientists.astype(civ.adj.dtype)).ravel()
+    peers = np.asarray(adj @ scientists.astype(adj.dtype)).ravel()
     rate = DISCOVERY_RATE_YR * (1.0 + 0.5 * peers) * dt_yr
     made_discovery = scientists & (rng.random(n) < rate)
     kn.discoveries += made_discovery

@@ -107,7 +107,7 @@ CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
 # semantics (39994f0, founder-accepted 2026-08-23). Canonical does not
 # mean validated: scientific status PRE-BENCHMARK (see
 # ops/alive/CASCADE_PUBLIC_BENCHMARK_PREREG_v1.md).
-PHYSICS_VERSION = "0.8-candidate-v4/posthumous-invariant"
+PHYSICS_VERSION = "0.8-candidate-v4.1/posthumous-invariant-rc"
 # H-CASCADE-1 scope: rules whose firing means episode ENTRY.
 EPISODE_ENTRY_RULES = frozenset({"identity_collapse", "collective_surge"})
 
@@ -244,7 +244,7 @@ def live_one_day(w: World, rng, *,
     _dead0 = ~w.health.alive
     _dead0_alive = w.health.alive.copy()
     _frozen = _snapshot_deceased(w, _dead0) if _dead0.any() else None
-    st.update(govern(civ, life, w.gov, rng, dt_days))
+    st.update(govern(civ, life, w.gov, rng, dt_days, alive=w.health.alive))
     st.update(apply_policy_and_war(civ, life, w.gov, w.health, rng, dt_days))
 
     # 0.0a time — everyone is one day older. Before life/health so the
@@ -289,8 +289,15 @@ def live_one_day(w: World, rng, *,
             _lost_all = np.unique(np.concatenate([base, _migrated]))
         st["rehomed_workers"] = rehome_employment(w, _lost_all, _found, rng)
     # 5 knowledge
+    # POSTHUMOUS rule (founder 2026-08-23): every CURRENT-social
+    # computation sees living neighbours only. One view per tick, built
+    # after deaths/rehoming; used by knowledge, flourishing, the life
+    # target, propagation, conviction, feedback and the feed. Explicit
+    # legacy substrates (Chronicle/memory spread, works, lineage,
+    # household record) keep reading the stored graph.
+    adj_live = _living_view(civ.adj, w.health.alive)
     st.update(knowledge_tick(civ, life, w.knowledge, rng, dt_days,
-                             alive=w.health.alive))
+                             alive=w.health.alive, adj=adj_live))
 
     # 5b THE SKY — a correlated shock that lands on a PLACE
     if w.climate is not None:
@@ -303,13 +310,13 @@ def live_one_day(w: World, rng, *,
         from earth1.flourishing import flourishing_tick
         st.update(flourishing_tick(
             civ, life, w.flourishing, w.knowledge, w.health, rng, dt_days,
-            alive=w.health.alive,
+            alive=w.health.alive, adj=adj_live,
             discoveries_today=st.get("discoveries_today", 0),
             works_today=st.get("works_today", 0),
             welfare=w.gov.welfare[civ.country],
             soil=w.climate.soil if w.climate is not None else None))
 
-    target = life_force_target(civ, life, w.flourishing)
+    target = life_force_target(civ, life, w.flourishing, adj=adj_live)
     # the day's encounter evidence (consumed by update_conviction)
     scratch = new_day_scratch(civ.n)
     # a homeless person's circumstances are not their wage: being on the
@@ -358,7 +365,6 @@ def live_one_day(w: World, rng, *,
     # carry no weight in today's active dynamics — partner sampling,
     # conviction evidence and the neighbourhood feedback all see a
     # living-only view. No edge is deleted here.
-    adj_live = _living_view(civ.adj, w.health.alive)
     civ.forces = propagate(civ.forces, civ.alpha, adj_live,
                            day=w.day + 1, scratch=scratch,
                            susceptibility=sus)

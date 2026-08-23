@@ -135,19 +135,24 @@ def _nuclear_mask(nc: int) -> np.ndarray:
     return m
 
 
-def govern(civ, life, gov: Governments, rng, dt_days: float = 1.0) -> dict:
+def govern(civ, life, gov: Governments, rng, dt_days: float = 1.0,
+           alive=None) -> dict:
     """Governments look at their people and decide what to do about it."""
     from earth1.genesis import GENESIS_COUNTRIES
     nc = len(GENESIS_COUNTRIES)
     dt_yr = dt_days / 365.0
 
-    # what each government can see about its own population
-    dep = np.bincount(civ.country, weights=np.clip(life.deprivation, 0, 1),
+    # what each government can see about its own LIVING population
+    # (POSTHUMOUS rule: a dead person's frozen fear is not today's unrest;
+    # the institution's own state — tax, welfare, legitimacy — persists)
+    live = (alive if alive is not None
+            else np.ones(civ.n, dtype=bool)).astype(np.float64)
+    dep = np.bincount(civ.country, weights=np.clip(life.deprivation, 0, 1) * live,
                       minlength=nc)
-    pop = np.maximum(np.bincount(civ.country, minlength=nc), 1)
+    pop = np.maximum(np.bincount(civ.country, weights=live, minlength=nc), 1)
     dep = dep / pop
     unrest = np.bincount(civ.country,
-                         weights=civ.forces[:, Force.FEAR], minlength=nc) / pop
+                         weights=civ.forces[:, Force.FEAR] * live, minlength=nc) / pop
 
     # THE DECISION. A government with legitimacy to spend answers
     # hardship with welfare. A government without it answers with

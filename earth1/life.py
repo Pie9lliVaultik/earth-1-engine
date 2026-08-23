@@ -632,7 +632,7 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
 
 
 def life_force_target(civ: Civilization, life: Life,
-                      flourishing=None) -> np.ndarray:
+                      flourishing=None, adj=None) -> np.ndarray:
     """The force state this agent's CIRCUMSTANCES imply, right now.
 
     Returned rather than applied, because the social layer needs it as a
@@ -665,7 +665,9 @@ def life_force_target(civ: Civilization, life: Life,
     buffer_ok = np.clip(life.wealth / 90.0, 0.0, 1.0)
     precarity = (~life.employed).astype(float) * 0.6 + \
         np.clip(life.spells / 4.0, 0.0, 1.0) * 0.4
-    adj = civ.adj
+    # POSTHUMOUS rule: current shared hardship is computed over LIVING
+    # alters when the caller passes the living view (alive.py does).
+    adj = civ.adj if adj is None else adj
     deg = np.asarray(adj.sum(axis=1)).ravel()
     shared = np.asarray(adj @ dep).ravel() / np.maximum(deg, 1.0)
 
