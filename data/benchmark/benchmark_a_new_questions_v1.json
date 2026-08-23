@@ -1,0 +1,13 @@
+{
+ "rule": "sorted non-GOQA items with a WVS-7 label (imported_vnf/scripts/wvs7_labels.py), by numeric code; take indices 3,16,29,... (stride 13) \u2014 first 8",
+ "items": {
+  "Q10": "Should children be encouraged to learn a feeling of responsibility at home?",
+  "Q23": "Would you object to having people of a different religion as neighbours?",
+  "Q51": "In the past year, have you or your family gone without enough food to eat?",
+  "Q68": "Do you have confidence in labour unions?",
+  "Q86": "Do you have confidence in NATO?",
+  "Q138": "Does sexual harassment occur in your neighbourhood?",
+  "Q169": "Whenever science and religion conflict, is religion always right?",
+  "Q196": "Should the government have the right to keep people under video surveillance in public areas?"
+ }
+}
