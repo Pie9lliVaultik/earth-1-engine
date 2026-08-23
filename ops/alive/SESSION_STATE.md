@@ -129,3 +129,4 @@ miss protocol on the unified implementation -> 0.7 close -> true 0.8
 - c96dd9e registration (locality denominator reconciled: 879 occupied / 869 eligible, all 200k).
 - f84fb0d implementation (episode-entry semantics, KA1–KA8 PASS, 1101 tests).
 - Characterization 9501/9502: fires −86%, IDENTITY >0.20 displacement 77%→7%, sat 0.68→0.04, stored world identical; ever-exposed unchanged 85% (threshold cause). Report: H_CASCADE_1_REPORT.md. STOPPED before threshold calibration.
+- 2026-08-23 RULING: H-CASCADE-1 ACCEPTED as development baseline (39994f0). Roadmap correction: Stage C/H-CASCADE-1 = E3 physics-resolution thread, NOT Bible 0.8; true 0.8 not started. Provenance audit: CASCADE_RULE_PROVENANCE_AUDIT.md (read-only). Next decision (founder): empirical ontology + data source for the two rules.
