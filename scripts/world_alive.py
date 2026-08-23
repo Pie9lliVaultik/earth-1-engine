@@ -40,7 +40,8 @@ from earth1.alive import birth_world, live_one_day
 from earth1.chaos import entropy
 from earth1.memory import event_from_news
 
-HOME = ROOT / "data" / "alive"
+# one resolver for the canonical home, shared with earth1.api.deps
+HOME = Path(os.environ.get("EARTH1_ALIVE_HOME", str(ROOT / "data" / "alive")))
 JOURNAL = HOME / "journal.jsonl"
 POP = int(os.environ.get("ALIVE_POP", "200000"))
 PERIOD = float(os.environ.get("ALIVE_PERIOD", "60"))
