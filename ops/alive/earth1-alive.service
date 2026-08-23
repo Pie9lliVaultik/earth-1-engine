@@ -34,6 +34,10 @@ Environment=ALIVE_POP=4000000
 Environment=ALIVE_PERIOD=60
 Environment=ALIVE_NEWS=60
 Environment=ALIVE_SAVE=30
+# Epoch identity (ops/alive/EPOCH_POLICY.md): declared, never implicit.
+# Only read at BIRTH of a new epoch; a loaded snapshot carries its own.
+Environment=ALIVE_EPOCH=2
+Environment=ALIVE_SEED=20260823
 ExecStart=/opt/earth1/.venv/bin/python3 /opt/earth1/scripts/world_alive.py
 Restart=always
 RestartSec=10
