@@ -84,7 +84,7 @@ def static_report():
     return rep, ok
 
 
-def runtime_report(live: bool = False):
+def runtime_report(live: bool = False, no_clone: bool = False):
     """live=False: a throwaway 3k world proves the CODE PATH.
     live=True: resolve the REAL canonical snapshot (EARTH1_ALIVE_HOME /
     data/alive) read-only through every surface — the LIVE-PRODUCTION
@@ -124,9 +124,10 @@ def runtime_report(live: bool = False):
     seen["/observatory"] = r.json()["identity"]
     r = c.get("/ask"); seen["/ask (503 by design)"] = r.json()["detail"][
         "identity"]
-    r = c.get("/forecast/futures/0", params={"branches": 2, "days": 7})
-    seen["/forecast"] = r.json()["identity"] if r.status_code == 200 \
-        else {"status": r.status_code, "body": r.json()}
+    if not no_clone:
+        r = c.get("/forecast/futures/0", params={"branches": 2, "days": 7})
+        seen["/forecast"] = r.json()["identity"] if r.status_code == 200 \
+            else {"status": r.status_code, "body": r.json()}
     # in-process surfaces on the same loaded world
     wl, ident = deps.get_world()
     from earth1.answer_living import readout
@@ -136,10 +137,14 @@ def runtime_report(live: bool = False):
     loaded_hash = world_hash(wl)
     seen["answer_living"] = readout(wl, np.eye(8)[0])["provenance"]
     seen["benchmark_living"] = bench(wl, questions=[])["provenance"]
-    wc, _ = deps.clone_world()
-    observe(wc.civ, wc.life, 0, wc.fabric)     # observation on the clone
-    branch_run(wc, [Scenario(id="x", label="x", forces={"fear": 0.1},
-                             countries=None)], days=2, repeats=1)
+    if not no_clone:
+        # clone surfaces need a second full copy of the world in memory;
+        # --no-clone skips them on a RAM-bound production host (they are
+        # then proven on an identical snapshot elsewhere and recorded)
+        wc, _ = deps.clone_world()
+        observe(wc.civ, wc.life, 0, wc.fabric)     # observation on the clone
+        branch_run(wc, [Scenario(id="x", label="x", forces={"fear": 0.1},
+                                 countries=None)], days=2, repeats=1)
     physics = {k: v.get("physics_version") for k, v in seen.items()
                if isinstance(v, dict)}
     hashes = {"saved_world": expected_hash, "deps_loaded": loaded_hash,
@@ -174,8 +179,10 @@ def runtime_report(live: bool = False):
 
 def main():
     live = "--live" in sys.argv
+    no_clone = "--no-clone" in sys.argv
     st, ok1 = static_report()
-    rt, ok2 = runtime_report(live=live)
+    rt, ok2 = runtime_report(live=live, no_clone=no_clone)
+    rt["clone_surfaces_skipped"] = no_clone
     from earth1.legacy_gate import scan
     viol = scan()
     key = "ONE_EARTH_LIVE" if live else "ONE_EARTH_CODE_PATH"
