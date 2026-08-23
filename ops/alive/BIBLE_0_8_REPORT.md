@@ -25,4 +25,5 @@ rank-correlation 50k -0.086 → 200k +0.049 → 600k +0.117; slope +0.203 (< fro
 
 ## Verdict
 The chaos chapter re-stated on the real system: **sensitive dependence is real at 4M** (positive FSLE, 3–4-day doubling, one job loss reaches the whole world within ~20 days) with a clean harness; country-level noise floor unmet at the frozen bar; consciousness signatures absent. All outcomes admissible per Stage H; nothing tuned.
-Status: **Bible 0.8 (Stage H) COMPLETE for v3.** v4.1 RC regresses the H arms that traverse propagation (placebo, FSLE×3, butterfly 40d, noise @200k) per V4_CHANGE_IMPACT.md. Stages D–G, I remain outstanding scientific work (not 0.8 by ruling).
+BIBLE_0_8_STATUS (v3): **CLOSED / ARCHIVED**.
+PHASE_0_8_SCIENTIFIC_STATUS: **IN PROGRESS** (A–C closed on v2/v3, H closed on v3, D/E/F/G/I outstanding — owed once on the deployed candidate; they do not block Epoch 3). v4.1 RC regresses the H arms that traverse propagation (placebo, FSLE×3, butterfly 40d, noise @200k) per V4_CHANGE_IMPACT.md. Stages D–G, I remain outstanding scientific work (not 0.8 by ruling).
