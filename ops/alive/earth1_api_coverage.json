@@ -1,0 +1,1133 @@
+{
+ "main": "633c5fd+",
+ "live_routes_functional_at_4M": [
+  "GET /world",
+  "GET /world/countries",
+  "GET /world/earthling/{idx}",
+  "GET /observatory/standing-readings",
+  "GET /civ",
+  "GET /health"
+ ],
+ "routes_503_by_design": [
+  "/ask*",
+  "/forecast/multiverse|scenarios|timeline|tree",
+  "/forecast/futures/{idx} (pop>500k)"
+ ],
+ "routes_410": [
+  "/world/tick"
+ ],
+ "summary": {
+  "total_state_families": 78,
+  "counts": {
+   "DIRECT_API": 9,
+   "NOT_IMPLEMENTED": 13,
+   "INDIRECT_API": 19,
+   "INTERNAL_ONLY": 37
+  },
+  "pct": {
+   "DIRECT_API": 11.5,
+   "NOT_IMPLEMENTED": 16.7,
+   "INDIRECT_API": 24.4,
+   "INTERNAL_ONLY": 47.4
+  },
+  "not_implemented": [
+   "stable Earthling ID",
+   "continent",
+   "city",
+   "force history",
+   "causal / impact history",
+   "romantic relationships",
+   "goods / resources / material flows",
+   "purchases",
+   "downstream / cascade effects",
+   "inspect branch (by id)",
+   "advance branch",
+   "query Earthling/place inside a branch",
+   "branch lifecycle"
+  ],
+  "verdicts": {
+   "CAN A DEVELOPER ADDRESS EVERY EARTHLING DIRECTLY?": "NO \u2014 living slots only, by index; dead Earthlings 404; IDs are reusable slots, not persons",
+   "CAN A DEVELOPER ADDRESS EVERY GEOGRAPHIC ENTITY DIRECTLY?": "NO \u2014 country aggregates only; region/locality internal; continent/city not modelled",
+   "CAN A DEVELOPER INSPECT EVERY ACTIVE FORCE/PHYSICS STATE?": "NO \u2014 stored forces per person only; effective forces, residues, parameters, module state internal",
+   "CAN A DEVELOPER TRACE EVENTS AND IMPACTS?": "NO \u2014 memories/firings internal; only a count is served; downstream tracing not modelled",
+   "CAN A DEVELOPER QUERY THE FULL SOCIAL GRAPH?": "NO \u2014 tie-type counts per person only; no neighbour IDs/edges/strength/graph queries",
+   "CAN A DEVELOPER QUERY LIFE/WORK/HEALTH/CONSUMPTION?": "PARTIAL \u2014 work/money/health scalars via observe; companies, housing, consumption, illness detail internal",
+   "CAN THE SAME QUERIES RUN AGAINST A BRANCHED FUTURE?": "NO \u2014 no branch objects; the one branch route is refused at the live 4M scale",
+   "IS EARTH-1 CURRENTLY A COMPLETE API-ADDRESSABLE CIVILIZATION?": "NO"
+  }
+ },
+ "families": [
+  {
+   "domain": "Population",
+   "family": "Earthling (one person)",
+   "classification": "DIRECT_API",
+   "canonical_source": "civ/life/health arrays, observe.observe",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no list/search (by country, age, occupation\u2026); 404 for dead slots \u2014 a deceased Earthling is unaddressable"
+  },
+  {
+   "domain": "Population",
+   "family": "stable Earthling ID",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "slot index idx; rebirth reuses slots (alive._be_born)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no persistent person identity across slot reuse; GET /earthlings/{id} would silently return a different person after rebirth"
+  },
+  {
+   "domain": "Population",
+   "family": "demographic state (country, region, age, education, income, urban)",
+   "classification": "INDIRECT_API",
+   "canonical_source": "civ.country/region/age/education/income/urban",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "region/income not in observe view; no query by demographic"
+  },
+  {
+   "domain": "Population",
+   "family": "traits/personality (Big-5, Hofstede, openness, empathy, risk\u2026)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "civ.openness\u2026long_term_orientation (15 arrays)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /earthlings/{id}/traits"
+  },
+  {
+   "domain": "Population",
+   "family": "complete life state",
+   "classification": "INDIRECT_API",
+   "canonical_source": "life.* (33 arrays)",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "observe exposes ~18 of 33 life fields; durables, rent, arrears, evicted, owns_home, policy_net, baselines, setpoints absent"
+  },
+  {
+   "domain": "Population",
+   "family": "personal history / memory",
+   "classification": "INDIRECT_API",
+   "canonical_source": "life.last_event, last_event_day, n_events; chronicle.events scope masks",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "only the LAST event code and an event count; no per-person timeline; memories that include the person are not queryable by person"
+  },
+  {
+   "domain": "Geography",
+   "family": "planet (global aggregates)",
+   "classification": "DIRECT_API",
+   "canonical_source": "world summary, observatory standing readings",
+   "data_exists": true,
+   "routes": [
+    "GET /world",
+    "GET /observatory/standing-readings",
+    "GET /civ"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Geography",
+   "family": "continent",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "none (no continent grouping in genesis)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "continent is not a model concept"
+  },
+  {
+   "domain": "Geography",
+   "family": "country",
+   "classification": "DIRECT_API",
+   "canonical_source": "civ.country, GENESIS_COUNTRIES, gov.* per country, climate.* per country",
+   "data_exists": true,
+   "routes": [
+    "GET /world/countries"
+   ],
+   "get": true,
+   "list_search": true,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "only 4 aggregates (alive, unemployment, deprived, hope); no GET /places/{iso2}; countries with <50 alive hidden; gov/climate per-country state not exposed"
+  },
+  {
+   "domain": "Geography",
+   "family": "region/state (genesis region)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "civ.region + regions.RegionalProfile (443 named regions)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /places/{iso2}/regions/{code}; regional profiles (name, economy, history) never served"
+  },
+  {
+   "domain": "Geography",
+   "family": "city",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "none \u2014 locality is country\u00b7region\u00b7urban flag; no named cities",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "city is not a model concept"
+  },
+  {
+   "domain": "Geography",
+   "family": "locality / village",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "presence.locality (country*1000+region*2+urban), locality key in cascade block",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /places/localities/{key}: population, forces, hot state, episodes"
+  },
+  {
+   "domain": "Geography",
+   "family": "location hierarchy",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "country\u2192region\u2192urban flag (implicit in key arithmetic)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no hierarchy endpoint"
+  },
+  {
+   "domain": "Geography",
+   "family": "population membership / presence / movement",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "presence.locality/density/gathering; klass.migrated; mobility.*; journal migrated_today",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "where a person is, who is in a place, who moved \u2014 none addressable"
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "canonical forces (8) \u2014 stored",
+   "classification": "DIRECT_API",
+   "canonical_source": "civ.forces",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "per person only; no place-level force readout; no search by force"
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "effective forces (stored + cascade overlay)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "alive.effective_forces(w)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "the readout ontology (F_effective) is never served; API shows stored only"
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "force history",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "no per-agent force time series is stored (journal keeps population means only)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "history requires a recorder; not a model concept today"
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "conviction (alpha)",
+   "classification": "INDIRECT_API",
+   "canonical_source": "civ.alpha",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "susceptibility",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "computed per tick in live_one_day (transient)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "cascade residues / episode state",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "chronicle.cascade_residues, cascade_last_fired, cascade_episode_active",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /places/{loc}/cascades, GET /earthlings/{id}/residues"
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "events affecting an Earthling",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "chronicle.events[].scope (bool mask per agent)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /earthlings/{id}/events"
+  },
+  {
+   "domain": "HumanDynamics",
+   "family": "causal / impact history",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "not represented (no provenance chain from event to state change)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "impact tracing is not a model concept"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "nodes",
+   "classification": "INDIRECT_API",
+   "canonical_source": "civ.adj / fabric.adj (N\u00d7N sparse)",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "edges (neighbours of a person)",
+   "classification": "INDIRECT_API",
+   "canonical_source": "fabric.adj rows; observe gives COUNTS per tie type only",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no neighbour IDs, no edge list: GET /earthlings/{id}/relationships"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "relationship type",
+   "classification": "INDIRECT_API",
+   "canonical_source": "fabric.by_type: household, colleagues, neighbours, friends, weak, diaspora, media",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "counts only"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "edge strength",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "adj data weights (tie-weighted partner sampling)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "formation / dissolution",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "plasticity.plasticity_tick (ties_strengthened/weakened/pruned/rewired \u2014 journal totals only)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no per-edge history"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "family",
+   "classification": "INDIRECT_API",
+   "canonical_source": "fabric.household id + household ties",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "household_id exposed; members not listable; no parent/child/sibling typing"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "friendship",
+   "classification": "INDIRECT_API",
+   "canonical_source": "fabric.by_type['friends']",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "count only"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "romantic relationships",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "life.relationship is a scalar quality, no partner edge",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "partner/romantic edge is not a model concept"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "professional relationships",
+   "classification": "INDIRECT_API",
+   "canonical_source": "fabric.by_type['colleagues'] (from life.firm)",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "count only"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "neighbourhood / community / network",
+   "classification": "INDIRECT_API",
+   "canonical_source": "fabric.by_type['neighbours','weak','diaspora','media']",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "counts only; no community/place query"
+  },
+  {
+   "domain": "SocialGraph",
+   "family": "graph functions (ego network, path, degree, components)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "scipy sparse ops in influence/fabric; no query layer",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /social-graph/{id}/ego?depth="
+  },
+  {
+   "domain": "Economy",
+   "family": "job / employment / occupation / tenure / spells",
+   "classification": "INDIRECT_API",
+   "canonical_source": "life.employed, in_lf, occupation, tenure, spells",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no search (all unemployed in X)"
+  },
+  {
+   "domain": "Economy",
+   "family": "companies / employers",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "life.firm (id), firm_health[firms], firm_country[firms]",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /companies/{id}: health, country, employees"
+  },
+  {
+   "domain": "Economy",
+   "family": "income / wage / wealth / cost",
+   "classification": "INDIRECT_API",
+   "canonical_source": "life.wage, wealth, cost",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Economy",
+   "family": "transactions / consumption",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "life.durables, durable_spend, rent, arrears, cost (flows are per-tick scalars, no ledger)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /earthlings/{id}/consumption; no transaction ledger exists"
+  },
+  {
+   "domain": "Economy",
+   "family": "economic state & history (country)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "journal.jsonl aggregates (unemployment, gini\u2026), gov.tax/welfare",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "per-country economic history not served; journal is a file"
+  },
+  {
+   "domain": "Material",
+   "family": "food / water",
+   "classification": "INDIRECT_API",
+   "canonical_source": "flourishing.hunger, thirst (need satisfaction); climate.farm_share, soil",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "not in observe; no resource stocks/flows"
+  },
+  {
+   "domain": "Material",
+   "family": "goods / resources / material flows",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "no resource-flow model (durables scalar only)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "goods/resource flows are not a model concept"
+  },
+  {
+   "domain": "Material",
+   "family": "purchases",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "no purchase events (durable_spend is a rate)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Material",
+   "family": "housing",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "life.owns_home, rent, arrears, evicted; klass.homeless, days_homeless",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "homeless share only in /world summary"
+  },
+  {
+   "domain": "Material",
+   "family": "perishability / resource modules",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "perishability.py readout (legacy disposition: pure readout)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Biology",
+   "family": "health state / illness / treatment",
+   "classification": "INDIRECT_API",
+   "canonical_source": "health.condition, diagnosed_day, in_treatment, declining; life.mental/physical/addiction",
+   "data_exists": true,
+   "routes": [
+    "GET /world/earthling/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "condition code, diagnosis day, treatment, declining not exposed (only mental/physical/addiction)"
+  },
+  {
+   "domain": "Biology",
+   "family": "mortality / cause of death",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "health.alive, cause_of_death; journal deaths by cause",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "dead Earthlings return 404; cause of death unreadable"
+  },
+  {
+   "domain": "Biology",
+   "family": "biological history",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "health.lifetime_illnesses, falls (counters only)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no episode log"
+  },
+  {
+   "domain": "Institutions",
+   "family": "governments / policy",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "gov.tax, welfare, policing, legitimacy per country",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /places/{iso2}/government"
+  },
+  {
+   "domain": "Institutions",
+   "family": "war / political state",
+   "classification": "INDIRECT_API",
+   "canonical_source": "gov.at_war_with, war_days, unrest_norm",
+   "data_exists": true,
+   "routes": [
+    "GET /world"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "only countries_at_war count"
+  },
+  {
+   "domain": "Institutions",
+   "family": "culture",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "civ.culture_offset, Hofstede dims, regions.force_deltas",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Institutions",
+   "family": "collective state (locality/country force means)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "computed in cascade block / answer_living stance",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Institutions",
+   "family": "country / locality statistics",
+   "classification": "DIRECT_API",
+   "canonical_source": "/world/countries",
+   "data_exists": true,
+   "routes": [
+    "GET /world/countries"
+   ],
+   "get": true,
+   "list_search": true,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "4 metrics; no locality level"
+  },
+  {
+   "domain": "Institutions",
+   "family": "knowledge / science / works",
+   "classification": "INDIRECT_API",
+   "canonical_source": "knowledge.stock/status/connected/works_made/discoveries",
+   "data_exists": true,
+   "routes": [
+    "GET /world",
+    "GET /observatory/standing-readings"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "mean only"
+  },
+  {
+   "domain": "Institutions",
+   "family": "flourishing (hope, meaning, belonging\u2026)",
+   "classification": "INDIRECT_API",
+   "canonical_source": "flourishing.* (10 arrays)",
+   "data_exists": true,
+   "routes": [
+    "GET /world",
+    "GET /world/countries"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "mean hope only"
+  },
+  {
+   "domain": "Institutions",
+   "family": "climate",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "climate.* per country",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Physics",
+   "family": "physics version identity",
+   "classification": "DIRECT_API",
+   "canonical_source": "alive.PHYSICS_VERSION via api.deps identity",
+   "data_exists": true,
+   "routes": [
+    "every route identity"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Physics",
+   "family": "active modules list",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "alive.live_one_day step order; legacy_gate.PRODUCTION",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /physics/modules"
+  },
+  {
+   "domain": "Physics",
+   "family": "parameters",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "alive.CANONICAL_DAY, thresholds.TRANSITION_RULES, manifest.physics_identity()",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /physics/parameters"
+  },
+  {
+   "domain": "Physics",
+   "family": "module state (e.g. cascade rules hot set, feed matrix, susceptibility)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "chronicle cascade state, w.feed, transient per-tick arrays",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Physics",
+   "family": "equations / readouts",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "answer_living.readout/stance (in-process)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "/ask is 503 by design (calibration pending)"
+  },
+  {
+   "domain": "Physics",
+   "family": "provenance / version metadata",
+   "classification": "DIRECT_API",
+   "canonical_source": "journal startup record (commit, service, config hash); EPOCH.json; state.json",
+   "data_exists": true,
+   "routes": [
+    "every route identity (epoch, uuid, snapshot, physics)"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "commit/config hash not in API identity"
+  },
+  {
+   "domain": "Events",
+   "family": "world events (memories)",
+   "classification": "INDIRECT_API",
+   "canonical_source": "chronicle.events (Memory: id, label, day, force_signature, scope, salience, half_life, origin)",
+   "data_exists": true,
+   "routes": [
+    "GET /observatory/standing-readings"
+   ],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "count only: GET /events, GET /events/{id}"
+  },
+  {
+   "domain": "Events",
+   "family": "locality events (cascade firings)",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "chronicle.cascade_residues (rule, loc, day, effects, h)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Events",
+   "family": "affected Earthlings",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "Memory.scope mask; residue locality membership",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /events/{id}/earthlings"
+  },
+  {
+   "domain": "Events",
+   "family": "direct effects",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "Memory.force_signature\u00d7salience; residue effects",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Events",
+   "family": "persisted effects",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "residue decay levels (cascade_residue_levels); memory salience",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Events",
+   "family": "downstream / cascade effects",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "not traced (no causal provenance)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Events",
+   "family": "event history",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "journal.jsonl (daily aggregates, news reads); chronicle.total_ever/forgotten",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "expired memories are dropped, not archived"
+  },
+  {
+   "domain": "Futures",
+   "family": "create branch",
+   "classification": "DIRECT_API",
+   "canonical_source": "/forecast/futures/{idx} (per-person futures on full clones); branch.run in-process",
+   "data_exists": true,
+   "routes": [
+    "GET /forecast/futures/{idx}"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": true,
+   "missing_surface": "REFUSED above 500k agents (live Epoch 2 = 4M \u2192 503); no scenario branches (/forecast/scenarios 503)"
+  },
+  {
+   "domain": "Futures",
+   "family": "inspect branch (by id)",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "branches are transient return values; no branch object/ID/store",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "POST /branches, GET /branches/{id}"
+  },
+  {
+   "domain": "Futures",
+   "family": "advance branch",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Futures",
+   "family": "compare branches",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "branch.run returns consequence distributions (in-process)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Futures",
+   "family": "query Earthling/place inside a branch",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Futures",
+   "family": "branch lifecycle",
+   "classification": "NOT_IMPLEMENTED",
+   "canonical_source": "",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Time",
+   "family": "current simulation day",
+   "classification": "DIRECT_API",
+   "canonical_source": "identity.world_day",
+   "data_exists": true,
+   "routes": [
+    "every route identity"
+   ],
+   "get": true,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "no calendar date (epoch has none)"
+  },
+  {
+   "domain": "Time",
+   "family": "historical state / state at time t",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "data/alive is the only live snapshot; off-box dated backups; timeline.restore (snapshot store never built)",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": "GET /world?day="
+  },
+  {
+   "domain": "Time",
+   "family": "snapshot / restore",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "persistence.save_world/load_world; timeline._save/restore",
+   "data_exists": true,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Time",
+   "family": "timeline / scrub",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "timeline.py (designed; store absent)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  },
+  {
+   "domain": "Time",
+   "family": "assimilation",
+   "classification": "INTERNAL_ONLY",
+   "canonical_source": "assimilate.py (in-process; design-only per Bible)",
+   "data_exists": false,
+   "routes": [],
+   "get": false,
+   "list_search": false,
+   "history": false,
+   "branch_aware": false,
+   "missing_surface": ""
+  }
+ ]
+}
