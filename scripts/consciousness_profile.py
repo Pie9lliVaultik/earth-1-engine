@@ -17,11 +17,15 @@ from earth1.life import birth_life
 POP = int(os.environ.get("CP_POP", "12000"))
 DAYS = int(os.environ.get("CP_DAYS", "25"))
 
+# 0.8 instrument repair (2026-08-23): integration.* steps a complete
+# World through the canonical loop since 0.2; the (civ, life) tuple
+# construction was a stale pre-0.2 harness (VOID -> repaired). Same
+# population and seed; birth_world builds life and fabric itself.
+from earth1.alive import birth_world
+
+
 def make_world():
-    civ = genesis(POP, 42)
-    life = birth_life(civ, seed=42)
-    civ.adj = build_fabric(civ, life, seed=42).adj
-    return civ, life
+    return birth_world(POP, 42)
 
 def main():
     out = {"pop": POP}
