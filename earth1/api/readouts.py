@@ -124,6 +124,45 @@ def forces(w, slot: int) -> dict:
             "locality": loc}
 
 
+def history_coverage(hist, w=None) -> dict:
+    """Temporal coverage of the history record — every history response
+    carries this so absence of rows is never read as absence of events."""
+    from earth1.history import SAMPLE_EVERY
+    if hist is None:
+        return {"history_available": False, "history_available_from_day": None, "last_recorded_day": None,
+                "reason": "no history.sqlite beside this snapshot (recorder not yet deployed for this epoch)",
+                "force_sampling_interval_days": SAMPLE_EVERY, "complete_event_history": False, "backfilled": False}
+    lo = hist.execute("SELECT MIN(day) FROM locality_daily").fetchone()[0]
+    hi = hist.execute("SELECT MAX(day) FROM locality_daily").fetchone()[0]
+    return {"history_available": lo is not None, "history_available_from_day": lo, "last_recorded_day": hi,
+            "force_sampling_interval_days": SAMPLE_EVERY,
+            "force_samples_are_continuous": False,
+            "locality_and_country_series_daily": True,
+            "person_events": "daily state-diff detection from history_available_from_day onward",
+            "complete_event_history": False if (w is not None and lo is not None and lo > 0) else (lo == 0),
+            "backfilled": False, "retention": "append-only, unbounded",
+            "note": "days before history_available_from_day are UNRECORDED, not uneventful"}
+
+
+def historical_person(hist, person_id: int) -> Optional[dict]:
+    """A person no longer in the arrays (their slot was reused): what the
+    record still knows — events, last force sample, lineage."""
+    if hist is None:
+        return None
+    ev = person_history(hist, person_id)
+    if not ev:
+        return None
+    fs = force_history(hist, person_id)
+    died = [e for e in ev if e["kind"] == "died"]
+    born = [e for e in ev if e["kind"] == "born"]
+    return {"person_id": int(person_id), "status": "historical", "alive": False,
+            "note": "this person's slot has since been reused by a new person; the record below is the complete retained history",
+            "slot_at_death": died[-1]["slot"] if died else ev[-1]["slot"], "died_day": died[-1]["day"] if died else None,
+            "cause_of_death": died[-1]["detail"].get("cause") if died else None,
+            "born_day": born[0]["day"] if born else None, "parent_id": born[0]["detail"].get("parent_id") if born else None,
+            "events": ev, "last_force_sample": fs[-1] if fs else None}
+
+
 def force_history(hist, person_id: int) -> list:
     if hist is None:
         return []

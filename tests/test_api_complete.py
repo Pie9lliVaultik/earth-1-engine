@@ -151,3 +151,23 @@ def test_openapi_lists_everything(client):
               "/branches", "/branches/{bid}/advance", "/branches/{bid}/compare", "/branches/{bid}/earthlings/{person_id}",
               "/epochs/current", "/snapshots/current", "/physics", "/firms/{fid}", "/households/{hid}"):
         assert p in paths, p
+
+
+def test_history_coverage_and_historical_person(client):
+    h = _ok(client, "/earthlings", params={"limit": 1, "offset": 100})["earthlings"][0]["person_id"]
+    r = _ok(client, f"/earthlings/{h}/forces/history")
+    cov = r["coverage"]; assert cov["history_available"] and cov["history_available_from_day"] == 0 and cov["force_sampling_interval_days"] == 30
+    assert cov["force_samples_are_continuous"] is False and cov["backfilled"] is False
+    # a person whose slot was reused is still addressable from the record
+    import sqlite3, os
+    from earth1.api import deps
+    con = sqlite3.connect(str(deps.ALIVE_HOME / "history.sqlite"))
+    gone = [p for (p,) in con.execute("SELECT person_id FROM person_events WHERE kind='died'")]
+    from earth1.api.deps import get_world
+    w, _ = get_world()
+    import numpy as np
+    reused = [p for p in gone if not (w.civ.person_id == p).any()]
+    if reused:
+        hp = _ok(client, f"/earthlings/{reused[0]}")
+        assert hp["status"] == "historical" and hp["cause_of_death"] and hp["events"]
+    assert client.get("/earthlings/777777777").status_code == 404

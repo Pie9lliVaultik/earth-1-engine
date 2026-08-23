@@ -129,7 +129,7 @@ def country_localities(iso2: str):
 def country_flows(iso2: str):
     """The daily flow ledger: wages, subsistence, rent, durables, wealth, alive, unemployment…"""
     _, identity = get_world()
-    return {"identity": identity, "iso2": iso2.upper(), "series": R.country_flows(get_history(), iso2.upper())}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "iso2": iso2.upper(), "series": R.country_flows(get_history(), iso2.upper())}
 
 
 @router.get("/countries/{iso2}/mortality")
@@ -173,7 +173,7 @@ def locality_population(loc: int, limit: int = 1000):
 @router.get("/localities/{loc}/forces/history")
 def locality_force_history(loc: int):
     _, identity = get_world()
-    return {"identity": identity, "locality": loc, "series": R.locality_force_history(get_history(), loc)}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "locality": loc, "series": R.locality_force_history(get_history(), loc)}
 
 
 @router.get("/localities/{loc}/cascades")
@@ -195,7 +195,7 @@ def locality_events(loc: int, limit: int = 500):
         hist.executemany("INSERT INTO _slots VALUES (?)", [(int(x),) for x in idx])
         ev = [{"day": d, "person_id": p, "kind": k, "detail": dt} for d, p, k, dt in hist.execute(
             "SELECT day, person_id, kind, detail FROM person_events WHERE slot IN (SELECT slot FROM _slots) ORDER BY day DESC LIMIT ?", (limit,)).fetchall()]
-    return {"identity": identity, "locality": loc, "person_events": ev, "cascades": R.cascade_list(w, loc=loc)}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "locality": loc, "person_events": ev, "cascades": R.cascade_list(w, loc=loc)}
 
 
 @router.get("/cities")
@@ -240,8 +240,17 @@ def earthlings(country: Optional[str] = None, locality: Optional[int] = None, al
 
 @router.get("/earthlings/{person_id}")
 def earthling(person_id: int):
+    """A living or deceased Earthling by permanent person_id; a person
+    whose slot was already reused is served from the history record."""
     w, identity = get_world()
-    return {"identity": identity, **R.earthling(w, get_history(), _slot(w, person_id))}
+    try:
+        s = R.slot_of(w, person_id)
+    except R.NotFound:
+        hp = R.historical_person(get_history(), person_id)
+        if hp is None:
+            raise HTTPException(404, f"no earthling with person_id {person_id} in the world or its record")
+        return {"identity": identity, "coverage": R.history_coverage(get_history(), w), **hp}
+    return {"identity": identity, **R.earthling(w, get_history(), s)}
 
 
 @router.get("/earthlings/slot/{slot}")
@@ -255,14 +264,20 @@ def earthling_by_slot(slot: int):
 @router.get("/earthlings/{person_id}/status")
 def earthling_status(person_id: int):
     w, identity = get_world()
-    return {"identity": identity, **R.person_status(w, get_history(), _slot(w, person_id))}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), **R.person_status(w, get_history(), _slot(w, person_id))}
 
 
 @router.get("/earthlings/{person_id}/history")
 def earthling_history(person_id: int, kind: Optional[str] = None):
     w, identity = get_world()
-    _slot(w, person_id)
-    return {"identity": identity, "person_id": person_id, "events": R.person_history(get_history(), person_id, kind)}
+    hp = None
+    try:
+        _slot(w, person_id)
+    except HTTPException:
+        hp = R.historical_person(get_history(), person_id)
+        if hp is None:
+            raise
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "person_id": person_id, "events": R.person_history(get_history(), person_id, kind)}
 
 
 @router.get("/earthlings/{person_id}/forces")
@@ -275,7 +290,7 @@ def earthling_forces(person_id: int):
 def earthling_force_history(person_id: int):
     w, identity = get_world()
     _slot(w, person_id)
-    return {"identity": identity, "person_id": person_id, "samples": R.force_history(get_history(), person_id)}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "person_id": person_id, "samples": R.force_history(get_history(), person_id)}
 
 
 @router.get("/earthlings/{person_id}/memories")
@@ -289,7 +304,7 @@ def earthling_events(person_id: int):
     """Everything that happened to this person: life events (history) and the memories/cascades acting on them now."""
     w, identity = get_world()
     s = _slot(w, person_id)
-    return {"identity": identity, "person_id": person_id, "history": R.person_history(get_history(), person_id),
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "person_id": person_id, "history": R.person_history(get_history(), person_id),
             "memories_now": R.memories_for(w, s), "cascades_now": R.cascade_list(w, loc=int(R.locality_key(w.civ)[s]))}
 
 
@@ -316,7 +331,7 @@ def earthling_work_history(person_id: int):
     w, identity = get_world()
     _slot(w, person_id)
     ev = [e for e in R.person_history(get_history(), person_id) if e["kind"] in ("hired", "lost_job", "firm_changed")]
-    return {"identity": identity, "person_id": person_id, "events": ev}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "person_id": person_id, "events": ev}
 
 
 @router.get("/earthlings/{person_id}/health")
@@ -330,7 +345,7 @@ def earthling_health_history(person_id: int):
     w, identity = get_world()
     _slot(w, person_id)
     ev = [e for e in R.person_history(get_history(), person_id) if e["kind"] in ("illness_onset", "recovered", "died")]
-    return {"identity": identity, "person_id": person_id, "events": ev}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "person_id": person_id, "events": ev}
 
 
 @router.get("/earthlings/{person_id}/consumption")
@@ -344,7 +359,7 @@ def earthling_consumption_history(person_id: int):
     """Wealth/conviction trajectory from the force samples plus work events — the person's material history."""
     w, identity = get_world()
     _slot(w, person_id)
-    return {"identity": identity, "person_id": person_id, "samples": R.force_history(get_history(), person_id),
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "person_id": person_id, "samples": R.force_history(get_history(), person_id),
             "work_events": [e for e in R.person_history(get_history(), person_id) if e["kind"] in ("hired", "lost_job", "firm_changed", "homeless", "housed", "evicted")]}
 
 
@@ -358,7 +373,7 @@ def earthling_needs(person_id: int):
 def earthling_presence(person_id: int):
     w, identity = get_world()
     s = _slot(w, person_id)
-    return {"identity": identity, "person_id": person_id, **R.presence(w, s),
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "person_id": person_id, **R.presence(w, s),
             "moves": [e for e in R.person_history(get_history(), person_id) if e["kind"] == "migrated"]}
 
 
@@ -433,7 +448,7 @@ def cascade_history(loc: Optional[int] = None, limit: int = 1000):
         return {"identity": identity, "firings": []}
     q = "SELECT id, day, rule, loc, effects, half_life FROM cascades" + (" WHERE loc=?" if loc is not None else "") + " ORDER BY day DESC LIMIT ?"
     rows = hist.execute(q, ((loc, limit) if loc is not None else (limit,))).fetchall()
-    return {"identity": identity, "firings": [{"id": r[0], "day": r[1], "rule": r[2], "locality": r[3], "effects": r[4], "half_life": r[5]} for r in rows]}
+    return {"identity": identity, "coverage": R.history_coverage(get_history()), "firings": [{"id": r[0], "day": r[1], "rule": r[2], "locality": r[3], "effects": r[4], "half_life": r[5]} for r in rows]}
 
 
 # ── firms ─────────────────────────────────────────────────────────

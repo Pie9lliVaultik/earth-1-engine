@@ -118,7 +118,7 @@ def b_forces(bid: str, person_id: int):
 @router.get("/{bid}/earthlings/{person_id}/history")
 def b_history(bid: str, person_id: int):
     w, h, m = _ctx(bid)
-    return {"branch": m, "person_id": person_id, "events": R.person_history(h, person_id)}
+    return {"branch": m, "coverage": R.history_coverage(h), "person_id": person_id, "events": R.person_history(h, person_id)}
 
 
 @router.get("/{bid}/countries/{iso2}")
@@ -142,7 +142,7 @@ def b_locality(bid: str, loc: int):
 @router.get("/{bid}/localities/{loc}/forces/history")
 def b_locality_history(bid: str, loc: int):
     w, h, m = _ctx(bid)
-    return {"branch": m, "locality": loc, "series": R.locality_force_history(h, loc)}
+    return {"branch": m, "coverage": R.history_coverage(h), "locality": loc, "series": R.locality_force_history(h, loc)}
 
 
 @router.get("/{bid}/cascades")
