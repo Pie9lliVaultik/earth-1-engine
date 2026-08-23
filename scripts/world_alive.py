@@ -318,6 +318,10 @@ def main():
         journal_continuity_break(w, load_info)
 
     print(f"  alive. one world-day every {PERIOD:.0f}s\n", flush=True)
+    # API-COMPLETE-1: the history record (observation only; the API reads it)
+    from earth1.history import open_history, Recorder
+    recorder = Recorder(open_history(HOME))
+    recorder.record(w)                 # establish yesterday's discrete state
 
     while not _stop:
         t0 = time.time()
@@ -353,6 +357,10 @@ def main():
                 line[k] = round(st[k], 5) if isinstance(st[k], float) else st[k]
         if day % NEWS_EVERY == 0:
             line.update(read_the_news(civ, life, world=w))
+        try:
+            line.update(recorder.record(w, st))
+        except Exception as exc:          # noqa: BLE001 — history must never stop the world
+            line["history_error"] = str(exc)[:120]
         with open(JOURNAL, "a") as f:
             f.write(json.dumps(line) + "\n")
         if day % SAVE_EVERY == 0:

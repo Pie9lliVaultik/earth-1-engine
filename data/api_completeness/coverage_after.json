@@ -1,0 +1,560 @@
+{
+ "families": [
+  {
+   "family": "Earthling (one person)",
+   "domain": "Population",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "stable Earthling ID",
+   "domain": "Population",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "demographic state (country, region, age, education, income, urban)",
+   "domain": "Population",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "traits/personality (Big-5, Hofstede, openness, empathy, risk\u2026)",
+   "domain": "Population",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "complete life state",
+   "domain": "Population",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "personal history / memory",
+   "domain": "Population",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "planet (global aggregates)",
+   "domain": "Geography",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "continent",
+   "domain": "Geography",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "country",
+   "domain": "Geography",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "region/state (genesis region)",
+   "domain": "Geography",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "city",
+   "domain": "Geography",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "locality / village",
+   "domain": "Geography",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "location hierarchy",
+   "domain": "Geography",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "population membership / presence / movement",
+   "domain": "Geography",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "canonical forces (8) \u2014 stored",
+   "domain": "HumanDynamics",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "effective forces (stored + cascade overlay)",
+   "domain": "HumanDynamics",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "force history",
+   "domain": "HumanDynamics",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "conviction (alpha)",
+   "domain": "HumanDynamics",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "susceptibility",
+   "domain": "HumanDynamics",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "cascade residues / episode state",
+   "domain": "HumanDynamics",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "events affecting an Earthling",
+   "domain": "HumanDynamics",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "causal / impact history",
+   "domain": "HumanDynamics",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "nodes",
+   "domain": "SocialGraph",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "edges (neighbours of a person)",
+   "domain": "SocialGraph",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "relationship type",
+   "domain": "SocialGraph",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "edge strength",
+   "domain": "SocialGraph",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "formation / dissolution",
+   "domain": "SocialGraph",
+   "before": "INTERNAL_ONLY",
+   "after": "INDIRECT_API",
+   "note": "INDIRECT_API (ties_strengthened/pruned totals in /world journal; per-edge history not recorded)"
+  },
+  {
+   "family": "family",
+   "domain": "SocialGraph",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "friendship",
+   "domain": "SocialGraph",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "romantic relationships",
+   "domain": "SocialGraph",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "professional relationships",
+   "domain": "SocialGraph",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "neighbourhood / community / network",
+   "domain": "SocialGraph",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "graph functions (ego network, path, degree, components)",
+   "domain": "SocialGraph",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "job / employment / occupation / tenure / spells",
+   "domain": "Economy",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "companies / employers",
+   "domain": "Economy",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "income / wage / wealth / cost",
+   "domain": "Economy",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "transactions / consumption",
+   "domain": "Economy",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "economic state & history (country)",
+   "domain": "Economy",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "food / water",
+   "domain": "Material",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "goods / resources / material flows",
+   "domain": "Material",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "purchases",
+   "domain": "Material",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "housing",
+   "domain": "Material",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "perishability / resource modules",
+   "domain": "Material",
+   "before": "INTERNAL_ONLY",
+   "after": "INTERNAL_ONLY",
+   "note": "INTERNAL_ONLY (legacy readout, no product meaning)"
+  },
+  {
+   "family": "health state / illness / treatment",
+   "domain": "Biology",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "mortality / cause of death",
+   "domain": "Biology",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "biological history",
+   "domain": "Biology",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "governments / policy",
+   "domain": "Institutions",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "war / political state",
+   "domain": "Institutions",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "culture",
+   "domain": "Institutions",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "collective state (locality/country force means)",
+   "domain": "Institutions",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "country / locality statistics",
+   "domain": "Institutions",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "knowledge / science / works",
+   "domain": "Institutions",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "flourishing (hope, meaning, belonging\u2026)",
+   "domain": "Institutions",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "climate",
+   "domain": "Institutions",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "physics version identity",
+   "domain": "Physics",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "active modules list",
+   "domain": "Physics",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "parameters",
+   "domain": "Physics",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "module state (e.g. cascade rules hot set, feed matrix, susceptibility)",
+   "domain": "Physics",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "equations / readouts",
+   "domain": "Physics",
+   "before": "INTERNAL_ONLY",
+   "after": "INTERNAL_ONLY",
+   "note": "INTERNAL_ONLY (/ask remains 503 until calibration \u2014 by ruling)"
+  },
+  {
+   "family": "provenance / version metadata",
+   "domain": "Physics",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "world events (memories)",
+   "domain": "Events",
+   "before": "INDIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "locality events (cascade firings)",
+   "domain": "Events",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "affected Earthlings",
+   "domain": "Events",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "direct effects",
+   "domain": "Events",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "persisted effects",
+   "domain": "Events",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "downstream / cascade effects",
+   "domain": "Events",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "event history",
+   "domain": "Events",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "create branch",
+   "domain": "Futures",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "inspect branch (by id)",
+   "domain": "Futures",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "advance branch",
+   "domain": "Futures",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "compare branches",
+   "domain": "Futures",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "query Earthling/place inside a branch",
+   "domain": "Futures",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "branch lifecycle",
+   "domain": "Futures",
+   "before": "NOT_IMPLEMENTED",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "current simulation day",
+   "domain": "Time",
+   "before": "DIRECT_API",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "historical state / state at time t",
+   "domain": "Time",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "snapshot / restore",
+   "domain": "Time",
+   "before": "INTERNAL_ONLY",
+   "after": "DIRECT_API",
+   "note": ""
+  },
+  {
+   "family": "timeline / scrub",
+   "domain": "Time",
+   "before": "INTERNAL_ONLY",
+   "after": "INTERNAL_ONLY",
+   "note": "INTERNAL_ONLY (timeline store not built \u2014 Bible item)"
+  },
+  {
+   "family": "assimilation",
+   "domain": "Time",
+   "before": "INTERNAL_ONLY",
+   "after": "INTERNAL_ONLY",
+   "note": "INTERNAL_ONLY (design-only \u2014 Bible item)"
+  }
+ ],
+ "counts": {
+  "DIRECT_API": 73,
+  "INDIRECT_API": 1,
+  "INTERNAL_ONLY": 4
+ },
+ "pct": {
+  "DIRECT_API": 93.6,
+  "INDIRECT_API": 1.3,
+  "INTERNAL_ONLY": 5.1
+ }
+}

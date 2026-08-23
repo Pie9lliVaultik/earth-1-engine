@@ -1,0 +1,499 @@
+{
+ "routes": [
+  {
+   "method": "GET",
+   "path": "/ask",
+   "summary": "Ask Pending"
+  },
+  {
+   "method": "POST",
+   "path": "/ask",
+   "summary": "Ask Pending"
+  },
+  {
+   "method": "POST",
+   "path": "/ask/freetext",
+   "summary": "Ask Variants Pending"
+  },
+  {
+   "method": "POST",
+   "path": "/ask/mind",
+   "summary": "Ask Variants Pending"
+  },
+  {
+   "method": "POST",
+   "path": "/ask/segment",
+   "summary": "Ask Variants Pending"
+  },
+  {
+   "method": "POST",
+   "path": "/billing/checkout",
+   "summary": "Checkout"
+  },
+  {
+   "method": "GET",
+   "path": "/billing/tiers",
+   "summary": "List Tiers"
+  },
+  {
+   "method": "GET",
+   "path": "/billing/usage",
+   "summary": "Usage"
+  },
+  {
+   "method": "POST",
+   "path": "/billing/webhook",
+   "summary": "Webhook"
+  },
+  {
+   "method": "GET",
+   "path": "/branches",
+   "summary": "List Branches"
+  },
+  {
+   "method": "POST",
+   "path": "/branches",
+   "summary": "Create Branch"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}",
+   "summary": "Inspect"
+  },
+  {
+   "method": "DELETE",
+   "path": "/branches/{bid}",
+   "summary": "Delete"
+  },
+  {
+   "method": "POST",
+   "path": "/branches/{bid}/advance",
+   "summary": "Advance"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/cascades",
+   "summary": "B Cascades"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/compare",
+   "summary": "Compare"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/countries/{iso2}",
+   "summary": "B Country"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/earthlings/{person_id}",
+   "summary": "B Earthling"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/earthlings/{person_id}/forces",
+   "summary": "B Forces"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/earthlings/{person_id}/history",
+   "summary": "B History"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/history",
+   "summary": "History"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/localities/{loc}",
+   "summary": "B Locality"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/localities/{loc}/forces/history",
+   "summary": "B Locality History"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/memories",
+   "summary": "B Memories"
+  },
+  {
+   "method": "GET",
+   "path": "/branches/{bid}/world",
+   "summary": "B World"
+  },
+  {
+   "method": "GET",
+   "path": "/cascades",
+   "summary": "Cascades"
+  },
+  {
+   "method": "GET",
+   "path": "/cascades/history",
+   "summary": "Cascade History"
+  },
+  {
+   "method": "GET",
+   "path": "/cascades/{firing_index}/impacts",
+   "summary": "Cascade Impacts"
+  },
+  {
+   "method": "GET",
+   "path": "/cities",
+   "summary": "Cities"
+  },
+  {
+   "method": "GET",
+   "path": "/cities/{loc}",
+   "summary": "City"
+  },
+  {
+   "method": "GET",
+   "path": "/civ",
+   "summary": "Civ Stats"
+  },
+  {
+   "method": "GET",
+   "path": "/continents",
+   "summary": "Continents"
+  },
+  {
+   "method": "GET",
+   "path": "/continents/{name}",
+   "summary": "Continent"
+  },
+  {
+   "method": "GET",
+   "path": "/countries",
+   "summary": "Countries List"
+  },
+  {
+   "method": "GET",
+   "path": "/countries/{iso2}",
+   "summary": "Country"
+  },
+  {
+   "method": "GET",
+   "path": "/countries/{iso2}/flows",
+   "summary": "Country Flows"
+  },
+  {
+   "method": "GET",
+   "path": "/countries/{iso2}/localities",
+   "summary": "Country Localities"
+  },
+  {
+   "method": "GET",
+   "path": "/countries/{iso2}/mortality",
+   "summary": "Country Mortality"
+  },
+  {
+   "method": "GET",
+   "path": "/countries/{iso2}/needs",
+   "summary": "Country Needs"
+  },
+  {
+   "method": "GET",
+   "path": "/countries/{iso2}/regions",
+   "summary": "Country Regions"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings",
+   "summary": "Earthlings"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/slot/{slot}",
+   "summary": "Earthling By Slot"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}",
+   "summary": "Earthling"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/consumption",
+   "summary": "Earthling Consumption"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/consumption/history",
+   "summary": "Earthling Consumption History"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/events",
+   "summary": "Earthling Events"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/family",
+   "summary": "Earthling Family"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/forces",
+   "summary": "Earthling Forces"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/forces/history",
+   "summary": "Earthling Force History"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/health",
+   "summary": "Earthling Health"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/health/history",
+   "summary": "Earthling Health History"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/history",
+   "summary": "Earthling History"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/memories",
+   "summary": "Earthling Memories"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/needs",
+   "summary": "Earthling Needs"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/presence",
+   "summary": "Earthling Presence"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/relationships",
+   "summary": "Earthling Relationships"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/status",
+   "summary": "Earthling Status"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/work",
+   "summary": "Earthling Work"
+  },
+  {
+   "method": "GET",
+   "path": "/earthlings/{person_id}/work/history",
+   "summary": "Earthling Work History"
+  },
+  {
+   "method": "GET",
+   "path": "/epochs/current",
+   "summary": "Epoch Current"
+  },
+  {
+   "method": "GET",
+   "path": "/firms",
+   "summary": "Firms"
+  },
+  {
+   "method": "GET",
+   "path": "/firms/{fid}",
+   "summary": "Firm"
+  },
+  {
+   "method": "GET",
+   "path": "/firms/{fid}/employees",
+   "summary": "Firm Employees"
+  },
+  {
+   "method": "GET",
+   "path": "/forecast/futures/{idx}",
+   "summary": "Futures"
+  },
+  {
+   "method": "GET",
+   "path": "/forecast/multiverse",
+   "summary": "Legacy Forecast Pending"
+  },
+  {
+   "method": "POST",
+   "path": "/forecast/scenarios",
+   "summary": "Legacy Forecast Pending"
+  },
+  {
+   "method": "GET",
+   "path": "/forecast/timeline",
+   "summary": "Legacy Forecast Pending"
+  },
+  {
+   "method": "GET",
+   "path": "/forecast/tree",
+   "summary": "Legacy Forecast Pending"
+  },
+  {
+   "method": "GET",
+   "path": "/health",
+   "summary": "Health"
+  },
+  {
+   "method": "GET",
+   "path": "/households/{hid}",
+   "summary": "Household"
+  },
+  {
+   "method": "GET",
+   "path": "/localities",
+   "summary": "Localities"
+  },
+  {
+   "method": "GET",
+   "path": "/localities/{loc}",
+   "summary": "Locality"
+  },
+  {
+   "method": "GET",
+   "path": "/localities/{loc}/cascades",
+   "summary": "Locality Cascades"
+  },
+  {
+   "method": "GET",
+   "path": "/localities/{loc}/events",
+   "summary": "Locality Events"
+  },
+  {
+   "method": "GET",
+   "path": "/localities/{loc}/forces/history",
+   "summary": "Locality Force History"
+  },
+  {
+   "method": "GET",
+   "path": "/localities/{loc}/population",
+   "summary": "Locality Population"
+  },
+  {
+   "method": "GET",
+   "path": "/memories",
+   "summary": "Memories"
+  },
+  {
+   "method": "GET",
+   "path": "/memories/{mid}",
+   "summary": "Memory"
+  },
+  {
+   "method": "GET",
+   "path": "/memories/{mid}/impacts",
+   "summary": "Memory Impacts"
+  },
+  {
+   "method": "GET",
+   "path": "/observatory/standing-readings",
+   "summary": "Standing Readings"
+  },
+  {
+   "method": "GET",
+   "path": "/physics",
+   "summary": "Physics"
+  },
+  {
+   "method": "GET",
+   "path": "/predictions/accuracy",
+   "summary": "Accuracy"
+  },
+  {
+   "method": "GET",
+   "path": "/predictions/atlas",
+   "summary": "Atlas"
+  },
+  {
+   "method": "POST",
+   "path": "/predictions/create",
+   "summary": "Create Prediction"
+  },
+  {
+   "method": "POST",
+   "path": "/predictions/expire",
+   "summary": "Expire"
+  },
+  {
+   "method": "GET",
+   "path": "/predictions/list",
+   "summary": "List Preds"
+  },
+  {
+   "method": "GET",
+   "path": "/predictions/runs",
+   "summary": "Runs"
+  },
+  {
+   "method": "GET",
+   "path": "/predictions/runs/{run_id}",
+   "summary": "Run Detail"
+  },
+  {
+   "method": "GET",
+   "path": "/predictions/status",
+   "summary": "Status"
+  },
+  {
+   "method": "POST",
+   "path": "/predictions/{prediction_id}/arm",
+   "summary": "Arm"
+  },
+  {
+   "method": "POST",
+   "path": "/predictions/{prediction_id}/resolve",
+   "summary": "Resolve"
+  },
+  {
+   "method": "GET",
+   "path": "/regions/{iso2}/{index}",
+   "summary": "Region"
+  },
+  {
+   "method": "GET",
+   "path": "/snapshots/current",
+   "summary": "Snapshot Current"
+  },
+  {
+   "method": "GET",
+   "path": "/social-graph/{person_id}/ego",
+   "summary": "Social Graph Ego"
+  },
+  {
+   "method": "GET",
+   "path": "/world",
+   "summary": "World Summary"
+  },
+  {
+   "method": "GET",
+   "path": "/world/countries",
+   "summary": "Countries"
+  },
+  {
+   "method": "GET",
+   "path": "/world/earthling/{idx}",
+   "summary": "Earthling"
+  },
+  {
+   "method": "GET",
+   "path": "/world/tick",
+   "summary": "Tick Retired"
+  },
+  {
+   "method": "POST",
+   "path": "/world/tick",
+   "summary": "Tick Retired"
+  }
+ ]
+}

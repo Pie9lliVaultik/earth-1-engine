@@ -69,7 +69,7 @@ def birth_world(pop: int, seed: int = 42) -> World:
     gov, klass = birth_institutions(civ, seed=seed)
     kn = birth_knowledge(civ, life, seed=seed)
     from earth1.feed import build_feed
-    return World(civ=civ, life=life, fabric=fab,
+    w = World(civ=civ, life=life, fabric=fab,
                  feed=build_feed(civ, kn, seed=seed),
                  health=birth_health(pop),
                  knowledge=kn,
@@ -78,6 +78,9 @@ def birth_world(pop: int, seed: int = 42) -> World:
                  flourishing=birth_flourishing(civ, life, seed=seed),
                  presence=birth_presence(civ, seed=seed),
                  mobility=birth_mobility(civ, life, seed=seed))
+    from earth1.partnership import pair_at_genesis
+    pair_at_genesis(w, np.random.default_rng(seed ^ 0x5A5A))   # state only
+    return w
 
 
 # ═══ THE CANONICAL DAY — one authoritative declaration (0.2) ═══════
@@ -239,6 +242,7 @@ def live_one_day(w: World, rng, *,
     # death, memories whose scope includes them, inheritance at rebirth
     # — do not read these rows dynamically and are untouched.
     _dead0 = ~w.health.alive
+    _dead0_alive = w.health.alive.copy()
     _frozen = _snapshot_deceased(w, _dead0) if _dead0.any() else None
     st.update(govern(civ, life, w.gov, rng, dt_days))
     st.update(apply_policy_and_war(civ, life, w.gov, w.health, rng, dt_days))
@@ -523,6 +527,9 @@ def live_one_day(w: World, rng, *,
     if _frozen is not None:
         _restore_deceased(w, _dead0, _frozen)
     _dead_now = ~w.health.alive
+    # partnership is state only: a death widows the survivor
+    from earth1.partnership import dissolve_on_death
+    st["widowed"] = dissolve_on_death(life, _dead_now & _dead0_alive)
     _rel = _dead_now & (life.employed | life.in_lf | (life.firm >= 0))
     if _rel.any():
         life.employed[_rel] = False

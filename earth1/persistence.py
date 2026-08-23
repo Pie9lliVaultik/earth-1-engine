@@ -169,6 +169,35 @@ def _feed(h: "hashlib._Hash", obj: Any, depth: int = 0) -> None:
         h.update(repr(obj).encode())
 
 
+def fill_identity_fields(w) -> list:
+    """API-COMPLETE-1: snapshots written before person identity and
+    partnership existed load with those fields DERIVED, not invented:
+    person_id = slot index (stable until the first rebirth after load),
+    parent_id = -1, partner paired deterministically from the world seed.
+    Returns the list of filled fields (empty for current snapshots)."""
+    filled = []
+    civ, life = w.civ, w.life
+    n = int(civ.n)
+    if getattr(civ, "person_id", None) is None:
+        civ.person_id = np.arange(n, dtype=np.int64)
+        civ.parent_id = np.full(n, -1, dtype=np.int64)
+        civ.person_counter = n
+        filled += ["civ.person_id", "civ.parent_id", "civ.person_counter"]
+    if life is not None and getattr(life, "partner", None) is None:
+        life.partner = np.full(n, -1, dtype=np.int64)
+        try:
+            from earth1.partnership import pair_at_genesis
+            pair_at_genesis(w, np.random.default_rng(int(civ.seed) ^ 0x5A5A))
+            if w.health is not None:
+                dead = ~w.health.alive
+                life.partner[dead] = -1
+                life.partner[np.isin(life.partner, np.flatnonzero(dead))] = -1
+        except Exception:           # noqa: BLE001 — pairing is optional state
+            pass
+        filled.append("life.partner")
+    return filled
+
+
 def world_hash(w) -> str:
     """A digest of the entire world — every component, not just civ.
 
@@ -426,7 +455,9 @@ def load_world(path, *, allow_v0_migration: bool = False,
     w.civ.adj = adj
     if w.fabric is not None:
         w.fabric.adj = adj
+    filled = fill_identity_fields(w)
     return w, d.get("rng_state"), {"schema_version": version, "lost": [],
+                                   "filled": filled,
                                    "saved_at": d.get("saved_at"),
                                    "checksum": checksum_state}
 

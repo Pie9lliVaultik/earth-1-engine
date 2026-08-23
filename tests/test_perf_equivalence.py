@@ -111,5 +111,10 @@ def test_trajectory_hash_unchanged_by_optimizations():
     # Re-pinned 2026-08-23 under the POSTHUMOUS INVARIANT ruling
     # (ops/alive/POSTHUMOUS_INFLUENCE.md; previous pin 6b289fb1…929a =
     # 0.8-candidate-v3/39994f0-canonical, the physics Epoch 2 runs).
+    # Re-pinned again for API-COMPLETE-1: world_hash now covers the new
+    # STATE fields (civ.person_id/parent_id/person_counter, life.partner).
+    # Dynamics proven bit-identical across that change (forces/alpha/
+    # alive/wealth/employment/traits hash f347329a… equal at 04176e2
+    # and after). Previous pin 8d44efb5….
     assert p.stdout.strip() == (
-        "8d44efb5b3de369f724247d6728826defa34249f8a99c69d9d172b0967600f92"[:32] + "8d44efb5b3de369f724247d6728826defa34249f8a99c69d9d172b0967600f92"[32:])
+        "4ef24091d70eb7e81be8f9c3afbd7969909751cd8f830babe10642c062f557b3"[:32] + "4ef24091d70eb7e81be8f9c3afbd7969909751cd8f830babe10642c062f557b3"[32:])

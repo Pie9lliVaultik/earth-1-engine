@@ -95,6 +95,20 @@ def get_world():
         return _world, dict(_identity)
 
 
+_history = None
+
+
+def get_history():
+    """The history record (SQLite) beside the canonical snapshot, or
+    None when the world home has none yet (pre-API-COMPLETE-1 epochs)."""
+    global _history
+    p = ALIVE_HOME / "history.sqlite"
+    if _history is None and p.exists():
+        from earth1.history import open_history
+        _history = open_history(ALIVE_HOME)
+    return _history
+
+
 def clone_world():
     """A deep clone of the COMPLETE canonical civilization, for branch
     and forecast paths. Never a reduced representation — the clone is

@@ -121,6 +121,14 @@ class Civilization:
     # religiosity drawn from WVS7 P(religious | country, age, edu).
     # None => absent => every downstream path bit-identical.
     religiosity: 'np.ndarray | None' = None
+    # API-COMPLETE-1 (2026-08-23): stable person identity. A slot is
+    # reused at rebirth; a person is not. person_id is unique for the
+    # life of the world (genesis = slot index; every rebirth draws the
+    # next counter value). parent_id = the parent's person_id (-1 at
+    # genesis). State only — nothing in the dynamics reads them.
+    person_id: 'np.ndarray | None' = None
+    parent_id: 'np.ndarray | None' = None
+    person_counter: int = 0
     marital: 'np.ndarray | None' = None
     employed: 'np.ndarray | None' = None
     ideology: 'np.ndarray | None' = None

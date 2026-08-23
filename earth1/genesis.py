@@ -439,6 +439,9 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
 
     return Civilization(
         n=actual_pop, seed=seed,
+        person_id=np.arange(actual_pop, dtype=np.int64),
+        parent_id=np.full(actual_pop, -1, dtype=np.int64),
+        person_counter=int(actual_pop),
         country=country, region=region_idx, age_bucket=age_bucket, age=age,
         education=education, income=income, urban=urban,
         openness=openness, empathy=empathy, risk_appetite=risk_appetite,

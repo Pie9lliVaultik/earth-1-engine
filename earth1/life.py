@@ -234,6 +234,11 @@ class Life:
     last_event: np.ndarray = None    # int code, see EVENT_CODES
     last_event_day: np.ndarray = None
     n_events: np.ndarray = None      # lifetime count of marks left
+    # API-COMPLETE-1: romantic partnership as a first-class edge. Slot
+    # index of the partner, -1 when single. Paired at genesis inside a
+    # household (adults of compatible age), dissolved by death (the
+    # survivor is widowed), newborns enter single. No dynamics read it.
+    partner: np.ndarray = None
 
     @property
     def n_firms(self) -> int:
@@ -355,7 +360,8 @@ def birth_life(civ: Civilization, seed: int = 0) -> Life:
                 political=np.clip(rng.beta(2.0, 3.0, n), 0.0, 1.0),
                 last_event=np.zeros(n, dtype=np.int8),
                 last_event_day=np.full(n, -1.0),
-                n_events=np.zeros(n, dtype=np.int32))
+                n_events=np.zeros(n, dtype=np.int32),
+                partner=np.full(n, -1, dtype=np.int64))
 
 
 def _fast_categorical(p: np.ndarray, rng) -> np.ndarray:

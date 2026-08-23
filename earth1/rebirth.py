@@ -68,6 +68,9 @@ POLICY = {
     # Civilization — culture-anchored personal fields: the newborn is of
     # the parent's culture and place, never the corpse's residue
     ("civ", "economic_field"): INHERIT_PARENT,   # was corpse leftover
+    ("civ", "person_id"): INITIALIZE,            # next counter value
+    ("civ", "parent_id"): INHERIT_PARENT,        # parent's person_id
+    ("life", "partner"): INITIALIZE,             # -1: born single
     ("civ", "culture_offset"): INHERIT_PARENT,   # was corpse leftover
     ("civ", "power_distance"): INHERIT_PARENT,   # was corpse leftover
     ("civ", "individualism"): INHERIT_PARENT,    # was corpse leftover
@@ -346,6 +349,14 @@ def apply_rebirth(w, slots, parents, rng, heritability=HERITABILITY):
                            + rng.normal(0, 0.08, slots.size), 0.0, 1.0)
     civ.age[slots] = 0.0
     civ.age_bucket[slots] = 0
+    if getattr(civ, "person_id", None) is not None:
+        civ.parent_id[slots] = civ.person_id[parents]
+        civ.person_id[slots] = civ.person_counter + np.arange(
+            slots.size, dtype=np.int64)
+        civ.person_counter = int(civ.person_counter + slots.size)
+    if getattr(life, "partner", None) is not None:
+        # a deceased person's partner is widowed; the newborn is single
+        life.partner[slots] = -1
     civ.forces[slots] = (civ.forces[parents] * 0.5
                          + civ.forces[living].mean(axis=0) * 0.5)
     civ.alpha[slots] = 0.35

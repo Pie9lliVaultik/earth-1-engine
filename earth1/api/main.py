@@ -80,6 +80,9 @@ app.include_router(observatory.router)
 app.include_router(predictions.router)
 app.include_router(billing.router)
 app.include_router(world.router)
+from earth1.api.routes import civilization, branches   # API-COMPLETE-1
+app.include_router(civilization.router)
+app.include_router(branches.router)
 
 from earth1.api.auth import APIKeyMiddleware
 from earth1.api.metering import BudgetMiddleware
