@@ -18,13 +18,21 @@ and **nothing else is meaningful until Phase 0 exits.**
 
 ## Current phase
 
-**Epoch 1 is LIVE and ACCEPTED** (2026-08-19): the 4M world runs
-provenanced code (`d2e55b0`) with atomic persistence, verified off-site
-backups, rehearsed restore, and exact restart continuity. See
-`ops/alive/EPOCH1_ACCEPTANCE_REPORT.md`. The epoch boundary at world
-day 284 (`legacy_v0_missing_presence_mobility`) is an engineering
-discontinuity: **no causal benchmark may span it**, and the annulled
-first migration attempt (days 284-304) is not world history.
+**EPOCH 3 IS THE CANONICAL EARTH** (2026-08-23): uuid
+`bf5359fa-3ddd-4389-be8e-9083b428576c`, 4,000,000 agents, seed 20260824,
+physics `0.8-candidate-v4.1/posthumous-invariant-rc`, deployed commit
+`81b1bac` = tag `epoch3-v4.1` (release gate:
+`ops/alive/EPOCH_3_RELEASE_GATE.md`, SHIP). `main` is the canonical code;
+the daemon on CCX33 runs it (`ops/alive/DEPLOYED`). Epoch 1 (day 3845,
+tag `epoch1-production-lineage`) and Epoch 2 (day 185, v3) are
+ARCHIVED / READ-ONLY under `data/archive/` and the Storage Box
+`earth1/archive/`; they are never served by an official surface.
+Policy: `ops/alive/EPOCH_POLICY.md` (deployed physics change ⇒ new epoch)
+and `ops/alive/VALIDATION_INHERITANCE_POLICY.md`. Scientific status:
+`PHASE_0_8_SCIENTIFIC_STATUS = IN PROGRESS` (Stages D/E/F/G/I are research
+on Earth-1, not prerequisites). Historical note: the Epoch-0→1 boundary at
+world day 284 (`legacy_v0_missing_presence_mobility`) is an engineering
+discontinuity inside the Epoch-1 archive; no causal benchmark may span it.
 
 **WP-0 is DONE** (`V1_UNIFICATION_AUDIT.md`, signed off with three
 amendments). 0.0e (provenance gate) and 0.0c (exact persistence) are
