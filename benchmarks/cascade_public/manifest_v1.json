@@ -1,0 +1,92 @@
+{
+ "benchmark": "CASCADE_PUBLIC_BENCHMARK",
+ "version": "v1-prereg",
+ "frozen": "2026-08-23",
+ "earth1": {
+  "code": "main 0c1365e47262f214c0ddd32e6c1eaff519aded20",
+  "physics_version": "0.8-candidate-v3/39994f0-canonical",
+  "control_physics": "incumbent cooldown-only semantics (EPISODE_ENTRY_RULES emptied; KA8 twin)",
+  "locality_key": "country*1000 + genesis_region*2 + urban",
+  "geography": {"countries": 194, "genesis_regions": 443, "multi_region_countries": 100, "single_region_countries": 94},
+  "calendar_alignment": "NONE — canonical world runs synthetic days from genesis; data/history and the 2015 timeline do not exist (BIBLE.md: 'never actually been run')"
+ },
+ "datasets": {
+  "MEC": {
+   "name": "Major Episodes of Contention (Chenoweth & Kang)",
+   "role": "C1 primary truth (episode onset, duration, size, goals, outcomes)",
+   "doi": "10.7910/DVN/JQWQNW", "repository": "Harvard Dataverse",
+   "version": "3", "released": "2026-06-06", "license": "CC0 1.0",
+   "coverage": "1955-2018, 2,734 episodes, >1 week and >=1,000 participants, English-language sources",
+   "files": {
+    "MEC Data Release.tab": {"bytes": 1300000, "md5": "c3ea1ceea2fd2495c3d696d709436c78"},
+    "MEC_Codebook_2024.docx": {"md5": "4c314592b77409036f1d152791383d0c"},
+    "MEC Data Release Code.do": {"md5": "64d3259f6336450c19b3f0b504b9d73b"},
+    "Online Appendix.pdf": {"md5": "6eb90721951a698c45a4fb3dd6214add"}
+   },
+   "paper": "Journal of Peace Research 63(4):724, doi:10.1093/jopres/xjaf008",
+   "downloaded": false
+  },
+  "ACLED": {
+   "name": "Armed Conflict Location & Event Data",
+   "role": "C2 primary truth (atomic day/location events: protests, riots, violence); I1 shock truth (with UCDP)",
+   "access": "free registration; API / export tool; weekly updates; attribution required; redistribution restricted by Terms of Use (commercial use requires licence review)",
+   "event_definition": "events recorded only for days on which activity is specifically reported; multi-day continuation is NOT inferred",
+   "fields": ["event_date", "time_precision", "event_type", "sub_event_type", "country", "admin1", "admin2", "admin3", "location", "latitude", "longitude", "geo_precision", "fatalities"],
+   "coverage_note": "start year varies by region (Africa 1997; most of Asia/LatAm/Europe 2018+; global by 2021) — inclusion window per country fixed in §5",
+   "version": "snapshot date + sha256 recorded at ingestion (weekly release; pin one export)",
+   "downloaded": false
+  },
+  "MM": {
+   "name": "Mass Mobilization Protest Data (Clark & Regan, PITF)",
+   "role": "C2 secondary historical replication (1990-2020 government-directed protests >=50 participants)",
+   "doi": "10.7910/DVN/HTTWYL", "repository": "Harvard Dataverse",
+   "version": "5.1", "released": "2022-10-10", "license": "CC0 1.0",
+   "coverage": "1990-01-01 to 2020-03-31, 162 countries, >10,000 events",
+   "files": {
+    "mmALL_073120_csv.tab": {"bytes": 15625472, "md5": "e6fa8a2e9d120eff0167a788e8a3ea7f"},
+    "MM_users_manual_0515.pdf": {"bytes": 122934, "md5": "efb7ca11ee0eadae9122b2b7cee08560"}
+   },
+   "downloaded": false
+  },
+  "UCDP_GED": {
+   "name": "UCDP Georeferenced Event Dataset",
+   "role": "I1 independent shock truth (organized violence, day-level, adm1, fatalities)",
+   "version": "26.1", "coverage": "1989-2025", "license": "CC BY 4.0",
+   "candidate_monthly": "26.0.7 (July 2026)",
+   "hash": "sha256 recorded at ingestion", "downloaded": false
+  },
+  "WVS_EVS": {
+   "name": "EVS/WVS Integrated Values Surveys trend file",
+   "role": "I1 human-state truth (national pride, security, confidence/trust)",
+   "version": "IVS trend 4.1 (2024-06-30); WVS Wave 7 2017-2022 (64 societies, >80k respondents)",
+   "access": "registration + acceptance of terms; academic/non-commercial; no redistribution",
+   "hash": "sha256 recorded at ingestion", "downloaded": false
+  },
+  "ESS": {
+   "name": "European Social Survey",
+   "role": "I1 human-state truth, European subset with NUTS region (trust, attachment to country, safety)",
+   "version": "Round 11 (fieldwork 2023/24) edition 3.0, 2025-06-02, 28 countries; cumulative rounds 1-11",
+   "access": "registration; ESS data licence (non-commercial terms to be confirmed at registration)",
+   "hash": "sha256 recorded at ingestion", "downloaded": false
+  }
+ },
+ "retired": {
+  "four_arm_generic_cascade_test (a5ceedc data/threshold_erratum_prereg.json)": "RETIRED — Arab Spring (collective mobilization), #MeToo (information/social diffusion), same-sex-marriage tipping (norm/policy diffusion), 2016 polarization (population distribution state) are four different empirical processes and cannot calibrate one generic rule"
+ },
+ "ontology": {
+  "collective_surge": "ONSET OF A SUSTAINED COLLECTIVE-MOBILIZATION / CONTENTION EPISODE IN A LOCALITY (candidate mechanism; externally benchmarkable)",
+  "identity_collapse": "UNVALIDATED LATENT HUMAN-RESPONSE MECHANISM (not an event class; implementation untouched; validity via I1 only)"
+ },
+ "splits": {
+  "method": "country-level deterministic hash split (balance across UN region x income group is REPORTED, not enforced); assignment = sha256('CASCADE_PUBLIC_v1|' + ISO2) mod 10 < 6 -> DEV else HOLDOUT (realized: 111 DEV / 83 HOLDOUT countries, holdout list sha256 d25828e7418cd619d90092804cd74b63416bbd645de4ecf4f66408eea90ebb1f); temporal holdout additionally: MEC onsets 2010-2018 and ACLED/UCDP events 2022+ are HOLDOUT-ONLY regardless of country",
+  "holdout_freeze": "the HOLDOUT ISO2 list is generated deterministically from the rule above and its sha256 recorded in benchmarks/cascade_public/holdout_v1.sha256 BEFORE any data is loaded; loaders refuse HOLDOUT rows unless EARTH1_HOLDOUT_RUN=<founder token>",
+  "no_threshold_selection_on_holdout": true
+ },
+ "status": {
+  "C1_prediction": "NOT YET EXECUTABLE AS PREDICTION",
+  "C1_structural": "EXECUTABLE (distribution-level, labeled non-predictive)",
+  "C2": "EXECUTABLE (event-time aligned, distribution-level)",
+  "I1_direction": "EXECUTABLE (event-time aligned, sign/rank level)",
+  "I1_magnitude": "BLOCKED (no force->survey measurement model)"
+ }
+}
