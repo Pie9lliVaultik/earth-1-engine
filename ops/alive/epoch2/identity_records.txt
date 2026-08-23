@@ -1,0 +1,62 @@
+{
+ "epoch": 1,
+ "status": "ARCHIVED / READ-ONLY / HISTORICAL",
+ "archived_at": "2026-08-23T08:54:33Z",
+ "world_uuid": null,
+ "final_day": 3845,
+ "population": 4000000,
+ "alive": 3337113,
+ "seed": 42,
+ "schema_version": 1,
+ "snapshot_sha256": "89e0d33a9f92e501c7b0c186a633102ec0ba4c9ee09a521b5e3ccddef3b0e58b",
+ "checksum_state": "verified",
+ "world_hash": "f34a80f1239d6f7d293d2c4b71e9c396c708722648ae6125d84f502c96534d6c",
+ "rng_state_persisted": true,
+ "git_commit": "23960947f989a1e5908f8721494d547e9fd61401",
+ "physics_version": null,
+ "epoch_record": null,
+ "files": {
+  "BACKUP_MANIFEST.sha256": {
+   "bytes": 553,
+   "sha256": "cd62865f1fb527799d5499e69f7554a5c40cd874efffd0277d549ada68ebad80"
+  },
+  "adj.npz": {
+   "bytes": 389778037,
+   "sha256": "75da611d0a16008f3a6c0f57edb3aafab3b26157913d89c35ef1e4af21822246"
+  },
+  "backup_log.jsonl": {
+   "bytes": 2611,
+   "sha256": "4e413c978746d840a3b8c68227619d1d409c04a2fe1a9d199581ca0d73c1a574"
+  },
+  "journal.jsonl": {
+   "bytes": 3850586,
+   "sha256": "2739ba9a515bf74f9b88e6ca54f386182f13f8a5897f7b5fbbac4355aeb1748a"
+  },
+  "state.json": {
+   "bytes": 217,
+   "sha256": "190700e83227762df125e9fb65a45a7b3ebf44e4761c2dfaaf23f9b640716dee"
+  },
+  "world.adj.npz": {
+   "bytes": 600875796,
+   "sha256": "cb4e24e29240e2192057c746b37d958d8d17adca0653b5dba7e648284cc73eea"
+  },
+  "world.pkl": {
+   "bytes": 5221592797,
+   "sha256": "89e0d33a9f92e501c7b0c186a633102ec0ba4c9ee09a521b5e3ccddef3b0e58b"
+  },
+  "world.pkl.sha256": {
+   "bytes": 65,
+   "sha256": "893bfa64f49e7547f8cc7417b61478205f7b0fb38a2d207128f72d109fcb557e"
+  }
+ }
+}
+{
+ "epoch": 2,
+ "world_uuid": "ad0e4af4-9cc5-4d1f-8f5e-28710de6b731",
+ "seed": 20260823,
+ "population": 4000000,
+ "physics_version": "0.8-candidate-v3/39994f0-canonical",
+ "genesis_world_hash": "98bc601c5285ac1904dae52c639d2d8a504306827405f83219a30341d80d46af",
+ "genesis_commit": "69ee9d000fe362d95ebbd7762c5d57011a0870f3",
+ "born_at": "2026-08-23T08:58:14Z"
+}

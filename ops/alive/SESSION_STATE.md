@@ -139,3 +139,14 @@ miss protocol on the unified implementation -> 0.7 close -> true 0.8
 - `CCX33 EPOCH 1 = UNCHANGED` — read-only check 2026-08-23: `/opt/earth1` HEAD = 2396094 ("0.7: rehearsal loader uses the project venv interpreter"), `DEPLOYED: EARTH1_EXPECT_COMMIT=2396094…`, `earth1-alive.service` active. Tagged `epoch1-production-lineage` at 2396094.
 - `LIVE-PRODUCTION ONE-EARTH CRITERION = PENDING EPOCH 2`
 - Not done, by ruling: no deploy to CCX33, no Epoch-1 mutation, no Epoch 2, no holdout.
+
+## 2026-08-23 — EPOCH TRANSITION EXECUTED (founder ruling: epoch switch)
+- 0.7 backup incremental (eb6239f; rehearsed: delta basis 12.3/21.6 MB matched, independent restores). Hardware ensemble target + Storage Box creds on prime: still deferred by ruling.
+- EPOCH_POLICY registered; Epoch-2 seed 20260823 burned. 4M daemon pilot PASS (27–30 s/day, 15 GB).
+- EPOCH 1 ARCHIVED: final daemon checkpoint day 3845 (alive 3,337,113; sha 89e0d33a…; hash f34a80f1…; commit 2396094 = tag epoch1-production-lineage); off-box verified; restore rehearsal PASSED; read-only at data/archive/epoch1-final-day3845.
+- EPOCH 2 LIVE on CCX33: main 69ee9d0 deployed, physics 0.8-candidate-v3/39994f0-canonical, uuid ad0e4af4-9cc5-4d1f-8f5e-28710de6b731, genesis hash 98bc601c…, provenance clean (commit/service match, rng_birth_seed journaled).
+- ONE_EARTH_LIVE: PASS (ops/alive/epoch2/one_earth_live_report_day30.json) — /world, /observatory, /ask, answer_living, benchmark_living → same uuid/snapshot/hash/physics; clone surfaces (branch/forecast/observe) proven on the byte-identical snapshot on prime (epoch2_smoke_day30.json).
+- SMOKE: PASS 10/10 (load identity, episode state 467/381/381, save/reload bitwise, deterministic replay 3d, restart persistence, timeline restore, branch on clone, invariants, API identity, legacy gate).
+- Timers re-enabled; first Epoch-2 backup verified (day 30). LIVE-PRODUCTION ONE-EARTH CRITERION (0.5 exit) = MET.
+- Note: genesis hash differs between prime pilot and CCX33 at 4M (machine floating point; 20k genesis bit-identical across processes; all journal aggregates identical to 4 dp). Same-host replay is bit-identical.
+- NEXT: Bible 0.8 (butterfly, FSLE, noise floor, consciousness) on Epoch-2 registered snapshots/branches.

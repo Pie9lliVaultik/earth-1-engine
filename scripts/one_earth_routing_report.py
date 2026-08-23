@@ -202,7 +202,7 @@ def main():
                      indent=1, default=str))
     print("STATIC:", {k: (v["resolves_alive_world"],
                          v["dead_family_imports"]) for k, v in st.items()})
-    print("ONE_EARTH_CODE_PATH:", rep["ONE_EARTH_CODE_PATH"])
+    print(f"{key}:", rep[key])
     sys.exit(0 if rep["ONE_EARTH_CODE_PATH"] == "PASS" else 1)
 
 

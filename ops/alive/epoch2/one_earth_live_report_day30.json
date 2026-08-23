@@ -1,0 +1,143 @@
+{
+ "static": {
+  "/ask route": {
+   "file": "earth1/api/routes/ask.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/world route": {
+   "file": "earth1/api/routes/world.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/forecast route": {
+   "file": "earth1/api/routes/forecast.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/observatory route": {
+   "file": "earth1/api/routes/observatory.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/predictions route (DB-only)": {
+   "file": "earth1/api/routes/predictions.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "api.deps (world resolver)": {
+   "file": "earth1/api/deps.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "branch": {
+   "file": "earth1/branch.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "timeline/scrub": {
+   "file": "earth1/timeline.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "assimilation": {
+   "file": "earth1/assimilate.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "earthling observation": {
+   "file": "earth1/observe.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "observer (asking)": {
+   "file": "earth1/observer.py",
+   "resolves_alive_world": true,
+   "how": "pure consumer",
+   "dead_family_imports": []
+  },
+  "answer_living (canonical answer path)": {
+   "file": "earth1/answer_living.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "benchmark_living (official benchmark)": {
+   "file": "earth1/benchmark_living.py",
+   "resolves_alive_world": true,
+   "how": "transitive",
+   "dead_family_imports": []
+  },
+  "benchmark runner": {
+   "file": "scripts/benchmark_living.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "production daemon": {
+   "file": "scripts/world_alive.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "Observatory (investor demo)": {
+   "file": "scripts/observatory_server.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  }
+ },
+ "runtime": {
+  "mode": "LIVE",
+  "alive_home": "/opt/earth1/data/alive",
+  "physics_version": "0.8-candidate-v3/39994f0-canonical",
+  "epoch": 2,
+  "world_uuid": "ad0e4af4-9cc5-4d1f-8f5e-28710de6b731",
+  "world_day": 30,
+  "world_hash_by_surface": {
+   "saved_world": "3627ea31236dfd3500d686f080a84c2aad1bd3793666da298af81173627ba5b9",
+   "deps_loaded": "3627ea31236dfd3500d686f080a84c2aad1bd3793666da298af81173627ba5b9",
+   "answer_living": "3627ea31236dfd3500d686f080a84c2aad1bd3793666da298af81173627ba5b9",
+   "benchmark_living": "3627ea31236dfd3500d686f080a84c2aad1bd3793666da298af81173627ba5b9"
+  },
+  "snapshot_sha256_by_surface": {
+   "/world": "55a8d551701ccd02511dde8988b7a14f1df32bbb9084f4f47fcbf6ee493e0416",
+   "/observatory": "55a8d551701ccd02511dde8988b7a14f1df32bbb9084f4f47fcbf6ee493e0416",
+   "/ask (503 by design)": "55a8d551701ccd02511dde8988b7a14f1df32bbb9084f4f47fcbf6ee493e0416"
+  },
+  "world_uuid_by_surface": {
+   "/world": "ad0e4af4-9cc5-4d1f-8f5e-28710de6b731",
+   "/observatory": "ad0e4af4-9cc5-4d1f-8f5e-28710de6b731",
+   "/ask (503 by design)": "ad0e4af4-9cc5-4d1f-8f5e-28710de6b731"
+  },
+  "physics_version_by_surface": {
+   "/world": "0.8-candidate-v3/39994f0-canonical",
+   "/observatory": "0.8-candidate-v3/39994f0-canonical",
+   "/ask (503 by design)": "0.8-candidate-v3/39994f0-canonical",
+   "answer_living": "0.8-candidate-v3/39994f0-canonical",
+   "benchmark_living": "0.8-candidate-v3/39994f0-canonical"
+  },
+  "surfaces_exercised": [
+   "/world",
+   "/observatory",
+   "/ask (503 by design)",
+   "answer_living",
+   "benchmark_living"
+  ],
+  "pass": true,
+  "clone_surfaces_skipped": true
+ },
+ "legacy_gate_violations": [],
+ "ONE_EARTH_LIVE": "PASS",
+ "note": "LIVE-PRODUCTION One-Earth invariant: every official surface resolved the canonical data/alive snapshot (same epoch UUID, snapshot sha256, world hash, physics)."
+}
