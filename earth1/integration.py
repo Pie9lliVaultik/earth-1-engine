@@ -45,13 +45,22 @@ def _cut(adj, part: np.ndarray):
         (a.data[keep], (a.row[keep], a.col[keep])), shape=adj.shape)
 
 
-def _traj(w, rng, days, adj=None, **kw):
-    """Run and record the population's collective trajectory."""
+def _traj(w, rng, days, adj=None, part=None, **kw):
+    """Run and record the population's collective trajectory.
+
+    0.8 instrument repair (2026-08-23): the canonical loop recomposes
+    civ.adj from fabric.by_type every tick (plasticity), so a cut
+    applied to civ.adj alone was undone after one day and phi measured
+    exactly 0. When `part` is given every typed fabric matrix is cut on
+    the same partition, so the severing persists."""
     civ = w.civ
     if adj is not None:
         civ.adj = adj
         if w.fabric is not None:
             w.fabric.adj = adj
+            if part is not None and getattr(w.fabric, "by_type", None):
+                for k, m in list(w.fabric.by_type.items()):
+                    w.fabric.by_type[k] = _cut(m, part)
     rows = []
     for _ in range(days):
         st = world_step(w, rng, **{**STEP, **kw})
@@ -92,7 +101,8 @@ def phi_proxy(make_world, days: int = 30, seed: int = 11) -> dict:
 
     w_parts = make_world()
     cut = _cut(w_parts.civ.adj, part)
-    parts = _traj(w_parts, np.random.default_rng(seed), days, adj=cut)
+    parts = _traj(w_parts, np.random.default_rng(seed), days, adj=cut,
+                  part=part)
 
     w_mean = np.array([r["mean"] for r in whole])
     p_mean = np.array([r["mean"] for r in parts])
@@ -333,7 +343,7 @@ def phase_scan(make_world, betas=(0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0),
         traj_w = _traj(w_whole, np.random.default_rng(seed), days, beta=b)
         w_parts = make_world()
         p = _traj(w_parts, np.random.default_rng(seed), days,
-                  adj=_cut(w_parts.civ.adj, part), beta=b)
+                  adj=_cut(w_parts.civ.adj, part), part=part, beta=b)
         wm = np.array([r["state"] for r in traj_w])
         pm = np.array([r["state"] for r in p])
         phi = float(np.linalg.norm(wm - pm) / max(float(np.linalg.norm(wm)),
