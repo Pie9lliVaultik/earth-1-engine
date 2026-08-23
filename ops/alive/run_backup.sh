@@ -86,9 +86,34 @@ cp "$MANIFEST" ./BACKUP_MANIFEST.sha256
 ssh -p "$BACKUP_PORT" "${BACKUP_TARGET%%:*}" "mkdir -p ${DEST#*:}" \
   || die "cannot create $DEST"
 
-rsync -a --partial --inplace -e "ssh -p $BACKUP_PORT" \
-      --exclude '*.tmp' ./ "$DEST/" \
+# INCREMENTAL (0.7, 2026-08-23). Every run used to ship the whole 18 GB
+# world. Now the newest previous snapshot is the --link-dest: a file
+# whose size+mtime are unchanged (the graph between rewirings, the
+# sidecars) becomes a hardlink on the far end and moves zero bytes; a
+# file that did change (world.pkl every save) uses the previous copy as
+# the rsync delta BASIS, so only changed blocks cross the wire. Each
+# dated directory is still a complete, independently restorable world —
+# hardlinks are per-file, so pruning an old directory never damages a
+# newer one. --inplace is gone on purpose: it would write INTO the
+# hardlinked previous snapshot and corrupt the last good copy.
+RHOST="${BACKUP_TARGET%%:*}"
+RBASE="${BACKUP_TARGET#*:}/alive"
+PREV="$(ssh -p "$BACKUP_PORT" "$RHOST" ls -1 "$RBASE" 2>/dev/null \
+        | grep -v "^${STAMP}" | sort | tail -n 1 || true)"
+LINK_OPT=()
+if [ -n "$PREV" ]; then
+    LINK_OPT=(--link-dest="$RBASE/$PREV")
+    log "incremental against $PREV"
+else
+    log "no previous snapshot — full copy"
+fi
+RSTATS="$(mktemp)"
+rsync -a --partial --partial-dir=.rsync-partial "${LINK_OPT[@]}" \
+      --stats -e "ssh -p $BACKUP_PORT" \
+      --exclude '*.tmp' --exclude '.rsync-partial' ./ "$DEST/" > "$RSTATS" \
   || die "rsync failed"
+grep -E 'Total file size|Total transferred file size|Literal data|Matched data' "$RSTATS" || true
+rm -f "$RSTATS"
 
 # THE VERIFICATION. A copy nobody checked is a hope, not a backup.
 #
@@ -100,7 +125,6 @@ rsync -a --partial --inplace -e "ssh -p $BACKUP_PORT" \
 # happens here. Same integrity guarantee: digests computed on the far
 # end, compared against the local manifest.
 log "verifying checksums on the far end"
-RHOST="${BACKUP_TARGET%%:*}"
 RDIR="${DEST#*:}"
 REMOTE_SUMS="$(mktemp)"
 LOCAL_SUMS="$(mktemp)"
@@ -124,6 +148,7 @@ LISTING="$(ssh -p "$BACKUP_PORT" "$RHOST" ls -1 "${BACKUP_TARGET#*:}/alive" 2>/d
 COUNT="$(printf '%s\n' "$LISTING" | grep -c . || true)"
 if [ "$COUNT" -gt "$KEEP" ] && [ "$COUNT" -gt 1 ]; then
     log "pruning to newest $KEEP of $COUNT"
+    # never prune the directory the next run will link against
     printf '%s\n' "$LISTING" | sort | head -n "-$KEEP" | while read -r OLD; do
         [ -n "$OLD" ] || continue
         ssh -p "$BACKUP_PORT" "$RHOST" rm -rf "${BACKUP_TARGET#*:}/alive/$OLD"
