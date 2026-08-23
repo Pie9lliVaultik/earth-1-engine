@@ -1,0 +1,166 @@
+{
+ "9501": {
+  "hot_sets_identical_A_vs_H1_all_days": true,
+  "locality_census_identical": true,
+  "identity_collapse": {
+   "fires_A": 5553,
+   "fires_H1": 1666,
+   "entries_after_init": 4002,
+   "fires_per_firing_locality_H1 (median,p90,max)": [
+    2.0,
+    5.0,
+    8
+   ],
+   "unique_firing_localities_H1": 637,
+   "cold_gap_before_reentry_days (median,p90)": [
+    2.0,
+    21.0
+   ],
+   "frac_reentries_after_gap_le3d": 0.6374113475177305,
+   "closed_episode_length_days (median,p90)": [
+    2.0,
+    30.0
+   ],
+   "H1_fire_days_subset_of_entry_days": null,
+   "positive_control": {
+    "localities_cold_first_then_hot": 618,
+    "fired_on_entry_day": 618,
+    "examples": [
+     [
+      0,
+      39
+     ],
+     [
+      1,
+      39
+     ],
+     [
+      2,
+      39
+     ]
+    ]
+   }
+  },
+  "collective_surge": {
+   "fires_A": 11456,
+   "fires_H1": 772,
+   "entries_after_init": 1203,
+   "fires_per_firing_locality_H1 (median,p90,max)": [
+    1.0,
+    1.0,
+    11
+   ],
+   "unique_firing_localities_H1": 575,
+   "cold_gap_before_reentry_days (median,p90)": [
+    3.0,
+    22.0
+   ],
+   "frac_reentries_after_gap_le3d": 0.5378378378378378,
+   "closed_episode_length_days (median,p90)": [
+    2.0,
+    11.0
+   ],
+   "H1_fire_days_subset_of_entry_days": null,
+   "positive_control": {
+    "localities_cold_first_then_hot": 463,
+    "fired_on_entry_day": 463,
+    "examples": [
+     [
+      2,
+      25
+     ],
+     [
+      3,
+      25
+     ],
+     [
+      4,
+      25
+     ]
+    ]
+   }
+  }
+ },
+ "9502": {
+  "hot_sets_identical_A_vs_H1_all_days": true,
+  "locality_census_identical": true,
+  "identity_collapse": {
+   "fires_A": 5071,
+   "fires_H1": 1780,
+   "entries_after_init": 4604,
+   "fires_per_firing_locality_H1 (median,p90,max)": [
+    2.0,
+    6.0,
+    10
+   ],
+   "unique_firing_localities_H1": 610,
+   "cold_gap_before_reentry_days (median,p90)": [
+    2.0,
+    23.0
+   ],
+   "frac_reentries_after_gap_le3d": 0.6245946620104764,
+   "closed_episode_length_days (median,p90)": [
+    2.0,
+    18.0
+   ],
+   "H1_fire_days_subset_of_entry_days": null,
+   "positive_control": {
+    "localities_cold_first_then_hot": 594,
+    "fired_on_entry_day": 594,
+    "examples": [
+     [
+      0,
+      49
+     ],
+     [
+      1,
+      50
+     ],
+     [
+      2,
+      48
+     ]
+    ]
+   }
+  },
+  "collective_surge": {
+   "fires_A": 11541,
+   "fires_H1": 762,
+   "entries_after_init": 1120,
+   "fires_per_firing_locality_H1 (median,p90,max)": [
+    1.0,
+    1.0,
+    11
+   ],
+   "unique_firing_localities_H1": 593,
+   "cold_gap_before_reentry_days (median,p90)": [
+    3.0,
+    20.0
+   ],
+   "frac_reentries_after_gap_le3d": 0.5538461538461539,
+   "closed_episode_length_days (median,p90)": [
+    2.0,
+    10.0
+   ],
+   "H1_fire_days_subset_of_entry_days": null,
+   "positive_control": {
+    "localities_cold_first_then_hot": 469,
+    "fired_on_entry_day": 468,
+    "examples": [
+     [
+      1,
+      18
+     ],
+     [
+      2,
+      24
+     ],
+     [
+      3,
+      24
+     ]
+    ]
+   }
+  }
+ }
+}

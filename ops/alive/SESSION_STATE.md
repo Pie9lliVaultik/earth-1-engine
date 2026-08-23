@@ -122,3 +122,10 @@ identity, routing report PASS). LIVE-PRODUCTION invariant PENDING
 (Epoch 1 on CCX33 untouched). Next: Stage C cascade E3 issue via Bible
 miss protocol on the unified implementation -> 0.7 close -> true 0.8
 -> Epoch 2 -> benchmarks.
+
+
+## 2026-08-23 — H-CASCADE-1
+- 38ef1f1 hot-set structure: BROAD, direct 99.9%, ordinary localities firing.
+- c96dd9e registration (locality denominator reconciled: 879 occupied / 869 eligible, all 200k).
+- f84fb0d implementation (episode-entry semantics, KA1–KA8 PASS, 1101 tests).
+- Characterization 9501/9502: fires −86%, IDENTITY >0.20 displacement 77%→7%, sat 0.68→0.04, stored world identical; ever-exposed unchanged 85% (threshold cause). Report: H_CASCADE_1_REPORT.md. STOPPED before threshold calibration.
