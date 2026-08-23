@@ -26,5 +26,15 @@ for key, ds in MAN["datasets"].items():
         good = exp is None or got == exp
         ok &= good
         print(f"[{'ok' if good else 'MISMATCH'}] {key}/{fname} md5={got}")
+# holdout integrity: file-level hash (sha256sum -c format) and list-level hash
+hp = ROOT / "benchmarks" / "cascade_public" / "holdout_v1.json"
+raw = hp.read_bytes()
+fh = hashlib.sha256(raw).hexdigest()
+rec = (ROOT / "benchmarks" / "cascade_public" / "holdout_v1.sha256").read_text().split()[0]
+lh = hashlib.sha256(json.dumps(json.loads(raw)["holdout"]).encode()).hexdigest()
+sp = MAN["splits"]
+okf = fh == rec == sp.get("holdout_file_sha256"); okl = lh == sp.get("holdout_list_sha256", {}).get("value")
+print(f"[{'ok' if okf else 'MISMATCH'}] holdout_v1.json file sha256 {fh[:16]}…  [{'ok' if okl else 'MISMATCH'}] holdout list sha256 {lh[:16]}…")
+ok &= okf and okl
 print("MANIFEST", "CONSISTENT" if ok else "VIOLATED")
 sys.exit(0 if ok else 1)

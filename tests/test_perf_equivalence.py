@@ -77,15 +77,47 @@ def test_recompose_sums_duplicates_left_to_right():
     assert got != 1.0 + (0.6 + 0.8)         # 2.4 — the reduceat drift
 
 
+# PINNED ENVIRONMENT for the bit-exact trajectory hash (Benchmark A
+# Phase 0). Floating-point reductions differ across BLAS/CPU/numpy
+# versions (observed 2026-08-23: identical 4M genesis statistics, different
+# world hash between an arm64/Accelerate laptop and x86/OpenBLAS servers),
+# so bit-exactness is a statement about THIS environment only.
+PINNED_ENV = {"numpy": "2.0.2", "scipy": "1.13.1", "python": "3.9",
+              "machine": "arm64", "blas": "accelerate"}
+
+
+def _env_matches_pin():
+    import platform
+    import numpy as np
+    import scipy
+    try:
+        blas = str(np.show_config(mode="dicts")["Build Dependencies"]["blas"]["name"]).lower()
+    except Exception:  # noqa: BLE001 — older numpy: unknown BLAS
+        blas = "unknown"
+    return (np.__version__ == PINNED_ENV["numpy"] and scipy.__version__ == PINNED_ENV["scipy"]
+            and platform.python_version().startswith(PINNED_ENV["python"])
+            and platform.machine() == PINNED_ENV["machine"] and PINNED_ENV["blas"] in blas)
+
+
 def test_trajectory_hash_unchanged_by_optimizations():
     """15 canonical days from a fixed seed land on the exact
     world_hash the pre-0.7 code produced (recorded 2026-08-20 from
     the pristine tree at c6af56b). Runs in a fresh interpreter: other
     suites mutate module state in-process, which changes the
-    trajectory and would make this pin order-dependent."""
+    trajectory and would make this pin order-dependent.
+    Bit-exact ONLY under PINNED_ENV (see pyproject `[repro]`); elsewhere
+    the test skips loudly rather than certify a different environment."""
     import subprocess
     import sys
+    import warnings
     from pathlib import Path
+    if not _env_matches_pin():
+        import numpy as np, scipy, platform
+        msg = (f"TRAJECTORY PIN NOT EVALUATED: environment numpy {np.__version__} / scipy {scipy.__version__} / "
+               f"python {platform.python_version()} / {platform.machine()} != pinned {PINNED_ENV}; "
+               f"install '.[repro]' on the pinned platform to certify bit-exactness")
+        warnings.warn(msg)
+        pytest.skip(msg)
     root = Path(__file__).resolve().parents[1]
     code = (
         "import sys; sys.path.insert(0, %r)\n"

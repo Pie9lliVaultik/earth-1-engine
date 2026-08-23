@@ -158,7 +158,7 @@ first; holdout once.
 
 Country-level deterministic split: HOLDOUT iff
 sha256("CASCADE_PUBLIC_v1|"+ISO2) mod 10 ≥ 6 → realized 111 DEV / 83
-HOLDOUT (`holdout_v1.json`, list sha256 d25828e7…). Temporal holdout in
+HOLDOUT (`holdout_v1.json`; FILE sha256 c7416bfdb0edee3c… recorded in `holdout_v1.sha256` in `sha256sum -c` format; LIST sha256 d25828e7418cd619… = sha256 of `json.dumps(sorted_iso2_list)` with default separators, no indent, UTF-8 — both verified by `scripts/cascade_benchmark_manifest_check.py`). Temporal holdout in
 addition: MEC onsets 2010–2018 and ACLED/UCDP events from 2022 are
 HOLDOUT-only. Loaders refuse HOLDOUT rows unless `EARTH1_HOLDOUT_RUN`
 carries a founder token; no threshold, crosswalk rule, shock

@@ -18,6 +18,12 @@ db = ["sqlalchemy>=2.0", "psycopg2-binary>=2.9"]
 sources = ["pytrends>=4.9"]
 billing = ["stripe>=5.0"]
 dev = ["pytest>=7.0", "httpx>=0.24"]
+# REPRODUCIBILITY PIN (Benchmark A Phase 0, 2026-08-23): the pinned
+# trajectory hash in tests/test_perf_equivalence.py was produced under
+# exactly these versions on CPython 3.9.6 / arm64 / Apple Accelerate BLAS.
+# The bit-exact assertion runs only in this environment; elsewhere it
+# skips with a loud warning. `pip install -e ".[repro]"` reproduces it.
+repro = ["numpy==2.0.2", "scipy==1.13.1"]
 
 [project.scripts]
 earth1-api = "earth1.api.main:run"
