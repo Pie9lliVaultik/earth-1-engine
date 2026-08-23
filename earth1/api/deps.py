@@ -63,6 +63,8 @@ def _load():
         st = json.loads(st_path.read_text())
     from earth1.alive import PHYSICS_VERSION
     identity = {"physics_version": PHYSICS_VERSION,
+                "epoch": st.get("epoch"),
+                "world_uuid": st.get("world_uuid"),
                 "world_day": int(w.day),
                 "alive": int(w.health.alive.sum()),
                 "population": int(w.civ.n),

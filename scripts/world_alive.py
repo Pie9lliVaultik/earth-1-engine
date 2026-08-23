@@ -46,6 +46,12 @@ POP = int(os.environ.get("ALIVE_POP", "200000"))
 PERIOD = float(os.environ.get("ALIVE_PERIOD", "60"))
 NEWS_EVERY = int(os.environ.get("ALIVE_NEWS", "60"))
 SAVE_EVERY = int(os.environ.get("ALIVE_SAVE", "30"))
+# Epoch plumbing (founder ruling 2026-08-23, EPOCH_POLICY.md): the genesis
+# seed and epoch number are DECLARED, never implicit; the birth RNG is
+# seeded from the genesis seed so a fresh epoch is replayable from day 0.
+SEED = int(os.environ.get("ALIVE_SEED", "42"))
+EPOCH = int(os.environ.get("ALIVE_EPOCH", "1"))
+EPOCH_FILE_NAME = "EPOCH.json"
 # 0.2: the ONE canonical configuration — no local copy to drift
 from earth1.alive import CANONICAL_DAY as STEP
 
@@ -72,8 +78,14 @@ def save_world(w, rng=None):
     """
     HOME.mkdir(parents=True, exist_ok=True)
     meta = persistence.save_world(w, WORLD_PKL, rng=rng)
+    ep = {}
+    try:
+        ep = json.loads((HOME / EPOCH_FILE_NAME).read_text())
+    except (OSError, ValueError):
+        pass
     (HOME / "state.json").write_text(json.dumps(
         {"day": w.day, "pop": int(w.civ.n), "seed": int(w.civ.seed),
+         "epoch": ep.get("epoch"), "world_uuid": ep.get("world_uuid"),
          "alive": int(w.health.alive.sum()),
          "schema_version": meta["schema_version"],
          "sha256": meta["sha256"],
@@ -91,9 +103,30 @@ def load_world():
     EARTH1_MIGRATE_V0=1 once, at a controlled checkpoint.
     """
     if not WORLD_PKL.exists():
-        print(f"  birthing a world: {POP:,} earthlings", flush=True)
-        return birth_world(POP, 42), None, {"schema_version": None,
-                                            "lost": [], "born": True}
+        print(f"  birthing a world: {POP:,} earthlings, seed {SEED}, "
+              f"epoch {EPOCH}", flush=True)
+        w = birth_world(POP, SEED)
+        # the epoch record is written once, at birth, and never edited
+        HOME.mkdir(parents=True, exist_ok=True)
+        from earth1.alive import PHYSICS_VERSION
+        from earth1.persistence import world_hash
+        import uuid
+        ep = {"epoch": EPOCH, "world_uuid": str(uuid.uuid4()),
+              "seed": SEED, "population": int(w.civ.n),
+              "physics_version": PHYSICS_VERSION,
+              "genesis_world_hash": world_hash(w),
+              "genesis_commit": provenance._git(ROOT, "rev-parse", "HEAD"),
+              "born_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+        epf = HOME / EPOCH_FILE_NAME
+        if epf.exists():
+            raise RuntimeError(f"{epf} exists but no world.pkl — refusing "
+                               f"to overwrite an epoch record; archive or "
+                               f"remove it deliberately")
+        epf.write_text(json.dumps(ep, indent=1))
+        print(f"  epoch {EPOCH} world {ep['world_uuid']} genesis hash "
+              f"{ep['genesis_world_hash'][:16]}", flush=True)
+        return w, None, {"schema_version": None, "lost": [], "born": True,
+                         "epoch": ep}
 
     migrate = os.environ.get("EARTH1_MIGRATE_V0") == "1"
     # graph priority: the v1 graph (world.adj.npz) is canonical whenever
@@ -252,8 +285,12 @@ def main():
     # continue the saved stream where it stopped. Only a world with no
     # stream to continue — a fresh birth, or a migrated v0 snapshot —
     # falls back to the clock, and that fallback is journaled below.
+    # a fresh birth continues from the DECLARED seed (replayable); only a
+    # migrated v0 snapshot, which has no stream, falls back to the clock
+    born = bool(load_info and load_info.get("born"))
     rng = persistence.rng_from_state(
-        rng_state, fallback_seed=int(time.time()) % (2 ** 31))
+        rng_state, fallback_seed=(SEED if born
+                                  else int(time.time()) % (2 ** 31)))
     HOME.mkdir(parents=True, exist_ok=True)
 
     # the world is identified only once it exists, so population and day
@@ -261,6 +298,8 @@ def main():
     # of this process's life
     prov.update(population=int(civ.n), world_day=int(w.day),
                 rng_continued=rng_state is not None,
+                rng_birth_seed=(SEED if born else None),
+                epoch=(load_info.get("epoch") if load_info else None),
                 snapshot_schema=load_info.get("schema_version") if load_info
                 else None,
                 event="startup",

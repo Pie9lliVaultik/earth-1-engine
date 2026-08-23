@@ -84,20 +84,35 @@ def static_report():
     return rep, ok
 
 
-def runtime_report():
+def runtime_report(live: bool = False):
+    """live=False: a throwaway 3k world proves the CODE PATH.
+    live=True: resolve the REAL canonical snapshot (EARTH1_ALIVE_HOME /
+    data/alive) read-only through every surface — the LIVE-PRODUCTION
+    One-Earth invariant. Nothing is written to the live directory; the
+    branch surface runs on a clone."""
     import numpy as np
-    tmp = Path(tempfile.mkdtemp(prefix="earth1_one_earth_"))
-    os.environ["EARTH1_ALIVE_HOME"] = str(tmp)
     from earth1.alive import birth_world, live_one_day, PHYSICS_VERSION
-    from earth1.persistence import save_world, world_hash
-    w = birth_world(3000, 424244)
-    rng = np.random.default_rng(424244)
-    for _ in range(2):
-        live_one_day(w, rng)
-    meta = save_world(w, tmp / "world.pkl", rng=rng)
-    (tmp / "state.json").write_text(json.dumps({"sha256": meta["sha256"],
-                                                "day": meta["day"]}))
+    from earth1.persistence import save_world, world_hash, load_world
+    if live:
+        from earth1.api import deps as _d
+        tmp = _d.ALIVE_HOME
+        w, _r, _i = load_world(tmp / "world.pkl")
+    else:
+        tmp = Path(tempfile.mkdtemp(prefix="earth1_one_earth_"))
+        os.environ["EARTH1_ALIVE_HOME"] = str(tmp)
+        w = birth_world(3000, 424244)
+        rng = np.random.default_rng(424244)
+        for _ in range(2):
+            live_one_day(w, rng)
+        meta = save_world(w, tmp / "world.pkl", rng=rng)
+        (tmp / "state.json").write_text(json.dumps(
+            {"sha256": meta["sha256"], "day": meta["day"]}))
     expected_hash = world_hash(w)
+    st = {}
+    try:
+        st = json.loads((tmp / "state.json").read_text())
+    except (OSError, ValueError):
+        pass
 
     from fastapi.testclient import TestClient
     from earth1.api.main import app
@@ -121,8 +136,8 @@ def runtime_report():
     loaded_hash = world_hash(wl)
     seen["answer_living"] = readout(wl, np.eye(8)[0])["provenance"]
     seen["benchmark_living"] = bench(wl, questions=[])["provenance"]
-    observe(wl.civ, wl.life, 0, wl.fabric)
     wc, _ = deps.clone_world()
+    observe(wc.civ, wc.life, 0, wc.fabric)     # observation on the clone
     branch_run(wc, [Scenario(id="x", label="x", forces={"fear": 0.1},
                              countries=None)], days=2, repeats=1)
     physics = {k: v.get("physics_version") for k, v in seen.items()
@@ -132,31 +147,49 @@ def runtime_report():
               "benchmark_living": seen["benchmark_living"]["world_hash"]}
     sha = {k: v.get("snapshot_sha256") for k, v in seen.items()
            if isinstance(v, dict) and "snapshot_sha256" in v}
+    uuids = {k: v.get("world_uuid") for k, v in seen.items()
+             if isinstance(v, dict) and "world_uuid" in v}
     ok = (len(set(hashes.values())) == 1
           and all(p == PHYSICS_VERSION for p in physics.values()
                   if p is not None)
           and len(set(sha.values())) == 1 and len(sha) >= 3)
-    return {"alive_home": str(tmp), "physics_version": PHYSICS_VERSION,
+    if live:
+        # the live invariant additionally requires one declared epoch
+        # identity on every API surface, equal to the snapshot's own
+        ok = ok and len(uuids) >= 3 and len(set(uuids.values())) == 1 \
+            and st.get("world_uuid") is not None \
+            and set(uuids.values()) == {st.get("world_uuid")} \
+            and set(sha.values()) == {st.get("sha256")}
+    return {"mode": "LIVE" if live else "CODE_PATH",
+            "alive_home": str(tmp), "physics_version": PHYSICS_VERSION,
+            "epoch": st.get("epoch"), "world_uuid": st.get("world_uuid"),
+            "world_day": st.get("day"),
             "world_hash_by_surface": hashes,
             "snapshot_sha256_by_surface": sha,
+            "world_uuid_by_surface": uuids,
             "physics_version_by_surface": physics,
             "surfaces_exercised": list(seen),
             "pass": ok}, ok
 
 
 def main():
+    live = "--live" in sys.argv
     st, ok1 = static_report()
-    rt, ok2 = runtime_report()
+    rt, ok2 = runtime_report(live=live)
     from earth1.legacy_gate import scan
     viol = scan()
+    key = "ONE_EARTH_LIVE" if live else "ONE_EARTH_CODE_PATH"
     rep = {"static": st, "runtime": rt, "legacy_gate_violations": viol,
-           "ONE_EARTH_CODE_PATH": "PASS" if (ok1 and ok2 and not viol)
-           else "FAIL",
-           "note": "CODE-PATH status only. The LIVE-PRODUCTION One-Earth "
-                   "invariant remains pending until the accepted Epoch-2 "
-                   "executable is deployed as the sole canonical Earth "
-                   "(founder ruling: Epoch 1 is not hot-swapped)."}
-    out = ROOT / "data" / "one_earth_routing_report.json"
+           key: "PASS" if (ok1 and ok2 and not viol) else "FAIL",
+           "note": ("LIVE-PRODUCTION One-Earth invariant: every official "
+                    "surface resolved the canonical data/alive snapshot "
+                    "(same epoch UUID, snapshot sha256, world hash, physics)."
+                    if live else
+                    "CODE-PATH status only. The LIVE-PRODUCTION One-Earth "
+                    "invariant is proven by running this report with "
+                    "--live on the production host.")}
+    out = ROOT / "data" / ("one_earth_live_report.json" if live
+                           else "one_earth_routing_report.json")
     out.write_text(json.dumps(rep, indent=1, default=str))
     print(json.dumps({k: v for k, v in rep.items() if k != "static"},
                      indent=1, default=str))

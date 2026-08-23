@@ -1,0 +1,32 @@
+# EPOCH POLICY (founder ruling 2026-08-23, registered before the Epoch-2 transition)
+
+`DEPLOYED CANONICAL PHYSICS CHANGE => NEW LIVE EPOCH`
+
+- A live epoch is one world (one UUID, one genesis seed, one physics
+  version, one continuous synthetic clock) evolved by the single-writer
+  daemon. Its state is never hot-swapped into a different physics.
+- When the canonical `PHYSICS_VERSION` deployed to production changes,
+  the running epoch is ARCHIVED (final daemon checkpoint, stop, off-box
+  backup with far-end verification, restore rehearsal, archive manifest)
+  and a NEW epoch is born from genesis under the new physics.
+- Development experiments, candidates, branches, Stage/KA runs and
+  benchmarks do NOT create epochs. They run on lab worlds or on
+  registered snapshots/branches of the live epoch; the live trajectory is
+  never perturbed by a measurement.
+- Archived epochs are READ-ONLY / HISTORICAL: reproducible (snapshot +
+  RNG + commit + physics version), accessible only through an explicit
+  archive path, never resolved by an official surface.
+- Epoch identity lives in `data/alive/EPOCH.json` (written once at birth:
+  epoch, world_uuid, seed, population, physics_version,
+  genesis_world_hash, genesis_commit, born_at), echoed into `state.json`
+  on every save and into every API/readout identity.
+
+## Registry
+
+| epoch | status | seed | physics | code | genesis | notes |
+|---|---|---|---|---|---|---|
+| 0 | archived (v0 pre-schema; migrated into Epoch 1 at day ~110) | 42 | incumbent | 14401ea lineage | — | `tainted-epoch1-attempt1` retained |
+| 1 | LIVE until archive (this transition) | 42 | incumbent (pre-76a574c: instant-write cascades, contagion on, old COLLECTIVE law) | 2396094 (tag `epoch1-production-lineage`) | 4,000,000 agents, day 3810 at 2026-08-23 | to be ARCHIVED / READ-ONLY / HISTORICAL |
+| 2 | TO BE BORN | **20260823** (fresh; never used — burned/reserved list in SESSION_STATE) | `0.8-candidate-v3/39994f0-canonical` | `main` ≥ 843f596 | 4,000,000 agents, genesis procedure `birth_world(POP, SEED)` | scientific status PRE-BENCHMARK / NOT VALIDATED; genesis Earth (no calendar alignment — C1-PRED stays blocked; a timeline-born Earth would be a later epoch) |
+
+Seed 20260823 is hereby burned for Epoch 2 only.
