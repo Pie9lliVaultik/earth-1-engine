@@ -1,0 +1,593 @@
+{
+ "audit": "ops/alive/EARTH1_API_COMPLETENESS_AUDIT.md",
+ "program": "API-COMPLETE-1",
+ "items": [
+  {
+   "name": "stable Earthling ID across rebirth",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "civ.person_id + civ.person_counter (new); rebirth.apply_rebirth assigns",
+   "endpoints": [
+    "GET /earthlings/{person_id}",
+    "GET /earthlings/slot/{idx}"
+   ],
+   "schemas": [
+    "EarthlingIdentity"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": true,
+   "wave": 1
+  },
+  {
+   "name": "epoch/snapshot/physics identity on responses",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "api.deps identity, data/alive/EPOCH.json, state.json",
+   "endpoints": [
+    "GET /epochs/current",
+    "GET /snapshots/current",
+    "GET /physics"
+   ],
+   "schemas": [
+    "Identity",
+    "PhysicsIdentity"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "Earthling full detail",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "civ/life/health/flourishing/klass/knowledge/presence/mobility arrays",
+   "endpoints": [
+    "GET /earthlings/{id}"
+   ],
+   "schemas": [
+    "Earthling"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "Earthling status (alive/dead/reborn)",
+   "bucket": "DERIVABLE",
+   "canonical_source": "health.alive, cause_of_death, civ.person_id vs slot, history.person_events",
+   "endpoints": [
+    "GET /earthlings/{id}/status"
+   ],
+   "schemas": [
+    "EarthlingStatus"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "Earthling life/history timeline",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "history.sqlite person_events (new recorder: births, deaths, jobs, firms, illness, migration, housing, partner, life events)",
+   "endpoints": [
+    "GET /earthlings/{id}/history"
+   ],
+   "schemas": [
+    "PersonEvent"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": true,
+   "wave": 1
+  },
+  {
+   "name": "force current vector (stored, effective, overlay)",
+   "bucket": "DERIVABLE",
+   "canonical_source": "civ.forces, alive.effective_forces, cascade_residue_levels",
+   "endpoints": [
+    "GET /earthlings/{id}/forces"
+   ],
+   "schemas": [
+    "ForceVector"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "force history",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "history.sqlite force_samples (per person every 30 d) + locality_daily (daily means)",
+   "endpoints": [
+    "GET /earthlings/{id}/forces/history",
+    "GET /localities/{id}/forces/history"
+   ],
+   "schemas": [
+    "ForceSample"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": true,
+   "wave": 1
+  },
+  {
+   "name": "conviction / susceptibility",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "civ.alpha; susceptibility.compute",
+   "endpoints": [
+    "GET /earthlings/{id}/forces"
+   ],
+   "schemas": [
+    "ForceVector"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "memories affecting a person",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "chronicle.events[].scope",
+   "endpoints": [
+    "GET /earthlings/{id}/memories",
+    "GET /memories",
+    "GET /memories/{id}"
+   ],
+   "schemas": [
+    "Memory"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "events / cascades at a locality",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "chronicle.cascade_residues, cascade_last_fired, cascade_episode_active",
+   "endpoints": [
+    "GET /localities/{id}/cascades",
+    "GET /cascades"
+   ],
+   "schemas": [
+    "CascadeFiring",
+    "CascadeOverlay"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "cascade downstream effects as records",
+   "bucket": "DERIVABLE",
+   "canonical_source": "cascade_residue_levels per locality per day \u2192 history.locality_daily",
+   "endpoints": [
+    "GET /cascades/{firing_id}/impacts",
+    "GET /localities/{id}/forces/history"
+   ],
+   "schemas": [
+    "CascadeImpact"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "memory impact receipts",
+   "bucket": "DERIVABLE",
+   "canonical_source": "Memory.force_signature\u00d7salience over scope; Chronicle.tick press",
+   "endpoints": [
+    "GET /memories/{id}/impacts"
+   ],
+   "schemas": [
+    "MemoryImpact"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "country detail + list",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "civ.country, gov.*, climate.*, GENESIS_COUNTRIES",
+   "endpoints": [
+    "GET /countries",
+    "GET /countries/{iso2}"
+   ],
+   "schemas": [
+    "Country"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "region detail + list",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "regions.get_regions (443 profiles), civ.region",
+   "endpoints": [
+    "GET /countries/{iso2}/regions",
+    "GET /regions/{code}"
+   ],
+   "schemas": [
+    "Region"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "locality detail + list",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "locality key country*1000+region*2+urban; presence.locality",
+   "endpoints": [
+    "GET /localities",
+    "GET /localities/{id}",
+    "GET /countries/{iso2}/localities"
+   ],
+   "schemas": [
+    "Locality"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "continent",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "earth1.geography CONTINENT (ISO2\u2192continent table, new)",
+   "endpoints": [
+    "GET /continents",
+    "GET /continents/{name}"
+   ],
+   "schemas": [
+    "Continent"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": true,
+   "wave": 2
+  },
+  {
+   "name": "city",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "earth1.geography: city = urban locality named from its region profile (new naming layer; no new population)",
+   "endpoints": [
+    "GET /cities",
+    "GET /cities/{id}"
+   ],
+   "schemas": [
+    "City"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": true,
+   "wave": 2
+  },
+  {
+   "name": "presence / movement",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "presence.locality/density/gathering; klass.migrated; mobility.*; history migrated events",
+   "endpoints": [
+    "GET /earthlings/{id}/presence",
+    "GET /localities/{id}/population"
+   ],
+   "schemas": [
+    "Presence"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "social graph: direct ties with IDs, types, weights",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "fabric.by_type (7 typed csr), fabric.adj",
+   "endpoints": [
+    "GET /earthlings/{id}/relationships",
+    "GET /social-graph/{id}/ego"
+   ],
+   "schemas": [
+    "Tie",
+    "EgoNetwork"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "living-only vs historical edge semantics",
+   "bucket": "DERIVABLE",
+   "canonical_source": "alive._living_view + health.alive",
+   "endpoints": [
+    "GET /earthlings/{id}/relationships?scope=living|all"
+   ],
+   "schemas": [
+    "Tie"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "household / family",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "fabric.household; civ.parent_id (new lineage field)",
+   "endpoints": [
+    "GET /households/{id}",
+    "GET /earthlings/{id}/family"
+   ],
+   "schemas": [
+    "Household",
+    "Family"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": true,
+   "wave": 2
+  },
+  {
+   "name": "romantic relationships",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "life.partner (new first-class edge; genesis pairing within household, dissolved at death)",
+   "endpoints": [
+    "GET /earthlings/{id}/relationships"
+   ],
+   "schemas": [
+    "Partner"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": true,
+   "wave": 2
+  },
+  {
+   "name": "firms / companies",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "life.firm, firm_health, firm_country, employees derivable",
+   "endpoints": [
+    "GET /firms",
+    "GET /firms/{id}",
+    "GET /firms/{id}/employees"
+   ],
+   "schemas": [
+    "Firm"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "employment status + history",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "life.employed/in_lf/occupation/tenure/spells + history events",
+   "endpoints": [
+    "GET /earthlings/{id}/work",
+    "GET /earthlings/{id}/work/history"
+   ],
+   "schemas": [
+    "Work"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "income / wealth",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "life.wage, wealth, cost, durables, rent, arrears",
+   "endpoints": [
+    "GET /earthlings/{id}/work",
+    "GET /earthlings/{id}/consumption"
+   ],
+   "schemas": [
+    "Money"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "health / illness state + history",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "health.condition/diagnosed_day/in_treatment/declining/falls/lifetime_illnesses; history illness events",
+   "endpoints": [
+    "GET /earthlings/{id}/health",
+    "GET /earthlings/{id}/health/history"
+   ],
+   "schemas": [
+    "Health"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "mortality / cause of death",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "health.alive, cause_of_death; history died events",
+   "endpoints": [
+    "GET /earthlings/{id}/status",
+    "GET /countries/{iso2}/mortality"
+   ],
+   "schemas": [
+    "Mortality"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 2
+  },
+  {
+   "name": "consumption / purchases",
+   "bucket": "DERIVABLE",
+   "canonical_source": "daily receipt: cost, rent, durable_spend, wage, \u0394wealth (life arrays)",
+   "endpoints": [
+    "GET /earthlings/{id}/consumption",
+    "GET /earthlings/{id}/consumption/history"
+   ],
+   "schemas": [
+    "Consumption"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": false,
+   "wave": 3
+  },
+  {
+   "name": "goods / resource flows",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "history.country_daily flow ledger (wages, subsistence, rent, durables, wealth) \u2014 new aggregate ledger",
+   "endpoints": [
+    "GET /countries/{iso2}/flows",
+    "GET /flows"
+   ],
+   "schemas": [
+    "FlowLedger"
+   ],
+   "requires_persistence_migration": true,
+   "requires_new_model_ontology": true,
+   "wave": 3
+  },
+  {
+   "name": "food / water / basic needs",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "flourishing.hunger/thirst/breath; climate.farm_share/soil; life.deprivation",
+   "endpoints": [
+    "GET /earthlings/{id}/needs",
+    "GET /countries/{iso2}/needs"
+   ],
+   "schemas": [
+    "Needs"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 3
+  },
+  {
+   "name": "branch create/inspect/list/delete",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "api.branches store (new, in-process): deepcopy of the canonical world + scenario",
+   "endpoints": [
+    "POST /branches",
+    "GET /branches",
+    "GET /branches/{id}",
+    "DELETE /branches/{id}"
+   ],
+   "schemas": [
+    "Branch"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": true,
+   "wave": 1
+  },
+  {
+   "name": "branch advance",
+   "bucket": "DERIVABLE",
+   "canonical_source": "alive.live_one_day on the branch world",
+   "endpoints": [
+    "POST /branches/{id}/advance"
+   ],
+   "schemas": [
+    "BranchAdvance"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "query inside branch",
+   "bucket": "DERIVABLE",
+   "canonical_source": "same readouts parameterized by world",
+   "endpoints": [
+    "GET /branches/{id}/earthlings/{pid}",
+    "GET /branches/{id}/countries/{iso2}",
+    "GET /branches/{id}/localities/{loc}",
+    "GET /branches/{id}/world"
+   ],
+   "schemas": [
+    "*"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "branch compare vs control",
+   "bucket": "DERIVABLE",
+   "canonical_source": "aggregate + per-country + per-person diffs between two branch worlds",
+   "endpoints": [
+    "GET /branches/{id}/compare?against={id|live}"
+   ],
+   "schemas": [
+    "BranchComparison"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "branch history / provenance",
+   "bucket": "NOT_MODELED",
+   "canonical_source": "in-memory history recorder per branch; parent snapshot sha, epoch uuid, physics, scenario",
+   "endpoints": [
+    "GET /branches/{id}/history",
+    "GET /branches/{id}"
+   ],
+   "schemas": [
+    "BranchProvenance"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": true,
+   "wave": 1
+  },
+  {
+   "name": "richer /world and /world/countries",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "all subsystems",
+   "endpoints": [
+    "GET /world",
+    "GET /world/countries"
+   ],
+   "schemas": [
+    "WorldSummary"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "observatory reads",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "observatory.standing_readings",
+   "endpoints": [
+    "GET /observatory/standing-readings"
+   ],
+   "schemas": [],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "physics modules / parameters",
+   "bucket": "EXISTING_INTERNAL",
+   "canonical_source": "alive.CANONICAL_DAY, thresholds.TRANSITION_RULES, legacy_gate.PRODUCTION, manifest.physics_identity",
+   "endpoints": [
+    "GET /physics",
+    "GET /physics/rules"
+   ],
+   "schemas": [
+    "PhysicsIdentity"
+   ],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  },
+  {
+   "name": "OpenAPI / docs",
+   "bucket": "DERIVABLE",
+   "canonical_source": "FastAPI schema + docs/API.md",
+   "endpoints": [
+    "GET /openapi.json",
+    "GET /docs"
+   ],
+   "schemas": [],
+   "requires_persistence_migration": false,
+   "requires_new_model_ontology": false,
+   "wave": 1
+  }
+ ],
+ "counts": {
+  "EXISTING_INTERNAL": 20,
+  "DERIVABLE": 10,
+  "NOT_MODELED": 9
+ }
+}
