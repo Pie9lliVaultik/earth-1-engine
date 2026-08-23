@@ -1,69 +1,16 @@
 {
- "eligible": true,
- "verdict": "ELIGIBLE",
- "broken_invariants": [],
+ "eligible": false,
+ "verdict": "REFUSED",
+ "broken_invariants": [
+  "gate_canary"
+ ],
  "invariants": {
-  "one_canonical_world_and_loop": {
-   "suite": "tests/test_one_loop.py",
-   "passed": true,
-   "summary": "13 passed in 1.16s"
-  },
-  "declared_persistence_policy": {
-   "suite": "tests/test_persistence_roundtrip.py",
-   "passed": true,
-   "summary": "21 passed in 1.23s"
-  },
-  "provenance_and_deployment_identity": {
-   "suite": "tests/test_provenance.py",
-   "passed": true,
-   "summary": "14 passed in 0.21s"
-  },
-  "daemon_startup_contract": {
-   "suite": "tests/test_daemon_startup.py",
-   "passed": true,
-   "summary": "9 passed in 1.09s"
-  },
-  "chronological_aging": {
-   "suite": "tests/test_alive_semantics.py",
-   "passed": true,
-   "summary": "8 passed in 0.75s"
-  },
-  "virgin_slot_rebirth": {
-   "suite": "tests/test_rebirth.py",
-   "passed": true,
-   "summary": "13 passed in 0.73s"
-  },
-  "fabric_rehoming": {
-   "suite": "tests/test_rehome.py",
-   "passed": true,
-   "summary": "16 passed in 1.34s"
-  },
-  "mortality_and_cause_accounting": {
-   "suite": "tests/test_correctness_0_1.py",
-   "passed": true,
-   "summary": "17 passed in 0.78s"
-  },
-  "doctrine_present": {
-   "suite": "tests/test_doctrine_present.py",
-   "passed": true,
-   "summary": "18 passed in 0.06s"
-  },
-  "one_production_earth": {
-   "suite": "tests/test_api_one_earth.py",
-   "passed": true,
-   "summary": "11 passed in 1.52s"
-  },
-  "single_writer_world": {
-   "suite": "tests/test_single_writer.py",
-   "passed": true,
-   "summary": "9 passed in 0.63s"
-  },
   "gate_canary": {
    "suite": "tests/test_gate_canary.py",
-   "passed": true,
-   "summary": "1 passed in 0.01s"
+   "passed": false,
+   "summary": "1 failed in 0.03s"
   }
  },
- "commit": "fb78729e391df67d07643b31c07950e0924a9e42",
+ "commit": "464fe4ff8c292e5000fd72e143a080533c37d73a",
  "dirty_worktree": true
 }

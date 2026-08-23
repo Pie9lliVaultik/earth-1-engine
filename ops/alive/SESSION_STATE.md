@@ -130,3 +130,12 @@ miss protocol on the unified implementation -> 0.7 close -> true 0.8
 - f84fb0d implementation (episode-entry semantics, KA1–KA8 PASS, 1101 tests).
 - Characterization 9501/9502: fires −86%, IDENTITY >0.20 displacement 77%→7%, sat 0.68→0.04, stored world identical; ever-exposed unchanged 85% (threshold cause). Report: H_CASCADE_1_REPORT.md. STOPPED before threshold calibration.
 - 2026-08-23 RULING: H-CASCADE-1 ACCEPTED as development baseline (39994f0). Roadmap correction: Stage C/H-CASCADE-1 = E3 physics-resolution thread, NOT Bible 0.8; true 0.8 not started. Provenance audit: CASCADE_RULE_PROVENANCE_AUDIT.md (read-only). Next decision (founder): empirical ontology + data source for the two rules.
+
+## 2026-08-23 — MERGE TO MAIN (founder ruling: Git canonicality ≠ production deployment)
+- H-CASCADE-1 incorporated into the canonical physics identity: `PHYSICS_VERSION = 0.8-candidate-v3/39994f0-canonical` (no physics change beyond 39994f0).
+- Estate: 1092 passed / 6 skipped; release gate "structurally eligible"; ONE_EARTH_CODE_PATH PASS (all surfaces same world hash + physics version); legacy-gate violations: none.
+- `MAIN = CANONICAL PRE-BENCHMARK CODE`
+- `SCIENTIFIC STATUS = PRE-BENCHMARK / NOT VALIDATED`
+- `CCX33 EPOCH 1 = UNCHANGED` — read-only check 2026-08-23: `/opt/earth1` HEAD = 2396094 ("0.7: rehearsal loader uses the project venv interpreter"), `DEPLOYED: EARTH1_EXPECT_COMMIT=2396094…`, `earth1-alive.service` active. Tagged `epoch1-production-lineage` at 2396094.
+- `LIVE-PRODUCTION ONE-EARTH CRITERION = PENDING EPOCH 2`
+- Not done, by ruling: no deploy to CCX33, no Epoch-1 mutation, no Epoch 2, no holdout.

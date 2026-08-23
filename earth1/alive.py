@@ -100,7 +100,11 @@ CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
 # ops/alive/CANONICALIZATION_PROGRAM.md). No environment flag selects
 # physics; EARTH1_TEST_* flags exist only for the Stage-B broken twins
 # and are excluded from production by the release gate.
-PHYSICS_VERSION = "0.8-candidate-v3/H-CASCADE-1"
+# Canonical = candidate v2 (76a574c) + H-CASCADE-1 episode-entry
+# semantics (39994f0, founder-accepted 2026-08-23). Canonical does not
+# mean validated: scientific status PRE-BENCHMARK (see
+# ops/alive/CASCADE_PUBLIC_BENCHMARK_PREREG_v1.md).
+PHYSICS_VERSION = "0.8-candidate-v3/39994f0-canonical"
 # H-CASCADE-1 scope: rules whose firing means episode ENTRY.
 EPISODE_ENTRY_RULES = frozenset({"identity_collapse", "collective_surge"})
 
@@ -366,7 +370,7 @@ def live_one_day(w: World, rng, *,
     # instant permanent write is gone.
     if getattr(w.chronicle, "cascade_last_fired", None) is None:
         w.chronicle.cascade_last_fired = {}
-    # H-CASCADE-1 (ops/alive/H_CASCADE_1.md, development): for the
+    # H-CASCADE-1 (ops/alive/H_CASCADE_1.md, CANONICAL 2026-08-23): for the
     # EPISODE_ENTRY_RULES a firing means ENTRY into an episode
     # (cold→hot), never "still hot after the cooldown elapsed".
     # Episode state = set of (rule, locality) currently hot, on the
