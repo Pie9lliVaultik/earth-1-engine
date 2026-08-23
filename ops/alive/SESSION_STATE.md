@@ -150,3 +150,4 @@ miss protocol on the unified implementation -> 0.7 close -> true 0.8
 - Timers re-enabled; first Epoch-2 backup verified (day 30). LIVE-PRODUCTION ONE-EARTH CRITERION (0.5 exit) = MET.
 - Note: genesis hash differs between prime pilot and CCX33 at 4M (machine floating point; 20k genesis bit-identical across processes; all journal aggregates identical to 4 dp). Same-host replay is bit-identical.
 - NEXT: Bible 0.8 (butterfly, FSLE, noise floor, consciousness) on Epoch-2 registered snapshots/branches.
+- 2026-08-23 RECONCILIATION (RECONCILIATION_2026-08-23.md): GitHub COMPLETE (main==origin/main 2e28a4e); API-COMPLETE-1 = PARTIAL (73/78 direct; timeline/scrub + assimilation NOT_IMPLEMENTED; /ask + perishability excluded by ruling; per-edge tie history declared gap); stable-id invariant PASS (trace); history coverage metadata added; v4 ≠ v3 — Stage H validated v3 only; Stages D–G, I OUTSTANDING; highest contiguous = 0.6; EPOCH 3 = NO.
