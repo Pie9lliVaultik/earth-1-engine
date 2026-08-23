@@ -232,7 +232,12 @@ def health_tick(civ, life, health: Health, rng, day: float,
         buys = np.clip(life.wealth / 400.0, 0.0, 0.35) if life is not None \
             else 0.0
         p = np.clip(access + buys, 0.0, 0.98)
-        health.in_treatment[newly_ill & (u[4] < p)] = True
+        # u[5] is the row allocated for this and never used; u[4] is the
+        # FALL-ONSET row, and reusing it meant a faller's necessarily
+        # small draw also passed the treatment gate — every faller was
+        # treated, and SURVIVE_UNTREATED for falls was never sampled
+        # (audit D4-b / 0.1a).
+        health.in_treatment[newly_ill & (u[5] < p)] = True
 
     # ── resolution: recover, or die of something specific ────────────
     ill = health.alive & (health.condition > 0)

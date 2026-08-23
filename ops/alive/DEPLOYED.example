@@ -1,0 +1,21 @@
+# Deploy manifest for the living daemon — Phase 0.0e.
+#
+# The real file lives at /opt/earth1/ops/alive/DEPLOYED on the world
+# box, is written BY THE DEPLOY (never by hand), and is not in git.
+# Copy this shape; fill in the SHA the deploy actually shipped.
+#
+# systemd reads it as an EnvironmentFile, so: KEY=value, no export, no
+# quotes, no spaces around '='.
+#
+# The daemon compares EARTH1_EXPECT_COMMIT against the git HEAD of the
+# tree it is executing from. Mismatch, dirty tree, or a missing value
+# all stop the world before it takes a step — which is the entire point:
+# a civilization whose code cannot be identified is not evidence.
+
+# Full 40-char SHA the deploy intended to ship.
+EARTH1_EXPECT_COMMIT=0000000000000000000000000000000000000000
+
+# Set to 1 ONLY to knowingly run an unprovenanced world. The override is
+# written into the startup journal record, so an accepted risk stays
+# visible afterwards. Never leave this set on the single writer.
+# EARTH1_ALLOW_DIRTY=1

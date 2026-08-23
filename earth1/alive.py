@@ -26,8 +26,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from earth1.chaos import CRITICAL_FRACTION, RELAX, RESIDUE_RATE
-from earth1.influence import propagate, update_conviction
+from earth1.influence import propagate, update_conviction, new_day_scratch
 from earth1.types import Force
 
 
@@ -81,10 +80,97 @@ def birth_world(pop: int, seed: int = 42) -> World:
                  mobility=birth_mobility(civ, life, seed=seed))
 
 
-def live_one_day(w: World, rng, *, beta: float = 2.0,
-                 residue: float = RESIDUE_RATE,
-                 critical_fraction: float = CRITICAL_FRACTION,
-                 relax: float = RELAX, layers: int = 2,
+# ═══ THE CANONICAL DAY — one authoritative declaration (0.2) ═══════
+# These are the values the production civilization has actually lived
+# under since Epoch 0. Before 0.2 they existed in FIVE places: the
+# daemon's STEP dict (these values), integration.py's copy,
+# observe.futures' inline copy, chaos.world_step's DIVERGENT defaults
+# (beta 1.0, residue 0.01, critical_fraction 0.15), and live_one_day's
+# own defaults — which imported residue/critical_fraction from chaos,
+# so every bare live_one_day(w, rng) call (branch, backtest, timeline,
+# hormuz, assimilate, every research script) ran residue=0.01/cf=0.15
+# while the world ran 0.02/0.12. The instrument and the product
+# disagreed. Every entry point now consumes THIS dict; experiments may
+# override explicitly, but a default is always this default.
+CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
+                     relax=0.045, layers=2)   # relax: IT6 (candidate 76a574c)
+
+# ONE ACCEPTED PHYSICS VERSION. Canonical Earth-1 physics == the
+# validated laboratory candidate 76a574c (Phase 0.5 canonicalization,
+# ops/alive/CANONICALIZATION_PROGRAM.md). No environment flag selects
+# physics; EARTH1_TEST_* flags exist only for the Stage-B broken twins
+# and are excluded from production by the release gate.
+# Canonical = candidate v2 (76a574c) + H-CASCADE-1 episode-entry
+# semantics (39994f0, founder-accepted 2026-08-23). Canonical does not
+# mean validated: scientific status PRE-BENCHMARK (see
+# ops/alive/CASCADE_PUBLIC_BENCHMARK_PREREG_v1.md).
+PHYSICS_VERSION = "0.8-candidate-v3/39994f0-canonical"
+# H-CASCADE-1 scope: rules whose firing means episode ENTRY.
+EPISODE_ENTRY_RULES = frozenset({"identity_collapse", "collective_surge"})
+
+
+def cascade_residue_levels(residues, day):
+    """Recovered f933c59 EventLog semantics (PF-DECAY-1, frozen):
+    factor = 2^(-(day - t_f)/h); h <= 0 means factor 1.0 — a PERMANENT
+    level, not zero; a residue leaves the active set when factor < 0.01
+    or max|effect|*factor < 0.01. Returns (levels, surviving) where
+    levels is a list of (loc_key, signed level vector) over the active
+    set. Pure — the PF-DECAY-1 KAs test this function against the
+    analytic law directly."""
+    levels, surviving = [], []
+    for r in residues:
+        dt = day - r["day"]
+        h = r["h"]
+        factor = 1.0 if h <= 0 else 2.0 ** (-dt / h)
+        mx = float(np.max(np.abs(r["effects"])))
+        if factor < 0.01 or mx * factor < 0.01:
+            continue
+        surviving.append(r)
+        levels.append((r["loc"], r["effects"] * factor))
+    return levels, surviving
+
+
+def effective_forces(w):
+    """PF-DECAY-2: the EXPRESSION view — stored forces plus the
+    read-time cascade-residue overlay (legacy f933c59
+    effective_deltas semantics: summed active levels per locality,
+    total clipped to ±0.5, result clipped to [0,1]). Consumed by the
+    readout layer only; the dynamic loop and the transition detector
+    read w.civ.forces (the trigger substrate) directly. Derived, not
+    evolved: calling this never mutates state."""
+    civ = w.civ
+
+    def _ro(a):
+        # the effective view is IMMUTABLE: a consumer that tried to
+        # write through it would otherwise alias canonical state in
+        # the no-residue branch — the exact hidden-feedback path the
+        # consumer-audit ruling forbids. Mutation raises loudly.
+        v = a.view()
+        v.setflags(write=False)
+        return v
+
+    res = getattr(w.chronicle, "cascade_residues", None)
+    if not res:
+        return _ro(civ.forces)
+    levels, _ = cascade_residue_levels(res, w.day)
+    if not levels:
+        return _ro(civ.forces)
+    loc = (civ.country.astype(np.int64) * 1000
+           + civ.region.astype(np.int64) * 2
+           + civ.urban.astype(np.int64))
+    shift = np.zeros_like(civ.forces)
+    for lk, vec in levels:
+        shift[loc == lk] += vec
+    np.clip(shift, -0.5, 0.5, out=shift)
+    return _ro(np.clip(civ.forces + shift, 0.0, 1.0))
+
+
+def live_one_day(w: World, rng, *,
+                 beta: float = CANONICAL_DAY["beta"],
+                 residue: float = CANONICAL_DAY["residue"],
+                 critical_fraction: float = CANONICAL_DAY["critical_fraction"],
+                 relax: float = CANONICAL_DAY["relax"],
+                 layers: int = CANONICAL_DAY["layers"],
                  dt_days: float = 1.0) -> dict:
     from earth1.health import health_tick
     from earth1.institutions import apply_policy_and_war, class_tick, govern
@@ -97,16 +183,51 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
 
     # 3 first: governments decide on YESTERDAY's state, and their policy
     # is what today's deprivation will be computed against
+    alive_at_tick_start = int(w.health.alive.sum())
     st.update(govern(civ, life, w.gov, rng, dt_days))
     st.update(apply_policy_and_war(civ, life, w.gov, w.health, rng, dt_days))
 
+    # 0.0a time — everyone is one day older. Before life/health so the
+    # day's hazards (cancer t^5, falls, road deaths, fertility) see
+    # today's age, and before _be_born so newborns are not aged on
+    # their birth day. Age was frozen here for the world's entire
+    # pre-Epoch-1 history (BIBLE R17).
+    from earth1.generational import advance_age
+    advance_age(civ, dt_days)
+
     # 1 matter
-    st.update(life_tick(civ, life, rng, dt_days=dt_days, couple_forces=False))
+    st_life = life_tick(civ, life, rng, dt_days=dt_days, couple_forces=False)
+    _lost = st_life.pop("lost_idx", None)
+    _found = st_life.pop("found_idx", None)
+    st.update(st_life)
     # 2 bodies
     st.update(health_tick(civ, life, w.health, rng, float(w.day), dt_days))
     # 4 class
-    st.update(class_tick(civ, life, w.knowledge, w.gov, w.klass, rng,
-                         dt_days, alive=w.health.alive))
+    st_cls = class_tick(civ, life, w.knowledge, w.gov, w.klass, rng,
+                        dt_days, alive=w.health.alive)
+    _migrated = st_cls.pop("migrated_idx", None)
+    st.update(st_cls)
+
+    # 0.0d — the fabric follows the person: severed and rebuilt through
+    # the declared re-homing policies, one batched pass per day
+    if (_migrated is not None and len(_migrated)) or        (_lost is not None and len(_lost)) or        (_found is not None and len(_found)):
+        from earth1.rehome import rehome_employment, rehome_migrants
+        # recompose=False: rehome_employment always recomposes adj right
+        # below, and nothing reads adj between the two calls (0.7
+        # profile: each recompose ~7% of a 4M world-day)
+        st["rehomed_migrants"] = rehome_migrants(w, _migrated, rng,
+                                                 recompose=False)
+        # migration ENDS the job (class_tick sets employed=False after
+        # life_tick has already built its lost set), so migrants must be
+        # merged into the employment severing or their colleague ties
+        # outlive the move — found in production: 179 of 180 phantom
+        # workplaces in the first 0.0d window were exactly the employed
+        # migrants. This is the VIA_EMPLOYMENT policy, actually wired.
+        _lost_all = _lost
+        if _migrated is not None and len(_migrated):
+            base = _lost if _lost is not None else np.array([], dtype=np.int64)
+            _lost_all = np.unique(np.concatenate([base, _migrated]))
+        st["rehomed_workers"] = rehome_employment(w, _lost_all, _found, rng)
     # 5 knowledge
     st.update(knowledge_tick(civ, life, w.knowledge, rng, dt_days,
                              alive=w.health.alive))
@@ -128,7 +249,9 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
             welfare=w.gov.welfare[civ.country],
             soil=w.climate.soil if w.climate is not None else None))
 
-    target = life_force_target(civ, life)
+    target = life_force_target(civ, life, w.flourishing)
+    # the day's encounter evidence (consumed by update_conviction)
+    scratch = new_day_scratch(civ.n)
     # a homeless person's circumstances are not their wage: being on the
     # street is its own condition and it dominates
     if w.klass.homeless.any():
@@ -137,11 +260,42 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
         target[hm, Force.COLLECTIVE] = np.clip(
             target[hm, Force.COLLECTIVE] - 0.20, 0, 1)
 
+    # PF-DECAY-2 (founder-ruled open-loop topology): the recovered
+    # decay_half_life residues NEVER enter the dynamic loop. Stored
+    # forces are the trigger substrate B_t (f933c59 semantics: the
+    # detector and every world operator read raw state); the decaying
+    # level is a READ-TIME OVERLAY served by effective_forces() to
+    # the readout layer only. The PF-DECAY-1 target-path application
+    # was the accidental self-excitation edge and is gone. Residue
+    # expiry is maintained in the cascade step below.
+    import os as _os
+
+    # ── STAGE-B BROKEN TWINS (TEST-ONLY; Standing Rule 2) ─────────
+    # These flags deliberately reintroduce ruled-out defects so the
+    # acceptance instruments can prove they detect them. They are
+    # never set outside the adversarial battery.
+    if _os.environ.get("EARTH1_TEST_CLOSED_LOOP") == "1":
+        # B7: the PF-DECAY-1 closed loop, resurrected: residues feed
+        # the target path again
+        _cres = getattr(w.chronicle, "cascade_residues", None)
+        if _cres:
+            _lv, _ = cascade_residue_levels(_cres, w.day)
+            if _lv:
+                _locr = (civ.country.astype(np.int64) * 1000
+                         + civ.region.astype(np.int64) * 2
+                         + civ.urban.astype(np.int64))
+                _sh = np.zeros_like(target)
+                for _lk, _vec in _lv:
+                    _sh[_locr == _lk] += _vec
+                np.clip(_sh, -0.5, 0.5, out=_sh)
+                target = np.clip(target + _sh, 0.0, 1.0)
+
     # 7 influence, 8 circumstance
     from earth1.susceptibility import compute as susceptibility_of
     sus = susceptibility_of(civ, life, w.flourishing)
-    civ.forces = propagate(civ.forces, civ.alpha, civ.adj, beta=beta,
-                           layers=layers, susceptibility=sus)
+    civ.forces = propagate(civ.forces, civ.alpha, civ.adj,
+                           day=w.day + 1, scratch=scratch,
+                           susceptibility=sus)
     # ── BODIES IN THE SAME PLACE ─────────────────────────────────────
     # Contagion runs AFTER the conviction kernel and before the feed,
     # because that is the real order of a day: you are among people, you
@@ -166,43 +320,125 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     # THE FEED — a different physics, applied after conversation
     if w.feed is not None:
         from earth1.feed import feed_tick
-        st.update(feed_tick(civ, w.feed, civ.alpha, susceptibility=sus,
-                            beta=beta, dt_days=dt_days))
+        st.update(feed_tick(civ, w.feed, civ.alpha,
+                            day=w.day + 1, scratch=scratch,
+                            susceptibility=sus))
     st["mean_susceptibility_fear"] = float(sus[:, Force.FEAR].mean())
     st["susceptibility_spread"] = float(sus.std())
     civ.forces = np.clip(civ.forces + relax * (target - civ.forces), 0.0, 1.0)
-    civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj)
+    civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj,
+                                  scratch=scratch)
+
+    # 5b tie plasticity (0.5 port) — the fabric responds to the day's
+    # interaction: agreement strengthens friends/weak ties, disagreement
+    # weakens, a few people find kindred replacements. Runs right after
+    # influence+conviction because that IS the interaction. One
+    # execution point; friends+weak only (ledger tie_type_ownership).
+    from earth1.plasticity import plasticity_tick
+    st.update(plasticity_tick(w, rng, dt_days))
 
     # 6 memory — what happened is still happening, and still spreading
     st.update(w.chronicle.tick(civ, dt_days))
-    st["memory_spread"] = w.chronicle.spread(civ)
+    st["memory_spread"] = w.chronicle.spread(civ, rng)
 
     # 9 cascade
     from earth1.thresholds import TRANSITION_RULES
     loc = (civ.country.astype(np.int64) * 1000
            + civ.region.astype(np.int64) * 2 + civ.urban.astype(np.int64))
-    _, li = np.unique(loc, return_inverse=True)
+    uloc, li = np.unique(loc, return_inverse=True)
     nl = int(li.max()) + 1
     pop_l = np.bincount(li, minlength=nl).astype(np.float64)
     fired = 0
+    # 0.8 probe-1 CONTRADICTION repair (founder-authorized,
+    # experimental flag): TransitionRule declares cooldown_days but the
+    # incumbent block never read it, so threshold "events" fired every
+    # day a locality stayed hot — a -0.10 event became a -0.10/day
+    # grinder that railed IDENTITY/TEMPERAMENT. With
+    # EARTH1_CASCADE_COOLDOWN=1 a (rule, locality) pair fires at most
+    # once per its declared cooldown. State lives on the chronicle
+    # (cascades are events; the chronicle is the event memory), created
+    # lazily ONLY under the flag so incumbent hashes are untouched, and
+    # persists through the canonical serializer for exact restart.
+    # decay_half_life remains declared-but-unconsumed: its intended
+    # state semantics are ambiguous — recorded as a second unresolved
+    # contradiction, NOT invented here.
+    # CANONICAL (candidate 76a574c): cooldown per (rule, locality),
+    # strict-<, restart-persistent (probe-1 contract, f933c59
+    # semantics); a firing creates bounded residue state whose decaying
+    # level is a READ-TIME OVERLAY (effective_forces) — open-loop
+    # (PF-DECAY-2): nothing here writes stored forces. The legacy
+    # instant permanent write is gone.
+    if getattr(w.chronicle, "cascade_last_fired", None) is None:
+        w.chronicle.cascade_last_fired = {}
+    # H-CASCADE-1 (ops/alive/H_CASCADE_1.md, CANONICAL 2026-08-23): for the
+    # EPISODE_ENTRY_RULES a firing means ENTRY into an episode
+    # (cold→hot), never "still hot after the cooldown elapsed".
+    # Episode state = set of (rule, locality) currently hot, on the
+    # chronicle (persisted/cloned with it). None ⇒ uninitialized: the
+    # first step records the current hot set and fires nothing for the
+    # scoped rules (no synthetic day-zero transition).
+    _ep = getattr(w.chronicle, "cascade_episode_active", None)
+    _ep_init = _ep is None
+    if _ep_init:
+        _ep = w.chronicle.cascade_episode_active = set()
+    _cres = getattr(w.chronicle, "cascade_residues", None)
+    if _cres:
+        # expiry maintenance only (legacy 0.01 active-set rule)
+        _, _surv = cascade_residue_levels(_cres, w.day)
+        w.chronicle.cascade_residues = _surv
+        st["cascade_residue_active"] = len(_surv)
+    # B8 broken twin (TEST-ONLY): detector reads the EFFECTIVE view —
+    # the contaminated-substrate defect KA10 must catch
+    _det_forces = civ.forces
+    if _os.environ.get("EARTH1_TEST_DETECTOR_EFFECTIVE") == "1":
+        _det_forces = np.asarray(effective_forces(w))
     for rule in TRANSITION_RULES:
         if rule.region_scope != "regional":
             continue
         met = np.ones(civ.n, dtype=bool)
         for force, op, thresh in rule.conditions:
-            col = civ.forces[:, force.value]
+            col = _det_forces[:, force.value]
             met &= (col > thresh) if op == ">" else (col < thresh)
         frac = np.bincount(li, weights=met.astype(np.float64),
                            minlength=nl) / np.maximum(pop_l, 1.0)
         hot = (frac >= critical_fraction) & (pop_l >= 10)
+        if rule.name in EPISODE_ENTRY_RULES:
+            hot_now = {(rule.name, int(uloc[h]))
+                       for h in np.flatnonzero(hot)}
+            mine = {k for k in _ep if k[0] == rule.name}
+            _ep -= mine - hot_now              # hot→cold: close
+            entered = hot_now - mine           # cold→hot: open
+            _ep |= entered
+            if _ep_init:
+                entered = set()                # establish state only
+            for hidx in np.flatnonzero(hot):
+                if (rule.name, int(uloc[hidx])) not in entered:
+                    hot[hidx] = False          # hot→hot: no event
+        if hot.any():
+            state = w.chronicle.cascade_last_fired
+            for hidx in np.flatnonzero(hot):
+                key = (rule.name, int(uloc[hidx]))
+                last = state.get(key)
+                if last is not None and \
+                        (w.day - last) < rule.cooldown_days:
+                    hot[hidx] = False
+                else:
+                    state[key] = int(w.day)
         if not hot.any():
             continue
         fired += int(hot.sum())
-        m = hot[li]
+        if getattr(w.chronicle, "cascade_residues", None) is None:
+            w.chronicle.cascade_residues = []
+        eff = np.zeros(civ.forces.shape[1])
         for fname, delta in rule.effects.items():
             k = getattr(Force, fname.upper(), None)
             if k is not None:
-                civ.forces[m, k] = np.clip(civ.forces[m, k] + delta, 0, 1)
+                eff[k] = delta
+        for hidx in np.flatnonzero(hot):
+            w.chronicle.cascade_residues.append(
+                {"rule": rule.name, "loc": int(uloc[hidx]),
+                 "day": int(w.day), "effects": eff.copy(),
+                 "h": float(rule.decay_half_life)})
     st["cascades_fired"] = fired
 
     # 10 feedback — local, never global
@@ -221,7 +457,28 @@ def live_one_day(w: World, rng, *, beta: float = 2.0,
     # remaining a different population than the one before it.
     st.update(_be_born(w, rng))
 
+    # ── 0.1d: the end-of-tick mortality contract ─────────────────────
+    # "deaths" means GROSS deaths across the COMPLETE tick — every
+    # killer (disease, war, weather, want, road), counted after all of
+    # them and after births, so the identity
+    #     alive_end == alive_start - deaths + births
+    # closes exactly, every day. health_tick's own count (disease only)
+    # is preserved under an explicit name; its mid-tick "alive" reading
+    # is overwritten with the terminal one. The journal's previous
+    # "deaths" undercounted by every late-tick killer (0.1 ledger).
+    st["disease_deaths"] = int(st.get("deaths", 0))
+    alive_at_tick_end = int(w.health.alive.sum())
+    st["deaths"] = (alive_at_tick_start - alive_at_tick_end
+                    + int(st.get("births", 0)))
+    st["alive"] = alive_at_tick_end
+
     w.day += 1
+    # 0.7 precision modes: fold mid-tick f64 reassignments back to the
+    # world's declared precision at the day boundary. No-op (an
+    # attribute check) for the float64 reference Earth.
+    if getattr(w, "_precision", None) not in (None, "float64"):
+        from earth1.precision import recoerce
+        recoerce(w)
     return st
 
 
@@ -259,65 +516,14 @@ def _be_born(w: World, rng, heritability: float = 0.45) -> dict:
     slots = free[:n_new]
     parents = np.flatnonzero(conceived)[:n_new]
 
-    # a country's births are proportional to its living population, so
-    # the world's composition follows its own demography rather than a
-    # global average
-    civ.country[slots] = civ.country[parents]
-    civ.region[slots] = civ.region[parents]
-    civ.urban[slots] = civ.urban[parents]
+    # THE CENTRAL RESET SCHEMA (0.0b). Every per-agent field's rebirth
+    # behaviour is declared in earth1/rebirth.py and enforced by CI —
+    # never a hand-maintained scatter of assignments here. The previous
+    # occupant's ties, body, home, memories and record are gone; the
+    # newborn is birth initialization plus declared parental
+    # inheritance, nothing else.
+    from earth1.rebirth import apply_rebirth
+    apply_rebirth(w, slots, parents, rng, heritability=heritability)
 
-    for t in ("openness", "empathy", "risk_appetite", "doubt",
-              "desire_intensity", "conscientiousness", "agreeableness",
-              "extraversion", "neuroticism"):
-        a = getattr(civ, t)
-        a[slots] = np.clip(heritability * a[parents]
-                           + (1 - heritability) * float(a[living].mean())
-                           + rng.normal(0, 0.08, slots.size), 0.0, 1.0)
-    civ.age[slots] = 0.0                       # eighteen years old
-    civ.age_bucket[slots] = 0
-    civ.education[slots] = civ.education[parents]
-    civ.forces[slots] = civ.forces[parents] * 0.5 + \
-        civ.forces[living].mean(axis=0) * 0.5
-    civ.alpha[slots] = 0.35                    # the young are not certain
-
-    # a new life, materially: no savings, no scars, no history
-    life.wealth[slots] = 0.0
-    life.spells[slots] = 0
-    life.tenure[slots] = 0.0
-    life.employed[slots] = False
-    life.in_lf[slots] = True
-    life.firm[slots] = -1
-    life.deprivation[slots] = 0.0
-    if life.mental is not None:
-        life.mental[slots] = life.mental_setpoint[slots]
-        life.addiction[slots] = 0.0
-        life.n_events[slots] = 0
-        life.last_event[slots] = 0
-    if life.force_baseline is not None:
-        life.force_baseline[slots] = civ.forces[slots]
-    if life.trait_baseline is not None:
-        life.trait_baseline[slots] = np.stack(
-            [civ.openness[slots], civ.doubt[slots],
-             civ.desire_intensity[slots]], axis=1)
-
-    w.knowledge.stock[slots] = np.clip(
-        0.35 * w.knowledge.stock[parents]
-        + 0.65 * float(w.knowledge.stock[living].mean())
-        + rng.normal(0, 0.06, slots.size), 0.0, 1.0)
-    w.knowledge.works_made[slots] = 0
-    w.knowledge.discoveries[slots] = 0
-    w.klass.homeless[slots] = False
-    w.klass.criminal[slots] = False
-    w.klass.crimes_committed[slots] = 0
-
-    h.alive[slots] = True
-    h.condition[slots] = 0
-    h.cause_of_death[slots] = 0
-    h.in_treatment[slots] = False
-    h.diagnosed_day[slots] = -1.0
-    h.lifetime_illnesses[slots] = 0
-    if life.rent is not None:
-        life.arrears[slots] = 0.0
-        life.evicted[slots] = False
     return {"births": int(slots.size),
             "population": int(h.alive.sum())}

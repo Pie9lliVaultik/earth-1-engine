@@ -147,6 +147,23 @@ DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 # experience permanent rather than a transient the world relaxes away.
 TRAIT_MEMORY = 1.0
 
+# COLLECTIVE-GEO-1 (founder-authorized, flag-gated experimental
+# candidate): centered-deviation COLLECTIVE target. Baseline encodes
+# normal state; modifiers encode DEPARTURES from the registered
+# reference centers (measured once from birth_world(200000, 424242)
+# at day 0 — FIXED constants, never recomputed from the running
+# population). Slopes unchanged; see ops/alive/COLLECTIVE_GEO_1.md.
+GEO1_REF_DS = 0.0
+GEO1_REF_POL = 0.3998
+GEO1_REF_SN = 0.2855
+GEO1_REF_BEL = 0.6416
+# Parameter registry (Bible III.6): the four COLLECTIVE modifier slopes
+# (0.40 shared-hardship, 0.25 political, 0.20 social_need, 0.20
+# belonging) are AUTHORED / EXPERIMENTAL — requires parameter
+# provenance; the reference centers are reference-population-derived;
+# the genesis baseline is empirical. Canonical == validated candidate
+# 76a574c (COLLECTIVE-GEO-1 PASS); canonical does not mean validated.
+
 # ── prevalence anchors, from real epidemiology ───────────────────────
 # These are population base rates, not tuned values. Onset hazards below
 # are modulated by deprivation and isolation, both of which the model
@@ -395,6 +412,7 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     life.firm[lost] = -1
     life.tenure[lost] = 0.0
     life.spells[lost] += 1
+    lost_idx = np.flatnonzero(lost)          # for fabric re-homing (0.0d)
 
     # ── 3. the unemployed look for work ───────────────────────────────
     # Finding gets harder the longer the spell and the more spells you
@@ -408,9 +426,10 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     scar = np.maximum(1.0 / (1.0 + 0.25 * life.spells), 0.35)
     find_p = FINDING_RATE_YR * dt_yr * scar
     found = idle & (u_find < find_p)
+    found_idx = np.flatnonzero(found)        # for fabric re-homing (0.0d)
     if found.any():
         life.employed[found] = True
-        idx = np.flatnonzero(found)
+        idx = found_idx
         for ci in np.unique(civ.country[idx]):
             who = idx[civ.country[idx] == ci]
             firms_here = np.flatnonzero((life.firm_country == ci)
@@ -578,7 +597,8 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
                 life.last_event[m] = code
                 life.n_events[m] += 1
 
-    stats = {"laid_off": int(laid_off.sum()), "separated": int(sep.sum()),
+    stats = {"lost_idx": lost_idx, "found_idx": found_idx,
+             "laid_off": int(laid_off.sum()), "separated": int(sep.sum()),
              "found_work": int(found.sum()), "firms_failed": int(failed.size),
              "unemployment": float((~life.employed & life.in_lf).sum()
                                    / max(life.in_lf.sum(), 1)),
@@ -605,7 +625,8 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     return stats
 
 
-def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
+def life_force_target(civ: Civilization, life: Life,
+                      flourishing=None) -> np.ndarray:
     """The force state this agent's CIRCUMSTANCES imply, right now.
 
     Returned rather than applied, because the social layer needs it as a
@@ -650,7 +671,8 @@ def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
     t[:, Force.DESIRE] = np.clip(
         base[:, Force.DESIRE] - 0.30 * dep, 0.0, 1.0)
     t[:, Force.COLLECTIVE] = np.clip(
-        base[:, Force.COLLECTIVE] + 0.40 * dep * shared, 0.0, 1.0)
+        base[:, Force.COLLECTIVE]
+        + 0.40 * (dep * shared - GEO1_REF_DS), 0.0, 1.0)
 
     # THE BODY BECOMES OPINION.
     #   mental health modulates how much fear a person carries at all
@@ -665,13 +687,34 @@ def life_force_target(civ: Civilization, life: Life) -> np.ndarray:
             t[:, Force.DESIRE] + 0.45 * life.addiction, 0.0, 1.0)
         t[:, Force.COLLECTIVE] = np.clip(
             t[:, Force.COLLECTIVE] * (1.0 - 0.6 * life.addiction)
-            + 0.25 * life.political - 0.20 * life.social_need, 0.0, 1.0)
+            + 0.25 * (life.political - GEO1_REF_POL)
+            - 0.20 * (life.social_need - GEO1_REF_SN), 0.0, 1.0)
         t[:, Force.IDENTITY] = np.clip(
             t[:, Force.IDENTITY] + 0.25 * life.social_need
             - 0.15 * life.relationship, 0.0, 1.0)
         t[:, Force.EXPERIENCE] = np.clip(
             t[:, Force.EXPERIENCE] + 0.10 * np.clip(life.n_events / 8.0,
                                                     0, 1), 0.0, 1.0)
+    # FLOURISHING LEVEL MAP (canonical; candidate 76a574c, ported
+    # verbatim from field_lab.flourishing_level_map): hope, need,
+    # curiosity, belonging and meaning are bounded LEVEL contributions
+    # to the lived target, never daily increments. Belonging enters as
+    # a departure from its reference center (COLLECTIVE-GEO-1).
+    fl = flourishing
+    if fl is not None and fl.hope is not None:
+        need = np.clip(0.6 * fl.hunger + 0.4 * fl.thirst, 0, 1)
+        t[:, Force.FEAR] = np.clip(
+            t[:, Force.FEAR] + 0.30 * need - 0.20 * fl.hope, 0, 1)
+        t[:, Force.DESIRE] = np.clip(
+            t[:, Force.DESIRE] + 0.20 * fl.hope
+            + 0.15 * fl.curiosity - 0.25 * need, 0, 1)
+        t[:, Force.COLLECTIVE] = np.clip(
+            t[:, Force.COLLECTIVE]
+            + 0.20 * (fl.belonging - GEO1_REF_BEL), 0, 1)
+        t[:, Force.CULTURE] = np.clip(
+            t[:, Force.CULTURE] + 0.20 * fl.meaning, 0, 1)
+        t[:, Force.EXPERIENCE] = np.clip(
+            t[:, Force.EXPERIENCE] + 0.10 * fl.curiosity, 0, 1)
     return t
 
 

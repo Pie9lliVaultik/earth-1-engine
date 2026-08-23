@@ -1,0 +1,20 @@
+# RETIRED 2026-08-20 (Phase 0.7) — the FOURTH world.
+# Found ENABLED on the production box (167.233.77.48) during the 0.7
+# timer inventory, firing daily at 09:07 Europe/Berlin. Ran the
+# old-substrate daily job (/opt/earth1/run_daily.sh, untracked, since
+# removed) successfully as late as 2026-08-19 (4min 10s CPU), writing
+# to /opt/earth1/data/living/ — NEVER to the canonical home
+# /opt/earth1/data/alive (proven by mtime-window audit: zero files in
+# data/alive touched during its 07:07–07:33 run window; canonical
+# sidecar sha256 verifies).
+# Failed 2026-08-20 with 203/EXEC only because its script had vanished
+# during the 0.5 checkouts — the timer remained armed to resurrect it.
+# Disabled + removed from /etc/systemd/system (units preserved on box
+# at /root/retired-units/); the systemd extension of the
+# single_writer_world gate now refuses any such unit.
+[Unit]
+Description=Earth-1 daily heartbeat (world tick + news + record)
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/earth1
+ExecStart=/opt/earth1/run_daily.sh

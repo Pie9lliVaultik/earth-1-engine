@@ -84,7 +84,7 @@ def observe(civ, life, i: int, fabric=None) -> dict:
     return out
 
 
-def futures(civ, life, i: int, *, n_branches: int = 200, days: int = 365,
+def futures(w, i: int, *, n_branches: int = 200, days: int = 365,
             step_kw: dict | None = None) -> dict:
     """Run this person's life forward many times. Report the spread.
 
@@ -95,19 +95,22 @@ def futures(civ, life, i: int, *, n_branches: int = 200, days: int = 365,
     run would be one sample dressed up as an answer.
     """
     from earth1.chaos import world_step
-    kw = step_kw or dict(beta=2.0, residue=0.02,
-                         critical_fraction=0.12, relax=0.25)
-    start = observe(civ, life, i)
+    # 0.2: canonical configuration from the one source
+    from earth1.alive import CANONICAL_DAY
+    kw = step_kw or dict(CANONICAL_DAY)
+    start = observe(w.civ, w.life, i)
 
     rows = []
     for b in range(n_branches):
-        c2 = copy.deepcopy(civ)
-        l2 = copy.deepcopy(life)
+        # 0.2: a future is lived in the WHOLE civilization, not a
+        # reduced (civ, life) pair — the branch clones the world
+        w2 = copy.deepcopy(w)
+        c2, l2 = w2.civ, w2.life
         rng = np.random.default_rng(90000 + b)
         ever_destitute = False
         ever_jobless = False
         for _ in range(days):
-            world_step(c2, l2, rng, **kw)
+            world_step(w2, rng, **kw)
             if l2.deprivation[i] > 0.99:
                 ever_destitute = True
             if not l2.employed[i] and l2.in_lf[i]:

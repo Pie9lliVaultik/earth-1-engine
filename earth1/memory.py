@@ -96,19 +96,43 @@ class Chronicle:
                     m.salience for m in self.events)), 4)
                     if self.events else 0.0)}
 
-    def spread(self, civ, rate: float = 0.06) -> int:
-        """Memories travel to the people who know the people it happened to."""
+    def spread(self, civ, rng: np.random.Generator,
+               rate: float = 0.06) -> int:
+        """Memories travel to the people who know the people it happened to.
+
+        `rng` is the world's stream, not the global one. This used to
+        call `np.random.random`, which ignores every seed the caller
+        sets: any run with a non-empty chronicle was unreproducible, and
+        paired branches were not on the same dice even though branch.py
+        hands both arms an identical generator. The sampling law is
+        unchanged — same rate, same exposure, same distribution — only
+        the source of the draws.
+        """
         moved = 0
         deg = np.maximum(np.asarray(civ.adj.sum(axis=1)).ravel(), 1.0)
-        for m in self.events:
-            if m.scope is None or not m.scope.any():
-                continue
-            exposure = np.asarray(civ.adj @ m.scope.astype(np.float64)
-                                  ).ravel() / deg
-            catch = (~m.scope) & (np.random.random(civ.n) < rate * exposure)
-            if catch.any():
-                m.scope = m.scope | catch
-                moved += int(catch.sum())
+        # 0.7: one multivector matmul per block of memories instead of a
+        # full-adjacency matvec PER MEMORY (~25 adjacency streams/day at
+        # 4M — the profile's largest single bandwidth cost). Each
+        # memory's exposure reads only its own scope, and scope updates
+        # rebind rather than mutate, so precomputing a block is exact.
+        # csr_matvecs accumulates each column in the same row order as
+        # csr_matvec — bit-identical. RNG draw order unchanged: same
+        # memories, same order, one rng.random(n) each.
+        active = [m for m in self.events
+                  if m.scope is not None and m.scope.any()]
+        _B = 8                       # bounds the (n, B) staging buffer
+        for s in range(0, len(active), _B):
+            block = active[s:s + _B]
+            S = np.empty((civ.n, len(block)), dtype=civ.adj.dtype)
+            for k, m in enumerate(block):
+                S[:, k] = m.scope
+            E = np.asarray(civ.adj @ S)
+            for k, m in enumerate(block):
+                exposure = E[:, k] / deg
+                catch = (~m.scope) & (rng.random(civ.n) < rate * exposure)
+                if catch.any():
+                    m.scope = m.scope | catch
+                    moved += int(catch.sum())
         return moved
 
 

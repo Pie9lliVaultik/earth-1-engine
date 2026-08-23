@@ -1,0 +1,74 @@
+{
+ "day": 1142,
+ "deaths": {
+  "total_dead_slots": 202396,
+  "by_cause": {
+   "CANCER": 4860,
+   "CVD": 18200,
+   "INFECTION": 7643,
+   "INJURY": 1750,
+   "FALL": 39501,
+   "WEATHER": 13841,
+   "WANT": 114917,
+   "ROAD": 1283,
+   "WAR": 401
+  }
+ },
+ "friends": {
+  "share_at_cap_2.0": 0.0,
+  "w_mean": 0.8962,
+  "genesis_share_at_cap": 0.0014,
+  "genesis_w_mean": 0.7196
+ },
+ "weak": {
+  "share_at_cap_2.0": 0.0,
+  "w_mean": 0.1598,
+  "genesis_share_at_cap": 0.0,
+  "genesis_w_mean": 0.15
+ },
+ "openness": {
+  "sd": 0.485,
+  "genesis_sd": 0.1953,
+  "mean": 0.6102,
+  "genesis_mean": 0.4177
+ },
+ "doubt": {
+  "sd": 0.4691,
+  "genesis_sd": 0.1781,
+  "mean": 0.6083,
+  "genesis_mean": 0.5535
+ },
+ "desire_intensity": {
+  "sd": 0.4854,
+  "genesis_sd": 0.1831,
+  "mean": 0.6114,
+  "genesis_mean": 0.5774
+ },
+ "durables": {
+  "mean": 0.5321,
+  "spend_mean": 0.00689
+ },
+ "diaspora_nnz": 842358,
+ "genesis_diaspora_nnz": 16584,
+ "spells": {
+  "mean": 0.516,
+  "p95": 2
+ },
+ "gov_legitimacy": {
+  "mean": 0.3781,
+  "max": 0.8014
+ },
+ "gov_tax": {
+  "mean": 0.5418,
+  "max": 0.75
+ },
+ "gov_policing": {
+  "mean": 0.3359,
+  "max": 0.99
+ },
+ "gov_welfare": {
+  "mean": 0.6687,
+  "max": 0.95
+ },
+ "gov_at_war_count": 10
+}

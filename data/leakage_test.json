@@ -1,16 +1,16 @@
 {
   "WITH_inglehart": {
-    "engine_cv": 0.1024,
-    "naive_cv": 0.1225,
+    "engine_cv": 0.1059,
+    "naive_cv": 0.1264,
     "engine_insample": 0.1017,
-    "wins": 33,
+    "wins": 34,
     "n": 40
   },
   "NO_inglehart": {
-    "engine_cv": 0.1057,
-    "naive_cv": 0.1225,
+    "engine_cv": 0.109,
+    "naive_cv": 0.1264,
     "engine_insample": 0.1043,
-    "wins": 33,
+    "wins": 34,
     "n": 40
   }
 }

@@ -49,7 +49,7 @@ out["event"] = {"ratio": e.magnitude_ratio, "sign": e.sign_match,
 print(f"  ratio {e.magnitude_ratio:.3f}, passes={e.passes}")
 
 print("[4/4] GOQA at 1M...")
-from earth1.benchmark import run_goqa_benchmark
+from earth1.legacy_benchmark import run_goqa_benchmark
 goqa_data = json.loads((ROOT / "data/benchmark/goqa_ground_truth.json").read_text())
 civ = genesis(POP, seed=SEED)
 r = run_goqa_benchmark(civ, goqa_data)

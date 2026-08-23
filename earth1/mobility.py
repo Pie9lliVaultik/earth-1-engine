@@ -124,7 +124,8 @@ def mobility_tick(civ, life, mob: Mobility, health, fl, rng,
     killed = live & (rng.random(n) < p)
     if killed.any():
         health.alive[killed] = False
-        health.cause_of_death[killed] = 8            # the road
+        from earth1.types import CauseOfDeath
+        health.cause_of_death[killed] = int(CauseOfDeath.ROAD)
         mob.road_deaths += int(killed.sum())
         # a road death is a social event like any other death
         touched = np.asarray(civ.adj @ killed.astype(np.float64)).ravel() > 0

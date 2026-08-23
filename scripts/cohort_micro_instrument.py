@@ -34,7 +34,7 @@ for r in rows:
         continue
     ct = {cc: d["yes"] for cc, d in q["countries"].items()}
     # GOQA truth uses ISO3; calibrate_single expects engine codes — map via first 2? Use global baseline + fit on available codes
-    from earth1.benchmark import ISO3_TO_ISO2
+    from earth1.benchmark_questions import ISO3_TO_ISO2
     ct2 = {ISO3_TO_ISO2[c]: v for c, v in ct.items() if c in ISO3_TO_ISO2}
     g = q["global_yes_popweighted"]
     w = calibrate_single(civ, g, ct2)

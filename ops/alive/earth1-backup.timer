@@ -1,0 +1,10 @@
+[Unit]
+Description=Earth-1 — daily living-world backup
+
+[Timer]
+OnCalendar=*-*-* 09:50:00
+Persistent=true
+Unit=earth1-backup.service
+
+[Install]
+WantedBy=timers.target

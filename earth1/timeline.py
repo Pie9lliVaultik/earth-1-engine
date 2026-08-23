@@ -269,7 +269,7 @@ def build(pop: int = 200_000, seed: int = 42, start: date = START,
             fed += 1 if r["real_countries"] else 0
         if (d - start).days % every == 0:
             path = HOME / f"{d.isoformat()}.pkl"
-            _save(w, path)
+            _save(w, path, rng=rng)
             index.append({"date": d.isoformat(), "day": w.day,
                           "file": path.name,
                           "population": int(w.health.alive.sum()),
@@ -295,36 +295,41 @@ def build(pop: int = 200_000, seed: int = 42, start: date = START,
     return meta
 
 
-def _save(w, path: Path) -> None:
-    from scipy import sparse
-    sparse.save_npz(path.with_suffix(".adj.npz"), w.civ.adj.tocsr())
-    with open(path, "wb") as f:
-        pickle.dump({"civ": w.civ, "life": w.life, "fabric": w.fabric,
-                     "feed": w.feed, "health": w.health,
-                     "knowledge": w.knowledge, "gov": w.gov,
-                     "klass": w.klass, "chronicle": w.chronicle,
-                     "climate": w.climate, "flourishing": w.flourishing,
-                     "day": w.day}, f)
+def _save(w, path: Path, rng=None) -> None:
+    """Snapshot through the one canonical serializer.
+
+    This carried its own field list until 0.0c, and it omitted
+    `presence` and `mobility`. Because those are None-defaulted
+    optionals that `live_one_day` gates on (alive.py:150,160), a
+    restored snapshot ran permanently without contagion, crowds, riots,
+    road deaths or flight cultural mixing — a different physics, not a
+    missing value. Every backtest branched from such a world was
+    incomparable to one branched from the live daemon.
+    """
+    from earth1 import persistence
+    persistence.save_world(w, path, rng=rng)
 
 
-def restore(when: str):
-    """Bring back the world as it was — organically — on that date."""
-    from scipy import sparse
-    from earth1.alive import World
+def restore(when: str, *, with_rng: bool = False,
+            allow_v0_migration: bool = False):
+    """Bring back the world as it was — organically — on that date.
+
+    Returns the world, or `(world, rng)` when `with_rng` is set. A world
+    restored without its stream continues on different dice than the one
+    that saved it, which makes it a similar counterfactual rather than
+    the same one — so paired branch work should always ask for it.
+    """
+    from earth1 import persistence
     p = HOME / f"{when}.pkl"
     if not p.exists():
         avail = sorted(x.stem for x in HOME.glob("*.pkl"))
         raise FileNotFoundError(
             f"no snapshot for {when}. have: {avail[:3]}...{avail[-3:]}"
             if avail else f"no snapshots at all in {HOME}")
-    with open(p, "rb") as f:
-        d = pickle.load(f)
-    w = World(civ=d["civ"], life=d["life"], fabric=d["fabric"],
-              health=d["health"], knowledge=d["knowledge"], gov=d["gov"],
-              klass=d["klass"], chronicle=d["chronicle"], feed=d["feed"],
-              climate=d["climate"], flourishing=d["flourishing"],
-              day=d["day"])
-    w.civ.adj = sparse.load_npz(p.with_suffix(".adj.npz"))
+    w, rng_state, _ = persistence.load_world(
+        p, allow_v0_migration=allow_v0_migration)
+    if with_rng:
+        return w, persistence.rng_from_state(rng_state)
     return w
 
 

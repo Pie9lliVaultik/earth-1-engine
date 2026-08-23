@@ -33,7 +33,8 @@ from scipy import sparse
 from earth1.chaos import entropy, world_step
 from earth1.types import Force
 
-STEP = dict(beta=2.0, residue=0.02, critical_fraction=0.12, relax=0.25)
+# 0.2: consume the canonical configuration; never a local copy
+from earth1.alive import CANONICAL_DAY as STEP
 
 
 def _cut(adj, part: np.ndarray):
@@ -44,13 +45,16 @@ def _cut(adj, part: np.ndarray):
         (a.data[keep], (a.row[keep], a.col[keep])), shape=adj.shape)
 
 
-def _traj(civ, life, rng, days, adj=None, **kw):
+def _traj(w, rng, days, adj=None, **kw):
     """Run and record the population's collective trajectory."""
+    civ = w.civ
     if adj is not None:
         civ.adj = adj
+        if w.fabric is not None:
+            w.fabric.adj = adj
     rows = []
     for _ in range(days):
-        st = world_step(civ, life, rng, **{**STEP, **kw})
+        st = world_step(w, rng, **{**STEP, **kw})
         rows.append({
             "state": civ.forces.copy(),          # the FULL state
             "mean": civ.forces.mean(axis=0).copy(),
@@ -76,18 +80,19 @@ def phi_proxy(make_world, days: int = 30, seed: int = 11) -> dict:
     Partition is GEOGRAPHIC, so the cut severs real social structure
     rather than an arbitrary index.
     """
-    civ_w, life_w = make_world()
+    w_whole = make_world()
+    civ_w = w_whole.civ
     # Cut along a real seam: whole world REGIONS on either side, so the
     # severed ties are the ones that actually carry structure (diaspora
     # corridors run within region, media hubs run across everything).
     part = (civ_w.region.astype(np.int64)
             + civ_w.country.astype(np.int64) // 97) % 2
 
-    whole = _traj(civ_w, life_w, np.random.default_rng(seed), days)
+    whole = _traj(w_whole, np.random.default_rng(seed), days)
 
-    civ_p, life_p = make_world()
-    cut = _cut(civ_p.adj, part)
-    parts = _traj(civ_p, life_p, np.random.default_rng(seed), days, adj=cut)
+    w_parts = make_world()
+    cut = _cut(w_parts.civ.adj, part)
+    parts = _traj(w_parts, np.random.default_rng(seed), days, adj=cut)
 
     w_mean = np.array([r["mean"] for r in whole])
     p_mean = np.array([r["mean"] for r in parts])
@@ -144,7 +149,8 @@ def self_reference(make_world, days: int = 40, publish_every: int = 5,
     """
     out = {}
     for label, on in (("with_self_model", True), ("blind", False)):
-        civ, life = make_world()
+        w = make_world()
+        civ, life = w.civ, w.life
         rng = np.random.default_rng(seed)
         # conformity: how much an agent moves toward what "everyone
         # thinks". Political engagement is the natural carrier.
@@ -152,7 +158,7 @@ def self_reference(make_world, days: int = 40, publish_every: int = 5,
                    else np.full(civ.n, 0.5))
         traj, pubs = [], []
         for d in range(days):
-            world_step(civ, life, rng, **STEP)
+            world_step(w, rng, **STEP)
             if on and d % publish_every == 0:
                 published = civ.forces.mean(axis=0)     # the self-model
                 pubs.append(published.copy())
@@ -227,7 +233,8 @@ def novel_coherence(make_world, days: int = 20, seed: int = 13) -> dict:
 
     res = {}
     for label in ("real", "shuffled"):
-        civ, life = make_world()
+        w = make_world()
+        civ, life = w.civ, w.life
         if label == "shuffled":
             # same degree distribution, destroyed structure
             a = civ.adj.tocoo()
@@ -236,11 +243,11 @@ def novel_coherence(make_world, days: int = 20, seed: int = 13) -> dict:
                 (a.data, (perm[a.row], perm[a.col])), shape=a.shape)
         rng = np.random.default_rng(seed)
         for _ in range(5):                     # settle
-            world_step(civ, life, rng, **STEP)
+            world_step(w, rng, **STEP)
         before = civ.forces.copy()
         civ.forces = np.clip(civ.forces + shock[None, :], 0.0, 1.0)
         for _ in range(days):
-            world_step(civ, life, rng, **STEP)
+            world_step(w, rng, **STEP)
         response = civ.forces - before
         res[label] = {"structure": _structure(response, civ.adj),
                       "spread": float(response.std()),
@@ -271,11 +278,12 @@ def anticipation(make_world, days: int = 90, lead: int = 5,
     Compared against shuffled event times, so a general upward drift
     cannot masquerade as foresight.
     """
-    civ, life = make_world()
+    w = make_world()
+    civ, life = w.civ, w.life
     rng = np.random.default_rng(seed)
     fear, fails = [], []
     for _ in range(days):
-        st = world_step(civ, life, rng, **STEP)
+        st = world_step(w, rng, **STEP)
         fear.append(float(civ.forces[:, Force.FEAR].mean()))
         fails.append(int(st.get("firms_failed", 0)))
     fear = np.array(fear)
@@ -318,20 +326,21 @@ def phase_scan(make_world, betas=(0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0),
     """
     rows = []
     for b in betas:
-        civ_w, life_w = make_world()
+        w_whole = make_world()
+        civ_w = w_whole.civ
         part = (civ_w.region.astype(np.int64)
                 + civ_w.country.astype(np.int64) // 97) % 2
-        w = _traj(civ_w, life_w, np.random.default_rng(seed), days, beta=b)
-        civ_p, life_p = make_world()
-        p = _traj(civ_p, life_p, np.random.default_rng(seed), days,
-                  adj=_cut(civ_p.adj, part), beta=b)
-        wm = np.array([r["state"] for r in w])
+        traj_w = _traj(w_whole, np.random.default_rng(seed), days, beta=b)
+        w_parts = make_world()
+        p = _traj(w_parts, np.random.default_rng(seed), days,
+                  adj=_cut(w_parts.civ.adj, part), beta=b)
+        wm = np.array([r["state"] for r in traj_w])
         pm = np.array([r["state"] for r in p])
         phi = float(np.linalg.norm(wm - pm) / max(float(np.linalg.norm(wm)),
                                                   1e-12))
         rows.append({"beta": b, "phi_proxy": round(phi, 5),
-                     "cascades": float(sum(r["cascades"] for r in w)),
-                     "entropy_end": round(float(w[-1]["entropy"]), 4)})
+                     "cascades": float(sum(r["cascades"] for r in traj_w)),
+                     "entropy_end": round(float(traj_w[-1]["entropy"]), 4)})
     phis = np.array([r["phi_proxy"] for r in rows])
     d1 = np.diff(phis)
     jump = int(np.argmax(np.abs(d1))) if d1.size else 0

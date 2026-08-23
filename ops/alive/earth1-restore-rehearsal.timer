@@ -1,0 +1,11 @@
+# An unrestored backup is a hope. Weekly, prove it is a civilization.
+[Unit]
+Description=Earth-1 — weekly restore rehearsal
+
+[Timer]
+OnCalendar=Sun *-*-* 11:20:00
+Persistent=true
+Unit=earth1-restore-rehearsal.service
+
+[Install]
+WantedBy=timers.target

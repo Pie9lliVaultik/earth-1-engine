@@ -1,0 +1,78 @@
+{
+ "experiment": "precision_ensemble_consistency_v3",
+ "git_sha": "a4d2f943603ac9f5d6284f47841700816fafe78d",
+ "git_dirty": false,
+ "snapshot": {
+  "path": "/opt/earth1-data/snapshots/2026-08-20T074529Z-day1142",
+  "world_pkl_sha256": "379212b25f5735202aa3e9dd7f18fcf397451756df6c60d388471e41eb7cef2c",
+  "day": 1142,
+  "alive": 3797604,
+  "schema_version": 1
+ },
+ "config": {
+  "CANONICAL_DAY": {
+   "beta": 2.0,
+   "residue": 0.02,
+   "critical_fraction": 0.12,
+   "relax": 0.25,
+   "layers": 2
+  },
+  "arms": [
+   [
+    "A",
+    "float64",
+    730000,
+    10
+   ],
+   [
+    "B",
+    "float64",
+    731000,
+    10
+   ],
+   [
+    "X",
+    "float32",
+    732000,
+    10
+   ],
+   [
+    "C",
+    "float16-control",
+    733000,
+    3
+   ]
+  ],
+  "days": 30,
+  "horizons": [
+   3,
+   15,
+   30
+  ],
+  "fear_shock": -0.2
+ },
+ "config_hash": "7e495f51a12454b5777c1a1e2e8d213721eb7dd0fe7d3dffb609fd570cad101e",
+ "dataset_hashes": {},
+ "seeds": {
+  "A": "730000+i, i=1..10, shared within pair",
+  "B": "731000+i, i=1..10, shared within pair",
+  "X": "732000+i, i=1..10, shared within pair",
+  "C": "733000+i, i=1..3, shared within pair"
+ },
+ "machine": {
+  "hostname": "earth1-prime",
+  "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "cpu_count": 96,
+  "mem_total_kb": 527844648
+ },
+ "workers": 40,
+ "threads_per_worker": 1,
+ "started_utc": "2026-08-20T14:39:05Z",
+ "ended_utc": "2026-08-20T15:56:32Z",
+ "wall_clock_s": 4647.4,
+ "artifacts": [
+  "/opt/earth1-data/precision_ab_v3/run_2026-08-20T143905Z/members.json"
+ ],
+ "wall_clock_total_s": 4647.4
+}

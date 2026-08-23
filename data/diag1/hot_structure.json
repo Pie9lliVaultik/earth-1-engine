@@ -1,0 +1,216 @@
+{
+ "9501": {
+  "localities": 879,
+  "population": 200000.0,
+  "days": 365,
+  "identity_collapse": {
+   "localities_ever_hot (n, %loc, %pop)": [
+    637,
+    72.5,
+    80.8
+   ],
+   "hot_on_typical_day (median %loc, median %pop)": [
+    50.9,
+    47.6
+   ],
+   "frac_of_year_hot_per_locality (median, p90, p95)": [
+    0.501,
+    0.89,
+    0.901
+   ],
+   "frac_of_year_hot_pop_weighted_median": 0.471,
+   "hot_gt25pct_of_year (n, %loc, %pop)": [
+    513,
+    58.4,
+    57.2
+   ],
+   "hot_gt50pct_of_year (n, %loc, %pop)": [
+    441,
+    50.2,
+    48.6
+   ],
+   "hot_gt75pct_of_year (n, %loc, %pop)": [
+    283,
+    32.2,
+    24.9
+   ],
+   "hot_gt90pct_of_year (n, %loc, %pop)": [
+    45,
+    5.1,
+    6.2
+   ],
+   "longest_uninterrupted_hot_days (median, p90, max)": [
+    109,
+    324,
+    342
+   ],
+   "trigger_opportunities_total (locality-days hot)": 139866,
+   "firings_after_cooldown": 5553,
+   "unique_firing_localities (n, %loc, %pop)": [
+    637,
+    72.5,
+    80.8
+   ],
+   "countries_with_any_hot_day": 194,
+   "top5_country_share_of_hot_locality_days_%": 9.4
+  },
+  "collective_surge": {
+   "localities_ever_hot (n, %loc, %pop)": [
+    678,
+    77.1,
+    84.7
+   ],
+   "hot_on_typical_day (median %loc, median %pop)": [
+    72.2,
+    81.4
+   ],
+   "frac_of_year_hot_per_locality (median, p90, p95)": [
+    0.923,
+    1.0,
+    1.0
+   ],
+   "frac_of_year_hot_pop_weighted_median": 0.932,
+   "hot_gt25pct_of_year (n, %loc, %pop)": [
+    640,
+    72.8,
+    81.6
+   ],
+   "hot_gt50pct_of_year (n, %loc, %pop)": [
+    631,
+    71.8,
+    81.2
+   ],
+   "hot_gt75pct_of_year (n, %loc, %pop)": [
+    615,
+    70.0,
+    79.6
+   ],
+   "hot_gt90pct_of_year (n, %loc, %pop)": [
+    510,
+    58.0,
+    69.8
+   ],
+   "longest_uninterrupted_hot_days (median, p90, max)": [
+    337,
+    365,
+    365
+   ],
+   "trigger_opportunities_total (locality-days hot)": 217066,
+   "firings_after_cooldown": 11456,
+   "unique_firing_localities (n, %loc, %pop)": [
+    678,
+    77.1,
+    84.7
+   ],
+   "countries_with_any_hot_day": 194,
+   "top5_country_share_of_hot_locality_days_%": 7.8
+  }
+ },
+ "9502": {
+  "localities": 879,
+  "population": 200000.0,
+  "days": 365,
+  "identity_collapse": {
+   "localities_ever_hot (n, %loc, %pop)": [
+    610,
+    69.4,
+    77.4
+   ],
+   "hot_on_typical_day (median %loc, median %pop)": [
+    43.8,
+    42.8
+   ],
+   "frac_of_year_hot_per_locality (median, p90, p95)": [
+    0.208,
+    0.885,
+    0.901
+   ],
+   "frac_of_year_hot_pop_weighted_median": 0.159,
+   "hot_gt25pct_of_year (n, %loc, %pop)": [
+    420,
+    47.8,
+    46.7
+   ],
+   "hot_gt50pct_of_year (n, %loc, %pop)": [
+    363,
+    41.3,
+    41.0
+   ],
+   "hot_gt75pct_of_year (n, %loc, %pop)": [
+    294,
+    33.4,
+    35.8
+   ],
+   "hot_gt90pct_of_year (n, %loc, %pop)": [
+    48,
+    5.5,
+    3.6
+   ],
+   "longest_uninterrupted_hot_days (median, p90, max)": [
+    23,
+    322,
+    339
+   ],
+   "trigger_opportunities_total (locality-days hot)": 121845,
+   "firings_after_cooldown": 5071,
+   "unique_firing_localities (n, %loc, %pop)": [
+    610,
+    69.4,
+    77.4
+   ],
+   "countries_with_any_hot_day": 194,
+   "top5_country_share_of_hot_locality_days_%": 11.5
+  },
+  "collective_surge": {
+   "localities_ever_hot (n, %loc, %pop)": [
+    684,
+    77.8,
+    84.6
+   ],
+   "hot_on_typical_day (median %loc, median %pop)": [
+    73.0,
+    81.6
+   ],
+   "frac_of_year_hot_per_locality (median, p90, p95)": [
+    0.921,
+    1.0,
+    1.0
+   ],
+   "frac_of_year_hot_pop_weighted_median": 0.929,
+   "hot_gt25pct_of_year (n, %loc, %pop)": [
+    648,
+    73.7,
+    81.9
+   ],
+   "hot_gt50pct_of_year (n, %loc, %pop)": [
+    638,
+    72.6,
+    81.2
+   ],
+   "hot_gt75pct_of_year (n, %loc, %pop)": [
+    624,
+    71.0,
+    80.0
+   ],
+   "hot_gt90pct_of_year (n, %loc, %pop)": [
+    496,
+    56.4,
+    65.7
+   ],
+   "longest_uninterrupted_hot_days (median, p90, max)": [
+    335,
+    365,
+    365
+   ],
+   "trigger_opportunities_total (locality-days hot)": 219332,
+   "firings_after_cooldown": 11541,
+   "unique_firing_localities (n, %loc, %pop)": [
+    684,
+    77.8,
+    84.6
+   ],
+   "countries_with_any_hot_day": 194,
+   "top5_country_share_of_hot_locality_days_%": 7.7
+  }
+ }
+}

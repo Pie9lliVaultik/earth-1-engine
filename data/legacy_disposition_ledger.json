@@ -1,0 +1,101 @@
+{
+ "ledger": "0.5b five-module disposition \u2014 evidence-resolved, no candidates",
+ "rule": "PORT only if: causal effect absent from canonical stack AND matters AND no double-count AND canonical state ownership AND a present-vs-absent experiment exists",
+ "modules": {
+  "graph_dynamics": {
+   "mechanisms": {
+    "agreement_reinforcement_decay_prune_rewire": {
+     "causal_purpose": "interaction-driven tie plasticity: agreement strengthens ties, disagreement weakens, pruning + same-camp rewiring -> echo chambers, thinning bridges, reshaped diffusion topology",
+     "alive_equivalent": "NONE for interaction-driven plasticity. Precision (found by the absence proof's own first run): the living stack DOES rewire ties daily, but only via CONTEXT/IDENTITY channels - employment re-homing churns colleague ties (0.0d), migration re-homes locality ties, rebirth clears rows+cols (0.0b). Agreement/interaction-driven plasticity on social types (friends, weak, diaspora, media) is absent - proven per-type on rebirth-untouched agents",
+     "evidence": "tests/test_legacy_dispositions.py::test_tie_plasticity_absent_from_living_stack \u2014 adj structure+values bit-stable across quiet live days; risk register R15 names this exact gap",
+     "double_count_check": "context channels (0.0d re-homing) and identity channels (0.0b) are event-driven; the port owns the interaction channel on friends+weak ONLY - colleague/household/locality ties stay owned by their existing mechanisms",
+     "disposition": "PORT",
+     "port_contract": "daily, mutable social types only (friends, weak), agreement = force-vector distance, canonical RNG, one declared position in live_one_day, batched CSR rebuild, adj recomposed; activation/disabled/double-run/restart controls",
+     "required_test": "assortativity of forces across mutable ties rises over days with the port enabled and stays flat disabled"
+    }
+   }
+  },
+  "perishability": {
+   "mechanisms": {
+    "decay_curve": {
+     "causal_purpose": "annotate an answer with its shelf-life: fear-dominant consensus decays in weeks, identity-dominant holds generations",
+     "alive_equivalent": "not applicable \u2014 the function is a pure readout: (yes_pct, dominant Force) -> display curves from types.PERISHABILITY_HALF_LIFE. No civilization state read or written, no RNG, no side effects",
+     "evidence": "tests/test_legacy_dispositions.py::test_perishability_is_pure_readout",
+     "disposition": "READOUT-ADAPTER",
+     "action": "half-life table already canonical in types.py; the curve renderer may serve /forecast once calibration lands. The SEPARATE question \u2014 whether the WORLD should have per-force differential force persistence \u2014 is registered for the 0.8/Phase-2 physics adjudication alongside conviction decay; smuggling it in as a 'port' of this display function would be inventing physics under a porting flag",
+     "required_test": "purity proof (no state args, deterministic, no RNG)"
+    }
+   }
+  },
+  "coupling": {
+   "mechanisms": {
+    "cross_question_field_shift": {
+     "causal_purpose": "a strong answer on question A shifts semantically related question B via weight-vector cosine overlap \u2014 humans do not answer questions independently",
+     "alive_equivalent": "question/readout-layer machinery: operates on Question.weights and RunResult, never on civilization state",
+     "evidence": "tests/test_legacy_dispositions.py::test_coupling_is_question_layer_only",
+     "disposition": "READOUT-ADAPTER",
+     "action": "belongs to the Benchmark-A answer layer (correlated question responses over living features); stays OUT of live_one_day; its legacy Question/RunResult dependency is replaced when the living answer layer is built in Phase 1. Never world physics",
+     "required_test": "source proof: no Civilization/World consumption"
+    }
+   }
+  },
+  "event_generation": {
+   "mechanisms": {
+    "polarization_consensus_reversal_cascade_detectors": {
+     "causal_purpose": "the world notices emergent macro-patterns in its own answer-runs and injects events that feed back",
+     "alive_equivalent": "as WRITTEN: inseparable from the retired engine (consumes RunResult.settled_stances/fragility/conviction and writes legacy EventLog/WorldEvent) \u2014 nothing to port without the dead question-run machinery. The living stack already self-excites through state-threshold cascades (alive.py cascade block) and remembers through the Chronicle (news + scenario events)",
+     "evidence": "tests/test_legacy_dispositions.py::test_event_generation_is_bound_to_retired_engine",
+     "double_count_check": "an endogenous state-pattern->Chronicle channel would be a SECOND self-excitation loop on top of cascades; whether Earth-1 needs it is a dynamics question that must be adjudicated with measurements (0.8 instruments), not assumed",
+     "disposition": "SUPERSEDED",
+     "action": "module retired with the engine family. The abstract capability (state-pattern -> Chronicle memory with provenance) is REGISTERED as a candidate physics proposal for post-0.8 adjudication \u2014 proposed from computed civilization state, never a synthetic-news generator",
+     "required_test": "binding proof (imports RunResult/EventLog) + living cascade/chronicle coverage pointers"
+    }
+   }
+  },
+  "dynamics": {
+   "mechanisms": {
+    "compute_susceptibility": {
+     "causal_purpose": "per-agent per-force nonlinear openness to influence",
+     "alive_equivalent": "earth1/susceptibility.py \u2014 the canonical (N,8) gain matrix with measured gradients (distressed 1.52x, addicted 0.62x, young 1.60x), consumed daily in live_one_day",
+     "disposition": "SUPERSEDED"
+    },
+    "apply_residues_trait_learning": {
+     "causal_purpose": "absorbed force leaves a permanent trait residue \u2014 learning",
+     "alive_equivalent": "live_one_day feedback block: trait residue from LOCAL neighborhood deviation (the stronger implementation \u2014 the legacy global-mean basis was Class-GM defect occurrence #3)",
+     "disposition": "SUPERSEDED"
+    },
+    "agent_relative_decay": {
+     "causal_purpose": "forces decay toward each agent's own baseline",
+     "alive_equivalent": "the relax term: forces pulled toward life_force_target \u2014 the materially-grounded restoring force (circumstances, not an arbitrary baseline)",
+     "disposition": "SUPERSEDED"
+    }
+   },
+   "evidence": "tests/test_legacy_dispositions.py::test_dynamics_superseded_coverage",
+   "note": "not revived for parity theater \u2014 the living implementations are the audited, stronger forms"
+  }
+ },
+ "summary": {
+  "PORT": [
+   "graph_dynamics.agreement_plasticity"
+  ],
+  "READOUT-ADAPTER": [
+   "perishability.decay_curve",
+   "coupling.cross_question_field_shift"
+  ],
+  "SUPERSEDED": [
+   "event_generation.*",
+   "dynamics.*"
+  ],
+  "ALREADY REPRESENTED": []
+ },
+ "tie_type_ownership": {
+  "rule": "no unowned tie type - every type has a declared dynamics owner",
+  "household": "0.0b rebirth (join parent household) + 0.0d migration (converts to diaspora). Not interaction-plastic by design: co-residence is a material fact, not a sentiment",
+  "colleagues": "0.0d employment re-homing (daily churn with job loss/hire). Not interaction-plastic: workplace ties follow the job",
+  "neighbours": "0.0d migration re-homing (locality-keyed remove+rebuild). Not interaction-plastic: proximity is physical",
+  "friends": "PORT (this change): interaction-driven plasticity. Also 0.0d converts to diaspora on migration; 0.0b clears at rebirth",
+  "weak": "PORT (this change): interaction-driven plasticity. Also 0.0d remove+rebuild on migration; 0.0b clears at rebirth",
+  "diaspora": "OWNED by 0.0d migration (created by household/friends conversion - 'you keep your people') and 0.0b rebirth (cleared). INTENTIONALLY NON-PLASTIC to interaction by model design: long-distance kinship does not decay from daily non-contact in this model. Making diaspora decay would be NEW physics - registered for later adjudication, not smuggled into this port",
+  "media": "INTENTIONALLY STATIC pending the registered D4-i defect adjudication (fabric symmetrizes broadcaster edges - the asymmetry fix owns any future media-tie dynamics, alongside feed.py which already owns asymmetric media CONSUMPTION). Not plastic in this port"
+ }
+}

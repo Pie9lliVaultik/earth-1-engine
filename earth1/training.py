@@ -17,7 +17,7 @@ import torch.nn as nn
 
 from earth1.types import Civilization, Question, NUM_FORCES
 from earth1.torch_forward import DifferentiableEngine, CivGraph, prepare_tensors
-from earth1.benchmark import BENCHMARK_QUESTIONS, BenchmarkQuestion
+from earth1.benchmark_questions import BENCHMARK_QUESTIONS, BenchmarkQuestion
 
 
 @dataclass

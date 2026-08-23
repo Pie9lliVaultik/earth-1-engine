@@ -1,0 +1,40 @@
+{
+ "experiment": "country_map_full_strength_grid",
+ "preregistered_bar": {
+  "metric": "rank_correlation_full_vector",
+  "threshold": 0.5
+ },
+ "grid": [
+  {
+   "agents": 200000,
+   "floor": 1000,
+   "days": 180,
+   "reps": 2,
+   "rank": -0.079,
+   "pearson": 0.007
+  },
+  {
+   "agents": 400000,
+   "floor": 2000,
+   "days": 270,
+   "reps": 3,
+   "rank": 0.112,
+   "pearson": 0.127
+  },
+  {
+   "agents": 600000,
+   "floor": 3000,
+   "days": 360,
+   "reps": 3,
+   "rank": 0.039,
+   "pearson": 0.02
+  }
+ ],
+ "verdict": "FAIL at <=3 repeats, prereg honoured. Scale levers (agents/floor/days) do not move the metric; repeats do. Consistent with corr=SNR^2/(1+SNR^2): ~15 paired repeats priced for +0.5.",
+ "caveat": "Measured pre-Phase-0: world has frozen aging (0.0a) and rebirth graph inheritance (0.0b). Do not re-run at 15 reps until Phase 0.0a-0.0d land; number would be discarded.",
+ "provenance": {
+  "hostname": "Pietros-MacBook-Pro.local",
+  "git_commit": "e7545f8",
+  "wall_clock": "2026-08-19T14:18:16.404539+02:00"
+ }
+}

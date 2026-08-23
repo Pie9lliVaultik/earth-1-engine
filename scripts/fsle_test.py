@@ -19,9 +19,12 @@ from __future__ import annotations
 import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 0.2 MIGRATION NOTE: this instrument now steps THE canonical loop
+# (chaos.world_step delegates to alive.live_one_day over a full World).
+# Its numbers are NOT comparable with any measured before 0.2 - the
+# instrument itself changed. 0.8 re-runs every measurement from scratch.
 from earth1.chaos import world_step
-from earth1.genesis import genesis
-from earth1.life import birth_life
+from earth1.alive import birth_world
 
 POP = int(os.environ.get("FS_POP", "20000"))
 DAYS = int(os.environ.get("FS_DAYS", "40"))
@@ -31,10 +34,11 @@ LIVING = dict(beta=2.0, residue=0.02, critical_fraction=0.12, relax=0.25)
 LEGACY = dict(beta=0.0, residue=0.0005, critical_fraction=0.25, relax=0.0)
 
 def fresh():
-    c = genesis(POP, 42); return c, birth_life(c, seed=42)
+    return birth_world(POP, 42)
 
 def trial(pick, kw):
-    cA, lA = fresh(); cB, lB = fresh()
+    wA = fresh(); wB = fresh()
+    cA, lA, cB, lB = wA.civ, wA.life, wB.civ, wB.life
     rA = np.random.default_rng(1234); rB = np.random.default_rng(1234)
     cand = np.flatnonzero(lB.employed)
     who = int(cand[pick % len(cand)])
@@ -42,7 +46,7 @@ def trial(pick, kw):
     lB.tenure[who] = 0.0; lB.spells[who] += 1
     d, reach = [], []
     for _ in range(DAYS):
-        world_step(cA, lA, rA, **kw); world_step(cB, lB, rB, **kw)
+        world_step(wA, rA, **kw); world_step(wB, rB, **kw)
         df = np.abs(cA.forces - cB.forces)
         d.append(float(np.linalg.norm(df)))
         reach.append(float((df.max(axis=1) > 1e-12).mean()))

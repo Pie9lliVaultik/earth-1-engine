@@ -1,0 +1,479 @@
+{
+ "protocol": "v2",
+ "f32_pass": false,
+ "instrument_identifiable": false,
+ "informative_terminal_rows": 0,
+ "informative_families": [],
+ "f16_control_rejected": true,
+ "certified": false,
+ "f32_breaches": [
+  [
+   "3",
+   "cum_births",
+   "level",
+   "R=0.709 R_eff=None"
+  ],
+  [
+   "3",
+   "physical_mean",
+   "level",
+   "R=0.781 R_eff=None"
+  ],
+  [
+   "15",
+   "alive",
+   "level",
+   "R=0.570 R_eff=None"
+  ],
+  [
+   "15",
+   "cum_deaths",
+   "level",
+   "R=0.543 R_eff=None"
+  ],
+  [
+   "15",
+   "cum_births",
+   "level",
+   "R=0.606 R_eff=None"
+  ],
+  [
+   "15",
+   "cum_disease_deaths",
+   "level",
+   "R=0.658 R_eff=None"
+  ],
+  [
+   "15",
+   "evicted_share",
+   "level",
+   "R=1.120 R_eff=None"
+  ],
+  [
+   "15",
+   "arrears_mean",
+   "level",
+   "R=1.234 R_eff=None"
+  ],
+  [
+   "15",
+   "mental_mean",
+   "level",
+   "R=0.698 R_eff=None"
+  ],
+  [
+   "15",
+   "friends_w_mean",
+   "level",
+   "R=0.663 R_eff=None"
+  ],
+  [
+   "15",
+   "weak_w_mean",
+   "level",
+   "R=3.155 R_eff=None"
+  ],
+  [
+   "15",
+   "cum_ties_strengthened",
+   "level",
+   "R=0.874 R_eff=None"
+  ],
+  [
+   "15",
+   "cum_ties_pruned",
+   "level",
+   "R=0.513 R_eff=None"
+  ],
+  [
+   "15",
+   "cum_ties_rewired",
+   "level",
+   "R=0.537 R_eff=None"
+  ],
+  [
+   "15",
+   "force_mean_0",
+   "level",
+   "R=0.525 R_eff=None"
+  ],
+  [
+   "15",
+   "force_sd_0",
+   "level",
+   "R=0.538 R_eff=None"
+  ],
+  [
+   "15",
+   "pole_share_1",
+   "level",
+   "R=0.526 R_eff=None"
+  ],
+  [
+   "15",
+   "force_sd_2",
+   "level",
+   "R=0.609 R_eff=None"
+  ],
+  [
+   "15",
+   "force_mean_5",
+   "level",
+   "R=0.550 R_eff=None"
+  ],
+  [
+   "15",
+   "force_mean_6",
+   "level",
+   "R=0.507 R_eff=None"
+  ],
+  [
+   "15",
+   "force_mean_7",
+   "level",
+   "R=0.879 R_eff=None"
+  ],
+  [
+   "15",
+   "force_sd_7",
+   "level",
+   "R=0.829 R_eff=None"
+  ],
+  [
+   "15",
+   "pole_share_7",
+   "level",
+   "R=0.570 R_eff=None"
+  ],
+  [
+   "30",
+   "alive",
+   "level",
+   "R=0.590 R_eff=None"
+  ],
+  [
+   "30",
+   "cum_deaths",
+   "level",
+   "R=0.550 R_eff=None"
+  ],
+  [
+   "30",
+   "cum_births",
+   "level",
+   "R=0.668 R_eff=None"
+  ],
+  [
+   "30",
+   "cum_disease_deaths",
+   "level",
+   "R=1.067 R_eff=None"
+  ],
+  [
+   "30",
+   "employment_rate",
+   "level",
+   "R=0.535 R_eff=None"
+  ],
+  [
+   "30",
+   "destitute_share",
+   "level",
+   "R=0.564 R_eff=None"
+  ],
+  [
+   "30",
+   "evicted_share",
+   "level",
+   "R=1.014 R_eff=None"
+  ],
+  [
+   "30",
+   "arrears_mean",
+   "level",
+   "R=0.622 R_eff=None"
+  ],
+  [
+   "30",
+   "mental_mean",
+   "level",
+   "R=1.170 R_eff=None"
+  ],
+  [
+   "30",
+   "physical_mean",
+   "level",
+   "R=0.547 R_eff=None"
+  ],
+  [
+   "30",
+   "addiction_mean",
+   "level",
+   "R=0.765 R_eff=None"
+  ],
+  [
+   "30",
+   "cum_workers_rehomed",
+   "level",
+   "R=0.546 R_eff=None"
+  ],
+  [
+   "30",
+   "friends_nnz",
+   "level",
+   "R=0.673 R_eff=None"
+  ],
+  [
+   "30",
+   "friends_degree_mean",
+   "level",
+   "R=0.673 R_eff=None"
+  ],
+  [
+   "30",
+   "cum_ties_pruned",
+   "level",
+   "R=0.641 R_eff=None"
+  ],
+  [
+   "30",
+   "cum_ties_rewired",
+   "level",
+   "R=1.170 R_eff=None"
+  ],
+  [
+   "30",
+   "deprivation_mean",
+   "level",
+   "R=0.556 R_eff=None"
+  ],
+  [
+   "30",
+   "force_sd_3",
+   "level",
+   "R=0.525 R_eff=None"
+  ],
+  [
+   "30",
+   "force_sd_6",
+   "level",
+   "R=0.714 R_eff=None"
+  ],
+  [
+   "30",
+   "pole_share_6",
+   "level",
+   "R=0.531 R_eff=None"
+  ],
+  [
+   "30",
+   "force_mean_7",
+   "level",
+   "R=0.975 R_eff=None"
+  ],
+  [
+   "30",
+   "force_sd_7",
+   "level",
+   "R=0.808 R_eff=None"
+  ],
+  [
+   "30",
+   "pole_share_7",
+   "level",
+   "R=0.589 R_eff=None"
+  ]
+ ],
+ "f32_degenerate": [
+  [
+   "3",
+   "memories_remembered",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "3",
+   "friends_w_max",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "3",
+   "weak_w_max",
+   "deterministic, rmse=1.79e-09 within tol"
+  ],
+  [
+   "3",
+   "cum_ties_weakened",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "3",
+   "deprivation_p10",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "3",
+   "deprivation_p50",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "3",
+   "deprivation_p90",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "3",
+   "pole_share_0",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "3",
+   "pole_share_3",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "memories_remembered",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "friends_w_max",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "weak_w_max",
+   "deterministic, rmse=1.79e-09 within tol"
+  ],
+  [
+   "15",
+   "cum_ties_weakened",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "deprivation_p10",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "deprivation_p50",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "deprivation_p90",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "pole_share_0",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "15",
+   "pole_share_3",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "memories_remembered",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "friends_w_max",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "weak_w_max",
+   "deterministic, rmse=1.79e-09 within tol"
+  ],
+  [
+   "30",
+   "cum_ties_weakened",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "deprivation_p10",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "deprivation_p50",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "deprivation_p90",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "pole_share_0",
+   "deterministic, rmse=0 within tol"
+  ],
+  [
+   "30",
+   "pole_share_3",
+   "deterministic, rmse=0 within tol"
+  ]
+ ],
+ "f32_rank_detail": "spearman_min=0.9819548872180449, qualifying_cells=0, sign_agree=None",
+ "f16_breach_count": 156,
+ "f16_first_breaches": [
+  [
+   "3",
+   "alive",
+   "level",
+   "R=1.076 R_eff=None"
+  ],
+  [
+   "3",
+   "cum_deaths",
+   "level",
+   "R=1.159 R_eff=None"
+  ],
+  [
+   "3",
+   "cum_births",
+   "level",
+   "R=1.900 R_eff=None"
+  ],
+  [
+   "3",
+   "cum_disease_deaths",
+   "level",
+   "R=1.936 R_eff=None"
+  ],
+  [
+   "3",
+   "destitute_share",
+   "level",
+   "R=7.110 R_eff=None"
+  ],
+  [
+   "3",
+   "evicted_share",
+   "level",
+   "R=2.524 R_eff=None"
+  ],
+  [
+   "3",
+   "wage_mean_employed",
+   "level",
+   "R=0.540 R_eff=None"
+  ],
+  [
+   "3",
+   "tenure_mean_employed",
+   "level",
+   "R=0.755 R_eff=None"
+  ]
+ ],
+ "n_rows": 186,
+ "worst_R_level": 3.155,
+ "worst_R_effect": null
+}

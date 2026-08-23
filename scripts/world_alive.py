@@ -35,6 +35,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from earth1 import persistence, provenance
 from earth1.alive import birth_world, live_one_day
 from earth1.chaos import entropy
 from earth1.memory import event_from_news
@@ -45,7 +46,8 @@ POP = int(os.environ.get("ALIVE_POP", "200000"))
 PERIOD = float(os.environ.get("ALIVE_PERIOD", "60"))
 NEWS_EVERY = int(os.environ.get("ALIVE_NEWS", "60"))
 SAVE_EVERY = int(os.environ.get("ALIVE_SAVE", "30"))
-STEP = dict(beta=2.0, residue=0.02, critical_fraction=0.12, relax=0.25)
+# 0.2: the ONE canonical configuration — no local copy to drift
+from earth1.alive import CANONICAL_DAY as STEP
 
 _stop = False
 
@@ -56,114 +58,100 @@ def _sigterm(*_):
     print("  stop requested — finishing the day, then saving", flush=True)
 
 
-LIFE_ARRAYS = ("occupation", "firm", "employed", "in_lf", "wage", "wealth",
-               "cost", "tenure", "deprivation", "spells", "firm_health",
-               "firm_country", "force_baseline", "trait_baseline", "mental",
-               "physical", "addiction", "relationship", "social_need",
-               "political", "mental_setpoint", "relationship_setpoint",
-               "last_event", "last_event_day", "n_events")
-CIV_ARRAYS = ("country", "region", "age_bucket", "age", "education", "income",
-              "urban", "openness", "empathy", "risk_appetite", "doubt",
-              "desire_intensity", "economic_field", "culture_offset",
-              "conscientiousness", "agreeableness", "extraversion",
-              "neuroticism", "power_distance", "individualism",
-              "uncertainty_avoidance", "long_term_orientation", "forces",
-              "alpha", "means")
+WORLD_PKL = HOME / "world.pkl"
+LEGACY_ADJ = HOME / "adj.npz"          # the pre-schema graph location
 
 
-def save_world(w):
-    """Persist everything: people, bodies, knowledge, states, memory."""
-    import pickle
+def save_world(w, rng=None):
+    """Persist everything, through the one canonical serializer.
+
+    This used to carry its own field list, which is how presence and
+    mobility came to be dropped on every restart. `persistence` walks a
+    declared policy instead, so new world state cannot be forgotten
+    here (tests/test_persistence_roundtrip.py).
+    """
     HOME.mkdir(parents=True, exist_ok=True)
-    from scipy import sparse
-    sparse.save_npz(HOME / "adj.npz", w.civ.adj.tocsr())
-    with open(HOME / "world.pkl", "wb") as f:
-        pickle.dump({"civ": {k: getattr(w.civ, k) for k in CIV_ARRAYS},
-                     "fabric": w.fabric, "feed": w.feed,
-                     "life": w.life, "health": w.health,
-                     "knowledge": w.knowledge, "gov": w.gov,
-                     "klass": w.klass, "chronicle": w.chronicle,
-                     # climate and flourishing were absent here, so every
-                     # restart silently reset the weather and wiped
-                     # everyone's hunger, thirst and hope. Restart=always
-                     # means that was happening in production.
-                     "climate": w.climate, "flourishing": w.flourishing,
-                     "day": w.day, "n": w.civ.n, "seed": w.civ.seed}, f)
+    meta = persistence.save_world(w, WORLD_PKL, rng=rng)
     (HOME / "state.json").write_text(json.dumps(
         {"day": w.day, "pop": int(w.civ.n), "seed": int(w.civ.seed),
          "alive": int(w.health.alive.sum()),
-         "saved_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}))
+         "schema_version": meta["schema_version"],
+         "sha256": meta["sha256"],
+         "rng_persisted": meta["rng_persisted"],
+         "saved_at": meta["saved_at"]}))
+    return meta
 
 
 def load_world():
-    import pickle
-    from scipy import sparse
-    if not (HOME / "world.pkl").exists():
+    """Bring the world back, or refuse to pretend. Returns (world, rng).
+
+    A pre-schema snapshot cannot carry presence, mobility or the random
+    stream, so resuming from one silently changes the physics. That is a
+    deliberate migration, not an incidental load: set
+    EARTH1_MIGRATE_V0=1 once, at a controlled checkpoint.
+    """
+    if not WORLD_PKL.exists():
         print(f"  birthing a world: {POP:,} earthlings", flush=True)
-        return birth_world(POP, 42)
-    with open(HOME / "world.pkl", "rb") as f:
-        d = pickle.load(f)
-    w = birth_world(d["n"], d["seed"])
-    for k, v in d["civ"].items():
-        setattr(w.civ, k, v)
-    w.civ.adj = sparse.load_npz(HOME / "adj.npz")
-    # THE FABRIC MUST MATCH THE GRAPH IT DESCRIBES. birth_world builds a
-    # fresh fabric from a fresh population; overwriting civ.adj from disk
-    # afterwards left w.fabric.by_type describing a world that no longer
-    # exists, so any per-channel analysis on a resumed world was wrong.
-    if "fabric" in d and d["fabric"] is not None:
-        w.fabric = d["fabric"]
-    if "feed" in d and d["feed"] is not None:
-        w.feed = d["feed"]
-    w.life, w.health = d["life"], d["health"]
-    w.knowledge, w.gov = d["knowledge"], d["gov"]
-    w.klass, w.chronicle, w.day = d["klass"], d["chronicle"], d["day"]
-    if d.get("climate") is not None:
-        w.climate = d["climate"]
-    if d.get("flourishing") is not None:
-        w.flourishing = d["flourishing"]
-    print(f"  woke up: day {w.day}, {int(w.health.alive.sum()):,} alive",
-          flush=True)
-    return w
+        return birth_world(POP, 42), None, {"schema_version": None,
+                                            "lost": [], "born": True}
 
+    migrate = os.environ.get("EARTH1_MIGRATE_V0") == "1"
+    # graph priority: the v1 graph (world.adj.npz) is canonical whenever
+    # it exists; the legacy adj.npz is only for pre-migration snapshots.
+    # The old order preferred legacy whenever present, which silently
+    # masked a truncated v1 graph in production on 2026-08-19.
+    v1_adj = WORLD_PKL.with_suffix(".adj.npz")
+    adj = None if v1_adj.exists() else (LEGACY_ADJ if LEGACY_ADJ.exists()
+                                        else None)
+    w, rng_state, info = persistence.load_world(
+        WORLD_PKL, allow_v0_migration=migrate, adj_path=adj)
 
-def _unused_save(civ, life, fab, day):
-    HOME.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(HOME / "civ.npz",
-                        **{k: getattr(civ, k) for k in CIV_ARRAYS})
-    np.savez_compressed(HOME / "life.npz",
-                        **{k: getattr(life, k) for k in LIFE_ARRAYS
-                           if getattr(life, k, None) is not None})
-    from scipy import sparse
-    sparse.save_npz(HOME / "adj.npz", civ.adj.tocsr())
-    (HOME / "state.json").write_text(json.dumps(
-        {"day": day, "pop": int(civ.n), "seed": int(civ.seed),
-         "saved_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}))
-
-
-def load_or_birth():
-    st = HOME / "state.json"
-    if st.exists():
-        from scipy import sparse
-        meta = json.loads(st.read_text())
-        civ = genesis(meta["pop"], meta["seed"])
-        cz = np.load(HOME / "civ.npz")
-        for k in cz.files:
-            setattr(civ, k, cz[k])
-        civ.adj = sparse.load_npz(HOME / "adj.npz")
-        life = birth_life(civ, seed=meta["seed"])
-        lz = np.load(HOME / "life.npz")
-        for k in lz.files:
-            setattr(life, k, lz[k])
-        print(f"  woke up: day {meta['day']}, {civ.n:,} earthlings",
+    if info["schema_version"] == 0:
+        print(f"  MIGRATED a v0 snapshot. It could not carry: "
+              f"{', '.join(info['lost']) or 'nothing'}", flush=True)
+        print("  those subsystems were rebuilt at birth values — this "
+              "world is NOT bit-continuous with the one that saved it.",
               flush=True)
-        return civ, life, None, int(meta["day"])
-    print(f"  birthing a world: {POP:,} earthlings", flush=True)
-    civ = genesis(POP, 42)
-    life = birth_life(civ, seed=42)
-    fab = build_fabric(civ, life, seed=42)
-    civ.adj = fab.adj
-    return civ, life, fab, 0
+    print(f"  woke up: day {w.day}, {int(w.health.alive.sum()):,} alive"
+          f"  (schema v{info['schema_version']}, "
+          f"checksum {info.get('checksum')})", flush=True)
+    return w, rng_state, info
+
+
+def journal_continuity_break(w, info):
+    """Mark an epoch boundary in the journal, permanently.
+
+    A v0 migration rebuilds presence and mobility at birth values
+    because the old format never wrote them. That is an ENGINEERING
+    discontinuity in the trajectory, not something that happened to the
+    civilization — and nothing downstream may ever read across it as
+    though the world evolved through it.
+
+    It is journaled rather than merely printed so that any later
+    analysis can find the instant and refuse to span it. No causal
+    benchmark may use this boundary as evidence.
+    """
+    rec = {"event": "continuity_break",
+           "reason": "legacy_v0_missing_presence_mobility",
+           "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+           "world_day": int(w.day),
+           "population": int(w.civ.n),
+           "alive": int(w.health.alive.sum()),
+           "fields_not_carried": list(info.get("lost", [])),
+           "from_schema": 0,
+           "to_schema": persistence.SCHEMA_VERSION,
+           "epoch": 1,
+           "bit_continuous": False,
+           "note": ("engineering discontinuity, not a world event — "
+                    "do not use as evidence in any causal benchmark, "
+                    "and do not treat any trajectory as continuous "
+                    "across this instant")}
+    JOURNAL.parent.mkdir(parents=True, exist_ok=True)
+    with open(JOURNAL, "a") as f:
+        f.write(json.dumps(rec) + "\n")
+    print(f"  EPOCH BOUNDARY journaled at day {w.day}: "
+          f"{rec['reason']}", flush=True)
+    return rec
 
 
 def read_the_news(civ, life, world=None):
@@ -230,13 +218,65 @@ def read_the_news(civ, life, world=None):
             "news_influenced_life": bool(abs(stress) > 1e-6)}
 
 
+def _snapshot_version():
+    """Schema version of the snapshot on disk, or None if unversioned.
+
+    Everything written before 0.0c is unversioned, and says so rather
+    than defaulting to a number nobody stamped.
+    """
+    try:
+        with open(HOME / "state.json") as f:
+            return json.load(f).get("schema_version")
+    except (OSError, ValueError):
+        return None
+
+
 def main():
     signal.signal(signal.SIGTERM, _sigterm)
     signal.signal(signal.SIGINT, _sigterm)
-    w = load_world()
+
+    # ── 0.0e provenance gate: prove what code this is, before the world
+    # takes a step. Strict on the single writer; EARTH1_STRICT_PROVENANCE=0
+    # for laptop iteration only.
+    strict = os.environ.get("EARTH1_STRICT_PROVENANCE", "1") == "1"
+    prov = provenance.record(
+        ROOT,
+        config={**STEP, "ALIVE_POP": POP, "ALIVE_PERIOD": PERIOD,
+                "ALIVE_NEWS": NEWS_EVERY, "ALIVE_SAVE": SAVE_EVERY},
+        snapshot_version=_snapshot_version(),
+    )
+    provenance.enforce(prov, strict=strict)
+
+    w, rng_state, load_info = load_world()
     civ, life = w.civ, w.life
-    rng = np.random.default_rng(int(time.time()) % (2 ** 31))
+    # continue the saved stream where it stopped. Only a world with no
+    # stream to continue — a fresh birth, or a migrated v0 snapshot —
+    # falls back to the clock, and that fallback is journaled below.
+    rng = persistence.rng_from_state(
+        rng_state, fallback_seed=int(time.time()) % (2 ** 31))
     HOME.mkdir(parents=True, exist_ok=True)
+
+    # the world is identified only once it exists, so population and day
+    # are filled in here and the record is journaled as the first line
+    # of this process's life
+    prov.update(population=int(civ.n), world_day=int(w.day),
+                rng_continued=rng_state is not None,
+                snapshot_schema=load_info.get("schema_version") if load_info
+                else None,
+                event="startup",
+                at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+    with open(JOURNAL, "a") as f:
+        f.write(json.dumps(prov) + "\n")
+    print(f"  commit {str(prov['code_commit'])[:12]}"
+          f"  dirty={prov['dirty_worktree']}"
+          f"  schema={prov['schema_version']}"
+          f"  snapshot={prov['snapshot_version']}"
+          f"  pop {int(civ.n):,}  day {w.day}", flush=True)
+    # an epoch boundary is recorded BEFORE the world takes a step, so
+    # the journal can never show a tick that appears to cross it
+    if load_info and load_info.get("schema_version") == 0:
+        journal_continuity_break(w, load_info)
+
     print(f"  alive. one world-day every {PERIOD:.0f}s\n", flush=True)
 
     while not _stop:
@@ -254,6 +294,14 @@ def main():
                 "fear": round(float(civ.forces[:, 0].mean()), 5)}
         for k in ("mental_ill", "addicted", "isolated", "crime_victims",
                   "bereaved", "new_children", "alive", "deaths", "ill",
+                  # 0.1d mortality contract: the journal must carry the
+                  # full accounting so closure is provable from the
+                  # journal alone, not just from in-memory st
+                  "births", "disease_deaths", "weather_deaths",
+                  "starved_or_parched", "road_deaths_today",
+                  "rehomed_migrants", "rehomed_workers",
+                  "ties_strengthened", "ties_weakened",
+                  "ties_pruned", "ties_rewired",
                   "in_treatment", "countries_at_war", "war_deaths",
                   "conscripted", "mean_welfare", "mean_legitimacy",
                   "homeless", "crimes_today", "criminal_share",
@@ -268,7 +316,7 @@ def main():
         with open(JOURNAL, "a") as f:
             f.write(json.dumps(line) + "\n")
         if day % SAVE_EVERY == 0:
-            save_world(w)
+            save_world(w, rng)
 
         if day % 10 == 0 or day < 3:
             print(f"  day {day:6d}  alive {line.get('alive', 0):7,d}"
@@ -284,7 +332,7 @@ def main():
             time.sleep(min(rest, 1.0))
             rest -= 1.0
 
-    save_world(w)
+    save_world(w, rng)
     print(f"  saved at day {w.day}. the world is paused, not lost.",
           flush=True)
 

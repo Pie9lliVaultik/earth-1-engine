@@ -1,0 +1,47 @@
+{
+ "A_structure": {
+  "identity": {
+   "day": 1142,
+   "alive": 3797604,
+   "schema": 1,
+   "checksum": "verified"
+  },
+  "friends": {
+   "nnz": 34381192,
+   "degree_mean": 8.595,
+   "degree_p99": 15,
+   "degree_max": 24,
+   "w_min": 0.7,
+   "w_max": 3.5,
+   "edges_to_currently_dead": 0
+  },
+  "weak": {
+   "nnz": 1333878,
+   "degree_mean": 0.333,
+   "degree_p99": 2,
+   "degree_max": 6,
+   "w_min": 0.15,
+   "w_max": 0.17,
+   "edges_to_currently_dead": 0
+  }
+ },
+ "B_smoke": {
+  "identity": {
+   "world_day": 1142,
+   "alive": 3797604,
+   "population": 4000000,
+   "schema_version": 1,
+   "snapshot_sha256": "379212b25f5735202aa3e9dd7f18fcf397451756df6c60d388471e41eb7cef2c",
+   "checksum": "verified",
+   "source": "/tmp/smoke/world.pkl"
+  }
+ },
+ "failures": [],
+ "verdict": "PASS",
+ "provenance": {
+  "host": "earth1-prime",
+  "commit": "7e87c04bae653983979ca992a1ebeff85c641516",
+  "wall_clock": "2026-08-20T07:38:15Z",
+  "runtime_s": 91.6
+ }
+}

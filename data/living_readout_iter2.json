@@ -1,0 +1,135 @@
+{
+ "iteration": 2,
+ "NOT_BENCHMARK_A": true,
+ "holdout_touched": false,
+ "iteration1_immutable": "b0c00a4",
+ "admissibility": {
+  "targets": "WVS-7 cohort aggregates, fieldwork 2017-2022",
+  "rule": "t_feature_state <= t_prediction_cutoff",
+  "candidates": {
+   "production_day590_world": {
+    "admissible": false,
+    "reason": "ingests GDELT news from 2026 via signal_bus -> memory -> life; post-cutoff event information",
+    "use": "unscored structural diagnostics only"
+   },
+   "fresh_no_news_world_730d": {
+    "admissible": true,
+    "reason": "no news ingestion on the research path; event-level information = genesis priors only. CAVEAT (recorded, R16): genesis statistical priors are curated tables of mixed vintage - founder-gated transcription pending; no event-level post-cutoff information",
+    "use": "SCORED (this run)"
+   }
+  },
+  "chosen": "fresh_no_news_world_730d"
+ },
+ "protocol": {
+  "pop": 200000,
+  "seed": 42,
+  "days": 730,
+  "folds": 5,
+  "cv_seeds": [
+   42,
+   7,
+   13
+  ],
+  "lambda_grid": [
+   0.3,
+   1.0,
+   3.0,
+   10.0,
+   30.0,
+   100.0,
+   300.0
+  ],
+  "cells": 1804
+ },
+ "arms": {
+  "legacy_flat": {
+   "cohort_mae_pp": 12.156,
+   "cohort_mae_sd": 4.615,
+   "national_mae_pp": 11.398,
+   "gradient_pct": 75.4,
+   "calibration": 0.859,
+   "within_r2": -0.7467
+  },
+  "living_flat": {
+   "cohort_mae_pp": 12.413,
+   "cohort_mae_sd": 4.742,
+   "national_mae_pp": 11.527,
+   "gradient_pct": 75.1,
+   "calibration": 0.848,
+   "within_r2": -0.9741
+  },
+  "legacy_hier": {
+   "cohort_mae_pp": 11.435,
+   "cohort_mae_sd": 4.354,
+   "national_mae_pp": 10.986,
+   "gradient_pct": 82.9,
+   "calibration": 0.927,
+   "within_r2": 0.3136
+  },
+  "living_hier": {
+   "cohort_mae_pp": 11.717,
+   "cohort_mae_sd": 4.737,
+   "national_mae_pp": 11.277,
+   "gradient_pct": 83.3,
+   "calibration": 0.914,
+   "within_r2": 0.346
+  }
+ },
+ "paired_deltas": {
+  "living_vs_legacy_flat": {
+   "n": 5412,
+   "mean_pp": -0.254,
+   "b_wins_pct": 49.9
+  },
+  "living_vs_legacy_hier": {
+   "n": 5412,
+   "mean_pp": -0.2742,
+   "b_wins_pct": 50.9
+  },
+  "hier_vs_flat_legacy": {
+   "n": 5412,
+   "mean_pp": 0.7077,
+   "b_wins_pct": 54.2
+  }
+ },
+ "family_ablations_deltaL_positive_helps": {
+  "deprivation": {
+   "cohort_mae_pp": 11.712,
+   "delta_L": -0.005
+  },
+  "unemployed": {
+   "cohort_mae_pp": 11.51,
+   "delta_L": -0.207
+  },
+  "spells": {
+   "cohort_mae_pp": 11.652,
+   "delta_L": -0.065
+  },
+  "hunger": {
+   "cohort_mae_pp": 11.712,
+   "delta_L": -0.005
+  },
+  "mental": {
+   "cohort_mae_pp": 11.702,
+   "delta_L": -0.015
+  },
+  "addiction": {
+   "cohort_mae_pp": 11.696,
+   "delta_L": -0.021
+  },
+  "isolation": {
+   "cohort_mae_pp": 11.771,
+   "delta_L": 0.054
+  },
+  "hope": {
+   "cohort_mae_pp": 11.703,
+   "delta_L": -0.014
+  }
+ },
+ "provenance": {
+  "host": "earth1-prime",
+  "commit": "e2c0b511807f679ea4cafe849f374cd188115827",
+  "wall_clock": "2026-08-20T05:39:16Z",
+  "runtime_s": 725.9
+ }
+}

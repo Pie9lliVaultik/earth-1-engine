@@ -1,3 +1,5 @@
+import os as _os  # LEGACY_COMPARISON_ONLY script: explicit opt-in
+_os.environ.setdefault("EARTH1_LEGACY_COMPARISON", "1")
 #!/usr/bin/env python3
 """The decisive experiment: GOQA with and without the Inglehart channel.
 
@@ -26,7 +28,7 @@ for label, flag in [("WITH_inglehart", "0"), ("NO_inglehart", "1")]:
     import earth1.genesis
     importlib.reload(earth1.genesis)
     civ = earth1.genesis.genesis(200_000, seed=42)
-    from earth1.benchmark import run_goqa_benchmark
+    from earth1.legacy_benchmark import run_goqa_benchmark
     r = run_goqa_benchmark(civ, goqa)
     results[label] = {"engine_cv": r.engine_cv_mae, "naive_cv": r.naive_cv_mae,
                       "engine_insample": r.engine_mae,

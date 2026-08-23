@@ -1,45 +1,31 @@
+"""/observatory — standing readings of the living civilization. 0.5e."""
 from __future__ import annotations
-from fastapi import APIRouter, Query
-from earth1.api.deps import get_civ, get_world_state
-from earth1.api.schemas import QuestionSchema
-from earth1.questions import QUESTIONS
-from earth1.engine import run_question
-from earth1.api._serialize import serialize_result
+
+import numpy as np
+from fastapi import APIRouter
+
+from earth1.api.deps import get_world
 
 router = APIRouter(prefix="/observatory", tags=["observatory"])
 
 
-@router.get("/questions", response_model=list[QuestionSchema])
-def list_questions():
-    return [
-        QuestionSchema(
-            id=q.id, text=q.text, domain=q.domain, lens=q.lens, note=q.note,
-        )
-        for q in QUESTIONS
-    ]
-
-
 @router.get("/standing-readings")
-def standing_readings(
-    epsilon: float = Query(0.18),
-    layers: int = Query(8),
-):
-    """Run all belief-causal questions and return a standing record."""
-    state = get_world_state()
-    civ = state.civ
-    readings = []
-    for q in QUESTIONS:
-        if q.domain != "belief_causal":
-            continue
-        result = run_question(q, civ, epsilon=epsilon, layers=layers, event_log=state.event_log, t=state.t)
-        readings.append({
-            "question_id": q.id,
-            "question_text": q.text,
-            "yes_pct": result.yes_pct,
-            "frac_yes": result.frac_yes,
-            "dominant": result.dominant.name.lower(),
-            "conviction": result.conviction,
-            "fragility": result.fragility,
-            "regime": result.regime,
-        })
-    return readings
+def standing_readings():
+    w, identity = get_world()
+    from earth1.chaos import entropy
+    alive = w.health.alive
+    wealth = w.life.wealth[alive]
+    srt = np.sort(np.clip(wealth, 0, None))
+    cum = np.cumsum(srt)
+    gini = float(1 - 2 * (cum / max(cum[-1], 1e-9)).mean()) if len(srt) \
+        else 0.0
+    return {
+        "identity": identity,
+        "entropy": round(entropy(w.civ.forces), 4),
+        "wealth_gini": round(gini, 4),
+        "mean_conviction": round(float(w.civ.alpha[alive].mean()), 4),
+        "mental_ill": round(float((w.life.mental[alive] < 0.3).mean()), 4),
+        "isolated": round(float(
+            (w.life.relationship[alive] < 0.25).mean()), 4),
+        "memories_standing": len(w.chronicle.events),
+    }

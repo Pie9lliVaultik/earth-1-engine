@@ -1,0 +1,115 @@
+{
+ "diagnostic": "0.4 dev stage 2: cohort instrument",
+ "NOT_BENCHMARK_A": true,
+ "holdout_touched": false,
+ "truth": "wvs_w7_cohort_by_country.csv (8q x 65c x 4 buckets)",
+ "protocol": {
+  "pop": 200000,
+  "seed": 42,
+  "days": 60,
+  "folds": 5,
+  "cv_seeds": [
+   42,
+   7,
+   13
+  ],
+  "cells": 1804
+ },
+ "arms": {
+  "naive": {
+   "arm": "naive",
+   "cohort_mae_pp": 16.146,
+   "gradient_direction_pct": 0.0,
+   "gradient_n": 903,
+   "calibration_slope": 0.819,
+   "within_country_r2": 0.0
+  },
+  "legacy_18": {
+   "arm": "legacy_18",
+   "cohort_mae_pp": 12.059,
+   "gradient_direction_pct": 77.6,
+   "gradient_n": 903,
+   "calibration_slope": 0.867,
+   "within_country_r2": -0.3954
+  },
+  "living_26": {
+   "arm": "living_26",
+   "cohort_mae_pp": 12.541,
+   "gradient_direction_pct": 74.1,
+   "gradient_n": 903,
+   "calibration_slope": 0.851,
+   "within_country_r2": -0.615
+  }
+ },
+ "family_ablations": {
+  "deprivation": {
+   "arm": "minus_deprivation",
+   "cohort_mae_pp": 12.548,
+   "gradient_direction_pct": 74.5,
+   "gradient_n": 903,
+   "calibration_slope": 0.851,
+   "within_country_r2": -0.6209,
+   "delta_mae_vs_full": 0.007
+  },
+  "employment": {
+   "arm": "minus_employment",
+   "cohort_mae_pp": 12.398,
+   "gradient_direction_pct": 75.6,
+   "gradient_n": 903,
+   "calibration_slope": 0.855,
+   "within_country_r2": -0.536,
+   "delta_mae_vs_full": -0.143
+  },
+  "hunger": {
+   "arm": "minus_hunger",
+   "cohort_mae_pp": 12.538,
+   "gradient_direction_pct": 73.5,
+   "gradient_n": 903,
+   "calibration_slope": 0.851,
+   "within_country_r2": -0.6455,
+   "delta_mae_vs_full": -0.003
+  },
+  "mental_health": {
+   "arm": "minus_mental_health",
+   "cohort_mae_pp": 12.526,
+   "gradient_direction_pct": 74.0,
+   "gradient_n": 903,
+   "calibration_slope": 0.851,
+   "within_country_r2": -0.5857,
+   "delta_mae_vs_full": -0.015
+  },
+  "addiction": {
+   "arm": "minus_addiction",
+   "cohort_mae_pp": 12.564,
+   "gradient_direction_pct": 74.9,
+   "gradient_n": 903,
+   "calibration_slope": 0.851,
+   "within_country_r2": -0.5736,
+   "delta_mae_vs_full": 0.023
+  },
+  "isolation": {
+   "arm": "minus_isolation",
+   "cohort_mae_pp": 12.546,
+   "gradient_direction_pct": 75.2,
+   "gradient_n": 903,
+   "calibration_slope": 0.851,
+   "within_country_r2": -0.5488,
+   "delta_mae_vs_full": 0.005
+  },
+  "hope": {
+   "arm": "minus_hope",
+   "cohort_mae_pp": 12.237,
+   "gradient_direction_pct": 74.3,
+   "gradient_n": 903,
+   "calibration_slope": 0.862,
+   "within_country_r2": -0.6052,
+   "delta_mae_vs_full": -0.304
+  }
+ },
+ "provenance": {
+  "host": "earth1-prime",
+  "commit": "f3c57d85dd9bc416c349862d630dcdb8376917bd",
+  "wall_clock": "2026-08-19T21:29:42Z",
+  "runtime_s": 65.7
+ }
+}

@@ -15,10 +15,14 @@ from __future__ import annotations
 import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 0.2 MIGRATION NOTE: this instrument now steps THE canonical loop
+# (chaos.world_step delegates to alive.live_one_day over a full World).
+# Its numbers are NOT comparable with any measured before 0.2 - the
+# instrument itself changed. 0.8 re-runs every measurement from scratch.
 from earth1.chaos import world_step
 from earth1.fabric import build_fabric
-from earth1.genesis import GENESIS_COUNTRIES, genesis
-from earth1.life import birth_life
+from earth1.alive import birth_world
+from earth1.genesis import GENESIS_COUNTRIES
 
 POP = int(os.environ.get("PG_POP", "60000"))
 DAYS = int(os.environ.get("PG_DAYS", "25"))
@@ -29,8 +33,8 @@ COUNTRIES = ["NE", "NG", "IN", "US", "SE", "JP"]
 
 
 def build(drop=None, keep=None):
-    civ = genesis(POP, 42)
-    life = birth_life(civ, seed=42)
+    w = birth_world(POP, 42)
+    civ, life = w.civ, w.life
     fab = build_fabric(civ, life, seed=42)
     if keep:
         civ.adj = fab.by_type[keep].tocsr()
@@ -43,12 +47,14 @@ def build(drop=None, keep=None):
         civ.adj = tot.tocsr()
     else:
         civ.adj = fab.adj
-    return civ, life
+    w.fabric = fab
+    return w
 
 
 def probe(iso2, drop=None, keep=None):
     ci = ISO[iso2]
-    cA, lA = build(drop, keep); cB, lB = build(drop, keep)
+    wA = build(drop, keep); wB = build(drop, keep)
+    cA, lA, cB, lB = wA.civ, wA.life, wB.civ, wB.life
     rA = np.random.default_rng(1234); rB = np.random.default_rng(1234)
     here = np.flatnonzero((cB.country == ci) & lB.employed)
     if here.size == 0:
@@ -59,7 +65,7 @@ def probe(iso2, drop=None, keep=None):
     hm = cA.country == ci
     home_curve, world_curve = [], []
     for _ in range(DAYS):
-        world_step(cA, lA, rA, **LIVING); world_step(cB, lB, rB, **LIVING)
+        world_step(wA, rA, **LIVING); world_step(wB, rB, **LIVING)
         d = np.abs(cA.forces - cB.forces).max(axis=1) > 1e-12
         home_curve.append(float(d[hm].mean()))
         world_curve.append(float(d.mean()))

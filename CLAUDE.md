@@ -18,33 +18,39 @@ and **nothing else is meaningful until Phase 0 exits.**
 
 ## Current phase
 
-**Phase 0 — INTEGRITY** (BIBLE.md Part VIII + the v4.1 amendments at
-the top of the document; now 12 tasks with exit criteria).
+**Epoch 1 is LIVE and ACCEPTED** (2026-08-19): the 4M world runs
+provenanced code (`d2e55b0`) with atomic persistence, verified off-site
+backups, rehearsed restore, and exact restart continuity. See
+`ops/alive/EPOCH1_ACCEPTANCE_REPORT.md`. The epoch boundary at world
+day 284 (`legacy_v0_missing_presence_mobility`) is an engineering
+discontinuity: **no causal benchmark may span it**, and the annulled
+first migration attempt (days 284-304) is not world history.
 
-**First deliverable: WP-0** — create branch `v1-unification`, no new
-physics, produce `V1_UNIFICATION_AUDIT.md` (entry-point graph, state
-schemas, persistence field lists, test gaps, exact files to edit) and
-have it reviewed BEFORE any implementation.
+**WP-0 is DONE** (`V1_UNIFICATION_AUDIT.md`, signed off with three
+amendments). 0.0e (provenance gate) and 0.0c (exact persistence) are
+DEPLOYED. `ops/alive/SESSION_STATE.md` tracks execution state.
+
+**Now: 0.0a — aging.** Scope is FIXED by founder ruling:
+`advance_age()` maintains chronological `age` and `age_bucket` ONLY.
+No EXPERIENCE overwrite (it is a live dynamical channel written by six
+modules). No `_AGE_GRADIENTS` personality drift. No generational
+mortality/rebirth (`generational_tick` carries its own and would create
+two demographic authorities — extract `generational.py:181-185` only).
+Insert after policy/war, before `life_tick`/`health_tick`
+(`alive.py:102`). Known consequence to log, not fix: `life.in_lf` is
+set once at birth, so unfreezing age creates nonagenarians in the
+labour force; retirement is later physics.
 
 Then, in order:
-- 0.0a fix aging (`live_one_day` never advances `civ.age` — verified
-  max|Δage|=0.0 over 30 days; invariant: 365 days = +1 year)
-- 0.0b virgin-slot rebirth (reborn slots inherit the dead agent's
-  adjacency row — verified; invariant: zero inherited ties)
-- 0.0c complete persistence (presence, mobility, RNG, clock missing
-  from `world_alive.save_world` and `timeline._save`; invariant:
-  save→restore→hash round-trip + restored-branch parity)
-- 0.0d fabric re-homing on migration/firm change
-- 0.1 the four correctness bugs (unseeded RNG in `memory.spread`;
-  shared RNG row in `health.py`; conviction decay no-op in
-  `influence.py`; cause-of-death code collision)
-- 0.2–0.8 as written. Note 0.5 explicitly includes the product API:
-  `earth1/api/deps.py:19-35` still loads the OLD world.
-
-Founder-gated parallel track (independent of wiring, start
-immediately): WVS microdata registration (gates R16), FRED/ACLED
-keys, RunPod key rotation, one backup restore rehearsal, the
-destitution-bar ruling.
+- 0.0b virgin-slot rebirth (central reset schema; `_be_born` clears no
+  adjacency row and inherits ~40 fields incl. `health.declining`)
+- 0.0d fabric re-homing (migration updates `civ.country` but not
+  `region`/`urban` — invalid locality key)
+- 0.1 remaining bugs: (b) `health.py:235` `u[4]`→`u[5]`; (c) conviction
+  decay stays OFF, adjudicated by the 0.8 A/B; (d) cause-code enum
+  (war=5 collides with fall=5)
+- 0.2-0.8 as written; 0.5 covers 31 API handlers and must empty
+  `earth1/__init__.py:1` first.
 
 ## Machines
 
@@ -52,8 +58,90 @@ destitution-bar ruling.
   single writer. Do not run experiments here.
 - **prime** 46.4.189.237 (96c/503GB) — ALL ensemble/research work runs
   here, never on the laptop. SSH key: `~/.ssh/earth1_hetzner`.
+- **Storage Box** `u652120@u652120.your-storagebox.de` port 23 — SSH
+  key auth from the world box. Daily backup at 09:50 Berlin via
+  `earth1-backup.timer` → `/opt/earth1/run_backup.sh`. **WARNING
+  (2026-08-19 rehearsal): the script currently backs up the OLD 200K
+  world (`data/living/`), NOT the real 4M world (`data/alive/`).
+  Fix pending — the living civilization has never been backed up.**
 - Laptop = iteration only. A leftover launchd job
   (`com.earthling.earth1-daily`) must be removed (Phase 0.6).
+
+## EARTH-1 V1 — NO DEAD-END RESULTS
+
+> **Do not stop at "the model failed." Your job starts there.**
+
+A benchmark miss is not an acceptable final deliverable. It is a
+diagnostic result that starts the next engineering/research cycle.
+
+When any experiment, calibration, benchmark, scenario backtest,
+prediction task, module validation, or acceptance gate misses its
+predefined target:
+
+1. **Record the result exactly.** Never hide, soften, delete, or
+   rewrite a bad result.
+2. **Verify the instrument first.** Check ground truth, provenance,
+   units, leakage, implementation correctness, persistence, state
+   continuity, metric visibility, benchmark design, and whether the
+   tested code is actually the production/canonical path.
+3. **Explain causally why the result occurred.** Trace the output back
+   through the code and quantify which mechanisms, parameters,
+   datasets, or missing channels account for the error.
+4. **Research before inventing.** Search peer-reviewed academic
+   literature, authoritative technical reports, established
+   simulators, government models, white papers, reference
+   implementations, and relevant empirical datasets for methods that
+   address the diagnosed problem.
+5. **Do not make assumptions where established research exists.** Cite
+   the methods considered and explain why the selected approach
+   applies to Earth-1.
+6. **Implement the smallest defensible correction or improvement.**
+   Bugs are fixed. Missing empirically justified mechanisms are added.
+   Poor parameterizations are calibrated. Weak algorithms are replaced
+   with stronger established methods when evidence supports doing so.
+7. **Run controlled ablations and sensitivity analysis** so we know
+   what actually caused the improvement.
+8. **Retest on TRAIN/DEV and iterate** until the predefined
+   development gate is met.
+9. **Never tune on the final holdout.** Never alter the acceptance
+   threshold after seeing holdout results. Never manufacture a pass.
+10. **Only freeze a capability** after it passes an untouched external
+    holdout or prospective test appropriate to that capability.
+
+The required workflow is:
+
+```
+MISS → VERIFY → DIAGNOSE → RESEARCH → IMPLEMENT
+     → CALIBRATE → ABLATE → RETEST → PASS → FREEZE
+```
+
+A document saying "FAIL" is never the end of the task. It is evidence
+preserved in the research record and the beginning of the next
+iteration.
+
+**Claude Code must not respond to a bad result with only an
+explanation of why it failed.** It must return:
+
+> result → quantified diagnosis → relevant research → proposed
+> solution → implementation → new experiment → comparison with
+> previous result.
+
+The only legitimate terminal exception is when repeated clean
+experiments, correct implementation, strong literature-derived
+approaches, appropriate calibration, and untouched external evidence
+demonstrate that the underlying hypothesis itself is false. In that
+case, preserve the negative evidence and redesign the capability
+rather than falsifying success.
+
+Earth-1's goal is not to document avoidable failure. The goal is to
+engineer every capability in our wheelhouse until it works, while
+preserving a scientifically honest record of every attempt.
+
+*This doctrine is carried verbatim in three places so it cannot
+quietly disappear: here (execution rule), `BIBLE.md` Part XI.A
+(scientific operating doctrine), and every benchmark plan
+(miss-resolution protocol). If the copies ever disagree, BIBLE.md is
+canonical.*
 
 ## Standing rules (BIBLE.md Part XI — enforced, not advisory)
 

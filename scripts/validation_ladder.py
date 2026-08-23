@@ -85,7 +85,7 @@ def rung_gss(civ, c2i, feats) -> dict:
 def rung_wvs(civ, c2i, feats) -> dict:
     """R2 — WVS7: per-country cohort targets, LOO-country."""
     import csv
-    from earth1.benchmark import ISO3_TO_ISO2
+    from earth1.benchmark_questions import ISO3_TO_ISO2
     cells = {}
     for r in csv.DictReader(open("data/wvs_w7_cohort_by_country.csv")):
         i2 = ISO3_TO_ISO2.get(r["country"])
@@ -121,7 +121,7 @@ def rung_wvs(civ, c2i, feats) -> dict:
 
 def rung_goqa(civ, c2i, feats) -> dict:
     """R4 — GOQA 40x66 on pinned folds, corrected truth."""
-    from earth1.benchmark import run_goqa_benchmark
+    from earth1.legacy_benchmark import run_goqa_benchmark
     os.environ.setdefault("EARTH1_PINNED_FOLDS", "data/cv_folds.json")
     gt = json.load(open("data/benchmark/goqa_ground_truth.json"))
     r = run_goqa_benchmark(civ, gt, cv_seed=42)

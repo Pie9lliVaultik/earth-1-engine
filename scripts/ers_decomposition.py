@@ -33,7 +33,7 @@ ALL_ITEMS = ["Q164", "Q182", "Q184", "Q185", "Q180", "Q186", "Q179", "Q181",
 
 
 def main() -> None:
-    from earth1.benchmark import ISO3_TO_ISO2
+    from earth1.benchmark_questions import ISO3_TO_ISO2
     con = duckdb.connect()
     con.execute(f"""CREATE VIEW w AS SELECT * FROM read_csv('{RAW}',
       header=true, delim=',', quote='"', escape='"', strict_mode=false,

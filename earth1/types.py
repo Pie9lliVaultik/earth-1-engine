@@ -19,6 +19,53 @@ FORCE_KEYS = list(Force)
 FORCE_NAMES = {f: f.name.lower() for f in Force}
 NUM_FORCES = len(Force)
 
+class CauseOfDeath(IntEnum):
+    """The canonical death-cause contract (0.1c).
+
+    Codes 1-5 deliberately align with `health.condition`'s disease
+    space (cancer, cvd, infection, injury, fall), so
+    `cause_of_death = condition` remains numerically correct for
+    disease deaths. WAR is 9: it was 5 before 2026-08-19 (world day
+    ~394), colliding with FALL.
+
+    LEGACY RULE — never fabricate historical knowledge: a persisted 5
+    written BEFORE the fix is intrinsically ambiguous (war or fall).
+    Use `resolve_cause(code, legacy=True)` when reading pre-fix state;
+    it refuses to guess under strict=True and labels the ambiguity
+    otherwise. Newly written deaths are always unambiguous.
+    """
+    ALIVE = 0
+    CANCER = 1
+    CVD = 2
+    INFECTION = 3
+    INJURY = 4
+    FALL = 5
+    WEATHER = 6
+    WANT = 7
+    ROAD = 8
+    WAR = 9
+
+
+def resolve_cause(code: int, *, legacy: bool = False,
+                  strict: bool = True):
+    """Read a persisted cause code honestly.
+
+    legacy=True means the value may have been written before the 0.1c
+    fix, when war also wrote 5. A legacy 5 is war-or-fall and nothing
+    can recover which; strict readers refuse it, lenient readers get an
+    explicit ambiguity label instead of a fabricated answer.
+    """
+    code = int(code)
+    if legacy and code == 5:
+        if strict:
+            raise ValueError(
+                "cause code 5 from pre-fix state is ambiguous (war or "
+                "fall) - it cannot be resolved to either without "
+                "fabricating history")
+        return "legacy_war_or_fall"
+    return CauseOfDeath(code)
+
+
 PERISHABILITY_HALF_LIFE = {
     Force.FEAR: 14,
     Force.DESIRE: 60,

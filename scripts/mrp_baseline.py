@@ -22,6 +22,8 @@ median age, region one-hots.
 Env: MRP_POP (default 200000).
 """
 from __future__ import annotations
+import os as _os  # LEGACY_COMPARISON_ONLY: explicit opt-in
+_os.environ.setdefault("EARTH1_LEGACY_COMPARISON", "1")
 
 import json
 import os
@@ -31,7 +33,8 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from earth1.benchmark import ISO3_TO_ISO2, _goqa_prepare_tasks
+from earth1.benchmark_questions import ISO3_TO_ISO2
+from earth1.legacy_benchmark import _goqa_prepare_tasks
 from earth1.calibration import _get_country_index
 from earth1.genesis import genesis, GENESIS_COUNTRIES
 from earth1.rng import logit, sigmoid

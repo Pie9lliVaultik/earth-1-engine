@@ -1,0 +1,136 @@
+{
+ "static": {
+  "/ask route": {
+   "file": "earth1/api/routes/ask.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/world route": {
+   "file": "earth1/api/routes/world.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/forecast route": {
+   "file": "earth1/api/routes/forecast.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/observatory route": {
+   "file": "earth1/api/routes/observatory.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/predictions route (DB-only)": {
+   "file": "earth1/api/routes/predictions.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "api.deps (world resolver)": {
+   "file": "earth1/api/deps.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "branch": {
+   "file": "earth1/branch.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "timeline/scrub": {
+   "file": "earth1/timeline.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "assimilation": {
+   "file": "earth1/assimilate.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "earthling observation": {
+   "file": "earth1/observe.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "observer (asking)": {
+   "file": "earth1/observer.py",
+   "resolves_alive_world": true,
+   "how": "pure consumer",
+   "dead_family_imports": []
+  },
+  "answer_living (canonical answer path)": {
+   "file": "earth1/answer_living.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "benchmark_living (official benchmark)": {
+   "file": "earth1/benchmark_living.py",
+   "resolves_alive_world": true,
+   "how": "transitive",
+   "dead_family_imports": []
+  },
+  "benchmark runner": {
+   "file": "scripts/benchmark_living.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "production daemon": {
+   "file": "scripts/world_alive.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "Observatory (investor demo)": {
+   "file": "scripts/observatory_server.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  }
+ },
+ "runtime": {
+  "alive_home": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_one_earth_o5dp63cr",
+  "physics_version": "0.8-candidate-v3/39994f0-canonical",
+  "world_hash_by_surface": {
+   "saved_world": "5d31baeacfc0cfddc12515b237d7c7ce35f34a35c932b3b2e44d606b662591eb",
+   "deps_loaded": "5d31baeacfc0cfddc12515b237d7c7ce35f34a35c932b3b2e44d606b662591eb",
+   "answer_living": "5d31baeacfc0cfddc12515b237d7c7ce35f34a35c932b3b2e44d606b662591eb",
+   "benchmark_living": "5d31baeacfc0cfddc12515b237d7c7ce35f34a35c932b3b2e44d606b662591eb"
+  },
+  "snapshot_sha256_by_surface": {
+   "/world": "e1ade1b6542c0eeaf02be32a707be53ae75e291f3b35777d3fe4d18b8f3b08dc",
+   "/observatory": "e1ade1b6542c0eeaf02be32a707be53ae75e291f3b35777d3fe4d18b8f3b08dc",
+   "/ask (503 by design)": "e1ade1b6542c0eeaf02be32a707be53ae75e291f3b35777d3fe4d18b8f3b08dc",
+   "/forecast": "e1ade1b6542c0eeaf02be32a707be53ae75e291f3b35777d3fe4d18b8f3b08dc"
+  },
+  "physics_version_by_surface": {
+   "/world": "0.8-candidate-v3/39994f0-canonical",
+   "/observatory": "0.8-candidate-v3/39994f0-canonical",
+   "/ask (503 by design)": "0.8-candidate-v3/39994f0-canonical",
+   "/forecast": "0.8-candidate-v3/39994f0-canonical",
+   "answer_living": "0.8-candidate-v3/39994f0-canonical",
+   "benchmark_living": "0.8-candidate-v3/39994f0-canonical"
+  },
+  "surfaces_exercised": [
+   "/world",
+   "/observatory",
+   "/ask (503 by design)",
+   "/forecast",
+   "answer_living",
+   "benchmark_living"
+  ],
+  "pass": true
+ },
+ "legacy_gate_violations": [],
+ "ONE_EARTH_CODE_PATH": "PASS",
+ "note": "CODE-PATH status only. The LIVE-PRODUCTION One-Earth invariant remains pending until the accepted Epoch-2 executable is deployed as the sole canonical Earth (founder ruling: Epoch 1 is not hot-swapped)."
+}

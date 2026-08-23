@@ -1,0 +1,20 @@
+{
+ "boundaries": [
+  {
+   "id": "pathological_force_field_era",
+   "recorded": "2026-08-20",
+   "law": "update_conviction gain-only ratchet + isolation-scaled decay, as at commit 9f417d1 and all prior history",
+   "finding": "absorbing state: population alpha -> 1.0 within ~15 days of any world's life (measured: fresh 200k no-news worlds, 3 ablation arms incl. the registered decay arm); averaging term of propagate exactly zero thereafter; pole-only dynamics rail force channels; perturbation half-life 0.5-1.2 days; traits driven bimodal by feedback residue",
+   "scope": "EVERY trajectory computed under this law, including the entire production world history (epoch 1, days 0-present) and all experiments to date",
+   "rule": "no causal or calibration claim measured under this law may be compared across the eventual law change without an explicit epoch boundary; the production world is the pathological reference era",
+   "evidence": [
+    "ops/alive/PHASE_0_8_A_REPORT.md",
+    "ops/alive/BLAST_RADIUS_REPORT.md",
+    "data/force_census_day1142.json",
+    "data/force_ablation_0_8/",
+    "data/force_tau_0_8/tau_map.json",
+    "data/contamination_census.json"
+   ]
+  }
+ ]
+}

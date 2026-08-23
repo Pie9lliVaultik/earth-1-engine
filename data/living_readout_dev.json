@@ -1,0 +1,80 @@
+{
+ "diagnostic": "0.4 dev-only: legacy vs living readout",
+ "NOT_BENCHMARK_A": true,
+ "holdout_touched": false,
+ "protocol": {
+  "pop": 200000,
+  "seed": 42,
+  "days_lived": 60,
+  "folds": 5,
+  "cv_seeds": [
+   42,
+   7,
+   13
+  ],
+  "ridge_lambda": 1.0,
+  "questions": 40
+ },
+ "arms": {
+  "naive": {
+   "arm": "naive",
+   "national_mae_pp": 12.471,
+   "mae_per_question_sd": 5.821,
+   "calibration_slope": -11.268
+  },
+  "legacy": {
+   "arm": "legacy_18",
+   "national_mae_pp": 10.471,
+   "mae_per_question_sd": 4.112,
+   "calibration_slope": 0.575
+  },
+  "living": {
+   "arm": "living_26",
+   "national_mae_pp": 11.325,
+   "mae_per_question_sd": 4.497,
+   "calibration_slope": 0.461
+  }
+ },
+ "ablations": {
+  "material": {
+   "arm": "living_minus_material",
+   "national_mae_pp": 10.967,
+   "mae_per_question_sd": 4.307,
+   "calibration_slope": 0.515
+  },
+  "body_mind": {
+   "arm": "living_minus_body_mind",
+   "national_mae_pp": 11.063,
+   "mae_per_question_sd": 4.373,
+   "calibration_slope": 0.491
+  },
+  "social": {
+   "arm": "living_minus_social",
+   "national_mae_pp": 11.188,
+   "mae_per_question_sd": 4.449,
+   "calibration_slope": 0.469
+  },
+  "flourishing": {
+   "arm": "living_minus_flourishing",
+   "national_mae_pp": 11.157,
+   "mae_per_question_sd": 4.426,
+   "calibration_slope": 0.479
+  }
+ },
+ "within_country_variance_share": {
+  "deprivation": 0.951,
+  "unemployed": 0.992,
+  "spells": 0.978,
+  "hunger": 0.951,
+  "mental": 0.99,
+  "addiction": 0.999,
+  "relationship": 0.998,
+  "hope": 0.859
+ },
+ "provenance": {
+  "host": "earth1-prime",
+  "commit": "92edf546ae50f86f95abe604764cdb208f76a0a2",
+  "wall_clock": "2026-08-19T21:26:10Z",
+  "runtime_s": 60.1
+ }
+}

@@ -15,7 +15,7 @@ from typing import List, Optional
 import numpy as np
 
 from earth1.types import Question
-from earth1.benchmark import BENCHMARK_QUESTIONS, BenchmarkQuestion
+from earth1.benchmark_questions import BENCHMARK_QUESTIONS, BenchmarkQuestion
 
 
 @dataclass

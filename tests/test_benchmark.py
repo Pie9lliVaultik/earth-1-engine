@@ -1,3 +1,5 @@
+import os as _os  # LEGACY_COMPARISON_ONLY test: explicit opt-in (tests may)
+_os.environ.setdefault("EARTH1_LEGACY_COMPARISON", "1")
 """Tests for the benchmark harness."""
 import sys
 sys.path.insert(0, ".")
@@ -7,7 +9,7 @@ import tempfile
 import numpy as np
 from pathlib import Path
 
-from earth1.benchmark import (
+from earth1.legacy_benchmark import (
     BENCHMARK_QUESTIONS, BenchmarkQuestion, run_benchmark,
     format_report, save_report, check_regression,
     run_benchmark_comparison, format_comparison,

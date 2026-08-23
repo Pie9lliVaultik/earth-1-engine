@@ -1,0 +1,30 @@
+{
+ "pop": 200000,
+ "days": 240,
+ "ladder": [
+  {
+   "repeats": 2,
+   "rank_corr": -0.0344
+  },
+  {
+   "repeats": 4,
+   "rank_corr": -0.0798
+  },
+  {
+   "repeats": 8,
+   "rank_corr": -0.0717
+  },
+  {
+   "repeats": 12,
+   "rank_corr": -0.0956
+  },
+  {
+   "repeats": 16,
+   "rank_corr": -0.1047
+  },
+  {
+   "repeats": 20,
+   "rank_corr": -0.0673
+  }
+ ]
+}

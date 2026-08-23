@@ -1,0 +1,8 @@
+# RETIRED 2026-08-20 (Phase 0.7) — see earth1-daily.service.retired.
+[Unit]
+Description=Earth-1 heartbeat at 09:07 CET daily
+[Timer]
+OnCalendar=*-*-* 09:07:00 Europe/Berlin
+Persistent=true
+[Install]
+WantedBy=timers.target

@@ -15,7 +15,7 @@ from earth1.training import (
 )
 from earth1.engine import build_civilization
 from earth1.questions import question_by_id
-from earth1.benchmark import BENCHMARK_QUESTIONS
+from earth1.benchmark_questions import BENCHMARK_QUESTIONS
 
 POP = 5_000
 civ = build_civilization(POP, seed=42)

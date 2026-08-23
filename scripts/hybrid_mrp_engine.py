@@ -26,7 +26,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from earth1.benchmark import _goqa_prepare_tasks
+from earth1.legacy_benchmark import _goqa_prepare_tasks
 from earth1.calibration import (_build_features, _get_country_index,
                                 calibrate_single)
 from earth1.genesis import genesis

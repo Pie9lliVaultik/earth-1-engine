@@ -170,7 +170,8 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
     gone = starving | parched
     if gone.any() and health is not None:
         health.alive[gone] = False
-        health.cause_of_death[gone] = 7          # want
+        from earth1.types import CauseOfDeath
+        health.cause_of_death[gone] = int(CauseOfDeath.WANT)
 
     # breathing is a continuous tax nobody notices paying
     life.physical = np.clip(life.physical - BREATH_TAX * fl.breath
@@ -203,7 +204,7 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
 
     # MEANING: art made and art received, plus work worth doing
     made = (kn.works_made > 0)
-    art_flow = np.asarray(civ.adj @ made.astype(np.float64)).ravel() / deg
+    art_flow = np.asarray(civ.adj @ made.astype(civ.adj.dtype)).ravel() / deg
     fl.art_received += art_flow * dt_days * 0.01
     mean_target = np.clip(0.25 + 0.35 * np.clip(fl.art_received, 0, 1)
                           + 0.20 * kn.status + 0.20 * fl.belonging, 0, 1)
@@ -231,17 +232,12 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
     # it. That is the whole point of building this half: a world with
     # only suffering in it predicts revolt everywhere, and the real one
     # does not, because people have reasons to hold on.
-    civ.forces[:, Force.FEAR] = np.clip(
-        civ.forces[:, Force.FEAR] + 0.30 * need - 0.20 * fl.hope, 0, 1)
-    civ.forces[:, Force.DESIRE] = np.clip(
-        civ.forces[:, Force.DESIRE] + 0.20 * fl.hope
-        + 0.15 * fl.curiosity - 0.25 * need, 0, 1)
-    civ.forces[:, Force.COLLECTIVE] = np.clip(
-        civ.forces[:, Force.COLLECTIVE] + 0.20 * fl.belonging, 0, 1)
-    civ.forces[:, Force.CULTURE] = np.clip(
-        civ.forces[:, Force.CULTURE] + 0.20 * fl.meaning, 0, 1)
-    civ.forces[:, Force.EXPERIENCE] = np.clip(
-        civ.forces[:, Force.EXPERIENCE] + 0.10 * fl.curiosity, 0, 1)
+    # CANONICAL (candidate 76a574c): flourishing does NOT write forces.
+    # The incumbent wrote these five terms as unconditional daily
+    # increments — the accumulation contradiction found by the 0.8
+    # census ("LEVEL MAP, NOT ACCUMULATION", probe 1). The terms now
+    # live where the architecture says they belong: as bounded LEVEL
+    # contributions inside life.life_force_target (flourishing=...).
 
     return {"hungry": float((fl.hunger[live] > 0.5).mean()),
             "no_safe_water": float((_water_access(civ, soil)[live] < 0.85).mean()),

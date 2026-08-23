@@ -1,0 +1,42 @@
+{
+ "KA1_neutral_T_equals_B": {
+  "max_err": 0.0,
+  "pass": true
+ },
+ "KA2_KA3_slopes": {
+  "political": {
+   "expected": 0.0125,
+   "got_mean": 0.0125,
+   "max_err": 4.5102810375396984e-17,
+   "mono_ok": true,
+   "pass": true
+  },
+  "social_need": {
+   "expected": -0.010000000000000002,
+   "got_mean": -0.01,
+   "max_err": 6.938893903907228e-18,
+   "mono_ok": true,
+   "pass": true
+  },
+  "belonging": {
+   "expected": 0.010000000000000002,
+   "got_mean": 0.01,
+   "max_err": 6.245004513516506e-17,
+   "mono_ok": true,
+   "pass": true
+  },
+  "ds": {
+   "expected": 0.036,
+   "max_err": 7.632783294297951e-17,
+   "pass": true
+  }
+ },
+ "KA4_no_dynamic_centering": {
+  "delta": 0.0,
+  "pass": true
+ },
+ "KA5_other_forces_untouched": {
+  "pass": true
+ },
+ "verdict": "ALL_KA_PASS"
+}

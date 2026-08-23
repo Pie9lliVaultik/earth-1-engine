@@ -1,0 +1,6 @@
+# Storage Box target for run_backup.sh / verify_restore.sh.
+# Real file: /opt/earth1/ops/alive/BACKUP_ENV, chmod 600, NOT in git.
+# No credential belongs in a checked-in script.
+BACKUP_TARGET=u652120@u652120.your-storagebox.de:earth1
+BACKUP_PORT=23
+BACKUP_KEEP=7

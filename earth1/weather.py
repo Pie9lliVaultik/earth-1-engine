@@ -148,7 +148,8 @@ def weather_tick(civ, life, health, cl: Climate, rng, dt_days: float = 1.0,
     died = live & (rng.random(n) < p_die)
     if died.any():
         health.alive[died] = False
-        health.cause_of_death[died] = 6          # the weather
+        from earth1.types import CauseOfDeath
+        health.cause_of_death[died] = int(CauseOfDeath.WEATHER)
 
     # cold is also a bill: heating comes straight out of the buffer
     life.wealth -= 0.05 * under * dt_days
