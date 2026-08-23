@@ -1,0 +1,135 @@
+[
+ {
+  "arm": "KA1",
+  "fires": {
+   "identity_collapse": [
+    1
+   ],
+   "collective_surge": [
+    1
+   ]
+  },
+  "last_fired": {
+   "identity_collapse": 1,
+   "collective_surge": 1
+  },
+  "pass": true
+ },
+ {
+  "arm": "KA2",
+  "fires": {
+   "identity_collapse": [
+    1,
+    46
+   ],
+   "collective_surge": [
+    1,
+    46
+   ]
+  },
+  "pass": true
+ },
+ {
+  "arm": "KA2b",
+  "fires": {
+   "identity_collapse": [
+    1
+   ],
+   "collective_surge": [
+    1
+   ]
+  },
+  "pass": true
+ },
+ {
+  "arm": "KA3",
+  "fires": {
+   "identity_collapse": [
+    1
+   ],
+   "collective_surge": [
+    1
+   ]
+  },
+  "pass": true
+ },
+ {
+  "arm": "KA4",
+  "fires_while_init_hot": {
+   "identity_collapse": [],
+   "collective_surge": []
+  },
+  "fires_after_reentry": {
+   "identity_collapse": [
+    43
+   ],
+   "collective_surge": [
+    43
+   ]
+  },
+  "pass": true
+ },
+ {
+  "arm": "KA5",
+  "fires_before_save": {
+   "identity_collapse": [
+    1
+   ],
+   "collective_surge": [
+    1
+   ]
+  },
+  "last_fired_before": {
+   "identity_collapse": 1,
+   "collective_surge": 1
+  },
+  "last_fired_restored": {
+   "identity_collapse": 1,
+   "collective_surge": 1
+  },
+  "last_fired_twin": {
+   "identity_collapse": 1,
+   "collective_surge": 1
+  },
+  "residues_restored_vs_twin_identical": true,
+  "pass": true
+ },
+ {
+  "arm": "KA6",
+  "state_equal": true,
+  "fires_before": {
+   "identity_collapse": [
+    1
+   ],
+   "collective_surge": [
+    1
+   ]
+  },
+  "fires_clone_after_60_hot": {
+   "identity_collapse": [
+    1
+   ],
+   "collective_surge": [
+    1
+   ]
+  },
+  "pass": true
+ },
+ {
+  "arm": "KA7",
+  "panic_fire_days": [
+   0,
+   14,
+   28
+  ],
+  "pass": true
+ },
+ {
+  "arm": "KA8",
+  "hash_identical_30d": true,
+  "fires_scoped_h1": 281,
+  "fires_scoped_incumbent": 527,
+  "detector_differs": true,
+  "pass": true
+ }
+]

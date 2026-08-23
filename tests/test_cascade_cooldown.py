@@ -2,6 +2,12 @@
 contract, 0.8). The flag EARTH1_CASCADE_COOLDOWN=1 restores the
 DECLARED event semantics; default-off preserves incumbent behavior
 bit-exactly (pinned hashes untouched).
+
+H-CASCADE-1 (ops/alive/H_CASCADE_1.md): identity_collapse and
+collective_surge now fire on episode ENTRY only, so the cooldown-only
+contract is exercised here on panic_cascade (ECON<0.3, FEAR>0.5), whose
+semantics are unchanged (KA7). Episode-entry semantics for the scoped
+rules are tested at the bottom of this file.
 """
 import os
 
@@ -13,16 +19,16 @@ from earth1.alive import birth_world, live_one_day
 from earth1.thresholds import TRANSITION_RULES
 from earth1.types import Force
 
-SURGE = next(r for r in TRANSITION_RULES
-             if r.name == "collective_surge")
+RULE = "panic_cascade"
+SURGE = next(r for r in TRANSITION_RULES if r.name == RULE)
 
 
 def _force_hot(w, everywhere=True, country=None):
-    """Hold collective_surge conditions true (COLLECTIVE>0.75,
-    FEAR>0.6) for all agents or one country."""
+    """Hold panic_cascade conditions true (ECON<0.3, FEAR>0.5) for
+    all agents or one country."""
     mask = np.ones(w.civ.n, dtype=bool) if everywhere \
         else (w.civ.country == country)
-    w.civ.forces[mask, Force.COLLECTIVE] = 0.9
+    w.civ.forces[mask, Force.ECONOMICS] = 0.1
     w.civ.forces[mask, Force.FEAR] = 0.8
 
 
@@ -43,11 +49,11 @@ def test_no_refire_inside_cooldown(flag):
     assert st1["cascades_fired"] > 0, "trigger did not arm"
     fired_day1 = {k: v for k, v in
                   w.chronicle.cascade_last_fired.items()
-                  if k[0] == "collective_surge"}
+                  if k[0] == RULE}
     assert fired_day1, "no cooldown state recorded"
     st2 = _run_day(w, rng)
     refired = [k for k, v in w.chronicle.cascade_last_fired.items()
-               if k[0] == "collective_surge" and v >= 1]
+               if k[0] == RULE and v >= 1]
     assert not refired, "collective_surge refired inside its cooldown"
     assert st2["cascades_fired"] < st1["cascades_fired"]
 
@@ -57,7 +63,7 @@ def test_eligible_again_after_cooldown(flag):
     rng = np.random.default_rng(3)
     _run_day(w, rng)
     state = w.chronicle.cascade_last_fired
-    keys = [k for k in state if k[0] == "collective_surge"]
+    keys = [k for k in state if k[0] == RULE]
     # fast-forward: pretend the fire happened beyond the cooldown
     for k in keys:
         state[k] = -int(SURGE.cooldown_days) - 1
@@ -72,7 +78,7 @@ def test_locality_independence(flag):
     rng = np.random.default_rng(3)
     _run_day(w, rng)                      # everyone fires day 1
     state = w.chronicle.cascade_last_fired
-    keys = sorted(k for k in state if k[0] == "collective_surge")
+    keys = sorted(k for k in state if k[0] == RULE)
     assert len(keys) >= 2, "need >=2 localities for independence"
     # locality A ready again, locality B still cooling
     state[keys[0]] = -100
@@ -98,7 +104,7 @@ def test_restart_preserves_cooldown_state(flag, tmp_path):
     st = _run_day(w2, np.random.default_rng(4))
     refired = [k for k, v in
                w2.chronicle.cascade_last_fired.items()
-               if k[0] == "collective_surge" and v >= 1]
+               if k[0] == RULE and v >= 1]
     assert not refired
 
 
@@ -130,3 +136,67 @@ def test_never_triggered_rule_has_no_state(flag):
     assert not any(k[0] == "polarization_lock"
                    for k in w.chronicle.cascade_last_fired), \
         "a never-triggered rule acquired cooldown state"
+
+
+# ── H-CASCADE-1: episode-entry semantics for the scoped rules ──────
+def _surge_hot(w, on=True):
+    w.civ.forces[:, Force.COLLECTIVE] = 0.9 if on else 0.1
+    w.civ.forces[:, Force.FEAR] = 0.8 if on else 0.1
+
+
+def _surge_fires(w):
+    return sorted(r["day"] for r in (w.chronicle.cascade_residues or [])
+                  if r["rule"] == "collective_surge")
+
+
+def test_episode_entry_no_refire_after_cooldown():
+    """hot→hot never fires, even when the cooldown (20d) has elapsed."""
+    w = birth_world(2000, 3)
+    rng = np.random.default_rng(3)
+    _surge_hot(w, False); live_one_day(w, rng)       # establish cold state
+    for _ in range(45):
+        _surge_hot(w, True); live_one_day(w, rng)
+    # a locality crossing pop 9→10 is a genuine cold→hot entry (pop>=10
+    # is part of "hot"); judge only localities that fired on entry day
+    # 1 — none of them may fire again while continuously hot
+    res = [r for r in w.chronicle.cascade_residues
+           if r["rule"] == "collective_surge"]
+    entry = {r["loc"] for r in res if r["day"] == 1}
+    assert entry
+    later = [r for r in res if r["loc"] in entry and r["day"] > 1]
+    assert not later, later
+
+
+def test_episode_entry_fires_on_reentry():
+    w = birth_world(2000, 3)
+    rng = np.random.default_rng(3)
+    _surge_hot(w, False); live_one_day(w, rng)
+    _surge_hot(w, True); live_one_day(w, rng)
+    for _ in range(25):
+        _surge_hot(w, False); live_one_day(w, rng)
+    _surge_hot(w, True); live_one_day(w, rng)
+    days = sorted(set(_surge_fires(w)))
+    assert len(days) == 2 and days[1] - days[0] == 26, days
+
+
+def test_episode_initialization_no_day_zero_event():
+    w = birth_world(2000, 3)
+    rng = np.random.default_rng(3)
+    _surge_hot(w, True); live_one_day(w, rng)         # already hot at init
+    assert _surge_fires(w) == []
+    assert any(k[0] == "collective_surge"
+               for k in w.chronicle.cascade_episode_active)
+
+
+def test_episode_state_persists(tmp_path):
+    w = birth_world(2000, 3)
+    rng = np.random.default_rng(3)
+    _surge_hot(w, False); live_one_day(w, rng)
+    _surge_hot(w, True); live_one_day(w, rng)
+    ep = set(w.chronicle.cascade_episode_active)
+    persistence.save_world(w, tmp_path / "w.pkl", np.random.default_rng(1))
+    w2, _r, _i = persistence.load_world(tmp_path / "w.pkl")
+    assert set(w2.chronicle.cascade_episode_active) == ep
+    n = len(_surge_fires(w2))
+    _surge_hot(w2, True); live_one_day(w2, np.random.default_rng(4))
+    assert len(_surge_fires(w2)) == n                  # no duplicate

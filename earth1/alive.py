@@ -100,7 +100,9 @@ CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
 # ops/alive/CANONICALIZATION_PROGRAM.md). No environment flag selects
 # physics; EARTH1_TEST_* flags exist only for the Stage-B broken twins
 # and are excluded from production by the release gate.
-PHYSICS_VERSION = "0.8-candidate-v2/76a574c-canonical"
+PHYSICS_VERSION = "0.8-candidate-v3/H-CASCADE-1"
+# H-CASCADE-1 scope: rules whose firing means episode ENTRY.
+EPISODE_ENTRY_RULES = frozenset({"identity_collapse", "collective_surge"})
 
 
 def cascade_residue_levels(residues, day):
@@ -364,6 +366,17 @@ def live_one_day(w: World, rng, *,
     # instant permanent write is gone.
     if getattr(w.chronicle, "cascade_last_fired", None) is None:
         w.chronicle.cascade_last_fired = {}
+    # H-CASCADE-1 (ops/alive/H_CASCADE_1.md, development): for the
+    # EPISODE_ENTRY_RULES a firing means ENTRY into an episode
+    # (cold→hot), never "still hot after the cooldown elapsed".
+    # Episode state = set of (rule, locality) currently hot, on the
+    # chronicle (persisted/cloned with it). None ⇒ uninitialized: the
+    # first step records the current hot set and fires nothing for the
+    # scoped rules (no synthetic day-zero transition).
+    _ep = getattr(w.chronicle, "cascade_episode_active", None)
+    _ep_init = _ep is None
+    if _ep_init:
+        _ep = w.chronicle.cascade_episode_active = set()
     _cres = getattr(w.chronicle, "cascade_residues", None)
     if _cres:
         # expiry maintenance only (legacy 0.01 active-set rule)
@@ -385,6 +398,18 @@ def live_one_day(w: World, rng, *,
         frac = np.bincount(li, weights=met.astype(np.float64),
                            minlength=nl) / np.maximum(pop_l, 1.0)
         hot = (frac >= critical_fraction) & (pop_l >= 10)
+        if rule.name in EPISODE_ENTRY_RULES:
+            hot_now = {(rule.name, int(uloc[h]))
+                       for h in np.flatnonzero(hot)}
+            mine = {k for k in _ep if k[0] == rule.name}
+            _ep -= mine - hot_now              # hot→cold: close
+            entered = hot_now - mine           # cold→hot: open
+            _ep |= entered
+            if _ep_init:
+                entered = set()                # establish state only
+            for hidx in np.flatnonzero(hot):
+                if (rule.name, int(uloc[hidx])) not in entered:
+                    hot[hidx] = False          # hot→hot: no event
         if hot.any():
             state = w.chronicle.cascade_last_fired
             for hidx in np.flatnonzero(hot):
