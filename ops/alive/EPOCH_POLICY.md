@@ -30,3 +30,6 @@
 | 2 | TO BE BORN | **20260823** (fresh; never used — burned/reserved list in SESSION_STATE) | `0.8-candidate-v3/39994f0-canonical` | `main` ≥ 843f596 | 4,000,000 agents, genesis procedure `birth_world(POP, SEED)` | scientific status PRE-BENCHMARK / NOT VALIDATED; genesis Earth (no calendar alignment — C1-PRED stays blocked; a timeline-born Earth would be a later epoch) |
 
 Seed 20260823 is hereby burned for Epoch 2 only.
+
+## 4M pilot (prime, 2026-08-23, main 802e124, daemon path `scripts/world_alive.py`)
+genesis 4,000,000 @ seed 20260823 ≈ 2.5 min; 27–30 s per world-day (production period 60 s → no backlog); RSS ≈ 15 GB; `EPOCH.json` written (uuid 468a3dfa…, genesis hash 2d9a7c2a…); SIGTERM checkpoint at day 10 (sha 25201b12…); reload: 139 open episodes, 50 cooldown entries, 83 residues, RNG continued; two independent reload + 2-day replays → identical world hash f34c55f2…. PASS. (Pilot world discarded; it is not Epoch 2.)
