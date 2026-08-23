@@ -104,9 +104,56 @@ CANONICAL_DAY = dict(beta=2.0, residue=0.02, critical_fraction=0.12,
 # semantics (39994f0, founder-accepted 2026-08-23). Canonical does not
 # mean validated: scientific status PRE-BENCHMARK (see
 # ops/alive/CASCADE_PUBLIC_BENCHMARK_PREREG_v1.md).
-PHYSICS_VERSION = "0.8-candidate-v3/39994f0-canonical"
+PHYSICS_VERSION = "0.8-candidate-v4/posthumous-invariant"
 # H-CASCADE-1 scope: rules whose firing means episode ENTRY.
 EPISODE_ENTRY_RULES = frozenset({"identity_collapse", "collective_surge"})
+
+
+# Per-agent arrays that constitute ordinary living-agent state. Rows dead
+# at tick start are restored to these values at tick end. Health,
+# knowledge, flourishing, class, contagion, weather, mobility and
+# institutions already mask on alive; this list covers the writers that
+# do not: propagate/relax/conviction (civ.forces, civ.alpha), the feed,
+# the trait feedback (civ.openness/doubt/desire_intensity), life_tick,
+# memory.tick (forces), and advance_age.
+DECEASED_FROZEN = (
+    ("civ", ("forces", "alpha", "openness", "doubt", "desire_intensity",
+             "age")),
+    ("life", ("occupation", "firm", "employed", "in_lf", "wage", "wealth",
+              "cost", "tenure", "deprivation", "spells", "mental",
+              "physical", "addiction", "relationship", "social_need",
+              "political", "policy_net", "durables", "durable_spend",
+              "owns_home", "rent", "arrears", "evicted", "last_event",
+              "last_event_day", "n_events")),
+)
+
+
+def _living_view(adj, alive):
+    """The graph as today's active dynamics see it: every edge INTO a
+    deceased row carries zero weight. A per-tick view; the stored graph
+    is untouched (relationship existence survives death)."""
+    if alive.all():
+        return adj
+    m = adj.tocsr(copy=True)
+    m.data = m.data * alive[m.indices]
+    m.eliminate_zeros()
+    return m
+
+
+def _snapshot_deceased(w, dead):
+    snap = {}
+    for sub, names in DECEASED_FROZEN:
+        o = getattr(w, sub)
+        for nm in names:
+            a = getattr(o, nm, None)
+            if isinstance(a, np.ndarray) and a.shape[0] == dead.shape[0]:
+                snap[(sub, nm)] = a[dead].copy()
+    return snap
+
+
+def _restore_deceased(w, dead, snap):
+    for (sub, nm), v in snap.items():
+        getattr(getattr(w, sub), nm)[dead] = v
 
 
 def cascade_residue_levels(residues, day):
@@ -184,6 +231,15 @@ def live_one_day(w: World, rng, *,
     # 3 first: governments decide on YESTERDAY's state, and their policy
     # is what today's deprivation will be computed against
     alive_at_tick_start = int(w.health.alive.sum())
+    # POSTHUMOUS INVARIANT (founder ruling 2026-08-23, ops/alive/
+    # POSTHUMOUS_INFLUENCE.md): death ends active agency, not legacy.
+    # Rows dead at tick START take no ordinary living-agent update this
+    # tick: their last living state is restored at the end of the tick
+    # (see _restore_deceased). Explicit legacy paths — bereavement at
+    # death, memories whose scope includes them, inheritance at rebirth
+    # — do not read these rows dynamically and are untouched.
+    _dead0 = ~w.health.alive
+    _frozen = _snapshot_deceased(w, _dead0) if _dead0.any() else None
     st.update(govern(civ, life, w.gov, rng, dt_days))
     st.update(apply_policy_and_war(civ, life, w.gov, w.health, rng, dt_days))
 
@@ -293,7 +349,13 @@ def live_one_day(w: World, rng, *,
     # 7 influence, 8 circumstance
     from earth1.susceptibility import compute as susceptibility_of
     sus = susceptibility_of(civ, life, w.flourishing)
-    civ.forces = propagate(civ.forces, civ.alpha, civ.adj,
+    # POSTHUMOUS INVARIANT: the deceased are not ordinary peers. Edges
+    # to dead rows are kept (relationship existence is history) but
+    # carry no weight in today's active dynamics — partner sampling,
+    # conviction evidence and the neighbourhood feedback all see a
+    # living-only view. No edge is deleted here.
+    adj_live = _living_view(civ.adj, w.health.alive)
+    civ.forces = propagate(civ.forces, civ.alpha, adj_live,
                            day=w.day + 1, scratch=scratch,
                            susceptibility=sus)
     # ── BODIES IN THE SAME PLACE ─────────────────────────────────────
@@ -320,13 +382,13 @@ def live_one_day(w: World, rng, *,
     # THE FEED — a different physics, applied after conversation
     if w.feed is not None:
         from earth1.feed import feed_tick
-        st.update(feed_tick(civ, w.feed, civ.alpha,
-                            day=w.day + 1, scratch=scratch,
+        st.update(feed_tick(civ, _living_view(w.feed, w.health.alive),
+                            civ.alpha, day=w.day + 1, scratch=scratch,
                             susceptibility=sus))
     st["mean_susceptibility_fear"] = float(sus[:, Force.FEAR].mean())
     st["susceptibility_spread"] = float(sus.std())
     civ.forces = np.clip(civ.forces + relax * (target - civ.forces), 0.0, 1.0)
-    civ.alpha = update_conviction(civ.forces, civ.alpha, civ.adj,
+    civ.alpha = update_conviction(civ.forces, civ.alpha, adj_live,
                                   scratch=scratch)
 
     # 5b tie plasticity (0.5 port) — the fabric responds to the day's
@@ -347,7 +409,8 @@ def live_one_day(w: World, rng, *,
            + civ.region.astype(np.int64) * 2 + civ.urban.astype(np.int64))
     uloc, li = np.unique(loc, return_inverse=True)
     nl = int(li.max()) + 1
-    pop_l = np.bincount(li, minlength=nl).astype(np.float64)
+    pop_l = np.bincount(li, weights=w.health.alive.astype(np.float64),
+                        minlength=nl)          # living residents only
     fired = 0
     # 0.8 probe-1 CONTRADICTION repair (founder-authorized,
     # experimental flag): TransitionRule declares cooldown_days but the
@@ -395,7 +458,7 @@ def live_one_day(w: World, rng, *,
     for rule in TRANSITION_RULES:
         if rule.region_scope != "regional":
             continue
-        met = np.ones(civ.n, dtype=bool)
+        met = w.health.alive.copy()         # the dead do not participate
         for force, op, thresh in rule.conditions:
             col = _det_forces[:, force.value]
             met &= (col > thresh) if op == ">" else (col < thresh)
@@ -442,8 +505,8 @@ def live_one_day(w: World, rng, *,
     st["cascades_fired"] = fired
 
     # 10 feedback — local, never global
-    deg = np.maximum(np.asarray(civ.adj.sum(axis=1)).ravel(), 1.0)
-    dev = civ.forces - (civ.adj @ civ.forces) / deg[:, None]
+    deg = np.maximum(np.asarray(adj_live.sum(axis=1)).ravel(), 1.0)
+    dev = civ.forces - (adj_live @ civ.forces) / deg[:, None]
     civ.openness = np.clip(civ.openness + residue * dev[:, Force.CULTURE],
                            0, 1)
     civ.doubt = np.clip(civ.doubt + residue * dev[:, Force.FEAR], 0, 1)
@@ -455,6 +518,16 @@ def live_one_day(w: World, rng, *,
     # in the same country, inheriting traits from a living parent —
     # which is how a population carries its culture forward while
     # remaining a different population than the one before it.
+    # the newly dead leave the labour force and their firm (a death is
+    # the end of employment; rebirth already resets these on reuse)
+    if _frozen is not None:
+        _restore_deceased(w, _dead0, _frozen)
+    _dead_now = ~w.health.alive
+    _rel = _dead_now & (life.employed | life.in_lf | (life.firm >= 0))
+    if _rel.any():
+        life.employed[_rel] = False
+        life.in_lf[_rel] = False
+        life.firm[_rel] = -1
     st.update(_be_born(w, rng))
 
     # ── 0.1d: the end-of-tick mortality contract ─────────────────────

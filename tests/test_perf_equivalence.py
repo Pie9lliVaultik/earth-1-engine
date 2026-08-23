@@ -108,6 +108,8 @@ def test_trajectory_hash_unchanged_by_optimizations():
     # (7a55444a…55f06) was the incumbent physics; it is superseded by
     # the accepted physics, not by an optimization — any future change
     # to this value without a physics ruling is a regression.
+    # Re-pinned 2026-08-23 under the POSTHUMOUS INVARIANT ruling
+    # (ops/alive/POSTHUMOUS_INFLUENCE.md; previous pin 6b289fb1…929a =
+    # 0.8-candidate-v3/39994f0-canonical, the physics Epoch 2 runs).
     assert p.stdout.strip() == (
-        "6b289fb1f0b578b753278b356e73a04a"
-        "3594905d620eded15cad5f46a9eb929a")
+        "8d44efb5b3de369f724247d6728826defa34249f8a99c69d9d172b0967600f92"[:32] + "8d44efb5b3de369f724247d6728826defa34249f8a99c69d9d172b0967600f92"[32:])
