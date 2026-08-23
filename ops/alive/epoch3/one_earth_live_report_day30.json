@@ -1,0 +1,143 @@
+{
+ "static": {
+  "/ask route": {
+   "file": "earth1/api/routes/ask.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/world route": {
+   "file": "earth1/api/routes/world.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/forecast route": {
+   "file": "earth1/api/routes/forecast.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/observatory route": {
+   "file": "earth1/api/routes/observatory.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "/predictions route (DB-only)": {
+   "file": "earth1/api/routes/predictions.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "api.deps (world resolver)": {
+   "file": "earth1/api/deps.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "branch": {
+   "file": "earth1/branch.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "timeline/scrub": {
+   "file": "earth1/timeline.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "assimilation": {
+   "file": "earth1/assimilate.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "earthling observation": {
+   "file": "earth1/observe.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "observer (asking)": {
+   "file": "earth1/observer.py",
+   "resolves_alive_world": true,
+   "how": "pure consumer",
+   "dead_family_imports": []
+  },
+  "answer_living (canonical answer path)": {
+   "file": "earth1/answer_living.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "benchmark_living (official benchmark)": {
+   "file": "earth1/benchmark_living.py",
+   "resolves_alive_world": true,
+   "how": "transitive",
+   "dead_family_imports": []
+  },
+  "benchmark runner": {
+   "file": "scripts/benchmark_living.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "production daemon": {
+   "file": "scripts/world_alive.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  },
+  "Observatory (investor demo)": {
+   "file": "scripts/observatory_server.py",
+   "resolves_alive_world": true,
+   "how": "direct",
+   "dead_family_imports": []
+  }
+ },
+ "runtime": {
+  "mode": "LIVE",
+  "alive_home": "/opt/earth1/data/alive",
+  "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+  "epoch": 3,
+  "world_uuid": "bf5359fa-3ddd-4389-be8e-9083b428576c",
+  "world_day": 30,
+  "world_hash_by_surface": {
+   "saved_world": "007001faacae29c0df0e7ef5430d0432989e6cd78ff03461eb1bb5a433bd6026",
+   "deps_loaded": "007001faacae29c0df0e7ef5430d0432989e6cd78ff03461eb1bb5a433bd6026",
+   "answer_living": "007001faacae29c0df0e7ef5430d0432989e6cd78ff03461eb1bb5a433bd6026",
+   "benchmark_living": "007001faacae29c0df0e7ef5430d0432989e6cd78ff03461eb1bb5a433bd6026"
+  },
+  "snapshot_sha256_by_surface": {
+   "/world": "9659ecb643f7a801888109b5385d369b141b3db3e0fd93103ff85d44d03ae6ce",
+   "/observatory": "9659ecb643f7a801888109b5385d369b141b3db3e0fd93103ff85d44d03ae6ce",
+   "/ask (503 by design)": "9659ecb643f7a801888109b5385d369b141b3db3e0fd93103ff85d44d03ae6ce"
+  },
+  "world_uuid_by_surface": {
+   "/world": "bf5359fa-3ddd-4389-be8e-9083b428576c",
+   "/observatory": "bf5359fa-3ddd-4389-be8e-9083b428576c",
+   "/ask (503 by design)": "bf5359fa-3ddd-4389-be8e-9083b428576c"
+  },
+  "physics_version_by_surface": {
+   "/world": "0.8-candidate-v4.1/posthumous-invariant-rc",
+   "/observatory": "0.8-candidate-v4.1/posthumous-invariant-rc",
+   "/ask (503 by design)": "0.8-candidate-v4.1/posthumous-invariant-rc",
+   "answer_living": "0.8-candidate-v4.1/posthumous-invariant-rc",
+   "benchmark_living": "0.8-candidate-v4.1/posthumous-invariant-rc"
+  },
+  "surfaces_exercised": [
+   "/world",
+   "/observatory",
+   "/ask (503 by design)",
+   "answer_living",
+   "benchmark_living"
+  ],
+  "pass": true,
+  "clone_surfaces_skipped": true
+ },
+ "legacy_gate_violations": [],
+ "ONE_EARTH_LIVE": "PASS",
+ "note": "LIVE-PRODUCTION One-Earth invariant: every official surface resolved the canonical data/alive snapshot (same epoch UUID, snapshot sha256, world hash, physics)."
+}

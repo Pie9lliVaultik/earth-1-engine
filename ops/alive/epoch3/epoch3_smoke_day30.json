@@ -1,0 +1,74 @@
+{
+ "snapshot": "/opt/earth1-data/epoch3_day30",
+ "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+ "checks": {
+  "load_identity": {
+   "pass": true,
+   "day": 30,
+   "alive": 3999834,
+   "epoch": 3,
+   "world_uuid": "bf5359fa-3ddd-4389-be8e-9083b428576c",
+   "checksum": "verified",
+   "rng": true
+  },
+  "episode_state_loaded": {
+   "pass": true,
+   "episodes": 486,
+   "cooldown_entries": 400,
+   "residues": 400
+  },
+  "save_reload_bitwise": {
+   "pass": true,
+   "hash": "007001faacae29c0"
+  },
+  "deterministic_replay": {
+   "pass": true,
+   "days": 3,
+   "sec_per_day": 28.5,
+   "hash": "186f3293c98ea9d5",
+   "episodes_after": 513,
+   "residues_after": 428
+  },
+  "episode_state_survives_restart": {
+   "pass": true
+  },
+  "timeline_snapshot_restore": {
+   "pass": true
+  },
+  "branch_on_clone": {
+   "pass": true
+  },
+  "state_invariants": {
+   "pass": true,
+   "forces_min": 0.13353956397089167,
+   "forces_max": 0.9936859044520979,
+   "alive": 3999754
+  },
+  "api_identity": {
+   "pass": true,
+   "/world": [
+    "bf5359fa-3ddd-4389-be8e-9083b428576c",
+    "9659ecb643f7a801888109b5385d369b141b3db3e0fd93103ff85d44d03ae6ce",
+    "0.8-candidate-v4.1/posthumous-invariant-rc",
+    3
+   ],
+   "/observatory": [
+    "bf5359fa-3ddd-4389-be8e-9083b428576c",
+    "9659ecb643f7a801888109b5385d369b141b3db3e0fd93103ff85d44d03ae6ce",
+    "0.8-candidate-v4.1/posthumous-invariant-rc",
+    3
+   ],
+   "/ask": [
+    "bf5359fa-3ddd-4389-be8e-9083b428576c",
+    "9659ecb643f7a801888109b5385d369b141b3db3e0fd93103ff85d44d03ae6ce",
+    "0.8-candidate-v4.1/posthumous-invariant-rc",
+    3
+   ]
+  },
+  "legacy_gate": {
+   "pass": true,
+   "violations": []
+  }
+ },
+ "pass": true
+}
