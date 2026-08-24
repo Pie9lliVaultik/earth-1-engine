@@ -185,7 +185,11 @@ def run_earth1():
                 if (c, 42, k) not in fitted: cols = None; break
                 mu, sd, b0, wv = fitted[(c, 42, k)]; s_i = sigmoid(b0 + ((X[m] - mu) / sd) @ wv)
                 cols.append((s_i >= 0.5).astype(np.int8))
-                thr = np.quantile(s_i, 1 - p[j]); cols_m.append((s_i >= thr).astype(np.int8))   # marginal-matched
+                # marginal-matched threshold; q clipped (harness repair
+                # 2026-08-24: one country produced q epsilon-outside [0,1])
+                q = float(np.clip(1.0 - p[j], 0.0, 1.0))
+                if not np.isfinite(q): cols = None; break
+                thr = np.quantile(s_i, q); cols_m.append((s_i >= thr).astype(np.int8))
             if cols is None: continue
             A = np.stack(cols, 1); Am = np.stack(cols_m, 1)
             out["joint"].setdefault(k, {})[str(ws)] = {"e1_energy": S.energy_distance(A, Xr, None, wt, seed=1), "e1_marginal_matched_energy": S.energy_distance(Am, Xr, None, wt, seed=1), "n_agents": int(A.shape[0])}
