@@ -51,7 +51,18 @@ calls `leakage.assert_anchor_oos` on every row and FAILS CLOSED
   Earth-1 lower, median over countries, paired bootstrap CI excluding
   0. The v1 observed-marginal variant is DIAGNOSTIC ONLY (it touches
   the target marginal).
-- **(iv) held-out questions — zero-shot transfer.** The scored item's
+- **(iv) held-out questions — zero-shot transfer.** AMENDMENT
+  2026-08-26, pre-result (recorded before any confirmation baseline or
+  Earth-1 number was seen): because the anchored country mean equals the
+  transfer anchor BY CONSTRUCTION, task (iv) is scored on the zero-shot
+  items' COHORT CELLS. Baselines per cell: national-copy (= the
+  transfer anchor) and neighbour-offset transfer (anchor + the
+  neighbour item's TRAIN-country mean band offset). Earth-1 arm: band
+  means of the anchored agent p_i under transferred weights. Gate
+  unchanged in spirit: beat the strongest baseline, paired CI excluding
+  0. Joint binarization: Bernoulli(p_i) with crc32-keyed deterministic
+  RNG (the salted-hash seeding in the first implementation was
+  non-reproducible; fixed pre-result). The scored item's
   observed responses are used for nothing. Earth-1 arm: anchor = the
   semantic neighbour's OOS MRP prediction for that country; Δ from the
   neighbour's fitted weights (transfer); K per cell. Baseline:

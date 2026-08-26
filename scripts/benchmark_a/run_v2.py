@@ -184,5 +184,140 @@ def run_baselines():
     print("BASELINES V2 WRITTEN")
 
 
+def _feature_treatment(Xc_list, names):
+    """TRAIN-side rank analysis (prereg §4): drop exact/near-collinear
+    columns (|r| > 0.98, later-by-order dropped); report condition
+    number. Returns (kept_indices, report)."""
+    M = np.array(Xc_list)
+    keep = list(range(M.shape[1])); dropped = []
+    R = np.corrcoef(M, rowvar=False)
+    for j in range(M.shape[1]):
+        for i in range(j):
+            if i in keep and j in keep and abs(R[i, j]) > 0.98:
+                keep.remove(j); dropped.append({"col": names[j], "collinear_with": names[i], "r": float(R[i, j])}); break
+    cond = float(np.linalg.cond(M[:, keep] - M[:, keep].mean(0)))
+    return keep, {"dropped": dropped, "condition_number": cond, "kept": [names[k] for k in keep]}
+
+
+def run_earth1():
+    from earth1.alive import birth_world, live_one_day, PHYSICS_VERSION
+    from earth1.calibration import living_features, living_feature_names, _get_country_index
+    from earth1.persistence import world_hash
+    D = json.load(open(os.path.join(OUT, "confirm_targets_v2.json")))
+    B = json.load(open(os.path.join(OUT, "baselines_confirm_v2.json")))
+    dev = json.load(open(os.path.join(OUT, "targets_v1.json")))
+    Z = np.load(os.path.join(OUTD, "joint_vectors_confirm_v2.npz"))
+    out = {"worlds": {}, "national_sanity": {}, "cohort": {}, "joint": {}, "zeroshot": {}, "feature_report": None,
+           "stamp": stamp({"physics_version": PHYSICS_VERSION, "ka_mean_preservation": ka_mean_preservation()})}
+    for ws in WORLD_SEEDS:
+        t0 = time.time(); w = birth_world(POP, ws); rng = np.random.default_rng(ws)
+        for _ in range(DAYS): live_one_day(w, rng)
+        X = living_features(w); civ = w.civ; alive = w.health.alive
+        c2i, codes = _get_country_index(civ)
+        years = 18.0 + civ.age * 72.0
+        band = np.where(years < 30, 0, np.where(years < 50, 1, 2))
+        cmask = {k: (civ.country == c2i[k]) & alive for k in codes if k in c2i}
+        Xc = {k: X[m].mean(0) for k, m in cmask.items() if m.sum() >= 30}
+        if out["feature_report"] is None:
+            keep, rep = _feature_treatment([Xc[k] for k in sorted(Xc)], living_feature_names(True))
+            out["feature_report"] = rep; out["kept_cols"] = keep
+        keep = out["kept_cols"]
+        Xk = X[:, keep]
+        out["worlds"][str(ws)] = {"world_hash": world_hash(w), "world_day": int(w.day), "alive": int(alive.sum()), "seconds": round(time.time() - t0, 1)}
+
+        def fit_item(c, targets, seed):
+            """ridge on TRAIN countries (lambda by inner LOO), returns per-country fitted latent fn."""
+            cs = sorted(k for k in targets if k in Xc); y = {k: targets[k]["yes"] for k in cs}
+            fits = {}
+            for test in folds_for(cs, seed):
+                train = [k for k in cs if k not in set(test)]
+                if len(train) < 8: continue
+                Xt = np.array([np.asarray(Xc[k])[keep] for k in train])
+                yt = logit(np.clip(np.array([y[k] for k in train]), 0.02, 0.98))
+                lam, be = LAMBDAS[0], np.inf
+                for L in LAMBDAS:
+                    errs = []
+                    for i in range(len(yt)):
+                        kk = np.arange(len(yt)) != i
+                        mu, sd = Xt[kk].mean(0), Xt[kk].std(0) + 1e-9
+                        Zt = (Xt[kk] - mu) / sd; b0 = yt[kk].mean()
+                        wv = np.linalg.solve(Zt.T @ Zt + L * np.eye(Zt.shape[1]), Zt.T @ (yt[kk] - b0))
+                        errs.append((yt[i] - (b0 + ((Xt[i] - mu) / sd) @ wv)) ** 2)
+                    if (e := float(np.mean(errs))) < be: lam, be = L, e
+                mu, sd = Xt.mean(0), Xt.std(0) + 1e-9; Zt = (Xt - mu) / sd; b0 = yt.mean()
+                wv = np.linalg.solve(Zt.T @ Zt + lam * np.eye(Zt.shape[1]), Zt.T @ (yt - b0))
+                for k in test:
+                    fits[k] = (mu, sd, b0, wv)
+            return fits
+
+        for c in list(D["targets"]):
+            t = D["targets"][c]; coh = D["cohorts"][c]
+            for seed in CV_SEEDS:
+                anch = B["anchors"][c][str(seed)]
+                fits = fit_item(c, t, seed)
+                nat, cohv = {}, {}
+                for k, f in fits.items():
+                    if k not in anch or k not in cmask: continue
+                    assert_anchor_oos({"country": k, **anch[k]})
+                    mu, sd, b0, wv = f
+                    m = cmask[k]
+                    latent = ((Xk[m] - mu) / sd) @ wv
+                    delta = center_latent(latent)
+                    a = anch[k]["anchor"]
+                    K, p_i = solve_K(a, delta)
+                    nat[k] = {"anchor": a, "hybrid_mean": float(p_i.mean()), "K": float(K),
+                              "raw_latent_spread": float(np.std(delta)), "abstain": bool(m.sum() < 30)}
+                    if k in coh:
+                        bnd = band[m]
+                        for bi, bname in enumerate(BANDS):
+                            if bname in coh[k] and (bnd == bi).sum() >= 30:
+                                cohv[f"{k}|{bname}"] = {"e1_dev": float(p_i[bnd == bi].mean())}
+                out["national_sanity"].setdefault(c, {}).setdefault(str(ws), {})[str(seed)] = nat
+                out["cohort"].setdefault(c, {}).setdefault(str(ws), {})[str(seed)] = cohv
+        # joints: per-item K against the MRP marginal (seed 42), agents' binary vectors
+        JI = D["joint_items"]
+        fitsJ = {c: fit_item(c, D["targets"][c], 42) for c in JI}
+        for k in Xc:
+            if f"{k}_x" not in Z.files or k not in B["joint"]: continue
+            m = cmask[k]; ok = True; cols = []
+            for j, c in enumerate(JI):
+                if k not in fitsJ[c]: ok = False; break
+                mu, sd, b0, wv = fitsJ[c][k]
+                delta = center_latent(((Xk[m] - mu) / sd) @ wv)
+                a = B["joint"][k]["mrp_marginals"][j]
+                K, p_i = solve_K(a, delta)
+                import zlib
+                rr = np.random.default_rng(zlib.crc32(f"{k}|{c}".encode()))
+                cols.append((rr.random(p_i.size) < p_i).astype(np.int8))
+            if not ok: continue
+            A = np.stack(cols, 1); Xr = Z[f"{k}_x"].astype(np.int8); wt = Z[f"{k}_w"]
+            out["joint"].setdefault(k, {})[str(ws)] = {"e1_mrp_anchored_energy": S.energy_distance(A, Xr, None, wt, seed=1), "n_agents": int(A.shape[0])}
+        # zero-shot: neighbour weights (dev fit at seed 42 on dev targets) + neighbour's OOS MRP anchor
+        for c in D["zeroshot_items"]:
+            zb = B["zeroshot"][c]; nb = zb["neighbour"]
+            nb_t = {k: {"yes": v["yes"]} for k, v in dev["targets"][nb].items()}
+            fits = fit_item(nb, nb_t, 42)
+            # AMENDMENT (pre-result, 2026-08-26): the anchored country mean
+            # equals the baseline by construction, so task (iv) is scored on
+            # the zero-shot items' COHORT CELLS — structure under transfer.
+            cells = {}
+            coh = D["cohorts"].get(c, {})
+            for k, a in zb["anchors"].items():
+                if k not in fits or k not in cmask or k not in coh: continue
+                assert_anchor_oos({"country": k, **a})
+                mu, sd, b0, wv = fits[k]
+                m = cmask[k]
+                delta = center_latent(((Xk[m] - mu) / sd) @ wv)
+                K, p_i = solve_K(a["anchor"], delta)
+                bnd = band[m]
+                for bi, bname in enumerate(BANDS):
+                    if bname in coh[k] and (bnd == bi).sum() >= 30:
+                        cells[f"{k}|{bname}"] = {"e1_transfer": float(p_i[bnd == bi].mean()), "anchor": a["anchor"]}
+            out["zeroshot"].setdefault(c, {})[str(ws)] = {"neighbour": nb, "cells": cells}
+        print(f"world {ws} done {time.time()-t0:.0f}s", flush=True)
+    json.dump(out, open(os.path.join(OUT, "earth1_confirm_v2.json"), "w"), indent=1)
+    print("EARTH1 V2 WRITTEN")
+
+
 if __name__ == "__main__":
-    {"confirm_targets": run_confirm_targets, "baselines": run_baselines}[sys.argv[1]]()
+    {"confirm_targets": run_confirm_targets, "baselines": run_baselines, "earth1": run_earth1}[sys.argv[1]]()
