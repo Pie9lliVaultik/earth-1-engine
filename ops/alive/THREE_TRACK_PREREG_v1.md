@@ -234,3 +234,23 @@ incumbent-vs-candidates on withheld structure with a winner or NONE;
 registry/licence/consumed-ledger status. Then: which uncertainty each
 track eliminated and the single highest-information next experiment.
 Founder ruling before anything further.
+
+────────────────────────────────────────────────────────────────────
+## AMENDMENT A4.1 — observation probe event (2026-08-26, PRE-θ*)
+Registered after the design-world screen and BEFORE θ* exists or any
+estimator has run. The first screen pass (archived at
+/opt/earth1-data/sbi/screen_VOID.json) fired the registered KA-2 VOID:
+memory_press moved NOTHING at 200k — diagnosis: canonical cold-start
+90-day worlds generate ZERO chronicle memories (memories_remembered=0
+in every canonical run; both press arms bit-identical to canonical,
+0/46 summaries differ), so θ₄ multiplies objects the twin never
+creates. The unit KA proves PRESS is consumed when a memory exists;
+this is OBSERVATION_DESIGN_FAILURE of the twin window, repaired here.
+Repair: every twin simulation (screen, training, sealed exams, y_obs)
+injects ONE registered probe memory after day 10: id="obs_probe",
+salience 0.8, half_life 180 d, force_signature +0.06 on all 8 channels,
+scope = all agents alive at day 10. θ-independent, identical across
+configs and seeds; RNG consumption identical ⇒ CRN pairing preserved.
+The screen reruns in full under the probe; A4/A5 rules unchanged.
+critical_fraction leverage was already proven in the first pass
+(cum_cascades 948 vs 1100 paired) — the probe does not alter that KA.

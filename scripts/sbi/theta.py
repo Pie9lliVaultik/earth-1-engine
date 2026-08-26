@@ -55,13 +55,28 @@ CUM_KEYS = ("deaths", "births", "disease_deaths", "rehomed_migrants",
             "rehomed_workers", "cascades_fired", "firms_failed")
 
 
+PROBE_DAY = 10   # amendment A4.1: registered observation probe
+
+
+def _inject_probe(w):
+    """One registered memory so memory_press is observable (A4.1).
+    theta-independent, deterministic, identical across configs/seeds."""
+    from earth1.memory import Memory
+    w.chronicle.events.append(Memory(
+        id="obs_probe", label="obs_probe", day=float(w.day),
+        force_signature=np.full(8, 0.06),
+        scope=w.health.alive.copy(), salience=0.8, half_life=180.0))
+
+
 def run_days(w, rng, days: int, kw: dict) -> list:
     """Run and observe. Returns the list of daily observables dicts."""
     from earth1.alive import live_one_day
     from earth1.observables import collect
     cum = {k: 0 for k in CUM_KEYS}
     daily = []
-    for _ in range(days):
+    for d in range(days):
+        if d == PROBE_DAY:
+            _inject_probe(w)
         st = live_one_day(w, rng, **kw)
         for k in CUM_KEYS:
             cum[k] += int(st.get(k, 0) or 0)
