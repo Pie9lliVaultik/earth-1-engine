@@ -319,5 +319,96 @@ def run_earth1():
     print("EARTH1 V2 WRITTEN")
 
 
+def run_score():
+    """ONE-SHOT confirmation scoring. Leakage guard on every row;
+    compression trace per published row; gates per prereg §3."""
+    D = json.load(open(os.path.join(OUT, "confirm_targets_v2.json")))
+    B = json.load(open(os.path.join(OUT, "baselines_confirm_v2.json")))
+    E = json.load(open(os.path.join(OUT, "earth1_confirm_v2.json")))
+    sb = {"stamp": stamp({"prereg": "BENCHMARK_A_PREREG_v2.md@509a1ce+8e8e121"}), "tasks": {}, "compression_trace_summary": {}}
+    # (i) sanity: anchor inheritance
+    errs = []
+    for c, per_ws in E["national_sanity"].items():
+        for ws, per_seed in per_ws.items():
+            for seed, nat in per_seed.items():
+                for k, r in nat.items():
+                    assert_anchor_oos({"country": k, **B["anchors"][c][seed][k]})
+                    errs.append(abs(r["hybrid_mean"] - r["anchor"]))
+    sb["tasks"]["i_sanity"] = {"n_cells": len(errs), "max_abs_inheritance_error": float(max(errs)), "gate": bool(max(errs) <= 1e-8),
+                               "note": "no incremental credit; the level is MRP's"}
+    # (ii) cohorts
+    arms = {"national_copy": [], "global_gradient": [], "cohort_mrp": [], "e1": []}
+    grad = {a: [[], [], [], []] for a in arms}
+    for c in D["targets"]:
+        for seed in map(str, CV_SEEDS):
+            bc = B["cohort"].get(c, {}).get(seed, {})
+            for ws in E["cohort"].get(c, {}):
+                ec = E["cohort"][c][ws].get(seed, {})
+                for k, bands in bc.items():
+                    for bname, b in bands.items():
+                        cell = f"{k}|{bname}"
+                        if cell not in ec or "cohort_mrp" not in b: continue
+                        assert_anchor_oos({"country": k, **B["anchors"][c][seed][k]})
+                        for a, pv in (("national_copy", b["national_copy"]), ("global_gradient", b["global_gradient"]),
+                                      ("cohort_mrp", b["cohort_mrp"]), ("e1", ec[cell]["e1_dev"])):
+                            arms[a].append(abs(pv - b["truth"]))
+                            grad[a][0].append(pv); grad[a][1].append(b["truth"]); grad[a][2].append(b["national_copy"]); grad[a][3].append(b["truth_national"])
+    cm = {a: float(np.mean(v)) * 100 for a, v in arms.items()}
+    gd = {a: S.gradient_direction_pct(*g) for a, g in grad.items()}
+    strongest = min(("national_copy", "global_gradient", "cohort_mrp"), key=lambda a: cm[a])
+    rr = S.relative_reduction(cm["e1"], cm[strongest])
+    ci = S.paired_bootstrap_diff_ci(np.array(arms[strongest]), np.array(arms["e1"]))
+    sb["tasks"]["ii_cohorts"] = {"mae_pp": cm, "gradient_direction_pct": gd, "strongest_baseline": strongest,
+        "relative_reduction": rr, "strongest_minus_e1_ci_pp": [x * 100 for x in ci], "n_cells": len(arms["e1"]),
+        "gate": bool(rr >= 0.10 and gd["e1"] >= 75.0), "gate_rule": ">=10% rel reduction vs strongest AND >=75% gradient"}
+    # (iii) joints (MRP-anchored marginals both arms)
+    rows = []
+    for k, b in B["joint"].items():
+        if k in E["joint"]:
+            e_ = float(np.mean([v["e1_mrp_anchored_energy"] for v in E["joint"][k].values()]))
+            rows.append((k, b["independent_mrp_energy"], e_))
+    ind = np.array([r[1] for r in rows]); e1 = np.array([r[2] for r in rows])
+    ci3 = S.paired_bootstrap_diff_ci(ind, e1)
+    sb["tasks"]["iii_joints"] = {"n_countries": len(rows), "median_energy": {"independent_mrp": float(np.median(ind)), "e1_mrp_anchored": float(np.median(e1))},
+        "independent_minus_e1_ci": ci3, "per_country": rows,
+        "gate": bool(np.median(e1) < np.median(ind) and ci3[1] > 0), "gate_rule": "lower energy, median, paired CI excluding 0"}
+    # (iv) zero-shot cohort cells
+    zarms = {"national_copy": [], "neighbour_offset": [], "e1_transfer": []}
+    dev = json.load(open(os.path.join(OUT, "targets_v1.json")))
+    for c in D["zeroshot_items"]:
+        zb = B["zeroshot"][c]; nb = zb["neighbour"]; coh = D["cohorts"].get(c, {})
+        nb_coh = dev["cohorts"].get(nb, {}); nb_t = dev["targets"].get(nb, {})
+        offs = {b: float(np.mean([nb_coh[k][b]["yes"] - nb_t[k]["yes"] for k in nb_coh if b in nb_coh[k] and k in nb_t] or [0.0])) for b in BANDS}
+        for ws in E["zeroshot"].get(c, {}):
+            for cell, r in E["zeroshot"][c][ws]["cells"].items():
+                k, bname = cell.split("|")
+                truth = coh.get(k, {}).get(bname, {}).get("yes")
+                if truth is None: continue
+                assert_anchor_oos({"country": k, **zb["anchors"][k]})
+                a = r["anchor"]
+                zarms["national_copy"].append(abs(a - truth))
+                zarms["neighbour_offset"].append(abs(float(np.clip(a + offs[bname], 0, 1)) - truth))
+                zarms["e1_transfer"].append(abs(r["e1_transfer"] - truth))
+    zm = {a: float(np.mean(v)) * 100 for a, v in zarms.items()}
+    zstrong = min(("national_copy", "neighbour_offset"), key=lambda a: zm[a])
+    ci4 = S.paired_bootstrap_diff_ci(np.array(zarms[zstrong]), np.array(zarms["e1_transfer"]))
+    sb["tasks"]["iv_zeroshot_cohorts"] = {"mae_pp": zm, "strongest_baseline": zstrong, "n_cells": len(zarms["e1_transfer"]),
+        "strongest_minus_e1_ci_pp": [x * 100 for x in ci4],
+        "gate": bool(zm["e1_transfer"] < zm[zstrong] and ci4[1] > 0), "gate_rule": "beat strongest transfer baseline, paired CI excluding 0"}
+    sb["tasks"]["v_cross_wave"] = {"status": "BLOCKED-ON-DATA", "gate": None}
+    # compression trace summary: spread by stage (national cells)
+    spreads = {"raw_latent_spread": [], "published_spread": []}
+    for c, per_ws in E["national_sanity"].items():
+        for ws, per_seed in per_ws.items():
+            for seed, nat in per_seed.items():
+                for k, r in nat.items():
+                    spreads["raw_latent_spread"].append(r["raw_latent_spread"])
+                    spreads["published_spread"].append(abs(2 * r["hybrid_mean"] - 1))
+    sb["compression_trace_summary"] = {k: float(np.mean(v)) for k, v in spreads.items()}
+    json.dump(sb, open(os.path.join(OUT, "scoreboard_confirm_v2.json"), "w"), indent=1)
+    for k, v in sb["tasks"].items():
+        print(k, "GATE", v.get("gate"), {a: (round(b, 4) if isinstance(b, float) else b) for a, b in v.items() if a in ("mae_pp", "median_energy", "relative_reduction", "gradient_direction_pct", "max_abs_inheritance_error", "strongest_baseline")})
+
+
 if __name__ == "__main__":
-    {"confirm_targets": run_confirm_targets, "baselines": run_baselines, "earth1": run_earth1}[sys.argv[1]]()
+    {"confirm_targets": run_confirm_targets, "baselines": run_baselines, "earth1": run_earth1, "score": run_score}[sys.argv[1]]()
