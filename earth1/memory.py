@@ -37,6 +37,7 @@ import numpy as np
 DEFAULT_HALF_LIFE = 720.0      # days for salience to halve
 REHEARSAL_BOOST = 0.35         # how much a similar event refreshes an old one
 FORGOTTEN = 0.02               # below this, an event leaves the world
+PRESS = 0.02                   # how hard a living memory presses on forces
 
 
 @dataclass
@@ -84,7 +85,7 @@ class Chronicle:
             if m.scope is not None and m.scope.any():
                 civ.forces[m.scope] = np.clip(
                     civ.forces[m.scope]
-                    + m.salience * m.force_signature[None, :] * 0.02
+                    + m.salience * m.force_signature[None, :] * PRESS
                     * dt_days, 0.0, 1.0)
                 pressed += int(m.scope.sum())
             keep.append(m)

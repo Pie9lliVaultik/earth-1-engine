@@ -122,6 +122,11 @@ def _tier_idx(civ) -> np.ndarray:
     return per[civ.country]
 
 
+# One scale on every deprivation->hazard coupling below (canonical 1.0;
+# a calibratable theta in the SBI inventory, THREE_TRACK_PREREG_v1 A1).
+HARDSHIP_GAIN = 1.0
+
+
 def cancer_hazard(age_years: np.ndarray, tier: np.ndarray,
                   addiction: np.ndarray | None = None,
                   deprivation: np.ndarray | None = None) -> np.ndarray:
@@ -138,7 +143,7 @@ def cancer_hazard(age_years: np.ndarray, tier: np.ndarray,
     if addiction is not None:          # the smoking channel
         h = h * (1.0 + 1.8 * addiction)
     if deprivation is not None:        # later presentation, worse odds
-        h = h * (1.0 + 0.5 * deprivation)
+        h = h * (1.0 + 0.5 * HARDSHIP_GAIN * deprivation)
     return h
 
 
@@ -163,12 +168,14 @@ def health_tick(civ, life, health: Health, rng, day: float,
         "cancer": cancer_hazard(age_years, tier, add, dep),
         "cvd": (np.array([CVD_BASE[t] for t in TIERS])[tier]
                 * (np.maximum(age_years, 1.0) / 60.0) ** 2.6
-                * (1.0 + 0.6 * dep) * (1.0 + 0.5 * (1.0 - ment))),
+                * (1.0 + 0.6 * HARDSHIP_GAIN * dep)
+                * (1.0 + 0.5 * (1.0 - ment))),
         "infection": (np.array([INFECT_BASE[t] for t in TIERS])[tier]
-                      * (1.0 + 1.2 * dep)
+                      * (1.0 + 1.2 * HARDSHIP_GAIN * dep)
                       * (1.0 + 0.8 * (age_years > 65))),
         "injury": (np.array([INJURY_BASE[t] for t in TIERS])[tier]
-                   * (1.0 + 1.5 * add) * (1.0 + 0.7 * dep)),
+                   * (1.0 + 1.5 * add)
+                   * (1.0 + 0.7 * HARDSHIP_GAIN * dep)),
         # FALLS. Gravity is constant; the interaction is not. Doubling
         # every decade past 65 is one of the steepest age gradients in
         # medicine, and working at height is its own exposure.

@@ -250,12 +250,14 @@ def propagate(forces: np.ndarray, alpha: np.ndarray, adj, *,
 
 def update_conviction(forces: np.ndarray, alpha: np.ndarray, adj, *,
                       scratch: DayScratch,
-                      gain: float = CONVICTION_GAIN_DYADIC,
+                      gain: float = None,
                       **_ignored) -> np.ndarray:
     """C3 log-odds conviction driven by the day's ACCUMULATED encounter
     evidence (mean drive over today's encounters; no encounters ⇒ no
     update). Bounds (0.02, 1.0) are asymptotes of the log-odds form,
     not a ratchet. Consumes and zeroes the scratch."""
+    if gain is None:
+        gain = CONVICTION_GAIN_DYADIC   # read at call time: patchable
     n_enc = np.maximum(scratch.enc_count, 1)
     drive = scratch.drive_acc / n_enc
     drive[scratch.enc_count == 0] = 0.0

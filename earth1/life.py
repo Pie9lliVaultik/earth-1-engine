@@ -100,6 +100,7 @@ SAFETY_NET = {"HIC": 0.55, "UMIC": 0.30, "LMIC": 0.15, "LIC": 0.05}
 # The two are near-complements: informal share is HIGHEST where the
 # safety net is weakest.
 INFORMAL = {"HIC": 0.18, "UMIC": 0.35, "LMIC": 0.55, "LIC": 0.70}
+INFORMAL_SCALE = 1.0           # calibratable scale on the floors above (<=0.95 after scaling)
 
 # A household spends most of its income staying alive; the poorer the
 # country the higher that share (Engel's law).
@@ -451,6 +452,7 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     keys = ["HIC", "UMIC", "LMIC", "LIC"]
     net = np.array([SAFETY_NET[k] for k in keys])[tier]
     informal = np.array([INFORMAL[k] for k in keys])[tier]
+    informal = np.clip(informal * INFORMAL_SCALE, 0.0, 0.95)
     # An agent out of formal work falls back on whichever is better: the
     # welfare state, or the informal economy. Modelling only the former
     # made the poorest countries destitute by construction.
