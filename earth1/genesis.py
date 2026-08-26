@@ -167,7 +167,8 @@ def _allocate_countries(total: int, min_per_country: int = 500) -> np.ndarray:
 
 
 def genesis(pop: int = 1_000_000, seed: int = 42,
-            min_per_country: int = 500) -> Civilization:
+            min_per_country: int = 500,
+            substrate: str | None = None) -> Civilization:
     """Generate a civilization with 194 countries, regional identity, and enriched traits."""
     rng = make_rng(seed)
     nc = len(GENESIS_COUNTRIES)
@@ -218,6 +219,23 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     hi_thresh = np.clip(base_edu, 0, 1)
     education = np.where(r_edu < hi_thresh, 2,
                 np.where(r_edu < hi_thresh + 0.4, 1, 0)).astype(np.int32)
+
+    # ── C2+ substrate v1 (MISSION v2 WS1): joint demographic draw ──
+    # Replaces the independent draws above AFTER they have consumed the
+    # main rng stream, so the default path stays byte-identical and the
+    # downstream layers see an unchanged stream position. Uses its own
+    # spawned rng. Adds a sex axis (civ.sex).
+    _sex = None
+    if substrate == "c2plus_v1":
+        from earth1.popsynth import draw_c2plus
+        _iso2 = [c["iso2"] for c in GENESIS_COUNTRIES]
+        _sex, _age_raw, education, income, urban = draw_c2plus(
+            country, seed, _iso2)
+        age_raw = _age_raw
+        age = (age_raw - 18.0) / 72.0
+        age_bucket = np.digitize(age_raw, [30, 45, 60, 75])
+    elif substrate is not None:
+        raise ValueError(f"unknown substrate {substrate!r}")
 
     # ── Layer 3: Regional identity ──
 
@@ -437,7 +455,7 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
             if "social_class" in _pri:
                 social_class = _draw(_pri["social_class"], False)
 
-    return Civilization(
+    civ = Civilization(
         n=actual_pop, seed=seed,
         person_id=np.arange(actual_pop, dtype=np.int64),
         parent_id=np.full(actual_pop, -1, dtype=np.int64),
@@ -457,6 +475,9 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
         employed=employed, ideology=ideology,
         social_class=social_class,
     )
+    if _sex is not None:
+        civ.sex = _sex          # C2+ substrate: new demographic axis
+    return civ
 
 
 def _build_graph(
