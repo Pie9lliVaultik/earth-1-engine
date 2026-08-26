@@ -51,7 +51,7 @@ def run_arm(arm, rep):
         path.append(float(cw[(~w.life.employed) & lf].sum()))
     snap = snapshot(w)
     rep_out = {k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in snap.items()}
-    json.dump({"arm": arm, "repeat": rep, "days": days, "snapshot": rep_out, "jobless_path_tail": path[-30:],
+    json.dump({"arm": arm, "repeat": rep, "days": days, "snapshot": rep_out, "jobless_path": path,
                **stamp()}, open(os.path.join(OUT, f"{arm}_r{rep}.json"), "w"), indent=1)
     # keep the world for compare() (protest_risk needs w) — save small marker instead; compare rerun in score via saved snapshot only
     if arm == "arab_spring_2011":
@@ -79,7 +79,12 @@ def run_score():
         days = HORIZON[ev]; per_rep = []
         for r in range(REPEATS):
             b = _snap(ev, r); c = ctrl[days][r]
+            pb = json.load(open(os.path.join(OUT, f"{ev}_r{r}.json")))["jobless_path"]
+            pc = json.load(open(os.path.join(OUT, f"control{days}_r{r}.json")))["jobless_path"]
+            excess = np.array(pb) - np.array(pc)          # signed, paired, daily
             eff = {
+                "jobs_fte_year": float(excess.mean() * (days / 365.0)),
+                "jobs_peak_excess": float(excess.max()),
                 "jobs_lost": float(np.maximum((b["jobless_by_country"] - c["jobless_by_country"]), 0).sum()),
                 "jobs_net": float((b["jobless_by_country"] - c["jobless_by_country"]).sum()),
                 "destitution": float(b["destitute"] - c["destitute"]),
@@ -94,8 +99,8 @@ def run_score():
         agg = {k: SC.bootstrap_ci([p[k] for p in per_rep]) for k in per_rep[0] if k != "jobs_vector"}
         res["events"][ev] = {"per_repeat": [{k: v for k, v in p.items() if k != "jobs_vector"} for p in per_rep], "ci": agg}
     # direction
-    dirs = {"covid_2020": {"jobs": ("jobs_lost", "+"), "poverty": ("destitution", "+"), "hope": ("hope_change", "-"), "deaths": ("excess_deaths", "+")},
-            "gfc_2008": {"jobs": ("jobs_lost", "+"), "poverty": ("destitution", "+"), "hope": ("hope_change", "-")},
+    dirs = {"covid_2020": {"jobs": ("jobs_fte_year", "+"), "poverty": ("destitution", "+"), "hope": ("hope_change", "-"), "deaths": ("excess_deaths", "+")},
+            "gfc_2008": {"jobs": ("jobs_peak_excess", "+"), "poverty": ("destitution", "+"), "hope": ("hope_change", "-")},
             "arab_spring_2011": {"govs": ("gov_at_risk", "+"), "displacement": ("displaced", "+"), "poverty": ("destitution", "+")}}
     dir_rows = []
     for ev, fam in dirs.items():
@@ -110,8 +115,12 @@ def run_score():
                                  "ACCEPT_75": bool(dir_pct >= 75), "GOOD_85": bool(dir_pct >= 85)}
     # magnitude vs LOO-exposure baseline (jobs; displacement for arab)
     workers = {365: float(np.mean([c["workers_by_country"].sum() for c in ctrl[365]])), 540: float(np.mean([c["workers_by_country"].sum() for c in ctrl[540]]))}
-    anchors = {"covid_2020": ("jobs_lost", 2.55e8, EV["covid_2020"].scenario.firm_damage),
-               "gfc_2008": ("jobs_lost", 3.0e7, EV["gfc_2008"].scenario.firm_damage),
+    # VOID repair 2026-08-26 (recorded before any repaired number was seen):
+    # flow anchors score the anchor-matched statistic — ILO 255M FTE is a
+    # YEAR-INTEGRAL (jobs_fte_year); ILO GET +30M is a stock increase
+    # (jobs_peak_excess); displacement stays an endpoint stock.
+    anchors = {"covid_2020": ("jobs_fte_year", 2.55e8, EV["covid_2020"].scenario.firm_damage),
+               "gfc_2008": ("jobs_peak_excess", 3.0e7, EV["gfc_2008"].scenario.firm_damage),
                "arab_spring_2011": ("displaced", 3.0e6, EV["arab_spring_2011"].scenario.firm_damage)}
     def exposure(ev):
         sc = EV[ev].scenario; days = HORIZON[ev]
@@ -138,8 +147,8 @@ def run_score():
                                  "baseline_median_log10_err": float(np.median(list(errs_base.values()))),
                                  "pass": bool(np.median(list(errs_e1.values())) < np.median(list(errs_base.values())))}
     # proportionality + discrimination
-    means = {ev: float(np.mean([p["jobs_lost"] for p in effects[ev]])) for ev in dirs}
-    sds = {ev: float(np.std([p["jobs_lost"] for p in effects[ev]])) for ev in dirs}
+    means = {ev: float(np.mean([p["jobs_fte_year"] for p in effects[ev]])) for ev in dirs}
+    sds = {ev: float(np.std([p["jobs_fte_year"] for p in effects[ev]])) for ev in dirs}
     order = sorted(dirs, key=lambda e: -means[e])
     pooled_sd = float(np.mean(list(sds.values())))
     gaps = [means[order[i]] - means[order[i + 1]] for i in range(len(order) - 1)]
@@ -150,7 +159,7 @@ def run_score():
     # placebo
     pl = effects["placebo"]; small = min(abs(means[e]) for e in dirs)
     pl_ok = []
-    for k in ("jobs_lost", "destitution", "excess_deaths", "displaced"):
+    for k in ("jobs_fte_year", "destitution", "excess_deaths", "displaced"):
         ci = SC.bootstrap_ci([p[k] for p in pl]); med = abs(float(np.median([p[k] for p in pl])))
         pl_ok.append((ci[1] <= 0 <= ci[2]) or med < 0.05 * small)
         res["events"]["placebo"].setdefault("gate_detail", {})[k] = {"ci": ci, "median": med, "threshold": 0.05 * small}
@@ -158,7 +167,7 @@ def run_score():
     # coverage (leave-one-repeat-out, 80% nominal)
     hits = tot = 0
     for ev in dirs:
-        for k in ("jobs_lost", "destitution"):
+        for k in ("jobs_fte_year", "destitution"):
             v = np.array([p[k] for p in effects[ev]])
             for i in range(len(v)):
                 rest = np.delete(v, i)

@@ -73,3 +73,20 @@ are reported as misses. Instrument defects ⇒ VOID + repair + rerun.
 Every artifact stamps commit, physics_version, world hashes (warm
 snapshot), seeds, scorer git path. Artifacts: `data/benchmark_b/`.
 Report: BENCHMARK_B_REPORT_v1.md, then STOP (founder ruling point).
+
+## VOID + REPAIR (2026-08-26, recorded before any repaired number was seen)
+The placebo caught the jobs instrument: placebo "jobs_lost" (rectified
+positive-part endpoint sum) ≈ treatment values while every other
+placebo channel ≈ 0 — the statistic rectifies chaos-amplified
+divergence (a zero-force scenario still writes a Memory, which draws
+one RNG per day in `memory.spread`, desyncing the paired stream; FSLE
++0.22/day amplifies it), and endpoint snapshots miss transient job
+losses entirely (the India probe recovery rate implies healing before
+day 365). Repair, frozen now: jobs scored on the SIGNED PAIRED DAILY
+PATH — covid on the year-integral `jobs_fte_year` (matching ILO's
+definition), gfc on `jobs_peak_excess` (matching a stock increase
+anchor), displacement/destitution/deaths stay endpoint stocks;
+direction/proportionality/placebo/coverage consume the repaired
+statistics. First-run endpoint results are archived as
+INSTRUMENT-DEFECTIVE (scoreboard_b_defective.json). Arms rerun with
+full paths persisted; scored once after the rerun.
