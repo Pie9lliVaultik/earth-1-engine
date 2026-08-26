@@ -59,7 +59,19 @@ class Recorder:
     def __init__(self, con: sqlite3.Connection):
         self.con = con
         self.prev = None
-        self.n_cascades = int(con.execute("SELECT COUNT(*) FROM cascades").fetchone()[0])
+        # Recorder v2 (2026-08-26, founder ruling): a firing is stamped
+        # with the PRE-increment day (alive.py writes residues before
+        # w.day += 1), so day-equality against the post-tick w.day can
+        # never match — that bug dropped every cascade row. Persistence
+        # is now keyed by (day, rule, loc), which the cooldown makes
+        # unique per firing; restarts and repeat records cannot
+        # double-insert. cascade_floor = the day of this recorder's
+        # first record: residues fired before attach are NOT
+        # backfilled (they remain represented honestly by the tick
+        # journals alone).
+        self.seen_cascades = {(int(d), r, int(l)) for d, r, l in
+                              con.execute("SELECT day, rule, loc FROM cascades")}
+        self.cascade_floor = None
         self.seen_mem = {r[0] for r in con.execute("SELECT id FROM memories")}
 
     # ── discrete state snapshot ──────────────────────────────────────
@@ -163,13 +175,19 @@ class Recorder:
                            float(life.durable_spend[m].sum()) if life.durable_spend is not None else 0.0,
                            float(life.wealth[m].sum())))
         self.con.executemany("INSERT INTO country_daily VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", rows_c)
-        # cascades (new firings since last record) and memories
-        new = res[self.n_cascades:] if len(res) >= self.n_cascades else res
-        total_fired = int(self.con.execute("SELECT COUNT(*) FROM cascades").fetchone()[0])
-        fresh = [r_ for r_ in res if r_["day"] == day]
+        # cascades: every not-yet-persisted residue at or after the
+        # attach floor (see __init__; recorder v2)
+        if self.cascade_floor is None:
+            self.cascade_floor = day
+        fresh = [r_ for r_ in res
+                 if int(r_["day"]) >= self.cascade_floor
+                 and (int(r_["day"]), r_["rule"], int(r_["loc"]))
+                 not in self.seen_cascades]
         if fresh:
             self.con.executemany("INSERT INTO cascades(day,rule,loc,effects,half_life) VALUES (?,?,?,?,?)",
                                  [(int(r_["day"]), r_["rule"], int(r_["loc"]), json.dumps([float(x) for x in r_["effects"]]), float(r_["h"])) for r_ in fresh])
+            self.seen_cascades.update(
+                (int(r_["day"]), r_["rule"], int(r_["loc"])) for r_ in fresh)
         for m_ in w.chronicle.events:
             if m_.id not in self.seen_mem:
                 self.seen_mem.add(m_.id)
