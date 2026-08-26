@@ -49,11 +49,11 @@ def _pool(jobs):
         sys.exit(1)
 
 
-def stage_worlds200():
+def stage_worlds200(lo=0, hi=99):
     from earth1 import persistence
     from earth1.alive import birth_world
     os.makedirs(os.path.join(OUT, "worlds"), exist_ok=True)
-    for seed in list(range(5100, 5140)) + list(OBS_SEEDS):
+    for seed in (list(range(5100, 5140)) + list(OBS_SEEDS))[lo:hi]:
         p = os.path.join(OUT, "worlds", f"w200000_{seed}.pkl")
         if os.path.exists(p):
             continue
@@ -228,7 +228,8 @@ def stage_score():
 if __name__ == "__main__":
     a = sys.argv[1]
     if a == "worlds200":
-        stage_worlds200()
+        stage_worlds200(*(int(x) for x in sys.argv[2:4])) \
+            if len(sys.argv) > 2 else stage_worlds200()
     elif a == "train":
         stage_train(int(sys.argv[2]))
     elif a == "plant":
