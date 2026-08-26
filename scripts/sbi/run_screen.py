@@ -41,7 +41,9 @@ def configs():
 
 
 def world_path(pop, seed):
-    return os.path.join(OUT, "worlds", f"w{pop}_{seed}.pkl")
+    return os.path.join(os.environ.get("EARTH1_SBI_WORLDS",
+                                       os.path.join(OUT, "worlds")),
+                        f"w{pop}_{seed}.pkl")
 
 
 def stage_worlds(pop):
