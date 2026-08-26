@@ -23,11 +23,12 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 from sbi.theta import CANONICAL, NAMES, THETA, prior_ppf, sample_prior  # noqa
 from sbi.estimators import ABC, NPE, NRE, PRIOR_SD_U, to_u, zscore_fit  # noqa
 
-OUT = "/opt/earth1-data/sbi"
+OUT = os.environ.get("EARTH1_SBI_OUT", "/opt/earth1-data/sbi")
 SEALED = os.path.join(OUT, "sealed")
-DAYS = 90
-SLOTS = 30
-N_TRAIN = {20_000: 3000, 200_000: 600}
+DAYS = int(os.environ.get("EARTH1_SBI_DAYS", "90"))
+SLOTS = int(os.environ.get("EARTH1_SBI_SLOTS", "30"))
+N_TRAIN = {20_000: 3000,
+           200_000: int(os.environ.get("EARTH1_SBI_NTRAIN200", "600"))}
 N_SBC = 200
 OBS_SEEDS = (601, 607, 613)
 M_EXAMS = 5
@@ -75,7 +76,9 @@ def stage_train(pop):
         if os.path.exists(out):
             continue
         world = f"genesis:{3000+i}" if pop == 20_000 else \
-            os.path.join(OUT, "worlds", f"w200000_{5100 + i % 40}.pkl")
+            os.path.join(os.environ.get("EARTH1_SBI_WORLDS",
+                                        os.path.join(OUT, "worlds")),
+                         f"w200000_{5100 + i % 40}.pkl")
         jobs.append([PY, WORKER, json.dumps(th), str(pop), str(DAYS),
                      world, str((2000 if pop == 20_000 else 5000) + i), out])
     _pool(jobs)
@@ -100,7 +103,9 @@ def stage_plant():
         if not os.path.exists(tf):
             stars = json.load(open(sf))["stars"]
             json.dump(stars[m], open(tf, "w"))
-    for pop in (20_000, 200_000):
+    pops = tuple(int(x) for x in os.environ.get(
+        "EARTH1_SBI_POPS", "20000,200000").split(","))
+    for pop in pops:
         d = os.path.join(OUT, "yobs", str(pop))
         os.makedirs(d, exist_ok=True)
         for m in range(M_EXAMS):
@@ -109,7 +114,9 @@ def stage_plant():
                 if os.path.exists(out):
                     continue
                 world = f"genesis:{s}" if pop == 20_000 else \
-                    os.path.join(OUT, "worlds", f"w200000_{s}.pkl")
+                    os.path.join(os.environ.get("EARTH1_SBI_WORLDS",
+                                                os.path.join(OUT, "worlds")),
+                                 f"w200000_{s}.pkl")
                 jobs.append([PY, WORKER,
                              os.path.join(SEALED, f"theta_star_m{m}.json"),
                              str(pop), str(DAYS), world, str(s), out,

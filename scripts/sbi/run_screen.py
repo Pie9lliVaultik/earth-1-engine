@@ -22,12 +22,13 @@ sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 from sbi.theta import CANONICAL, NAMES, prior_ppf  # noqa: E402
 
-OUT = "/opt/earth1-data/sbi"
+OUT = os.environ.get("EARTH1_SBI_OUT", "/opt/earth1-data/sbi")
 CRN_SEEDS = (101, 103, 107)
 NOISE_SEEDS = tuple(range(111, 121))
-DAYS = 90
-SLOTS = 30
-POPS = (20_000, 200_000)
+DAYS = int(os.environ.get("EARTH1_SBI_DAYS", "90"))
+SLOTS = int(os.environ.get("EARTH1_SBI_SLOTS", "30"))
+POPS = tuple(int(x) for x in os.environ.get(
+    "EARTH1_SBI_POPS", "20000,200000").split(","))
 
 
 def configs():
@@ -127,7 +128,22 @@ def stage_score():
                                              key=lambda kv: -abs(kv[1]))[:8]),
                           "OBSERVATION_UNINFORMATIVE": not sensitive}
         report["pops"][str(pop)] = ptab
-    # A5 fidelity classification per summary
+    # A5 fidelity classification per summary (needs both fidelities;
+    # a single-pop run freezes its sensitive set directly)
+    if len(POPS) == 1:
+        pop = POPS[0]
+        s200 = [s_ for s_ in skeys
+                if any(abs(sens[(pop, n, s_)]) > 2.0 for n in NAMES)]
+        for name in ("critical_fraction", "memory_press"):
+            if report["pops"][str(pop)][name]["OBSERVATION_UNINFORMATIVE"]:
+                print(f"HARNESS BROKEN: {name} moved nothing. VOID.")
+                json.dump(report, open(os.path.join(OUT, "screen_VOID.json"), "w"), indent=1)
+                sys.exit(2)
+        json.dump(report, open(os.path.join(OUT, "screen_report.json"), "w"), indent=1)
+        json.dump({"S20": [], "S200": sorted(s200)},
+                  open(os.path.join(OUT, "summary_sets_frozen.json"), "w"), indent=1)
+        print("SCORED single-pop. S200:", len(s200))
+        return
     cls = {}
     for s in skeys:
         verdict = "TRANSFER_SAFE_AT_20K"

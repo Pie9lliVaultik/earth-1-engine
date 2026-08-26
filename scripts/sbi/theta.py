@@ -52,7 +52,10 @@ def apply_theta(theta: dict) -> dict:
 
 
 CUM_KEYS = ("deaths", "births", "disease_deaths", "rehomed_migrants",
-            "rehomed_workers", "cascades_fired", "firms_failed")
+            "rehomed_workers", "cascades_fired", "firms_failed",
+            # GAIN BATTERY v2 additions (harness-side only; the st dict
+            # already carries these — no canonical change):
+            "starved_or_parched", "weather_deaths", "war_deaths")
 
 
 PROBE_DAY = 10   # amendment A4.1: registered observation probe
@@ -80,7 +83,11 @@ def run_days(w, rng, days: int, kw: dict) -> list:
         st = live_one_day(w, rng, **kw)
         for k in CUM_KEYS:
             cum[k] += int(st.get(k, 0) or 0)
-        daily.append(collect(w, cum))
+        day = collect(w, cum)
+        day["cum_starved"] = cum["starved_or_parched"]
+        day["cum_weather_deaths"] = cum["weather_deaths"]
+        day["cum_war_deaths"] = cum["war_deaths"]
+        daily.append(day)
     return daily
 
 
@@ -112,4 +119,17 @@ def summarize(daily: list) -> dict:
         s[f"force_mean_{j}"] = float(d90["force_mean"][j])
         s[f"force_sd_{j}"] = float(d90["force_sd"][j])
         s[f"pole_share_{j}"] = float(d90["pole_share"][j])
+    # GAIN BATTERY v2 summaries (present in any horizon; extra
+    # discriminators for mortality/deprivation structure):
+    s["deprivation_p10_end"] = float(d90["deprivation"]["p10"])
+    s["deprivation_p90_end"] = float(d90["deprivation"]["p90"])
+    s["cum_starved"] = float(d90.get("cum_starved", 0.0))
+    s["cum_weather_deaths"] = float(d90.get("cum_weather_deaths", 0.0))
+    s["cum_war_deaths"] = float(d90.get("cum_war_deaths", 0.0))
+    if n > 120:          # late-period death rate: gain effects compound
+        cd = series("cum_deaths")
+        s["deaths_late_half"] = float(cd[-1] - cd[n // 2])
+        dep = np.array([day["deprivation"]["mean"] for day in daily])
+        s["deprivation_late_slope"] = float(
+            np.polyfit(t[n // 2:], dep[n // 2:], 1)[0])
     return s
