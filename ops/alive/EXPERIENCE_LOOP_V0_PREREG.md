@@ -44,7 +44,9 @@ would otherwise starve memory_press observability late in the run).
 24 cycles × 30-day windows. Per-window observable vector (frozen):
 window-mean employment_rate, destitute_share, deprivation mean; end-of-
 window force_mean[8], force_sd[8], pole_share[8]; window delta of
-force_mean[8] — 38 values. Proper score: CRPS per observable
+force_mean[8] — 35 values (count corrected 2026-08-27 pre-results;
+the original text said 38 by arithmetic slip — the vector definition
+itself is unchanged). Proper score: CRPS per observable
 (z-scored by truth-stream pooled sd), averaged; skill = −CRPS.
 Forecasts are always for the NEXT unseen window; improvement is never
 scored on the observation that produced the update.
