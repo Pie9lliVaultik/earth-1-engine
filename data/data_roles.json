@@ -10,6 +10,16 @@
    "role": "TRAIN",
    "sha256": "c94692fff7e8a49db4e798da2db849c9bd1b74486bba478bc9c3f289b4459bae"
   },
+  "sbi_theta_star_v1": {
+   "licence": "",
+   "lineage": [
+    "scripts/sbi/run_battery.py plant stage \u2014 OS-entropy seed, M=5 prior draws (prereg A6)"
+   ],
+   "notes": "Sealed SBI truth bundle. final_scoring ONLY; hash-verified at read; commitment in repo sealed/theta_star_v1.sha256 (b-commit history proves pre-read ordering).",
+   "path": "/opt/earth1-data/sbi/sealed/theta_star_v1.json",
+   "role": "HOLDOUT",
+   "sha256": "bb6f3dabbb8aaf2d70a2808a1c4edb0b38faf67571ed3df3cd3588a6e6076fce"
+  },
   "us_joint_cells": {
    "licence": "",
    "lineage": [
