@@ -51,3 +51,56 @@ anchor → abstain, never a naked 50/50.
 The Supabase/edge-function stack, the RPC engine (`compute_civilization_
 answer_v4` — times out, superseded), the May-2026 narrative, and any
 unverified aggregate estimates. Lessons transfer; code does not.
+
+## ADDENDUM 2026-08-26 — how VNF handled the STRUCTURE problem (the part v2 failed)
+
+Re-inspection after the v2 confirmation (structure FAIL on cohorts/joints/transfer):
+
+1. **VNF's cohort structure was SOLVED FOR, not hoped for.** The inverse
+   solver's design-matrix rows were COHORTS, not countries:
+   `get_cohort_trait_means` (migrations 20260522…) returns per-cohort mean
+   traits over agents for political buckets (`far_left…far_right` from the
+   agents' own `political_orientation`) and six age buckets; the solver fit
+   β against per-cohort empirical YES-rates (`solve-inverse-weights/index.ts:
+   5-6, 115-140, 305-366`), then verified by simulating sampled agents per
+   cohort (`runSim`, :196-238). The readout was CALIBRATED to cohort targets;
+   agents reproduced cohort gradients because β translated whatever
+   heterogeneity existed into the observed gradient.
+2. **Cohort identity was IN the agents.** VNF agents carried explicit
+   `political_orientation`, age, religion, education, urban_rural as
+   first-class columns (vote RPC signatures, migrations 202605…), seeded/
+   backfilled per country — cohort trait means differed by construction.
+   Earth-1's 200k civ has real age/income/urban axes but its psychological
+   features barely vary along them (v2 gradient 50.5 % = coin flip): the
+   deficit is in the POPULATION, not only the solver.
+3. **Validation honesty:** VNF's cohort machinery was verified by IN-SAMPLE
+   reconstruction (`rms_reconstructed`, LOO across countries for offsets) —
+   never by a held-out generalization test of cohort cells. And the one
+   time Earth-1 imported this exact machinery and tested it OUT-OF-SAMPLE
+   (`scripts/r1_cohort_test.py`, GSS microdata ruler, prereg 2026-08-18),
+   cohort-fitting made it WORSE: cohort_fit 0.171 vs country_fit 0.156 vs
+   persistence 0.110. Recorded answer to the prereg's own question: the
+   features were structurally incapable, not the solver.
+4. **The adjacency-gate bind VNF never faced:** VNF's political axis was
+   derived from the same microdata that defined the cohort targets (Q240)
+   — in Earth-1's discipline that axis is BANNED as a feature exactly
+   because Q240 is a benchmark item (|corr| 0.783). Any v3 must either use
+   only gate-clean cohort axes (age, education, income, urban — clean) or
+   introduce per-item gating (ideology usable on items it is not adjacent
+   to). No such exception is taken here.
+5. **What v2 did NOT try (the one legitimately open configuration):** the
+   Earth-1 arm never received cohort training data — only the baselines
+   did. Fitting Δ-weights on TRAIN-fold cohort cells (country×band feature
+   aggregates vs cohort targets; leakage-clean by the same fold rule, the
+   exact input budget cohort-MRP got) is the VNF move restated under our
+   discipline, and it is untested on Earth-1's living features. Given R1's
+   GSS result, the expected value is modest unless (2) is also addressed —
+   population-level demographic conditioning of traits/forces at genesis
+   (the C2 injection path, adjacency-gate-guarded), which is where VNF's
+   cohort signal actually came from.
+
+Bottom line: VNF solved structure by (a) putting empirical cohort identity
+into the agents and (b) calibrating the readout against cohort-axis
+targets, validated in-sample only. Earth-1 has (b) ported and refuted
+out-of-sample on GSS with its current features; (a) is the untried part
+under our gates — it is genesis/population work, not solver work.
