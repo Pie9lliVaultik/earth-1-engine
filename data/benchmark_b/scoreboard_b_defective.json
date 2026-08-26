@@ -1,0 +1,499 @@
+{
+ "stamp": {
+  "commit": "16d6efb2e828747bdb5c72c258157d7e351e70c0",
+  "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+  "pop": 200000,
+  "warm": 90,
+  "repeats": 5,
+  "at": "2026-08-26T15:08:22Z"
+ },
+ "events": {
+  "covid_2020": {
+   "per_repeat": [
+    {
+     "jobs_lost": 2165.0,
+     "jobs_net": -164.0,
+     "destitution": 21451.309906617098,
+     "excess_deaths": 1267.4759636748531,
+     "displaced": 152.35213217264868,
+     "hope_change": -0.060681888943862616,
+     "gov_at_risk": 30.0
+    },
+    {
+     "jobs_lost": 2310.0,
+     "jobs_net": 582.0,
+     "destitution": 21332.425463912965,
+     "excess_deaths": 1836.2570081891263,
+     "displaced": 119.96488707121011,
+     "hope_change": -0.07094255098095725,
+     "gov_at_risk": 31.0
+    },
+    {
+     "jobs_lost": 2061.0,
+     "jobs_net": 320.0,
+     "destitution": 21673.09371293249,
+     "excess_deaths": 1433.1330396529625,
+     "displaced": 86.87877213306933,
+     "hope_change": -0.06485484756132032,
+     "gov_at_risk": 32.0
+    },
+    {
+     "jobs_lost": 2164.0,
+     "jobs_net": -79.0,
+     "destitution": 21848.125919644066,
+     "excess_deaths": 1316.0342784158674,
+     "displaced": 100.51403170546928,
+     "hope_change": -0.07408319705581046,
+     "gov_at_risk": 32.0
+    },
+    {
+     "jobs_lost": 2858.0,
+     "jobs_net": 1293.0,
+     "destitution": 21536.360498135982,
+     "excess_deaths": 1310.326077975396,
+     "displaced": 125.31844667432665,
+     "hope_change": -0.07219732655628497,
+     "gov_at_risk": 32.0
+    }
+   ],
+   "ci": {
+    "jobs_lost": [
+     2311.6,
+     2123.0,
+     2589.514999999997
+    ],
+    "jobs_net": [
+     390.4,
+     -33.2,
+     866.4
+    ],
+    "destitution": [
+     21568.26310024852,
+     21420.766247839223,
+     21715.75995265782
+    ],
+    "excess_deaths": [
+     1432.6452735816413,
+     1293.1860322551788,
+     1641.876005579039
+    ],
+    "displaced": [
+     117.00565395134481,
+     98.90869044981106,
+     136.5777749795484
+    ],
+    "hope_change": [
+     -0.06855196221964713,
+     -0.07270071964102962,
+     -0.06381956818983862
+    ],
+    "gov_at_risk": [
+     31.4,
+     30.8,
+     32.0
+    ]
+   },
+   "direction": {
+    "jobs": true,
+    "poverty": true,
+    "hope": true,
+    "deaths": true
+   },
+   "magnitude": {
+    "anchor": 255000000.0,
+    "e1": 2165.0,
+    "loo_exposure_baseline": 164415505.4322302,
+    "e1_log10_err": 5.071082279744571,
+    "baseline_log10_err": 0.190597408555222
+   }
+  },
+  "gfc_2008": {
+   "per_repeat": [
+    {
+     "jobs_lost": 2535.0,
+     "jobs_net": -36.0,
+     "destitution": 1609.1074341708663,
+     "excess_deaths": -111.13512177895154,
+     "displaced": -254.1490846077894,
+     "hope_change": 0.009262451924770154,
+     "gov_at_risk": 12.0
+    },
+    {
+     "jobs_lost": 3435.0,
+     "jobs_net": 1689.0,
+     "destitution": 1084.3609168418407,
+     "excess_deaths": 344.0532230119443,
+     "displaced": -179.12360131492267,
+     "hope_change": 0.021670092569691768,
+     "gov_at_risk": 10.0
+    },
+    {
+     "jobs_lost": 2328.0,
+     "jobs_net": 71.0,
+     "destitution": 1617.1170423014337,
+     "excess_deaths": 46.06374330689869,
+     "displaced": -200.3600950493722,
+     "hope_change": 0.007473211866118601,
+     "gov_at_risk": 14.0
+    },
+    {
+     "jobs_lost": 1562.0,
+     "jobs_net": -621.0,
+     "destitution": 1155.5316272334458,
+     "excess_deaths": 82.31518528934066,
+     "displaced": -200.53119078171744,
+     "hope_change": 0.005420032567040156,
+     "gov_at_risk": 13.0
+    },
+    {
+     "jobs_lost": 1707.0,
+     "jobs_net": -323.0,
+     "destitution": 1023.0967240124228,
+     "excess_deaths": 20.77602480807036,
+     "displaced": -207.61225439980024,
+     "hope_change": 0.014050820677074749,
+     "gov_at_risk": 13.0
+    }
+   ],
+   "ci": {
+    "jobs_lost": [
+     2313.4,
+     1773.2,
+     2895.0
+    ],
+    "jobs_net": [
+     156.0,
+     -384.8,
+     941.6
+    ],
+    "destitution": [
+     1297.8427489120018,
+     1076.0706853008319,
+     1521.5961160356092
+    ],
+    "excess_deaths": [
+     76.41461092746049,
+     -48.25557574461145,
+     219.79988743016037
+    ],
+    "displaced": [
+     -208.35524523072036,
+     -234.08392065450818,
+     -189.10284982525712
+    ],
+    "hope_change": [
+     0.011575321920939085,
+     0.007009788158217534,
+     0.01689622619063804
+    ],
+    "gov_at_risk": [
+     12.4,
+     11.2,
+     13.4
+    ]
+   },
+   "direction": {
+    "jobs": true,
+    "poverty": true,
+    "hope": false
+   },
+   "magnitude": {
+    "anchor": 30000000.0,
+    "e1": 2328.0,
+    "loo_exposure_baseline": 24527053.434097864,
+    "e1_log10_err": 4.110138278741812,
+    "baseline_log10_err": 0.0874758774947697
+   }
+  },
+  "arab_spring_2011": {
+   "per_repeat": [
+    {
+     "jobs_lost": 1869.0,
+     "jobs_net": -83.0,
+     "destitution": 499.62717363725096,
+     "excess_deaths": 115.73997537747164,
+     "displaced": -13.135723787122743,
+     "hope_change": 0.002162261733562265,
+     "gov_at_risk": 14.0
+    },
+    {
+     "jobs_lost": 2184.0,
+     "jobs_net": 252.0,
+     "destitution": 416.7577403018222,
+     "excess_deaths": 61.011123943067105,
+     "displaced": 26.99775967390906,
+     "hope_change": 0.007253356190156435,
+     "gov_at_risk": 16.0
+    },
+    {
+     "jobs_lost": 2026.0,
+     "jobs_net": 8.0,
+     "destitution": 858.7113219059465,
+     "excess_deaths": -174.52892142561086,
+     "displaced": -42.22258542280622,
+     "hope_change": 0.00926816590909163,
+     "gov_at_risk": 16.0
+    },
+    {
+     "jobs_lost": 1999.0,
+     "jobs_net": 66.0,
+     "destitution": 564.16271160834,
+     "excess_deaths": -12.40448357562309,
+     "displaced": -41.04994874674492,
+     "hope_change": -0.0022628532682198443,
+     "gov_at_risk": 16.0
+    },
+    {
+     "jobs_lost": 1610.0,
+     "jobs_net": -538.0,
+     "destitution": 92.35364173661219,
+     "excess_deaths": 199.00188249103303,
+     "displaced": -25.623606830721144,
+     "hope_change": 0.004304107493302456,
+     "gov_at_risk": 12.0
+    }
+   ],
+   "ci": {
+    "jobs_lost": [
+     1937.6,
+     1765.4,
+     2089.2
+    ],
+    "jobs_net": [
+     -59.0,
+     -308.0,
+     136.2
+    ],
+    "destitution": [
+     486.3225178379944,
+     255.17138502004602,
+     711.4108835256004
+    ],
+    "excess_deaths": [
+     37.763915362067564,
+     -80.31290327813967,
+     149.0447382228962
+    ],
+    "displaced": [
+     -19.006821022697192,
+     -38.43373503396468,
+     5.126993962359643
+    ],
+    "hope_change": [
+     0.004145007611578588,
+     0.0005254116238118334,
+     0.007444023130198718
+    ],
+    "gov_at_risk": [
+     14.8,
+     13.2,
+     16.0
+    ]
+   },
+   "direction": {
+    "govs": true,
+    "displacement": false,
+    "poverty": true
+   },
+   "magnitude": {
+    "anchor": 3000000.0,
+    "e1": -25.623606830721144,
+    "loo_exposure_baseline": 5691078.037039129,
+    "e1_log10_err": 6.477121254719663,
+    "baseline_log10_err": 0.27807328604998993
+   }
+  },
+  "placebo": {
+   "per_repeat": [
+    {
+     "jobs_lost": 2102.0,
+     "jobs_net": 91.0,
+     "destitution": 35.52077526914218,
+     "excess_deaths": -297.09781209477933,
+     "displaced": -0.006736380411950904,
+     "hope_change": -0.0051792999054061095,
+     "gov_at_risk": 0.0
+    },
+    {
+     "jobs_lost": 2496.0,
+     "jobs_net": 720.0,
+     "destitution": -15.380661072427756,
+     "excess_deaths": -61.169557917981365,
+     "displaced": 23.110561373125847,
+     "hope_change": 0.0060965670505058744,
+     "gov_at_risk": 1.0
+    },
+    {
+     "jobs_lost": 2178.0,
+     "jobs_net": 359.0,
+     "destitution": 11.472835476713954,
+     "excess_deaths": -156.64364323610698,
+     "displaced": -19.091559017405757,
+     "hope_change": -0.00021600069390925736,
+     "gov_at_risk": 1.0
+    },
+    {
+     "jobs_lost": 1560.0,
+     "jobs_net": -763.0,
+     "destitution": -193.74102995606518,
+     "excess_deaths": 284.24870405037746,
+     "displaced": -4.683846252804926,
+     "hope_change": 0.0004346755485674647,
+     "gov_at_risk": 1.0
+    },
+    {
+     "jobs_lost": 3193.0,
+     "jobs_net": 1621.0,
+     "destitution": 270.8095545176184,
+     "excess_deaths": -208.52456197583206,
+     "displaced": 1.862621353144732,
+     "hope_change": 0.018199999184444593,
+     "gov_at_risk": 1.0
+    }
+   ],
+   "ci": {
+    "jobs_lost": [
+     2305.8,
+     1870.8,
+     2835.4
+    ],
+    "jobs_net": [
+     405.6,
+     -242.0,
+     1134.8
+    ],
+    "destitution": [
+     21.736294846996316,
+     -102.03630786598224,
+     166.51375554991392
+    ],
+    "excess_deaths": [
+     -87.83737423486446,
+     -243.95386202341098,
+     107.89176513578369
+    ],
+    "displaced": [
+     0.238208215129589,
+     -11.457629962608234,
+     12.928220297232134
+    ],
+    "hope_change": [
+     0.003867188236840513,
+     -0.002071185130012654,
+     0.011103452939686708
+    ],
+    "gov_at_risk": [
+     0.8,
+     0.4,
+     1.0
+    ]
+   },
+   "gate_detail": {
+    "jobs_lost": {
+     "ci": [
+      2305.8,
+      1870.8,
+      2835.4
+     ],
+     "median": 2178.0,
+     "threshold": 96.88
+    },
+    "destitution": {
+     "ci": [
+      21.736294846996316,
+      -102.03630786598224,
+      166.51375554991392
+     ],
+     "median": 11.472835476713954,
+     "threshold": 96.88
+    },
+    "excess_deaths": {
+     "ci": [
+      -87.83737423486446,
+      -243.95386202341098,
+      107.89176513578369
+     ],
+     "median": 156.64364323610698,
+     "threshold": 96.88
+    },
+    "displaced": {
+     "ci": [
+      0.238208215129589,
+      -11.457629962608234,
+      12.928220297232134
+     ],
+     "median": 0.006736380411950904,
+     "threshold": 96.88
+    }
+   }
+  }
+ },
+ "gates": {
+  "direction": {
+   "pct": 80.0,
+   "per_event": {
+    "covid_2020": 100.0,
+    "gfc_2008": 66.66666666666666,
+    "arab_spring_2011": 66.66666666666666
+   },
+   "ACCEPT_75": true,
+   "GOOD_85": false
+  },
+  "magnitude": {
+   "e1_median_log10_err": 5.071082279744571,
+   "baseline_median_log10_err": 0.190597408555222,
+   "pass": false
+  },
+  "proportionality": {
+   "expected": [
+    "covid_2020",
+    "gfc_2008",
+    "arab_spring_2011"
+   ],
+   "got": [
+    "gfc_2008",
+    "covid_2020",
+    "arab_spring_2011"
+   ],
+   "order_correct": false,
+   "min_gap_over_2sd": false,
+   "gaps": [
+    1.800000000000182,
+    374.0
+   ],
+   "pooled_sd": 381.9171360802149,
+   "pass": false
+  },
+  "placebo": {
+   "pass": false
+  },
+  "coverage": {
+   "empirical_pct": 53.333333333333336,
+   "pass": false
+  },
+  "geography": {
+   "covid_2020": {
+    "median_repeat_spearman": 0.04089528284231839,
+    "eligible": false
+   },
+   "gfc_2008": {
+    "median_repeat_spearman": -0.019809679613758357,
+    "eligible": false
+   },
+   "arab_spring_2011": {
+    "median_repeat_spearman": -0.023563963291272985,
+    "eligible": false
+   },
+   "claimed": {
+    "covid_2020": false,
+    "gfc_2008": false,
+    "arab_spring_2011": false
+   }
+  }
+ },
+ "overall": {
+  "gates_passed": 1,
+  "of": 5,
+  "PASS": false
+ }
+}

@@ -1,0 +1,9 @@
+{
+ "commit": "16d6efb2e828747bdb5c72c258157d7e351e70c0",
+ "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+ "pop": 200000,
+ "warm": 90,
+ "repeats": 5,
+ "at": "2026-08-26T14:48:49Z",
+ "world_hash": "dac2c960ff2795f86e7248968e04cb06b65568ea8057e1324a38b0535751b015"
+}
