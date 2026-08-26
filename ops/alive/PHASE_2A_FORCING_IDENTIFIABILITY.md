@@ -83,3 +83,72 @@ Ukraine war 2022 (conflict/energy), Türkiye–Syria earthquake 2023
 rollout 2021 (recovery-side), 2014–16 oil crash (commodity). ≥2 new
 domains available. No outcome figures fetched or stored in this repo;
 they enter only inside a future frozen v2 prereg.
+
+## 5. DOSE-RESPONSE RESULTS AND VERDICTS (24 runs complete; data/benchmark_b/dose_*.json)
+
+180-day arms, 3 CRN repeats, persons = weighted-agents × 41,500. FTE vs the paired control path; destitution/hope are arm end-levels (forces-only arm A7 is the material-channel reference).
+
+| arm | forcing | FTE-180d | destitution end | hope end | cascades |
+|---|---|---|---|---|---|
+| A1 | one-shot fd 0.10 | −2.4M (noise) | 3.50e9 | 0.584 | 9,805 |
+| A2/A8 | one-shot fd 0.35 (= B-v1) | +10.0M | 3.51e9 | 0.582 | 9,799 |
+| A3 | one-shot fd 0.70 | +8.7M | 3.52e9 | 0.575 | 9,827 |
+| A4 | 0.35 spread over 90 d | +13.1M | 3.50e9 | 0.575 | 9,797 |
+| A5 | 0.70 spread over 180 d | +9.3M | 3.51e9 | 0.573 | 9,798 |
+| A6 | registry covid, cost REVERTED at d90 | +15.4M | **2.69e9** | 0.628 | 8,913 |
+| A7 | forces only (no material shock) | +4.3M | **2.66e9** | 0.641 | 8,120 |
+
+Findings:
+1. **The employment response is DOSE-FLAT.** Firm damage 0.10 → 0.70,
+   one-shot or sustained, moves FTE only within the noise band
+   (−2.4M…+15.4M); even the largest sustained dose yields ~9M FTE vs
+   the 255M anchor. Y=f(D) is saturated at ~1.3 orders below reality:
+   the firm→layoff→rehome chain re-absorbs labour too fast for ANY
+   plausible dose. **Verdict: RESPONSE_UNDERPOWERED (+ FINITE_SAMPLE_
+   NOISE)** — not dose-calibratable.
+2. **Destitution is a cost-of-living phenomenon, not a firm-damage
+   one.** Removing the permanent trade_shock (A6 vs A2) removes
+   ~0.82e9 of destitution — the entire material-arm delta — while firm
+   damage contributes ≈ nothing (A1≈A2≈A3). The PERMANENT cost
+   multiplier is an input-semantics defect worth roughly the whole
+   material overshoot. Residual overshoot lives in the hardship-
+   conversion gain (static informal floors). **Verdict: INPUT_SCALE
+   (duration semantics) + RESPONSE_GAIN.**
+3. **The psych forcing alone (A7) sustains a large hardship state**
+   (destitution 2.66e9 end-level, hope −): with B-v1's placebo-clean
+   attribution this says the FEAR/ECON memory press couples strongly
+   into material life; its gain is part of the θ-inference target, not
+   a dose knob. **Verdict: RESPONSE_GAIN (θ).**
+4. Deaths: RESPONSE_GAIN + MISSING_CHANNEL (epi absent) — unchanged.
+   Displacement: **CHANNEL_ABSENT as a scenario response** (≈0 under
+   every dose). Coverage/geography: FINITE_SAMPLE_NOISE + substrate.
+
+## ANSWER — how much of B's magnitude failure is repairable by legitimate forcing calibration alone?
+**A minority.** One semantics fix (transient instead of permanent cost
+shock) removes most of the destitution overshoot; nothing in the
+plausible dose range repairs the jobs shortfall (dose-flat), the
+hardship gains, the missing death channel, or displacement. This
+confirms the founder's caution and the inference-architecture ordering:
+adapters fix u_t semantics; θ-posterior inference fixes gain balance;
+channels must be built where absent; the population substrate carries
+the rest. Phase-2A complete; nothing tuned; Epoch 3 untouched.
+
+## PHASE 2B READINESS
+informal buffer: PARTIAL (static floors; counter-cyclicality/saturation
+missing) · wealth brakes: ABSENT · epidemiology: PARTIAL machinery, no
+scenario channel · displacement: PARTIAL mechanism, unresponsive to
+scenarios · response laws to investigate under θ-inference: rehome
+re-absorption rate, hardship→destitution/mortality gains, memory-press
+material coupling.
+
+## C2 READINESS (design only)
+status: designed at architecture level (EARTH1_INFERENCE_ARCHITECTURE
+§4–5); data: WVS-7 microdata + GSS/ANES archives + census frames;
+axes: age, education, income, employment, household, urbanicity,
+locality (gate-clean); executable: NO (awaiting founder ruling).
+
+## FUTURE BENCHMARK B v2
+candidates identified across ≥2 new domains (Ukraine 2022, Türkiye–
+Syria 2023, Sri Lanka 2022, vaccine rollout 2021, oil crash 2014–16);
+outcome data sealed: YES (never fetched into the repo); adequate
+domains: YES.
