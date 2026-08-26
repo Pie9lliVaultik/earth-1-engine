@@ -17,6 +17,7 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
 from earth1.genesis import GENESIS_COUNTRIES, _sample_adult_ages  # noqa
 from c2plus.run_bakeoff import A3, SHAPE, ipf, margins_of  # noqa
 
