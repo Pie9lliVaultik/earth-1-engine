@@ -1,7 +1,7 @@
 {
  "entries": {
   "gss_r1_consumed": {
-   "licence": "GSS terms \u2014 see Track C audit",
+   "licence": "GSS public-use terms: commercial use not prohibited; citation (Davern et al.) + responsible use + no respondent re-identification. Confirmation email to gss@norc.org recommended before commercial training (LICENCE_AUDIT_2026-08-26.md).",
    "lineage": [
     "GSS 2022-2024 pooled microdata (NORC); weight WTSSNRPS; 79 variables; political x age cohort cells"
    ],
@@ -21,7 +21,7 @@
    "sha256": "dfc31fc8b86238e7c369d22e3aaaf3598a1f7f657ffa64db1384883a0e63c472"
   },
   "wvs7_microdata": {
-   "licence": "WVS conditions of use \u2014 see Track C audit",
+   "licence": "WVSA Conditions of Use: NON-PROFIT USE ONLY under standard terms; commercial calibration requires negotiated written WVSA permission (LICENCE_AUDIT_2026-08-26.md). No commercial deployment of WVS-fitted parameters until cleared.",
    "lineage": [
     "WVS wave 7 official microdata; consumed for confirmation purposes (GOQA-40, 98-item set, v1 holdout) \u2014 DEVELOPMENT/VALIDATION use only per founder ruling 2026-08-26"
    ],
