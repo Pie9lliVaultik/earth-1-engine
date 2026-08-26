@@ -35,10 +35,18 @@ def solve_K(anchor: float, delta: np.ndarray, w: np.ndarray | None = None,
     def mean_at(K):
         return float(np.sum(w * _sig(base + delta - K)))
 
+    # mean_at is strictly decreasing in K. Bracket ADAPTIVELY: an extreme
+    # anchor combined with a wide latent spread can place the root far
+    # outside any fixed window (harness VOID 2026-08-26: anchor 0.997,
+    # spread 10.5 pinned a fixed [-60,60] bracket at its edge, 0.31 pp
+    # residual on 2 of ~18,000 cells).
     lo, hi = -30.0, 30.0
-    if not (mean_at(hi) - anchor <= 0 <= mean_at(lo) - anchor):
-        # mean_at is decreasing in K; widen defensively (bounded domain)
-        lo, hi = -60.0, 60.0
+    for _ in range(20):
+        if mean_at(lo) >= anchor: break
+        lo *= 2.0
+    for _ in range(20):
+        if mean_at(hi) <= anchor: break
+        hi *= 2.0
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
         m = mean_at(mid)
