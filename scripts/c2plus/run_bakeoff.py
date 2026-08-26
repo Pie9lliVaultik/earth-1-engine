@@ -35,7 +35,8 @@ A3 = {  # alpha-3 -> alpha-2 for WVS-7 countries; extract fails loudly on gaps
  "NIC":"NI","NLD":"NL","NZL":"NZ","PAK":"PK","PER":"PE","PHL":"PH","PRI":"PR",
  "ROU":"RO","RUS":"RU","SGP":"SG","SRB":"RS","SVK":"SK","THA":"TH","TJK":"TJ",
  "TUN":"TN","TUR":"TR","TWN":"TW","UKR":"UA","URY":"UY","USA":"US","VEN":"VE",
- "VNM":"VN","ZWE":"ZW"}
+ "VNM":"VN","ZWE":"ZW",
+ "NIR":"GB","UZB":"UZ"}   # NIR: WVS Northern Ireland -> genesis GB substrate
 
 
 def _cells(sex, age, edu, inc, urb, wt):
