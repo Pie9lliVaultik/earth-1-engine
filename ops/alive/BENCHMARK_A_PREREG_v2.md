@@ -100,8 +100,10 @@ and frozen before the confirmation run.
   an 8-item joint set (widest coverage, ties by code) come from the same
   items; the (iv) zero-shot subset = 8 items by stride over the sorted
   confirmation list (indices 0, ⌊N/8⌋, 2⌊N/8⌋, …). Evaluated ONCE.
-  (GSS and ANES zips in the estate remain untouched future confirmation
-  options; not used in v2.)
+  (ANES remains untouched; GSS is PARTIALLY CONSUMED — R1-COHORT
+  (2026-08-18, r1_cohort_prereg.json) used GSS political-cohort
+  item-years as its ruler — corrected 2026-08-26 after the inference-
+  PDF review; ESS is untouched and licence-gated.)
 - Worlds: the three v1 lab worlds (seeds 42/20260901/20260902, 200k,
   60 days, Epoch-3 physics; hashes in earth1_v1.json), reused unchanged.
 
