@@ -1,0 +1,9 @@
+{
+ "_doc": "Feature-lineage graph (THREE_TRACK_PREREG_v1 C1). Maps engine-visible features to their source datasets/items and the roles those sources carry. ADDITIVE to data/feature_adjacency.json — the correlation gate is preserved independently and is never replaced by lineage (correlation catches leaks lineage cannot see: religiosity Q164 had clean lineage and |corr| 0.983).",
+ "features": {
+  "census_targets": {"sources": ["UN WPP 2024", "World Bank", "Pew"], "registry": [], "role": "INPUT"},
+  "calibration_18_features": {"sources": ["WVS-7 aggregates"], "registry": ["wvs7_microdata"], "role": "TRAIN"},
+  "cohort_axes_r1": {"sources": ["GSS 2022-2024 pooled"], "registry": ["gss_r1_consumed"], "role": "TRAIN"},
+  "c2_joint_truth_us": {"sources": ["US microdata joint cells"], "registry": ["us_joint_cells"], "role": "VALIDATION"}
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "entries": {
+  "gss_r1_consumed": {
+   "licence": "GSS terms \u2014 see Track C audit",
+   "lineage": [
+    "GSS 2022-2024 pooled microdata (NORC); weight WTSSNRPS; 79 variables; political x age cohort cells"
+   ],
+   "notes": "CONSUMED by R1-COHORT (2026-08-18, r1_cohort_prereg.json). GSS is therefore PARTIALLY_CONSUMED as an external confirmation estate for these 79 item-years.",
+   "path": "data/gss_cohort_seeds_v1.csv",
+   "role": "TRAIN",
+   "sha256": "c94692fff7e8a49db4e798da2db849c9bd1b74486bba478bc9c3f289b4459bae"
+  },
+  "us_joint_cells": {
+   "licence": "",
+   "lineage": [
+    "US microdata joint cells (age x edu x religiosity), C2 measurement"
+   ],
+   "notes": "C2 held-out joint evaluation; never supplied to synthesis methods.",
+   "path": "data/us_joint_cells.json",
+   "role": "VALIDATION",
+   "sha256": "dfc31fc8b86238e7c369d22e3aaaf3598a1f7f657ffa64db1384883a0e63c472"
+  },
+  "wvs7_microdata": {
+   "licence": "WVS conditions of use \u2014 see Track C audit",
+   "lineage": [
+    "WVS wave 7 official microdata; consumed for confirmation purposes (GOQA-40, 98-item set, v1 holdout) \u2014 DEVELOPMENT/VALIDATION use only per founder ruling 2026-08-26"
+   ],
+   "notes": "Lives on prime; path valid there. Track B TRAIN/VALIDATION source. Never again E-class confirmation evidence.",
+   "path": "/opt/earth1-data/benchmark_a/wvs7.duckdb",
+   "role": "TRAIN"
+  }
+ }
+}
