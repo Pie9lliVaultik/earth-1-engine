@@ -1,6 +1,20 @@
 # EARTH-1 LIVE STATUS
 _Chat updates mirrored here. Newest first. Timestamps UTC._
 
+## 2026-08-27 late — autonomous tick: c007 + A-v2 verdict
+- A-v2 DEV on candidate: C2_SUBSTRATE_VALIDATED = NO on the attitude
+  judge (e1 10.576→10.479, +0.10pp; direction coin-flip). Substrate
+  necessary; the COUPLING is the miss.
+- c007 (readout blend) with an honest-λ scorer: blend lands exactly at
+  the copy floor (13.13 = 13.13; model-deviation weight 0.069).
+  Scorer finding: prior floors were λ-oracle-inflated ~3.3pp (gaps
+  unaffected). Readout levers now exhausted with evidence.
+- Attitude red status: needs either new coupling physics (sex/age →
+  attitude mechanisms) or a founder ruling on the gate's ceiling
+  (every method within ~0.2pp of national copy on these items).
+- Anchors remain green through 200k. Next queued: UN WPP fetch →
+  Gompertz hazard (mortality-shape red), v0.2 loop prereg.
+
 ## 2026-08-27 ~19:30 UTC — THE THREE VERDICTS + 200k RUNG LAUNCHED
 - **MORTALITY_GAIN_LEARNING_ELIGIBLE = YES**: hardship mortality gain
   recovered by all 3 methods, 5/5 sealed exams, NPE contraction 0.64×
