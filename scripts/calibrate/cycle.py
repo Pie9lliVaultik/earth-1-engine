@@ -180,7 +180,8 @@ def main(name, desc):
     t0 = time.time()
     flags = {k: os.environ.get(k, "") for k in
              ("EARTH1_HARDSHIP_MODE", "EARTH1_INCOME_CALIBRATION",
-              "EARTH1_SUBSTRATE_FLAG", "EARTH1_C2PLUS_TABLES")}
+              "EARTH1_SUBSTRATE_FLAG", "EARTH1_C2PLUS_TABLES",
+              "EARTH1_DEMO_FORCE_GRADIENT")}
     flags["EARTH1_C2PLUS_TABLES"] = os.environ.get(
         "EARTH1_C2PLUS_TABLES", "c2plus_tables_v2.json")
     w, cum, sub, dead_ages = build_and_run()

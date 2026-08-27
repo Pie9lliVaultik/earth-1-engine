@@ -55,9 +55,15 @@ def main():
         feats = {k: v[0] / v[1] for k, v in per_axis_sums[axis].items()
                  if v[1] >= 25 * len(seeds)}
         dev_w, dev_m, wts = [], [], []
+        _half = os.environ.get("EARTH1_SPLIT_HALF")   # FIT / HELDOUT / None
+        import hashlib as _hl
+        def _keep(c2):
+            fit = int(_hl.sha256(c2.encode()).hexdigest(), 16) % 2 == 0
+            return _half is None or (fit if _half == "FIT" else not fit)
         for item, cc in ax[axis].items():
             cells = [(c2, cell, d["yes"], d["n"]) for c2, cs in cc.items()
-                     for cell, d in cs.items() if (c2, cell) in feats]
+                     for cell, d in cs.items()
+                     if (c2, cell) in feats and _keep(c2)]
             countries = sorted({c[0] for c in cells})
             if len(countries) < 10:
                 continue

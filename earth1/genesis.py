@@ -388,9 +388,27 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
 
     forces[:, Force.EXPERIENCE] = age
 
+
     forces[:, Force.TEMPERAMENT] = np.clip(
         risk_appetite * 0.7 + extraversion * 0.3
         + region_force_deltas[:, Force.TEMPERAMENT], 0, 1)
+
+    # ── DEMO→FORCE GRADIENT (c006; general term, axes added one per
+    # cycle): forces[f] += Σ_d β[f,d]·(x_d − x̄_d), β FITTED on DEV
+    # (data/demo_force_gradient.v1.json, provenance + pre-committed
+    # signs recorded). Flag off ⇒ byte-identical (KA-guarded).
+    if os.environ.get("EARTH1_DEMO_FORCE_GRADIENT") == "v1":
+        import json as _json
+        _g = _json.load(open(os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "data", "demo_force_gradient.v1.json")))
+        for _axis, _spec in _g["axes"].items():
+            if _axis == "age":
+                _x = age - 0.5
+            else:
+                raise ValueError(f"gradient axis {_axis!r} not wired yet")
+            _b = np.asarray(_spec["beta"], dtype=np.float64)
+            forces = np.clip(forces + _x[:, None] * _b[None, :], 0.0, 1.0)
 
     # Conviction
     alpha = np.clip(0.28 + 0.5 * openness - 0.12 * (1.0 - openness), 0, 1)

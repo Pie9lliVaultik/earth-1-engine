@@ -1,0 +1,75 @@
+{
+ "axes": {
+  "age": {
+   "beta": [
+    -0.0439,
+    -0.0106,
+    -0.0085,
+    -0.0697,
+    0.0491,
+    0.0422,
+    0.35,
+    0.0132
+   ]
+  }
+ },
+ "status": "FITTED",
+ "fit": {
+  "persistence_k": [
+   0.4152,
+   0.5286,
+   0.4453,
+   0.4297,
+   0.4249,
+   0.9133,
+   0.4401,
+   0.5174
+  ],
+  "n_items": 98,
+  "split": "sha256(iso2) % 2 == 0 -> FIT",
+  "targets_sha": "5a598b46f6",
+  "signs_sha": "4c394cdffd"
+ },
+ "sign_concordance": {
+  "FEAR": {
+   "beta": -0.0439,
+   "expected": "+",
+   "agrees": false
+  },
+  "DESIRE": {
+   "beta": -0.0106,
+   "expected": "-",
+   "agrees": true
+  },
+  "ECONOMICS": {
+   "beta": -0.0085,
+   "expected": "+",
+   "agrees": false
+  },
+  "COLLECTIVE": {
+   "beta": -0.0697,
+   "expected": "+",
+   "agrees": false
+  },
+  "IDENTITY": {
+   "beta": 0.0491,
+   "expected": "+",
+   "agrees": true
+  },
+  "CULTURE": {
+   "beta": 0.0422,
+   "expected": "+",
+   "agrees": true
+  },
+  "EXPERIENCE": {
+   "beta": 0.35,
+   "expected": "+",
+   "agrees": true
+  },
+  "TEMPERAMENT": {
+   "beta": 0.0132,
+   "expected": "0",
+   "agrees": true
+  }
+ }
+}

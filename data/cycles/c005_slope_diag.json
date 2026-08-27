@@ -1,37 +1,37 @@
 {
  "age": {
-  "slope": 0.31,
-  "r": 0.211,
-  "wvs_dev_sd_pp": 3.1,
-  "model_dev_sd_pp": 4.14,
-  "n": 12604
+  "slope": 0.114,
+  "r": 0.097,
+  "wvs_dev_sd_pp": 3.28,
+  "model_dev_sd_pp": 5.84,
+  "n": 5672
  },
  "edu": {
-  "slope": 0.358,
-  "r": 0.256,
-  "wvs_dev_sd_pp": 2.98,
-  "model_dev_sd_pp": 3.87,
-  "n": 10365
+  "slope": 0.36,
+  "r": 0.226,
+  "wvs_dev_sd_pp": 3.25,
+  "model_dev_sd_pp": 5.99,
+  "n": 4893
  },
  "sex": {
-  "slope": 0.051,
-  "r": 0.006,
-  "wvs_dev_sd_pp": 2.73,
-  "model_dev_sd_pp": 3.58,
-  "n": 12230
+  "slope": 0.085,
+  "r": 0.024,
+  "wvs_dev_sd_pp": 2.82,
+  "model_dev_sd_pp": 5.39,
+  "n": 5084
  },
  "income": {
-  "slope": 0.292,
-  "r": 0.191,
-  "wvs_dev_sd_pp": 3.24,
-  "model_dev_sd_pp": 4.14,
-  "n": 11581
+  "slope": 0.355,
+  "r": 0.228,
+  "wvs_dev_sd_pp": 3.63,
+  "model_dev_sd_pp": 5.65,
+  "n": 5628
  },
  "age_edu": {
-  "slope": NaN,
-  "r": NaN,
-  "wvs_dev_sd_pp": NaN,
-  "model_dev_sd_pp": NaN,
-  "n": 0
+  "slope": 0.362,
+  "r": 0.206,
+  "wvs_dev_sd_pp": 3.54,
+  "model_dev_sd_pp": 5.82,
+  "n": 1366
  }
 }
