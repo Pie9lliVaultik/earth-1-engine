@@ -1,0 +1,137 @@
+{
+ "aggregate": "WLD (World)",
+ "anchors": {
+  "crude_birth_rate_per_1000": {
+   "history": {
+    "2020": 17.149689935117,
+    "2021": 16.8444321573952,
+    "2022": 16.5587916024691,
+    "2023": 16.333620344969,
+    "2024": 16.2730070969907
+   },
+   "series_id": "SP.DYN.CBRT.IN",
+   "series_name": "Birth rate, crude (per 1,000 people)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SP.DYN.CBRT.IN?format=json&per_page=5&date=2019:2024",
+   "value": 16.2730070969907,
+   "year": 2024
+  },
+  "crude_death_rate_per_1000": {
+   "history": {
+    "2020": 8.0128021370251,
+    "2021": 8.71376672373529,
+    "2022": 7.70966159942046,
+    "2023": 7.58905193782761,
+    "2024": 7.55065418868632
+   },
+   "series_id": "SP.DYN.CDRT.IN",
+   "series_name": "Death rate, crude (per 1,000 people)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SP.DYN.CDRT.IN?format=json&per_page=5&date=2019:2024",
+   "value": 7.55065418868632,
+   "year": 2024
+  },
+  "life_expectancy_years": {
+   "history": {
+    "2020": 72.1832040176208,
+    "2021": 71.2160780260296,
+    "2022": 72.9689585478052,
+    "2023": 73.3302230276374,
+    "2024": 73.4818184164654
+   },
+   "series_id": "SP.DYN.LE00.IN",
+   "series_name": "Life expectancy at birth, total (years)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SP.DYN.LE00.IN?format=json&per_page=5&date=2019:2024",
+   "value": 73.4818184164654,
+   "year": 2024
+  },
+  "pop_share_0_14_pct": {
+   "history": {
+    "2020": 25.8301291742004,
+    "2021": 25.605851117477,
+    "2022": 25.3456693717104,
+    "2023": 25.0442037224277,
+    "2024": 24.7257206805965
+   },
+   "series_id": "SP.POP.0014.TO.ZS",
+   "series_name": "Population ages 0-14 (% of total population)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SP.POP.0014.TO.ZS?format=json&per_page=5&date=2019:2024",
+   "value": 24.7257206805965,
+   "year": 2024
+  },
+  "pop_share_65plus_pct": {
+   "history": {
+    "2020": 9.331875985676,
+    "2021": 9.52782148597409,
+    "2022": 9.73923491044647,
+    "2023": 9.98145713968862,
+    "2024": 10.2018131164854
+   },
+   "series_id": "SP.POP.65UP.TO.ZS",
+   "series_name": "Population ages 65 and above (% of total population)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SP.POP.65UP.TO.ZS?format=json&per_page=5&date=2019:2024",
+   "value": 10.2018131164854,
+   "year": 2024
+  },
+  "poverty_300_2021ppp": {
+   "history": {
+    "2020": 11.4,
+    "2021": 11.3,
+    "2022": 10.9,
+    "2023": 10.6,
+    "2024": 10.4
+   },
+   "series_id": "SI.POV.DDAY",
+   "series_name": "Poverty headcount ratio at $3.00 a day (2021 PPP) (% of population)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SI.POV.DDAY?format=json&per_page=5&date=2019:2024",
+   "value": 10.4,
+   "year": 2024
+  },
+  "poverty_420_2021ppp": {
+   "history": {
+    "2020": 22.1,
+    "2021": 21.4,
+    "2022": 20.5,
+    "2023": 19.6,
+    "2024": 18.9
+   },
+   "series_id": "SI.POV.LMIC",
+   "series_name": "Poverty headcount ratio at $4.20 a day (2021 PPP) (% of population)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SI.POV.LMIC?format=json&per_page=5&date=2019:2024",
+   "value": 18.9,
+   "year": 2024
+  },
+  "poverty_830_2021ppp": {
+   "history": {
+    "2020": 50.4,
+    "2021": 48.7,
+    "2022": 48.3,
+    "2023": 47.0,
+    "2024": 46.1
+   },
+   "series_id": "SI.POV.UMIC",
+   "series_name": "Poverty headcount ratio at $8.30 a day (2021 PPP) (% of population)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SI.POV.UMIC?format=json&per_page=5&date=2019:2024",
+   "value": 46.1,
+   "year": 2024
+  },
+  "unemployment_pct_lf": {
+   "history": {
+    "2020": 6.58768935720693,
+    "2021": 6.04556088000376,
+    "2022": 5.23462796913747,
+    "2023": 4.84991713588619,
+    "2024": 4.80627976615483
+   },
+   "series_id": "SL.UEM.TOTL.ZS",
+   "series_name": "Unemployment, total (% of total labor force) (modeled ILO estimate)",
+   "url": "https://api.worldbank.org/v2/country/WLD/indicator/SL.UEM.TOTL.ZS?format=json&per_page=5&date=2019:2024",
+   "value": 4.80627976615483,
+   "year": 2024
+  }
+ },
+ "blocked_on_data": {
+  "adult_death_share_by_age_band": "requires UN WPP or WHO life tables; WHO GHO API unreachable 2026-08-27. Mortality AGE STRUCTURE is unscored until fetched \u2014 a correct crude rate can hide a wrong age curve.",
+  "global_median_daily_consumption": "requires World Bank PIP percentile API; not yet fetched."
+ },
+ "fetched_at": "2026-08-27T13:20:36Z",
+ "source": "World Bank open indicator API (api.worldbank.org/v2)"
+}

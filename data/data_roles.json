@@ -1,5 +1,15 @@
 {
  "entries": {
+  "anchors_worldbank": {
+   "licence": "World Bank open data (CC BY 4.0) \u2014 attribution required",
+   "lineage": [
+    "World Bank open indicator API api.worldbank.org/v2, WLD aggregate; series ids + URLs + vintages recorded in-file"
+   ],
+   "notes": "Living-baseline evaluation anchors. EVALUATION_OUTCOME: may be scored against, never used as training/model-selection input. Fetched, not authored.",
+   "path": "data/anchors_worldbank.json",
+   "role": "EVALUATION_OUTCOME",
+   "sha256": "76ea47c47190c0df31df620a4145ecc7e6ea8e743b49686049f1ff4c6e8a5bfc"
+  },
   "c2plus_tables_v1": {
    "licence": "WVS-derived DEVELOPMENT artifact \u2014 not clear for commercial deployment until WVSA permission (LICENCE_AUDIT_2026-08-26).",
    "lineage": [
