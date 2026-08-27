@@ -1,0 +1,37 @@
+{
+ "age": {
+  "slope": 0.31,
+  "r": 0.211,
+  "wvs_dev_sd_pp": 3.1,
+  "model_dev_sd_pp": 4.14,
+  "n": 12604
+ },
+ "edu": {
+  "slope": 0.358,
+  "r": 0.256,
+  "wvs_dev_sd_pp": 2.98,
+  "model_dev_sd_pp": 3.87,
+  "n": 10365
+ },
+ "sex": {
+  "slope": 0.051,
+  "r": 0.006,
+  "wvs_dev_sd_pp": 2.73,
+  "model_dev_sd_pp": 3.58,
+  "n": 12230
+ },
+ "income": {
+  "slope": 0.292,
+  "r": 0.191,
+  "wvs_dev_sd_pp": 3.24,
+  "model_dev_sd_pp": 4.14,
+  "n": 11581
+ },
+ "age_edu": {
+  "slope": NaN,
+  "r": NaN,
+  "wvs_dev_sd_pp": NaN,
+  "model_dev_sd_pp": NaN,
+  "n": 0
+ }
+}
