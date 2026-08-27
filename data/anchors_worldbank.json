@@ -43,6 +43,20 @@
    "value": 73.4818184164654,
    "year": 2024
   },
+  "pip_world_mean_daily_2021ppp": {
+   "series_id": "PIP pip-grp WLD",
+   "series_name": "Mean daily consumption/income, World, 2021 PPP",
+   "url": "https://api.worldbank.org/pip/v1/pip-grp?country=WLD&year=2024&povline=3.00&group_by=wb&format=json",
+   "value": 21.6153,
+   "year": 2024
+  },
+  "pip_world_median_daily_2021ppp": {
+   "series_id": "PIP pip-grp WLD (interpolated)",
+   "series_name": "Median daily consumption/income, World, 2021 PPP \u2014 interpolated from fetched headcounts at $8.30 (0.4607) and $9.50 (0.5094)",
+   "url": "https://api.worldbank.org/pip/v1/pip-grp?country=WLD&year=2024&povline={line}&group_by=wb&format=json",
+   "value": 9.27,
+   "year": 2024
+  },
   "pop_share_0_14_pct": {
    "history": {
     "2020": 25.8301291742004,

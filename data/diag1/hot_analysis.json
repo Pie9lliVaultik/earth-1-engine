@@ -1,0 +1,211 @@
+{
+ "9501": {
+  "days": 15,
+  "broad_or_minority": {
+   "identity_collapse": {
+    "localities": 743,
+    "hot_localities_per_day_median": 0.0,
+    "hot_pop_share_per_day_median": 0.0,
+    "hot_pop_share_per_day_p90": 0.0,
+    "frac_localities_ever_hot": 0.0013,
+    "pop_share_localities_ever_hot": 0.005,
+    "frac_localities_hot_ge_50pct_days": 0.0,
+    "pop_share_localities_hot_ge_50pct_days": 0.0,
+    "frac_localities_hot_ge_90pct_days": 0.0,
+    "top10pct_localities_share_of_hot_days": 1.0,
+    "hot_days_distribution_quantiles(0,25,50,75,90,100)": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     1
+    ],
+    "country_concentration_top5_share_of_hot_days": 1.0,
+    "countries_with_any_hot_day": 1
+   },
+   "collective_surge": {
+    "localities": 743,
+    "hot_localities_per_day_median": 2.0,
+    "hot_pop_share_per_day_median": 0.0073,
+    "hot_pop_share_per_day_p90": 0.0188,
+    "frac_localities_ever_hot": 0.0121,
+    "pop_share_localities_ever_hot": 0.035,
+    "frac_localities_hot_ge_50pct_days": 0.0013,
+    "pop_share_localities_hot_ge_50pct_days": 0.004,
+    "frac_localities_hot_ge_90pct_days": 0.0,
+    "top10pct_localities_share_of_hot_days": 1.0,
+    "hot_days_distribution_quantiles(0,25,50,75,90,100)": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     8
+    ],
+    "country_concentration_top5_share_of_hot_days": 0.7812,
+    "countries_with_any_hot_day": 9
+   }
+  },
+  "KA_reconstruction_matches_recorded_fires": true,
+  "recorded_fires_id_rules": 10,
+  "simulated_fires": 10,
+  "baseline_locality_metrics": {
+   "frac_pop_abs_gt_0.05_terminal": 0.035,
+   "frac_pop_abs_gt_0.20_terminal": 0.0,
+   "frac_pop_abs_gt_0.45_terminal": 0.0,
+   "frac_pop_abs_gt_0.20_max_t": 0.005,
+   "mean_abs_shift_terminal": 0.0032,
+   "frac_pop_3plus_residues_terminal": 0.0,
+   "mean_residues_per_person_terminal": 0.04,
+   "episode_days_median": 15.0,
+   "episode_days_p95": 15.0
+  },
+  "sensitivity": {
+   "cooldownx0.5": {
+    "fires": 11,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0036,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.044,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "cooldownx1.0": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0032,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "cooldownx2.0": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0032,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "ampx0.5": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.005,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.0,
+    "mean_abs_shift_terminal": 0.0016,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "ampx1.0": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0032,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "ampx2.0": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.005,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0064,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "hx0.5": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.0193,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0025,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 14.0,
+    "episode_days_p95": 14.6
+   },
+   "hx1.0": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0032,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "hx2.0": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.005,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0037,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "threshold_margin_x0.5": {
+    "fires": 95,
+    "frac_pop_abs_gt_0.05_terminal": 0.2173,
+    "frac_pop_abs_gt_0.20_terminal": 0.0257,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.1533,
+    "mean_abs_shift_terminal": 0.0382,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.385,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "threshold_margin_x1.0": {
+    "fires": 10,
+    "frac_pop_abs_gt_0.05_terminal": 0.035,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.005,
+    "mean_abs_shift_terminal": 0.0032,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.04,
+    "episode_days_median": 15.0,
+    "episode_days_p95": 15.0
+   },
+   "threshold_margin_x2.0": {
+    "fires": 0,
+    "frac_pop_abs_gt_0.05_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_terminal": 0.0,
+    "frac_pop_abs_gt_0.45_terminal": 0.0,
+    "frac_pop_abs_gt_0.20_max_t": 0.0,
+    "mean_abs_shift_terminal": 0.0,
+    "frac_pop_3plus_residues_terminal": 0.0,
+    "mean_residues_per_person_terminal": 0.0,
+    "episode_days_median": 0.0,
+    "episode_days_p95": 0.0
+   }
+  }
+ }
+}

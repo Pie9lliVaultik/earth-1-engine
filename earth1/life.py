@@ -149,6 +149,24 @@ DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 # Default stays canonical: no deployed physics changes without a ruling.
 HARDSHIP_MODE = os.environ.get("EARTH1_HARDSHIP_MODE", "cliff")
 
+# INCOME CALIBRATION (M-INCOME-SCALE, 2026-08-27). Earth-1's income
+# distribution was ~2.5x too low and less than half as unequal as the
+# world: median 1.23x subsistence vs a fetched 3.09x, total log-sd
+# 0.614 vs a fetched 1.301. Constants are DERIVED from World Bank / PIP
+# anchors (data/income_calibration.json, data/anchors_worldbank.json);
+# poverty headcounts are not targeted and remain the test. Default is
+# canonical v4.1 (off): no deployed physics change without a ruling.
+INCOME_CALIBRATION = os.environ.get("EARTH1_INCOME_CALIBRATION", "off")
+if INCOME_CALIBRATION == "v1":
+    import json as _json
+    _cal = _json.load(open(os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "data", "income_calibration.json")))
+    WAGE_LEVEL = float(_cal["WAGE_LEVEL"])
+    WAGE_LOG_SD = float(_cal["WAGE_LOG_SD"])
+else:
+    WAGE_LEVEL, WAGE_LOG_SD = 1.0, 0.35
+
 # How strongly accumulated trait change moves the force baseline. This
 # is the gain on the return leg trait -> force, and it is what makes
 # experience permanent rather than a transient the world relaxes away.
@@ -283,8 +301,8 @@ def birth_life(civ: Civilization, seed: int = 0) -> Life:
     # Wage in units of the agent's own daily cost of living. An agent on
     # the national median in a country spending 80% of income on
     # survival has a wage of 1/0.8 = 1.25 daily costs.
-    lognormal = np.exp(rng.normal(0.0, 0.35, n))      # within-occupation
-    wage = OCC_WAGE[occupation] * lognormal / cost_share
+    lognormal = np.exp(rng.normal(0.0, WAGE_LOG_SD, n))  # within-occupation
+    wage = OCC_WAGE[occupation] * lognormal / cost_share * WAGE_LEVEL
     cost = np.ones(n)
 
     # LABOUR FORCE first, employment second. Conflating the two was an

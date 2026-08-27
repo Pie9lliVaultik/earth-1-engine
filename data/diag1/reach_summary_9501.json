@@ -1,0 +1,13 @@
+{
+ "seed": 9501,
+ "days": 365,
+ "fires_identity_rules": 17009,
+ "ever_exposed_frac": 0.8553351347788836,
+ "first_exposure_direct_frac": 0.999152411773771,
+ "first_exposure_indirect_frac": 0.0008475882262290029,
+ "exposed_agent_days_direct_frac": 0.9996424388615628,
+ "exposed_agent_days_indirect_frac": 0.0003575611384372599,
+ "agents_ever_resident_in_firing_loc_at_fire_frac": 0.8553047163737205,
+ "migrations_total_agent_moves": 2929,
+ "agents_who_ever_moved_frac": 0.014646462085992832
+}

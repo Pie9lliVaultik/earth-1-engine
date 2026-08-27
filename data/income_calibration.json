@@ -1,0 +1,12 @@
+{
+ "WAGE_LEVEL": 2.519,
+ "WAGE_LOG_SD": 1.1995,
+ "derivation": "All targets FETCHED (data/anchors_worldbank.json); no value authored by hand.",
+ "earth1_baseline_log_sd": 0.614,
+ "earth1_baseline_mean_daily": 4.44,
+ "earth1_baseline_median_daily": 3.68,
+ "notes": "WAGE_LEVEL = real_median/earth1_median (median/subsistence ratio 3.09 vs 1.23). WAGE_LOG_SD raises within-occupation dispersion so TOTAL log-sd matches the real mean/median skew (0.614 -> 1.301), holding the occupation/tier variance components fixed. Poverty headcounts are NOT targeted: they are the consequence and remain the test.",
+ "real_implied_log_sd": 1.3012,
+ "real_mean_daily": 21.6153,
+ "real_median_daily": 9.27
+}

@@ -62,3 +62,49 @@ needs the same missing age series.
 3. M-MORTALITY-AGE after income (deprivation-driven young-adult deaths
    are expected to fall with the income repair; re-measure before
    touching any hazard).
+
+## AFTER M-INCOME-SCALE REPAIR (same day, 20k×180d)
+Calibration constants DERIVED from fetched anchors
+(data/income_calibration.json): WAGE_LEVEL 2.519 from the real
+median/subsistence ratio (9.27/3.00 = 3.09 vs Earth-1's 1.23);
+WAGE_LOG_SD 1.1995 so total log-sd matches the real mean/median skew
+(0.614 → 1.301). PIP world mean $21.6153, median $9.27 (interpolated
+from fetched headcounts) now registered in anchors_worldbank.json.
+Poverty headcounts were NOT targeted — they are the test.
+
+| metric | REAL (WB/PIP 2024) | canonical | +gradient | +grad+income | +all+C2+ |
+|---|---|---|---|---|---|
+| poverty $3.00 | **10.4%** | 35.1% | 36.5% | **19.3%** | 21.6% |
+| poverty $4.20 | **18.9%** | 57.4% | 58.4% | **26.8%** | 30.0% |
+| poverty $8.30 | **46.1%** | 90.3% | 90.8% | **46.3%** | 49.5% |
+| median $/day | **9.27** | 3.97 | 3.93 | **9.91** | 9.15 |
+| crude death /yr | 0.0076 (all-ages) | .0224 | .0124 | **.0122** | .0119 |
+| unemployment | **4.81%** | 8.44% | 9.69% | 8.78% | 9.59% |
+| mean age at death | LE 73.5 | 43.7 | 47.9 | 45.0 | 48.7 |
+| cascades | — | 2168 | 1077 | 1025 | 1047 |
+
+The $8.30 line landing at 46.3% against a fetched 46.1% is the strongest
+signal here: it was not a calibration target, and two parameters fitted
+to median and skew reproduced it. Median error 7%.
+
+## RESIDUAL MISSES (narrowed, still red)
+**M-LOWER-TAIL** (new, replaces the coarse M-INCOME-SCALE): the bottom
+tail is still too fat — 19.3% under $3.00 against 10.4%, and 26.8%
+under $4.20 against 18.9%, while the upper half is now right. Earth-1's
+income floors (SAFETY_NET + INFORMAL) are too weak, so the working and
+non-working poor fall further than real social protection allows. Next
+fetch: ILO social-protection coverage/adequacy — a real series, not a
+knob. Note this also explains why informal_floor_scale looked inert in
+SBI v1: under a 2.5×-too-low income scale everyone was poor regardless.
+**M-UNEMPLOYMENT** (new): 8.8–9.6% against a fetched 4.81% — roughly 2×
+too high, and it worsens under both candidate changes.
+**M-MORTALITY-AGE** (carried): mean age at death 45–49 against LE 73.5.
+The income repair did NOT fix it, so this is a hazard-structure defect,
+not a deprivation artifact — a genuinely separate mechanism. Age-share
+scoring stays BLOCKED_ON_DATA until UN WPP / WHO life tables are
+fetched.
+
+## STATUS
+All three candidate changes remain FLAGGED OFF by default; Epoch 3
+untouched; no HOLDOUT consulted. Next rung: rerun this battery at 200k
+once prime frees, then A-v2 DEV on the same configuration.
