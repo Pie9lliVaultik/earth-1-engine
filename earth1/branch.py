@@ -51,6 +51,25 @@ class Scenario:
     persists_days: float = 30.0
 
 
+def null_branch(persists_days: float = 365.0) -> Scenario:
+    """The CRN-matched null scenario — the ONLY valid baseline for a
+    branch comparison.
+
+    Applying any scenario inserts a chronicle Memory, and spread()
+    consumes one rng.random(n) per active memory (content-independent),
+    so a branched world desynchronizes from an UNBRANCHED control: the
+    naive contrast is dominated by rng-desync artifact (Benchmark B
+    VOID, 2026-08-25; re-proven 2026-08-27: null-vs-null trajectories
+    are bit-identical while branch-vs-control diverges by hundreds of
+    jobless at 20k x 60d with zero forces). Contract: compare
+    treatment branches against apply(null_branch()), never against an
+    unbranched world.
+    """
+    return Scenario(id="__null__", label="null branch (CRN baseline)",
+                    forces={}, countries=None, firm_damage=0.0,
+                    trade_shock=0.0, persists_days=persists_days)
+
+
 def apply(w, sc: Scenario, rng) -> None:
     """The scenario lands on the world. Materially, not just as mood."""
     from earth1.genesis import GENESIS_COUNTRIES
