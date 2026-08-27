@@ -43,6 +43,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import os
+
 import numpy as np
 
 from earth1.types import Civilization, Force
@@ -142,6 +144,10 @@ DURABLE_SHARE = 0.06           # of a comfortable budget
 DURABLE_DECAY_YR = 0.10        # things wear out
 
 DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
+# Deprivation form: "cliff" = canonical v4.1 (binary gate); "gradient" =
+# depth-of-shortfall candidate (ops/alive/HARDSHIP_GRADIENT_IMPACT.md).
+# Default stays canonical: no deployed physics changes without a ruling.
+HARDSHIP_MODE = os.environ.get("EARTH1_HARDSHIP_MODE", "cliff")
 
 # How strongly accumulated trait change moves the force baseline. This
 # is the gain on the return leg trait -> force, and it is what makes
@@ -523,8 +529,24 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     # version labelled everyone living paycheck to paycheck as
     # destitute, which is what drove the rate near 40%.
     covers = income >= life.cost
-    life.deprivation = np.where(
-        covers, 0.0, np.clip(1.0 - life.wealth / DESTITUTE_BUFFER, 0.0, 1.0))
+    if HARDSHIP_MODE == "gradient":
+        # HARDSHIP GRADIENT (2026-08-27). The cliff form below made
+        # deprivation binary: 30.5% of the world sat at ~1.0 and 0.5%
+        # anywhere between 0.5 and 0.99, because `covers` is a hard
+        # step (99% of cost scored identically to zero income) and a
+        # 3-day buffer empties at once. Reality is graded — ~9% in
+        # extreme poverty, ~44% below $6.85/day — and every downstream
+        # hardship channel (mortality gain, cascade entry) was reading
+        # that missing middle as universal catastrophe.
+        # Depth of shortfall, cushioned by reserves:
+        gap = np.clip((life.cost - income) / np.maximum(life.cost, 1e-9),
+                      0.0, 1.0)
+        cushion = np.clip(life.wealth / DESTITUTE_BUFFER, 0.0, 1.0)
+        life.deprivation = np.where(covers, 0.0, gap * (1.0 - cushion))
+    else:
+        life.deprivation = np.where(
+            covers, 0.0,
+            np.clip(1.0 - life.wealth / DESTITUTE_BUFFER, 0.0, 1.0))
 
     # ── 6. firm health drifts, and recovers slowly ────────────────────
     life.firm_health = np.clip(
