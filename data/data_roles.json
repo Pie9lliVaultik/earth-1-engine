@@ -41,6 +41,16 @@
    "role": "HOLDOUT",
    "sha256": "bb6f3dabbb8aaf2d70a2808a1c4edb0b38faf67571ed3df3cd3588a6e6076fce"
   },
+  "sbi_theta_star_v2": {
+   "licence": "",
+   "lineage": [
+    "gain battery v2 plant stage (200k x 180d, 2000 sims, mortality-structure summaries)"
+   ],
+   "notes": "Sealed v2 truth bundle; final_scoring only; hash logged at plant before inference (sbi_v2 chain log).",
+   "path": "/opt/earth1-data/sbi_v2/sealed/theta_star_v1.json",
+   "role": "HOLDOUT",
+   "sha256": "aca8ca48797f9b3bb58d68584f61cba02301438e60861932640e5352baa15ca1"
+  },
   "us_joint_cells": {
    "licence": "",
    "lineage": [

@@ -191,7 +191,9 @@ def stage_infer(pop):
 
 def stage_score():
     from earth1.dataroles import open_data
-    with open_data("sbi_theta_star_v1", "final_scoring") as f:
+    with open_data(os.environ.get("EARTH1_SBI_SEALED_NAME",
+                                  "sbi_theta_star_v1"),
+                   "final_scoring") as f:
         stars = json.load(f)["stars"]
     U_star = to_u(stars)
     sens = json.load(open(os.path.join(OUT, "screen_report.json")))
