@@ -55,6 +55,12 @@ def null_branch(persists_days: float = 365.0) -> Scenario:
     """The CRN-matched null scenario — the ONLY valid baseline for a
     branch comparison.
 
+    Scope (founder correction 2026-08-27): null-branch pairing validates
+    the scenario CONTRAST INSTRUMENT — that measured differences are
+    caused by the scenario and not rng desync. It does NOT establish
+    that Earth-1's scenario consequences match reality; empirical
+    scenario fidelity is judged by Benchmark B.
+
     Applying any scenario inserts a chronicle Memory, and spread()
     consumes one rng.random(n) per active memory (content-independent),
     so a branched world desynchronizes from an UNBRANCHED control: the
