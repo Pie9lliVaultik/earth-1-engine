@@ -48,7 +48,8 @@ class World:
     day: int = 0
 
 
-def birth_world(pop: int, seed: int = 42) -> World:
+def birth_world(pop: int, seed: int = 42,
+                substrate: str | None = None) -> World:
     from earth1.fabric import build_fabric
     from earth1.genesis import genesis
     from earth1.health import birth_health
@@ -57,7 +58,7 @@ def birth_world(pop: int, seed: int = 42) -> World:
     from earth1.life import birth_life
     from earth1.memory import Chronicle
 
-    civ = genesis(pop, seed)
+    civ = genesis(pop, seed, substrate=substrate)
     life = birth_life(civ, seed=seed)
     fab = build_fabric(civ, life, seed=seed)
     civ.adj = fab.adj
