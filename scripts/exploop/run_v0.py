@@ -22,14 +22,22 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 from earth1.experience import Ledger, model_hash  # noqa: E402
 from sbi.theta import CANONICAL, prior_ppf  # noqa: E402
 
-OUT = os.environ.get("EXPLOOP_OUT", "/opt/earth1-data/exploop")
+V01 = os.environ.get("EXPLOOP_V01") == "1"
+OUT = os.environ.get("EXPLOOP_OUT",
+                     "/opt/earth1-data/exploop_v01" if V01
+                     else "/opt/earth1-data/exploop")
 SEALED = os.path.join(OUT, "sealed")
 _SMOKE = os.environ.get("EXPLOOP_SMOKE") == "1"
-SEEDS = list(range(9001, 9007)) if _SMOKE else list(range(9001, 9013))
-MIS = set(range(9005, 9007)) if _SMOKE else set(range(9009, 9013))
+_BASE = 9101 if V01 else 9001
+SEEDS = list(range(_BASE, _BASE + 6)) if _SMOKE \
+    else list(range(_BASE, _BASE + 12))
+MIS = set(range(_BASE + 4, _BASE + 6)) if _SMOKE \
+    else set(range(_BASE + 8, _BASE + 12))
 POP, WINDOW, CYCLES, P, FROZEN_K = \
     (2_000, 5, 4, 8, 6) if _SMOKE else (20_000, 30, 24, 64, 20)
 PROBE_DAYS = {10, 190, 370, 550}
+SHOCK_DAYS = {240, 480} if V01 else set()
+SHOCK_CYCLES = (8, 9, 16, 17)
 ELIGIBLE = ("relax", "memory_press")
 INFERENCE_VERSION = "smc-abc-v0/median-h/ess-half"
 
@@ -46,6 +54,19 @@ def theta_from_u(u):
     th["relax"] = prior_ppf("relax", float(u[0]))
     th["memory_press"] = prior_ppf("memory_press", float(u[1]))
     return th
+
+
+def _shock(w):
+    """v0.1 registered known forcing u_t — identical in every world."""
+    from earth1.memory import Memory
+    from earth1.types import Force
+    sig = np.zeros(8)
+    sig[Force.ECONOMICS] = -0.12
+    sig[Force.FEAR] = 0.12
+    w.chronicle.events.append(Memory(
+        id=f"shock_{int(w.day)}", label="shock", day=float(w.day),
+        force_signature=sig, scope=w.health.alive.copy(),
+        salience=1.0, half_life=60.0))
 
 
 def _probe(w):
@@ -67,6 +88,8 @@ def window_obs(w, rng, kw, daily_keys=("employment_rate",
     for _ in range(WINDOW):
         if int(w.day) in PROBE_DAYS:
             _probe(w)
+        if int(w.day) in SHOCK_DAYS:
+            _shock(w)
         live_one_day(w, rng, **kw)
         alive = w.health.alive
         la = alive & w.life.in_lf
@@ -161,6 +184,8 @@ def stage_run(seed, arm):
            "post_mean_u": [], "post_sd_u": [], "model_hashes": [],
            "ess": []}
     revealed = []
+    resid_sq = None          # v0.1: causal obs-noise from forecast residuals
+    n_resid = 0
     for c in range(CYCLES):
         vecs = np.array([window_obs(worlds[i], rngs[i],
                                     apply_theta(theta_from_u(U[i])))
@@ -169,13 +194,26 @@ def stage_run(seed, arm):
         V = len(y)
         scale = _causal_scale(revealed, V)
         xz, yz = vecs / scale, y / scale
-        score = crps_ens(xz, wgt, yz)
+        if V01:
+            sig_o = (np.sqrt(resid_sq / max(n_resid, 1))
+                     if resid_sq is not None and n_resid >= 2
+                     else np.zeros(V))
+            offs = np.array([-1.28, -0.52, 0.0, 0.52, 1.28])
+            aug = (vecs[None, :, :]
+                   + offs[:, None, None] * sig_o[None, None, :]
+                   ).reshape(-1, V)
+            aug_w = np.tile(wgt, 5) / 5.0
+            score = crps_ens(aug / scale, aug_w, yz)
+            vq, wq_arr = aug, aug_w
+        else:
+            score = crps_ens(xz, wgt, yz)
+            vq, wq_arr = vecs, wgt
         def wq(col, q):
             o = np.argsort(col)
-            cw = np.cumsum(wgt[o])
+            cw = np.cumsum(wq_arr[o])
             return float(col[o][np.searchsorted(cw, q, side="left").clip(0, len(col) - 1)])
-        qlo = np.array([wq(vecs[:, j], 0.05) for j in range(V)])
-        qhi = np.array([wq(vecs[:, j], 0.95) for j in range(V)])
+        qlo = np.array([wq(vq[:, j], 0.05) for j in range(V)])
+        qhi = np.array([wq(vq[:, j], 0.95) for j in range(V)])
         cover = float(((qlo <= y) & (y <= qhi)).mean())
         prior_summary = {"mean_u": U.T.dot(wgt).tolist(),
                          "sd_u": np.sqrt(((U - U.T.dot(wgt))**2).T.dot(wgt)).tolist()}
@@ -184,6 +222,14 @@ def stage_run(seed, arm):
             yu = np.array(upd_stream[c]) / scale
             d = np.linalg.norm(xz - yu[None, :], axis=1) / np.sqrt(V)
             h = max(float(np.median(d)), 1e-6)
+            if V01:
+                # bandwidth FLOOR at the particle NN-distance noise
+                # proxy: when systematic misfit dominates, weights
+                # flatten and the posterior stays honest (prereg v0.1 #4)
+                dd = np.linalg.norm(xz[:, None, :] - xz[None, :, :],
+                                    axis=2) / np.sqrt(V)
+                np.fill_diagonal(dd, np.inf)
+                h = max(h, float(np.median(dd.min(axis=1))))
             wgt = wgt * np.exp(-d**2 / (2 * h**2))
             wgt = wgt / wgt.sum()
             ess = float(1.0 / (wgt**2).sum())
@@ -197,6 +243,12 @@ def stage_run(seed, arm):
                 wgt = np.full(K, 1.0 / K)
                 diff["resampled"] = True
                 diff["parents"] = np.asarray(idx).tolist()
+                if V01:
+                    # rejuvenation: reflected u-jitter, worlds keep state
+                    U = U + rng.normal(0.0, 0.02, U.shape)
+                    U = np.where(U < 0, -U, U)
+                    U = np.where(U > 1, 2 - U, U)
+                    U = U.clip(1e-6, 1 - 1e-6)
             out["ess"].append(ess)
         mh = model_hash(U, wgt)
         led.append({
@@ -227,6 +279,10 @@ def stage_run(seed, arm):
         out["post_sd_u"].append(np.sqrt(((U - U.T.dot(wgt))**2).T
                                         .dot(wgt)).tolist())
         out["model_hashes"].append(mh)
+        if V01:
+            r = vecs.T.dot(wgt) - y
+            resid_sq = r * r if resid_sq is None else resid_sq + r * r
+            n_resid += 1
         revealed.append(own[c])
         print(f"cycle {c} {seed}/{arm} crps={score:.4f}", flush=True)
     json.dump(out, open(os.path.join(OUT, "arms",
@@ -234,7 +290,7 @@ def stage_run(seed, arm):
     print("ARM DONE", seed, arm, flush=True)
 
 
-def _naive(own):
+def _naive_core(own, forced=False):
     """Holt smoothing per observable; Gaussian CRPS on cycles."""
     from math import erf, exp, pi, sqrt
     own = np.array(own)
@@ -242,8 +298,11 @@ def _naive(own):
     crps = []
     lvl, tr = own[0].copy(), np.zeros(K)
     resid = [[] for _ in range(K)]
+    shock_resid = {}
     for c in range(1, n):
         mu = lvl + tr
+        if forced and c in (16, 17) and (c - 8) in shock_resid:
+            mu = mu + shock_resid[c - 8]
         scale = _causal_scale([list(r) for r in own[:c]], K)
         tot = 0.0
         for j in range(K):
@@ -257,10 +316,20 @@ def _naive(own):
         crps.append(tot / K)
         for j in range(K):
             resid[j].append(own[c, j] - mu[j])
+        if forced and c in (8, 9):
+            shock_resid[c] = own[c] - mu
         newl = 0.5 * own[c] + 0.5 * (lvl + tr)
         tr = 0.3 * (newl - lvl) + 0.7 * tr
         lvl = newl
     return [crps[0]] + crps          # pad cycle0 with cycle1 value
+
+
+def _naive(own):
+    return _naive_core(own, forced=False)
+
+
+def _naive_forced(own):
+    return _naive_core(own, forced=True)
 
 
 def stage_score():
@@ -269,13 +338,27 @@ def stage_score():
     res = {a: {s: json.load(open(os.path.join(OUT, "arms",
                                               f"{s}_{a}.json")))
                for s in SEEDS} for a in ("frozen", "exp", "placebo")}
-    naive = {s: _naive(json.load(open(os.path.join(
-        OUT, "streams", f"{s}.json")))["windows"]) for s in SEEDS}
+    streams = {s: json.load(open(os.path.join(
+        OUT, "streams", f"{s}.json")))["windows"] for s in SEEDS}
+    naive = {s: _naive(streams[s]) for s in SEEDS}
+    naive_f = {s: _naive_forced(streams[s]) for s in SEEDS}
     late = slice(CYCLES // 2, CYCLES)
 
-    def paired(a_hi, a_lo, seeds):
-        d = [np.mean(np.array(a_hi[s])[late])
-             - np.mean(np.array(a_lo[s])[late]) for s in seeds]
+    def paired(a_hi, a_lo, seeds, cyc=None):
+        cyc = late if cyc is None else cyc
+        if V01:
+            d = [np.mean(np.log(np.maximum(np.array(a_hi[s])[cyc], 1e-12))
+                         - np.log(np.maximum(np.array(a_lo[s])[cyc],
+                                             1e-12))) for s in seeds]
+            wt = st.wilcoxon(d) if np.any(d) else None
+            lo, hi = st.t.interval(0.95, len(d) - 1, loc=np.mean(d),
+                                   scale=st.sem(d))
+            return {"mean_log": float(np.mean(d)),
+                    "mean": float(np.mean(d)),
+                    "ci": [float(lo), float(hi)],
+                    "p_wilcoxon": float(wt.pvalue) if wt else 1.0}
+        d = [np.mean(np.array(a_hi[s])[cyc])
+             - np.mean(np.array(a_lo[s])[cyc]) for s in seeds]
         t = st.ttest_1samp(d, 0)
         lo, hi = st.t.interval(0.95, len(d) - 1, loc=np.mean(d),
                                scale=st.sem(d))
@@ -286,6 +369,10 @@ def stage_score():
             for a in ("frozen", "exp", "placebo")}
     g1 = paired(crps["frozen"], crps["exp"], ws)
     g1b = paired(naive, crps["exp"], ws)
+    g1bf = paired(naive_f, crps["exp"], ws)
+    _g8c = [c for c in SHOCK_CYCLES if c < CYCLES]
+    g8 = paired(naive, crps["exp"], ws, cyc=_g8c) \
+        if (V01 and _g8c) else None
     g7 = paired(crps["frozen"], crps["placebo"], ws)
     cover = float(np.mean([np.array(res["exp"][s]["cover90"])[late]
                            for s in ws]))
@@ -318,6 +405,8 @@ def stage_score():
     curves = {a: np.mean([crps[a][s] for s in ws], axis=0).tolist()
               for a in ("frozen", "exp", "placebo")}
     curves["naive"] = np.mean([naive[s] for s in ws], axis=0).tolist()
+    curves["naive_forced"] = np.mean([naive_f[s] for s in ws],
+                                     axis=0).tolist()
     curves_mis = {a: np.mean([crps[a][s] for s in sorted(MIS)],
                              axis=0).tolist()
                   for a in ("frozen", "exp", "placebo")}
@@ -325,7 +414,11 @@ def stage_score():
                and g1b["mean"] > 0 and g1b["ci"][0] > 0
                and not (g7["mean"] > 0 and g7["ci"][0] > 0)
                and 0.80 <= cover <= 0.97)
+    if V01 and g8 is not None:
+        verdict = verdict and g8["mean"] > 0 and g8["ci"][0] > 0
     rep = {"G1_frozen_minus_exp": g1, "G1b_naive_minus_exp": g1b,
+           "G1b_stretch_naiveforced_minus_exp": g1bf,
+           "G8_shock_cycles_naive_minus_exp": g8,
            "G7_frozen_minus_placebo": g7, "G2_cover90_late": cover,
            "G3_recovery": g3, "G4_no_false_learning_mis": g4,
            "curves_ws": curves, "curves_mis": curves_mis,
