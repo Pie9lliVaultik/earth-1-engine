@@ -28,3 +28,15 @@ Registered battery (all TRAIN/DEV; no canonical promotion):
    target) — queued after today's compute frees.
 INHERIT: all non-population subsystem validations (mechanism untouched
 — dynamics code byte-identical; only x0 composition changes).
+
+## STAGE-A RESULT (2026-08-27, paired 200k×90d, seed 4242)
+Unchanged: alive −0.1%, employment +0.2%, disease deaths −0.6%, firms
++2.5%, force_sd max |Δ| 0.015. DIVERGENT (flagged for ruling, not
+auto-failed): deprivation +17.6%, destitution +17.9%, wealth −36%,
+starvation deaths +31.9% (⇒ total deaths +15.1%), cascades +69%,
+force_mean max |Δ| 0.090. Competing diagnoses recorded: (a) honest
+joints expose the known informal-floor/hardship-gain response defects
+harder; (b) WVS income-frame mismatch over-poors the world (131
+tier-fallback countries suspect). Discriminating tests queued:
+country-level decomposition (surveyed vs fallback) + A-v2 development
+scoring — the substrate's canonical judge per Bible v4.1 re-entry.
