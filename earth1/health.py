@@ -309,8 +309,19 @@ def health_tick(civ, life, health: Health, rng, day: float,
         rr = ((1.0 + 1.2 * HARDSHIP_GAIN * dep)
               * (1.0 + 4.0 * ill_now)
               * (1.0 + 0.5 * add))
-        rr_mean = float(rr[a_alive].mean()) if a_alive.any() else 1.0
-        p = m_age / 365.0 * dt_days * (rr / rr_mean)             * (1.0 - GM_OTHER_SHARE)
+        # c011: AGE-STRATIFIED RR normalization (SMR form). Global
+        # mean-1 normalization let young-skewed risk factors transfer
+        # deaths ACROSS the age curve (200k: mean age at death 59.6 vs
+        # table ~79.7). Correct epidemiological form: hardship decides
+        # who dies WITHIN a cohort; the age curve belongs to the life
+        # table by construction.
+        rr_n = rr.copy()
+        _bins = np.digitize(age_years, [30, 40, 50, 60, 70, 80])
+        for _b in range(7):
+            _m = a_alive & (_bins == _b)
+            if _m.any():
+                rr_n[_m] = rr[_m] / float(rr[_m].mean())
+        p = m_age / 365.0 * dt_days * rr_n * (1.0 - GM_OTHER_SHARE)
         gm_dead = a_alive & (rng.random(n) < p)
         if gm_dead.any():
             health.alive[gm_dead] = False

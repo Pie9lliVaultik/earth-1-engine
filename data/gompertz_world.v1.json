@@ -31,5 +31,15 @@
  "age_at_death_band_derived": [
   69.7,
   89.7
- ]
+ ],
+ "age_at_death_reference_own_pyramid": {
+  "c2plus_v2": 69.0,
+  "incumbent": 61.5,
+  "derivation": "E[age at death] = sum(N(x) m(x) x)/sum(N(x) m(x)) on the genesis pyramid at 200k seed 4242; the stationary-table band [69.7,89.7] is structurally unreachable on a standing population this young and is superseded for gate purposes",
+  "band_c2plus": [
+   66.2,
+   71.8
+  ],
+  "band_note": "reference \u00b1 2\u00b7sigma-of-pooled-mean (1.4yr, 4 seeds)"
+ }
 }

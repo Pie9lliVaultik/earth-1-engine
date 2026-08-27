@@ -217,7 +217,8 @@ def score_mortality_structure(w, dead_ages):
     try:
         import json as _j
         _gm = _j.load(open(os.path.join(ROOT, "data/gompertz_world.v1.json")))
-        band = _gm["age_at_death_band_derived"]
+        band = _gm.get("age_at_death_reference_own_pyramid", {}).get(
+            "band_c2plus", _gm["age_at_death_band_derived"])
     except Exception:
         band = [le - 10, le + 10]
     s65 = A["pop_share_65plus_pct"]["value"] / 100.0
