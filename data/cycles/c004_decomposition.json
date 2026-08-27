@@ -1,0 +1,32 @@
+{
+ "age": {
+  "model_mae_pp": 10.969,
+  "floor_mae_pp": 10.056,
+  "gap_pp": 0.913,
+  "n_cells_scored": 6115
+ },
+ "edu": {
+  "model_mae_pp": 10.874,
+  "floor_mae_pp": 10.391,
+  "gap_pp": 0.484,
+  "n_cells_scored": 6115
+ },
+ "sex": {
+  "model_mae_pp": 10.86,
+  "floor_mae_pp": 10.138,
+  "gap_pp": 0.722,
+  "n_cells_scored": 6115
+ },
+ "income": {
+  "model_mae_pp": 11.18,
+  "floor_mae_pp": 10.452,
+  "gap_pp": 0.728,
+  "n_cells_scored": 6115
+ },
+ "age_edu": {
+  "model_mae_pp": 10.96,
+  "floor_mae_pp": 10.315,
+  "gap_pp": 0.645,
+  "n_cells_scored": 2625
+ }
+}
