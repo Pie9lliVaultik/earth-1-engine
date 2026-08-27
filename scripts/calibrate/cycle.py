@@ -29,7 +29,9 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT)
 
-SEED, POP, DAYS = 4242, 20_000, 180
+SEED = int(os.environ.get("EARTH1_CYCLE_SEED", "4242"))
+POP, DAYS = 20_000, 180
+NOLOG = os.environ.get("EARTH1_CYCLE_NOLOG") == "1"
 
 
 def _sha(rel):
@@ -226,6 +228,10 @@ def main(name, desc):
            f"| {c['ratio_vs_canonical']}{'✓' if c['pass'] else '✗'} "
            f"| **{res['verdict']}** | {fl} | t:{pv['tables_sha']} "
            f"a:{pv['anchors_sha']} i:{pv['income_cal_sha']} |\n")
+    if NOLOG:
+        print(json.dumps({k: res[k] for k in ("cycle", "verdict")}))
+        print("VERDICT:", res["verdict"], f"({res['seconds']}s)")
+        sys.exit(0 if res["verdict"] == "PASS" else 1)
     log = os.path.join(ROOT, "ops/alive/CALIBRATION_CYCLES.md")
     if not os.path.exists(log):
         open(log, "w").write(

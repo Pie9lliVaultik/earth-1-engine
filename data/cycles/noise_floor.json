@@ -1,0 +1,37 @@
+{
+ "cohortMAE": {
+  "mean": 10.761,
+  "sigma": 0.155,
+  "n": 4
+ },
+ "floor": {
+  "mean": 9.705,
+  "sigma": 0.246,
+  "n": 4
+ },
+ "median": {
+  "mean": 9.315,
+  "sigma": 0.061,
+  "n": 4
+ },
+ "pov830": {
+  "mean": 0.481,
+  "sigma": 0.007,
+  "n": 4
+ },
+ "cdr": {
+  "mean": 0.012,
+  "sigma": 0.002,
+  "n": 4
+ },
+ "ageAtDeath": {
+  "mean": 50.075,
+  "sigma": 3.237,
+  "n": 4
+ },
+ "casc": {
+  "mean": 0.523,
+  "sigma": 0.02,
+  "n": 4
+ }
+}
