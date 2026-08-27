@@ -1,6 +1,21 @@
 # EARTH-1 LIVE STATUS
 _Chat updates mirrored here. Newest first. Timestamps UTC._
 
+## 2026-08-27 ~21:45 UTC — FIRST FULL-GREEN CYCLE (c010)
+All 7 gates pass at 20k on the registered seed: attitudes (gap −0.70,
+green on all 4 seeds, 11σ), median $9.27, $8.30 line 48.5%, CDR 0.0077
+vs anchor 0.0076, age-at-death 71.1 in the derived band, 65+ share,
+cascades. The path there tonight: Gompertz mortality restructure
+(founder-specified form, fetched-aggregate fit) c008–c009, then the
+WANT/starvation channel cut from 24% of deaths to 3.9% via the fetched
+age anchor (c010). Pooled seed replicates sit AT-anchor within 20k
+counting noise → the 200k confirmation is running now and decides.
+Candidate config: c2plus_v2 + gradient + income v1 + gompertz + WANT
+0.10. Founder actions pending: UN WPP API key (upgrades the GM fit and
+sharpens the band), WHO/IHME access (WANT point anchor), attitude-gate
+ceiling ruling now MOOT-ish (gate green) but coupling mechanisms remain
+the deeper science thread.
+
 ## 2026-08-27 late — autonomous tick: c007 + A-v2 verdict
 - A-v2 DEV on candidate: C2_SUBSTRATE_VALIDATED = NO on the attitude
   judge (e1 10.576→10.479, +0.10pp; direction coin-flip). Substrate
