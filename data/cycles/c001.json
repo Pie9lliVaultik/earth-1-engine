@@ -1,0 +1,50 @@
+{
+ "cycle": "c001",
+ "change": "baseline: candidate 0.9 flag set (scorer v2)",
+ "flags": {
+  "EARTH1_HARDSHIP_MODE": "gradient",
+  "EARTH1_INCOME_CALIBRATION": "v1",
+  "EARTH1_SUBSTRATE_FLAG": "c2plus_v1",
+  "EARTH1_C2PLUS_TABLES": ""
+ },
+ "substrate": "c2plus_v1",
+ "seed": 4242,
+ "pop": 20000,
+ "days": 180,
+ "commit": "0c80f90",
+ "at": "2026-08-27T14:13:41Z",
+ "anchors": {
+  "median": {
+   "value": 8.49,
+   "target": 9.27,
+   "pass": true
+  },
+  "pov_830": {
+   "value": 0.5202,
+   "target": 0.461,
+   "pass": false
+  },
+  "cdr_yr": {
+   "value": 0.0151,
+   "band": [
+    0.007,
+    0.015
+   ],
+   "pass": false
+  },
+  "pov_300": 0.2216,
+  "pov_420": 0.3041
+ },
+ "attitudes": {
+  "cohort_mae_pp": 10.954,
+  "national_copy_floor_pp": 10.09,
+  "pass": false
+ },
+ "cascades": {
+  "fired": 1086,
+  "ratio_vs_canonical": 0.501,
+  "pass": true
+ },
+ "verdict": "MISS",
+ "seconds": 104.6
+}
