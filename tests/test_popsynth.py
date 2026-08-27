@@ -10,7 +10,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from earth1.genesis import GENESIS_COUNTRIES, genesis
 
-TABLES = os.path.join(ROOT, "data", "c2plus_tables_v1.json")
+from earth1.popsynth import _TABLE_FILE
+TABLES = os.path.join(ROOT, "data", _TABLE_FILE)   # follows the sampler
 
 
 def _hash_civ(civ):
