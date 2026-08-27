@@ -6,3 +6,4 @@ in the same unattended chain; this file was committed after the chain
 errored on a missing y_obs world, before any posterior, exam, or
 verdict file was read by anyone. Unsealing happens only in the score
 stage via the data-role registry (role HOLDOUT, purpose final_scoring).
+5d31b0267f2f69decd2b5c5247551042069e0a7eecc7b2b7c76c27fa9abca874  exploop_truth_v0.json (v0.1 truths, seeds 9101-9112)
