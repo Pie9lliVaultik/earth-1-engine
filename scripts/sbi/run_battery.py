@@ -198,7 +198,9 @@ def stage_score():
     U_star = to_u(stars)
     sens = json.load(open(os.path.join(OUT, "screen_report.json")))
     report = {"prereg": "THREE_TRACK_PREREG_v1 A9 + A4.1"}
-    for pop in (20_000, 200_000):
+    pops = tuple(int(x) for x in os.environ.get(
+        "EARTH1_SBI_POPS", "20000,200000").split(","))
+    for pop in pops:
         inf = json.load(open(os.path.join(OUT, f"infer_{pop}.json")))
         ptab = sens["pops"][str(pop)]
         res = {}
