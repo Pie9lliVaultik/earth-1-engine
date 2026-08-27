@@ -1,0 +1,19 @@
+{
+ "label": "c003cfg",
+ "flags": {
+  "EARTH1_HARDSHIP_MODE": "gradient",
+  "EARTH1_INCOME_CALIBRATION": "v1",
+  "EARTH1_SUBSTRATE_FLAG": "c2plus_v1",
+  "EARTH1_MORTALITY_MODE": "",
+  "EARTH1_GM_OTHER_SHARE": "",
+  "EARTH1_WANT_SCALE": ""
+ },
+ "model_mae_pp": 12.003,
+ "invariant_floor_mae_pp": 13.025,
+ "n_frozen_cells_scored": 18333,
+ "world_thin_cell_fallbacks": 3884,
+ "level_mae_pp": 11.287,
+ "structure_dev_mae_pp": 3.881,
+ "structure_zero_ref_pp": 2.571,
+ "frozen_sha": "55777e15f46c4d11"
+}

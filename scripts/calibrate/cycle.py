@@ -244,8 +244,35 @@ def score_cascades(cum):
             "pass": bool(cum["cascades_fired"] > 0 and 0.3 <= r <= 3.0)}
 
 
+def _config_sha():
+    """Effective-configuration hash: code tree + EARTH1_* env. A named
+    change with an identical hash is unrecordable (founder tripwire:
+    a PASS on unchanged code must be impossible to write down)."""
+    head = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
+                          text=True, cwd=ROOT).stdout.strip()
+    diff = subprocess.run(["git", "diff", "HEAD"], capture_output=True,
+                          text=True, cwd=ROOT).stdout
+    envs = "|".join(f"{k}={v}" for k, v in sorted(os.environ.items())
+                    if k.startswith("EARTH1_")
+                    and k not in ("EARTH1_CYCLE_SEED", "EARTH1_CYCLE_NOLOG"))
+    return hashlib.sha256((head + diff + envs).encode()).hexdigest()[:12]
+
+
 def main(name, desc):
     t0 = time.time()
+    cfg_sha = _config_sha()
+    guard_p = os.path.join(ROOT, "data", "cycles", "_last.json")
+    last = json.load(open(guard_p)) if os.path.exists(guard_p) else {}
+    if not NOLOG:
+        if last.get("config_sha") == cfg_sha:
+            sys.exit(f"TRIPWIRE: named change {name!r} but effective "
+                     f"config hash {cfg_sha} equals previous row "
+                     f"({last.get('name')}). A no-op cannot be recorded.")
+        a_sha = _sha("data/anchors_worldbank.json")
+        if last.get("anchors_sha") and last["anchors_sha"] != a_sha \
+                and "anchor" not in desc.lower():
+            sys.exit("TRIPWIRE: anchors file changed but the change "
+                     "label does not declare it.")
     flags = {k: os.environ.get(k, "") for k in
              ("EARTH1_HARDSHIP_MODE", "EARTH1_INCOME_CALIBRATION",
               "EARTH1_SUBSTRATE_FLAG", "EARTH1_C2PLUS_TABLES",
@@ -311,6 +338,9 @@ def main(name, desc):
             "CDR | ageAtDeath | 65+ | casc× | verdict | flags | provenance |\n"
             "|---|---|---|---|---|---|---|---|---|---|---|---|\n")
     open(log, "a").write(row)
+    json.dump({"name": name, "config_sha": cfg_sha,
+               "anchors_sha": _sha("data/anchors_worldbank.json")},
+              open(guard_p, "w"))
     print(json.dumps(res, indent=1))
     print("VERDICT:", res["verdict"], f"({res['seconds']}s)")
     sys.exit(0 if res["verdict"] == "PASS" else 1)
