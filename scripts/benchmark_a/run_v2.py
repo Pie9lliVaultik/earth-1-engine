@@ -11,7 +11,13 @@ from earth1.benchmark_a import scoring as S
 from earth1.benchmark_a.mean_preserving import solve_K, center_latent, ka_mean_preservation
 from earth1.benchmark_a.leakage import assert_anchor_oos
 from earth1.rng import logit, sigmoid
-OUT = os.path.join(ROOT, "data", "benchmark_a"); os.makedirs(OUT, exist_ok=True)
+OUT = os.environ.get("EARTH1_AV2_OUT",
+                     os.path.join(ROOT, "data", "benchmark_a"))
+os.makedirs(OUT, exist_ok=True)
+# C2+ re-entry (Bible v4.1): candidate-substrate DEV scoring writes to a
+# separate OUT (copy the artifact dir first); frozen v2 artifacts are
+# never overwritten. EARTH1_SUBSTRATE selects the genesis substrate.
+SUBSTRATE = os.environ.get("EARTH1_SUBSTRATE") or None
 OUTD = "/opt/earth1-data/benchmark_a"
 FOLDS, CV_SEEDS, POP, DAYS = 5, (42, 7, 13), 200_000, 60
 WORLD_SEEDS = (42, 20260901, 20260902)
@@ -208,9 +214,9 @@ def run_earth1():
     dev = json.load(open(os.path.join(OUT, "targets_v1.json")))
     Z = np.load(os.path.join(OUTD, "joint_vectors_confirm_v2.npz"))
     out = {"worlds": {}, "national_sanity": {}, "cohort": {}, "joint": {}, "zeroshot": {}, "feature_report": None,
-           "stamp": stamp({"physics_version": PHYSICS_VERSION, "ka_mean_preservation": ka_mean_preservation()})}
+           "stamp": stamp({"physics_version": PHYSICS_VERSION, "substrate": SUBSTRATE, "ka_mean_preservation": ka_mean_preservation()})}
     for ws in WORLD_SEEDS:
-        t0 = time.time(); w = birth_world(POP, ws); rng = np.random.default_rng(ws)
+        t0 = time.time(); w = birth_world(POP, ws, substrate=SUBSTRATE); rng = np.random.default_rng(ws)
         for _ in range(DAYS): live_one_day(w, rng)
         X = living_features(w); civ = w.civ; alive = w.health.alive
         c2i, codes = _get_country_index(civ)
