@@ -1,0 +1,25 @@
+{
+ "expected_signs": {
+  "FEAR": "+",
+  "DESIRE": "-",
+  "ECONOMICS": "+",
+  "COLLECTIVE": "+",
+  "IDENTITY": "+",
+  "CULTURE": "+",
+  "EXPERIENCE": "+",
+  "TEMPERAMENT": "0"
+ },
+ "committed_at": "before any fit ran",
+ "founder_named": [
+  "IDENTITY",
+  "EXPERIENCE",
+  "DESIRE",
+  "FEAR",
+  "ECONOMICS"
+ ],
+ "operator_completed": [
+  "COLLECTIVE",
+  "CULTURE",
+  "TEMPERAMENT"
+ ]
+}
