@@ -74,7 +74,31 @@ def welfare_ppp(w) -> tuple:
     fallback = np.maximum(net, informal)
     fallback = np.where(life.in_lf, fallback, np.maximum(fallback, 0.75))
     income = np.where(life.employed, life.wage, life.wage * fallback)
-    ratio = income / np.maximum(life.cost, 1e-9)
+    # HOUSEHOLD POOLING (2026-08-27, observation-operator repair).
+    # World Bank/PIP poverty is measured on HOUSEHOLD PER-CAPITA
+    # consumption, not individual earnings: members pool income and
+    # share it. Reading individual income against a household-based
+    # series over-counted the poor at the bottom (Earth-1 has no
+    # single-earner household concept otherwise). Earth-1's household
+    # unit is the partnership (earth1/partnership.py); singles are
+    # one-person households. Physics is untouched — this changes what
+    # the operator MEASURES, not what agents do.
+    partner = getattr(life, "partner", None)
+    if partner is not None:
+        p = np.asarray(partner)
+        pooled = income.copy()
+        cost_h = np.asarray(life.cost, dtype=float).copy()
+        both = (p >= 0) & alive & alive[np.clip(p, 0, len(p) - 1)]
+        idx = np.flatnonzero(both)
+        if idx.size:
+            j = p[idx]
+            # per-capita of the two-person household
+            pooled[idx] = 0.5 * (income[idx] + income[j])
+            cost_h[idx] = 0.5 * (life.cost[idx] + life.cost[j])
+        income, cost_used = pooled, cost_h
+    else:
+        cost_used = life.cost
+    ratio = income / np.maximum(cost_used, 1e-9)
     return (ratio[alive] * EXTREME_LINE_PPP), census_weights(civ)[alive]
 
 
