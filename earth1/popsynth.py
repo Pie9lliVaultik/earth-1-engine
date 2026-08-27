@@ -13,6 +13,7 @@ import os
 import numpy as np
 
 _TABLES = None
+_TABLE_FILE = os.environ.get("EARTH1_C2PLUS_TABLES", "c2plus_tables_v2.json")
 BAND_EDGES = [(18, 25), (25, 35), (35, 45), (45, 55), (55, 65), (65, 90)]
 
 
@@ -20,7 +21,7 @@ def _tables():
     global _TABLES
     if _TABLES is None:
         p = os.path.join(os.path.dirname(os.path.dirname(
-            os.path.abspath(__file__))), "data", "c2plus_tables_v1.json")
+            os.path.abspath(__file__))), "data", _TABLE_FILE)
         _TABLES = json.load(open(p))
     return _TABLES
 
