@@ -56,6 +56,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import os
+
 import numpy as np
 
 from earth1.types import Force
@@ -72,6 +74,14 @@ BREATH_TAX = 0.02              # continuous, invisible, always there
 # hunger is politically potent rather than merely fatal. Famine
 # mortality even at its worst is a few percent per year of the affected.
 STARVATION_DEATH = 1.2e-4
+# c010: the WANT channel killed 24% of the world (real nutrition/
+# famine mortality <1-2%) because hunger^3 x a large rate constant is a
+# permanent background famine — the model has none of the coping/aid/
+# informal-transfer buffers reality has. The scale below is a flagged
+# calibratable identified through the FETCHED age-structure anchor
+# (WANT deaths are young-skewed); the share is also reported against
+# the fetched cause-composition bound. Default 1.0 = canonical.
+WANT_SCALE = float(os.environ.get("EARTH1_WANT_SCALE", "1.0"))
 DEHYDRATION_DEATH = 6.0e-4
 
 
@@ -163,9 +173,9 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
     fl.thirst = np.clip(fl.thirst + (THIRST_PER_DAY * (1.0 - water)
                                      - 1.20 * water) * dt_days, 0, 1)
 
-    starving = live & (rng.random(n) < STARVATION_DEATH * fl.hunger ** 3
+    starving = live & (rng.random(n) < STARVATION_DEATH * WANT_SCALE * fl.hunger ** 3
                        * dt_days)
-    parched = live & (rng.random(n) < DEHYDRATION_DEATH * fl.thirst ** 3
+    parched = live & (rng.random(n) < DEHYDRATION_DEATH * WANT_SCALE * fl.thirst ** 3
                       * dt_days)
     gone = starving | parched
     if gone.any() and health is not None:
