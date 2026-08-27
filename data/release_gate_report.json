@@ -8,9 +8,9 @@
   "gate_canary": {
    "suite": "tests/test_gate_canary.py",
    "passed": false,
-   "summary": "1 failed in 0.04s"
+   "summary": "1 failed in 0.05s"
   }
  },
- "commit": "b9ed6962a5d66da3509872979bc33c59721583cb",
+ "commit": "7ab258bf5e2a2e57071e354e3b3a085e7740f67e",
  "dirty_worktree": true
 }

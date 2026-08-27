@@ -99,7 +99,7 @@
  },
  "runtime": {
   "mode": "CODE_PATH",
-  "alive_home": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_one_earth_am2fqljb",
+  "alive_home": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_one_earth_hrce8uxp",
   "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
   "epoch": null,
   "world_uuid": null,
@@ -111,10 +111,10 @@
    "benchmark_living": "544545a17c496398262b7bc8c24d38ac00ac63b83ffbcbf8cb0865dcd27b4ee4"
   },
   "snapshot_sha256_by_surface": {
-   "/world": "a7e6c5de9fd46e088785a7c9773380faed9c4333615d9985b4a863a963b31232",
-   "/observatory": "a7e6c5de9fd46e088785a7c9773380faed9c4333615d9985b4a863a963b31232",
-   "/ask (503 by design)": "a7e6c5de9fd46e088785a7c9773380faed9c4333615d9985b4a863a963b31232",
-   "/forecast": "a7e6c5de9fd46e088785a7c9773380faed9c4333615d9985b4a863a963b31232"
+   "/world": "4515888abe5be188765653a33422f73ff0eb1408bee6a7f28ed75790fe26da49",
+   "/observatory": "4515888abe5be188765653a33422f73ff0eb1408bee6a7f28ed75790fe26da49",
+   "/ask (503 by design)": "4515888abe5be188765653a33422f73ff0eb1408bee6a7f28ed75790fe26da49",
+   "/forecast": "4515888abe5be188765653a33422f73ff0eb1408bee6a7f28ed75790fe26da49"
   },
   "world_uuid_by_surface": {
    "/world": null,

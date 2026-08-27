@@ -226,6 +226,15 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     # downstream layers see an unchanged stream position. Uses its own
     # spawned rng. Adds a sex axis (civ.sex).
     _sex = None
+    from earth1.life import INCOME_CALIBRATION as _IC, \
+        INCOME_SUBSTRATE_TAG as _TAG
+    if _IC != "off":
+        _active = substrate or "incumbent"
+        if _active != _TAG:
+            raise RuntimeError(
+                f"income calibration is keyed to substrate {_TAG!r} but "
+                f"genesis was called with {_active!r} — refusing to birth "
+                f"a world with mismatched constants")
     if substrate == "c2plus_v1":
         from earth1.popsynth import draw_c2plus
         _iso2 = [c["iso2"] for c in GENESIS_COUNTRIES]

@@ -9,5 +9,7 @@
  "real_implied_log_sd": 1.3012,
  "real_mean_daily": 21.6153,
  "real_median_daily": 9.27,
- "recalibration_note": "2026-08-27: WAGE_LEVEL re-derived against the CORRECTED household-pooled operator (World Bank/PIP measure household per-capita consumption; the first fit used individual income and the operator repair shifted the measured median 9.91 -> 10.96). Target remains the fetched PIP world median $9.27. Headcounts still untargeted."
+ "recalibration_note": "2026-08-27: WAGE_LEVEL re-derived against the CORRECTED household-pooled operator (World Bank/PIP measure household per-capita consumption; the first fit used individual income and the operator repair shifted the measured median 9.91 -> 10.96). Target remains the fetched PIP world median $9.27. Headcounts still untargeted.",
+ "substrate": "incumbent",
+ "substrate_note": "Derived on the incumbent genesis (both fits used birth_world without substrate). A file may only be loaded when the active substrate matches this tag \u2014 founder ruling 2026-08-27."
 }

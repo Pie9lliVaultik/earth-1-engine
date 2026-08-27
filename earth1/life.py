@@ -157,11 +157,29 @@ HARDSHIP_MODE = os.environ.get("EARTH1_HARDSHIP_MODE", "cliff")
 # poverty headcounts are not targeted and remain the test. Default is
 # canonical v4.1 (off): no deployed physics change without a ruling.
 INCOME_CALIBRATION = os.environ.get("EARTH1_INCOME_CALIBRATION", "off")
+# Substrate-keyed (founder ruling 2026-08-27): a constant derived on one
+# substrate must never silently apply to another. The file is
+# income_calibration.<substrate>.json, its "substrate" field must match
+# the active tag, and genesis() cross-checks its substrate argument
+# against this tag at world birth.
+INCOME_SUBSTRATE_TAG = {"off": "incumbent", "": "incumbent"}.get(
+    os.environ.get("EARTH1_SUBSTRATE_FLAG", "off"),
+    os.environ.get("EARTH1_SUBSTRATE_FLAG", "off"))
 if INCOME_CALIBRATION == "v1":
     import json as _json
-    _cal = _json.load(open(os.path.join(
+    _p = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        "data", "income_calibration.json")))
+        "data", f"income_calibration.{INCOME_SUBSTRATE_TAG}.json")
+    if not os.path.exists(_p):
+        raise RuntimeError(
+            f"income calibration for substrate {INCOME_SUBSTRATE_TAG!r} "
+            f"does not exist ({_p}); derive it before enabling "
+            f"EARTH1_INCOME_CALIBRATION on this substrate")
+    _cal = _json.load(open(_p))
+    if _cal.get("substrate") != INCOME_SUBSTRATE_TAG:
+        raise RuntimeError(
+            f"substrate tag mismatch: file says {_cal.get('substrate')!r}, "
+            f"active is {INCOME_SUBSTRATE_TAG!r}")
     WAGE_LEVEL = float(_cal["WAGE_LEVEL"])
     WAGE_LOG_SD = float(_cal["WAGE_LOG_SD"])
 else:
