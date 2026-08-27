@@ -33,6 +33,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import os
+
 import numpy as np
 
 from earth1.life import OCC_NAMES
@@ -125,6 +127,20 @@ def _tier_idx(civ) -> np.ndarray:
 # One scale on every deprivation->hazard coupling below (canonical 1.0;
 # a calibratable theta in the SBI inventory, THREE_TRACK_PREREG_v1 A1).
 HARDSHIP_GAIN = 1.0
+
+# GM mortality candidate (c008): flag + constants from the fetched-
+# aggregate fit; OTHER_SHARE removes non-health channels' portion of
+# all-cause mortality from the baseline (c009 fixed point).
+MORTALITY_MODE = os.environ.get("EARTH1_MORTALITY_MODE", "legacy")
+GM_OTHER_SHARE = float(os.environ.get("EARTH1_GM_OTHER_SHARE", "0.0"))
+if MORTALITY_MODE == "gompertz":
+    import json as _json
+    _gm = _json.load(open(os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "data", "gompertz_world.v1.json")))
+    GM_A, GM_B, GM_C = _gm["A"], _gm["B"], _gm["c"]
+else:
+    GM_A = GM_B = GM_C = 0.0
 
 
 def cancer_hazard(age_years: np.ndarray, tier: np.ndarray,
@@ -258,7 +274,13 @@ def health_tick(civ, life, health: Health, rng, day: float,
             m = health.condition[idx] == j + 1
             surv[m] = np.where(health.in_treatment[idx][m],
                                SURVIVE_TREATED[d], SURVIVE_UNTREATED[d])
-        lived = rng.random(idx.size) < surv
+        if MORTALITY_MODE == "gompertz":
+            # GM restructure: resolution clears illness, never kills —
+            # death is decided by the centralized baseline draw below.
+            lived = np.ones(idx.size, dtype=bool)
+            _ = rng.random(idx.size)          # keep the draw slot
+        else:
+            lived = rng.random(idx.size) < surv
         health.condition[idx[lived]] = 0
         health.in_treatment[idx[lived]] = False
         health.diagnosed_day[idx[lived]] = -1.0
@@ -267,6 +289,36 @@ def health_tick(civ, life, health: Health, rng, day: float,
         health.cause_of_death[dead_idx] = health.condition[dead_idx]
         health.condition[dead_idx] = 0
         died[dead_idx] = True
+
+    if MORTALITY_MODE == "gompertz":
+        # ── GM BASELINE × RELATIVE RISK (candidate, c008; founder-
+        # specified form). m(age) fitted to FETCHED aggregates
+        # (data/gompertz_world.v1.json; upgrade to the UN WPP table when
+        # access lands). RR = (1 + 1.2·HARDSHIP_GAIN·dep)(1 + 4·ill)
+        # (1 + 0.5·add), NORMALIZED to mean 1 over the living, so the
+        # aggregate death rate and age curve inherit the life table by
+        # construction and hardship decides WHO, not HOW MANY. Other
+        # channels (starvation, weather, war, roads) still add; their
+        # share is removed from the baseline via GM_OTHER_SHARE
+        # (fixed-point iterated, c009).
+        a_alive = health.alive
+        age_years = 18.0 + civ.age * 72.0
+        m_age = (GM_A + GM_B * np.exp(GM_C * np.maximum(
+            age_years - 18.0, 0.0)))
+        ill_now = (health.condition > 0).astype(float)
+        rr = ((1.0 + 1.2 * HARDSHIP_GAIN * dep)
+              * (1.0 + 4.0 * ill_now)
+              * (1.0 + 0.5 * add))
+        rr_mean = float(rr[a_alive].mean()) if a_alive.any() else 1.0
+        p = m_age / 365.0 * dt_days * (rr / rr_mean)             * (1.0 - GM_OTHER_SHARE)
+        gm_dead = a_alive & (rng.random(n) < p)
+        if gm_dead.any():
+            health.alive[gm_dead] = False
+            health.cause_of_death[gm_dead] = np.where(
+                health.condition[gm_dead] > 0,
+                health.condition[gm_dead], 99)   # 99 = background/age
+            health.condition[gm_dead] = 0
+            died = died | gm_dead
 
     # ── a death is a SOCIAL event ────────────────────────────────────
     # everyone tied to the person who died is bereaved. This is what

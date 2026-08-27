@@ -214,6 +214,12 @@ def score_mortality_structure(w, dead_ages):
     from earth1.poverty import anchors
     A = anchors()["anchors"]
     le = A["life_expectancy_years"]["value"]
+    try:
+        import json as _j
+        _gm = _j.load(open(os.path.join(ROOT, "data/gompertz_world.v1.json")))
+        band = _gm["age_at_death_band_derived"]
+    except Exception:
+        band = [le - 10, le + 10]
     s65 = A["pop_share_65plus_pct"]["value"] / 100.0
     s014 = A["pop_share_0_14_pct"]["value"] / 100.0
     target65 = s65 / (1.0 - s014)
@@ -222,8 +228,9 @@ def score_mortality_structure(w, dead_ages):
     share65 = float((years >= 65).mean())
     mad = float(np.mean(dead_ages)) if len(dead_ages) else 0.0
     return {"mean_age_at_death": {"value": round(mad, 1),
-                                  "target_LE": le, "band": [le - 10, le + 10],
-                                  "pass": bool(le - 10 <= mad <= le + 10)},
+                                  "target_LE": le, "band": band,
+                                  "band_provenance": "derived from GM fit (provisional aggregates)",
+                                  "pass": bool(band[0] <= mad <= band[1])},
             "pop_65plus_share": {"value": round(share65, 4),
                                  "target": round(target65, 4),
                                  "pass": bool(abs(share65 - target65) <= 0.04)},
@@ -241,7 +248,8 @@ def main(name, desc):
     flags = {k: os.environ.get(k, "") for k in
              ("EARTH1_HARDSHIP_MODE", "EARTH1_INCOME_CALIBRATION",
               "EARTH1_SUBSTRATE_FLAG", "EARTH1_C2PLUS_TABLES",
-              "EARTH1_DEMO_FORCE_GRADIENT")}
+              "EARTH1_DEMO_FORCE_GRADIENT", "EARTH1_MORTALITY_MODE",
+              "EARTH1_GM_OTHER_SHARE")}
     flags["EARTH1_C2PLUS_TABLES"] = os.environ.get(
         "EARTH1_C2PLUS_TABLES", "c2plus_tables_v2.json")
     w, cum, sub, dead_ages = build_and_run()

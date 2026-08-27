@@ -1,0 +1,35 @@
+{
+ "form": "m(x) = A + B*exp(c*(x-18)) for x>=18; child part from fetched U5MR (5-15 = 0.3*U5MR declared approximation)",
+ "A": 0.0032201,
+ "B": 3.331e-06,
+ "c": 0.148878,
+ "e18_derived": 61.92,
+ "targets_all_fetched": {
+  "e0": 73.482,
+  "q45_15_bothsex": 0.1443,
+  "cdr": 0.007551,
+  "u5mr": 0.0356,
+  "pop_shares": [
+   0.24726,
+   0.10202
+  ],
+  "sources": "World Bank open API (SP.DYN.LE00.IN, SP.DYN.AMRT.MA/FE, SP.DYN.CDRT.IN, SH.DYN.MORT, SP.POP.*); see anchors_worldbank.json"
+ },
+ "status": "DERIVED-FROM-FETCHED-AGGREGATES \u2014 upgrade to UN WPP abridged life table when access lands (API key = founder action; bulk URLs 404; GHO unreachable)",
+ "fit_residuals": [
+  0.05487,
+  -0.0012,
+  0.02149
+ ],
+ "mean_adult_age_at_death_derived": 79.7,
+ "fit": {
+  "e0": 75.72,
+  "q45_15": 0.1442,
+  "cdr_1000": 8.22,
+  "note": "e0 residual triple-weighted; residual tension recorded"
+ },
+ "age_at_death_band_derived": [
+  69.7,
+  89.7
+ ]
+}
