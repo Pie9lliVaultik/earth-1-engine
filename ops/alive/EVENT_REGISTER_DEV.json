@@ -1,0 +1,191 @@
+{
+ "created": "2026-08-31",
+ "protocol": "uniform-class-dose state-discrimination (no calendar alignment in Epoch 3 by design \u2014 state-at-real-T BLOCKED_ON_DESIGN; branch protocol per BIBLE)",
+ "dose": "registered global protest-class scenario: forces {fear:+0.2, economics:-0.15}, firm_damage 0.1, persists 60d, applied identically in every scenario arm; null_branch control",
+ "outcome_rule": "protest-wave onset = collective_surge episode entry in the target country within 120d window; P = share of 8 seeds with onset",
+ "baseline": "base rate = positives/(positives+controls) of the register itself = 0.5 by construction; geography Spearman vs realized outcome is the primary \u00a712 metric; GDELT/ACLED quantitative upgrade queued (GDELT API unreachable tonight, exit 28 twice)",
+ "positives": [
+  {
+   "event_id": "IR2022",
+   "country": "IR",
+   "name": "2022 Mahsa Amini protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/Mahsa_Amini_protests",
+   "source_sha256": "832a2f2e19d80cb5",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "LK2022",
+   "country": "LK",
+   "name": "2022 Sri Lankan protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2022_Sri_Lankan_protests",
+   "source_sha256": "ac316249ca28846d",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "KZ2022",
+   "country": "KZ",
+   "name": "2022 Kazakh unrest",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2022_Kazakh_unrest",
+   "source_sha256": "3c2061bf47d32013",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "CL2019",
+   "country": "CL",
+   "name": "2019 Chilean protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2019%E2%80%932022_Chilean_protests",
+   "source_sha256": "2ad875490c645f61",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "CO2021",
+   "country": "CO",
+   "name": "2021 Colombian protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2021_Colombian_protests",
+   "source_sha256": "c6c695dda1df2677",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "FR2023",
+   "country": "FR",
+   "name": "2023 French pension protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2023_French_pension_reform_strikes",
+   "source_sha256": "afaa308eefb660ca",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "NG2020",
+   "country": "NG",
+   "name": "End SARS",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/End_SARS",
+   "source_sha256": "a9ee0a8dc33e90a9",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "KE2024",
+   "country": "KE",
+   "name": "2024 Kenya Finance Bill protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2024_Kenya_Finance_Bill_protests",
+   "source_sha256": "c959b6341955b551",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "BD2024",
+   "country": "BD",
+   "name": "2024 Bangladesh quota movement",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2024_Bangladesh_quota_reform_movement",
+   "source_sha256": "8d034ee57f119cb8",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "PE2022",
+   "country": "PE",
+   "name": "2022-23 Peruvian protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2022%E2%80%932023_Peruvian_protests",
+   "source_sha256": "49973df139003c42",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "EC2019",
+   "country": "EC",
+   "name": "2019 Ecuadorian protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2019_Ecuadorian_protests",
+   "source_sha256": "64b5b7d3ccb4d7a2",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  },
+  {
+   "event_id": "IQ2019",
+   "country": "IQ",
+   "name": "2019 Iraqi protests",
+   "resolved_outcome": true,
+   "source_url": "https://en.wikipedia.org/wiki/2019%E2%80%932021_Iraqi_protests",
+   "source_sha256": "de4f2cc072e684d8",
+   "source_class": "encyclopedic snapshot (authority caveat declared)"
+  }
+ ],
+ "controls": [
+  {
+   "event_id": "CH_quiet",
+   "country": "CH",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "PT_quiet",
+   "country": "PT",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "UY_quiet",
+   "country": "UY",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "JP_quiet",
+   "country": "JP",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "SG_quiet",
+   "country": "SG",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "NO_quiet",
+   "country": "NO",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "DK_quiet",
+   "country": "DK",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "NZ_quiet",
+   "country": "NZ",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "CA_quiet",
+   "country": "CA",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "AU_quiet",
+   "country": "AU",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "IE_quiet",
+   "country": "IE",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  },
+  {
+   "event_id": "FI_quiet",
+   "country": "FI",
+   "resolved_outcome": false,
+   "note": "no Carnegie-scale national mass-wave 2019-2024; absence anchored to the positives' list-context; declared weaker evidence"
+  }
+ ]
+}
