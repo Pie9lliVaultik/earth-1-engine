@@ -608,7 +608,7 @@ def selftest():
     assert t1["heldout_split"]["heldout_items"][0] == "Q7"
     assert t1["per_task_extremes"]["iii"]["wvs_heldout"]["worst5"][0][
         "country"] == "DE"
-    assert t1["row_counts"] == {"OK": 4, "PENDING": 3, "NOT_RUN": 8}
+    assert t1["row_counts"] == {"OK": 5, "PENDING": 2, "NOT_RUN": 8}
     print("selftest pass 1 OK (partial artifacts):", t1["row_counts"])
 
     # ---- pass 2: add heldout + crosswave harness artifacts ---------------

@@ -160,9 +160,7 @@ HARDSHIP_MODE = os.environ.get("EARTH1_HARDSHIP_MODE", "cliff")
 # daily health-noise sigma (0.02) so steady-state noise never fires.
 DISTRESS_LAYOFFS = os.environ.get("EARTH1_DISTRESS_LAYOFFS", "off")
 LAYOFF_GAIN = float(os.environ.get("EARTH1_LAYOFF_GAIN", "0.0"))
-LAYOFF_EMA_TAU = 30.0
-LAYOFF_DEADBAND = 0.10
-LAYOFF_COHERENCE = 0.08
+DISTRESS_TAU = 60.0
 
 # INCOME CALIBRATION (M-INCOME-SCALE, 2026-08-27). Earth-1's income
 # distribution was ~2.5x too low and less than half as unequal as the
@@ -472,39 +470,26 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     sep = (u_sep < sep_base * tenure_mult) & life.employed & ~laid_off
 
     # ── 2b. distress layoffs (flag-gated; see DISTRESS_LAYOFFS above) ─
-    # A firm's drop below its own 30-day trail is not enough on its own:
-    # health is a mean-reverting walk (daily sigma 0.02 -> ~0.11 spread
-    # against a 30d EMA), so a per-firm deadband alone fires on noise
-    # (measured: +0.7pp phantom baseline unemployment — the G-inv gate
-    # caught it). A real shock is COHERENT: it hits a country's firms
-    # together, and idiosyncratic noise cannot move a country MEAN. So
-    # layoffs open only where the country-mean drop clears 0.08 (~2
-    # sigma of a small country's mean noise), then each open country's
-    # firms shed in proportion to their own drop past the deadband.
-    # RNG is drawn only when the flag is on AND a gate is open, so
-    # flag-off runs stay bit-identical to canonical physics.
+    # Acute distress is its OWN state, written by the shock operator
+    # (branch.apply adds firm_damage to firm_distress) and decaying with
+    # a 60d half-time. It is NOT inferred from firm_health: health is an
+    # OU walk with 30-day deviations sigma~0.11 — the same order as real
+    # shock damage — so every within-firm drop detector fired on noise
+    # (two G-inv failures measured before this form). Baseline distress
+    # is exactly zero, so flag-off AND null-branch runs stay
+    # bit-identical: RNG is drawn only when distress exists.
     dcut = np.zeros(n, dtype=bool)
     if DISTRESS_LAYOFFS == "on":
-        ema = getattr(life, "firm_health_ema", None)
-        if ema is None:
-            ema = life.firm_health.copy()
-        drop = ema - life.firm_health
-        life.firm_health_ema = ema + (life.firm_health - ema) \
-            * (dt_days / LAYOFF_EMA_TAU)
-        f_cnt = np.bincount(life.firm_country).astype(np.float64)
-        mean_drop = (np.bincount(life.firm_country, weights=drop)
-                     / np.maximum(f_cnt, 1.0))
-        open_c = mean_drop > LAYOFF_COHERENCE
-        if open_c.any():
-            gap_f = (np.clip(drop - LAYOFF_DEADBAND, 0.0, 1.0)
-                     * open_c[life.firm_country])
+        dist = getattr(life, "firm_distress", None)
+        if dist is not None and float(dist.max()) > 1e-6:
             u_cut = rng.random(n)
-            agent_gap = np.where(life.firm >= 0,
-                                 gap_f[np.maximum(life.firm, 0)], 0.0)
-            dcut = ((u_cut < LAYOFF_GAIN * dt_days * agent_gap)
+            agent_d = np.where(life.firm >= 0,
+                               dist[np.maximum(life.firm, 0)], 0.0)
+            dcut = ((u_cut < LAYOFF_GAIN * dt_days * agent_d)
                     & life.employed & ~laid_off & ~sep)
             life.distress_layoffs = (getattr(life, "distress_layoffs", 0)
                                      + int(dcut.sum()))
+            dist *= np.exp(-dt_days / DISTRESS_TAU)
 
     lost = laid_off | sep | dcut
     life.employed[lost] = False
@@ -640,13 +625,11 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
         + 0.004 * (0.8 - life.firm_health), 0.0, 1.0)
     if failed.size:
         life.firm_health[failed] = u_reseed[failed]
-        # a reseeded slot is a NEW firm — its distress-EMA history is
-        # meaningless, and without this sync a reseed reads as a 0.4
-        # health crash that can open the coherence gate (measured: ~600
-        # phantom null-arm layoffs per 455d at 20k)
-        _ema = getattr(life, "firm_health_ema", None)
-        if _ema is not None:
-            _ema[failed] = u_reseed[failed]
+        # a reseeded slot is a NEW firm — it does not inherit the dead
+        # firm's acute distress
+        _dist = getattr(life, "firm_distress", None)
+        if _dist is not None:
+            _dist[failed] = 0.0
 
     # ── THE BODY AND THE SELF ─────────────────────────────────────────
     # Everything below is stochastic, discrete and irreversible-ish, and

@@ -105,6 +105,12 @@ def apply(w, sc: Scenario, rng) -> None:
         firms_hit = np.isin(w.life.firm_country, hit_c)
         w.life.firm_health[firms_hit] = np.clip(
             w.life.firm_health[firms_hit] - sc.firm_damage, 0.0, 1.0)
+        # acute distress is its own state (c-SHOCK, life.py §2b): the
+        # same damage lands there and drives distress layoffs while it
+        # decays. Ambient health churn never enters this channel.
+        if getattr(w.life, "firm_distress", None) is None:
+            w.life.firm_distress = np.zeros(w.life.n_firms)
+        w.life.firm_distress[firms_hit] += sc.firm_damage
     if sc.trade_shock:
         # the cost of staying alive rises for everyone it reaches
         w.life.cost[scope] *= (1.0 + sc.trade_shock)
