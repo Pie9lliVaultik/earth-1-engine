@@ -206,9 +206,36 @@ zero distress — baseline census gates, Benchmark A, and the frozen cohort floo
 untouched by this channel identically. (Corollary: A-FULL-1 will never need a
 SUPERSEDED rerun for this change.)
 
+## 200k CONFIRMATION (first read) — recalibration at scale, and a structural fact
+
+**covid at 20k-GAIN\* 0.00633: +2.258pp ± 0.22 sem (target +0.999) — 2.26× overshoot.**
+The 20k calibration does NOT transfer across the fidelity ladder (rehire-market and
+u-noise regimes differ by pop scale — same lesson class as the cascade 20k↔200k
+cliff). Layoff counters stay linear and tight (15,150 ± 60 at 200k). Per the ladder
+rule, GAIN is calibrated AT THE SCALE OF USE: linear rescale → **GAIN = 0.0028**,
+now being VERIFIED at 200k × 6 seeds (not assumed).
+
+**gfc at 0.00633: +0.329pp ± 0.12** — and the model's covid:gfc response ratio is
+**6.9, exactly the linear scope arithmetic** (global × 0.35 vs OECD-share ~0.18 ×
+0.28). Reality's u-rate ratio is 1.7 — because real covid job loss hid in furloughs
+(ILO hours −8.8% vs u-rate +1.0pp) which the model does not represent, and the real
+GFC transmitted beyond OECD while the REGISTERED scenario is OECD-scoped. **A single
+scalar gain cannot satisfy both u-rate targets in this model — structural, measured,
+recorded.** Not tuned away: the registered criterion is covid +0.999pp; at
+GAIN=0.0028 the expected gfc reading is ~+0.15pp, BELOW its +0.29..+1.17 band, so
+**G-gfc will be recorded FAILED-STRUCTURAL** with this decomposition (the scenario
+scope registration and the missing furlough channel are the named causes; neither is
+touched mid-cycle).
+
+**Prereg for confirm-2 (before results):** covid at GAIN=0.0028 within 2·sem of
++0.999pp → GAIN FROZEN there and the full B-DEV battery retest launches at
+candidate + `EARTH1_DISTRESS_LAYOFFS=on EARTH1_LAYOFF_GAIN=0.0028`; gfc recorded
+as-is. If covid misses beyond 2·sem, one more linear correction is allowed (the
+channel is measured-linear), then freeze regardless and let the battery judge.
+
 ## STATUS
 
-ITERATING — detector v3 calibrated (GAIN\*=0.00633); 200k confirmation in flight;
+ITERATING — detector v3; 200k re-confirmation at GAIN=0.0028 in flight;
 next: full B-DEV battery retest at candidate+flag (direction gate ≥80% per the freeze
 decision rule), then retro rerun on the intensity metric.
 Artifacts: `/opt/earth1-data/cshock/` (v1), `cshock_v2/` (event-time),
