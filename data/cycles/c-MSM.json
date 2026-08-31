@@ -1,0 +1,76 @@
+{
+ "cycle": "c-MSM",
+ "change": "adopt joint MSM theta (displacement protocol); verification of all gates at joint values",
+ "flags": {
+  "EARTH1_HARDSHIP_MODE": "gradient",
+  "EARTH1_INCOME_CALIBRATION": "v1",
+  "EARTH1_SUBSTRATE_FLAG": "c2plus_v1",
+  "EARTH1_C2PLUS_TABLES": "c2plus_tables_v2.json",
+  "EARTH1_DEMO_FORCE_GRADIENT": "",
+  "EARTH1_MORTALITY_MODE": "gompertz",
+  "EARTH1_GM_OTHER_SHARE": "0.2141"
+ },
+ "substrate": "c2plus_v1",
+ "seed": 4242,
+ "pop": 20000,
+ "days": 180,
+ "commit": "2d0f042",
+ "at": "2026-08-31T16:36:29Z",
+ "provenance": {
+  "tables_sha": "256fe63229",
+  "anchors_sha": "39d484d65f",
+  "income_cal_sha": "88fb2f4ad3"
+ },
+ "anchors": {
+  "median": {
+   "value": 9.87,
+   "target": 9.27,
+   "pass": true
+  },
+  "pov_830": {
+   "value": 0.4667,
+   "target": 0.461,
+   "pass": true
+  },
+  "cdr_yr": {
+   "value": 0.0078,
+   "band": [
+    0.007,
+    0.015
+   ],
+   "pass": true
+  },
+  "pov_300": 0.1756,
+  "pov_420": 0.255
+ },
+ "mortality_structure": {
+  "mean_age_at_death": {
+   "value": 74.9,
+   "target_LE": 73.4818184164654,
+   "band": [
+    66.2,
+    71.8
+   ],
+   "band_provenance": "derived from GM fit (provisional aggregates)",
+   "pass": false
+  },
+  "pop_65plus_share": {
+   "value": 0.1407,
+   "target": 0.1355,
+   "pass": true
+  },
+  "pop_0_14": "INAPPLICABLE (adult-only world)"
+ },
+ "attitudes": {
+  "cohort_mae_pp": 12.18,
+  "national_copy_floor_pp": 12.693,
+  "pass": true
+ },
+ "cascades": {
+  "fired": 1046,
+  "ratio_vs_canonical": 0.482,
+  "pass": true
+ },
+ "verdict": "MISS",
+ "seconds": 32.0
+}

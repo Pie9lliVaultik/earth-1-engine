@@ -1,6 +1,12 @@
 # EARTH-1 LIVE STATUS
 _Chat updates mirrored here. Newest first. Timestamps UTC._
 
+## 2026-09-01 — FREEZE PACKAGE COMPLETE → founder ruling requested
+Joint-MSM θ verified at 200k true census: pov$8.30 45.9% vs real 46.1%,
+ageAtDeath 69.0 (band center), CDR ✓. Learning demonstrated (all gates,
+replay identical). Named regression carried: B-DEV 1/5. Full package:
+ops/alive/FREEZE_PACKAGE_0_9.md — Option A (freeze now) recommended.
+
 ## 2026-09-01 — REAL-DATA NIGHT: three external tables committed
 SCOREBOARD_v1 (Earth-1 12.05/11.78 vs region-copy 10.31/9.70 — MISS,
 gap named) · RETRODICTION_v1 (**null-arm protest geography Spearman
