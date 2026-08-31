@@ -78,6 +78,16 @@
    "path": "PENDING_FETCH",
    "role": "HOLDOUT"
   },
+  "prospective_register_2026_08_31": {
+   "licence": "",
+   "lineage": [
+    "Manifold open markets (public API), five belief-causal classes; Polymarket/Metaculus/Kalshi PENDING (walled/unreachable)"
+   ],
+   "notes": "First signed batch. final_scoring only, after resolution.",
+   "path": "ops/alive/PROSPECTIVE_REGISTER.jsonl",
+   "role": "PROSPECTIVE",
+   "sha256": "bd674d1ff4a09206d3b5b072841a4239ddd86f39803c44e8961d770d2cb57883"
+  },
   "sbi_theta_star_v1": {
    "licence": "",
    "lineage": [
