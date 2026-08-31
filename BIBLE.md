@@ -1582,3 +1582,50 @@ top-5 geography artifact · self-compared noise floor.
 Nothing in it is asserted from memory: every number was measured on
 2026-08-19 by direct audit of the repository and machines, or carries
 a citation to the source that established it.*
+
+---
+
+## VERSION 4.2 — 2026-08-31 — RULINGS OF THE CALIBRATION WEEK, RECONCILED
+
+**Status: DEVELOPMENT CALIBRATION. Nothing frozen. Every holdout sealed. No validated predictive claim exists.**
+**Method: seven days of the XI.A loop on the shipping candidate (C2+ v2 substrate + gradient hardship + income calibration v1), reconciled here against v4.1 text. Where a ruling below contradicts v4.1, this section governs; where it refines, v4.1 stands with the refinement.**
+
+### 4.2.1 — Rulings that override v4.1 text
+
+| # | ruling | v4.1 text overridden | consequence |
+|---|---|---|---|
+| R-A | **No frontier-LLM comparison, anywhere.** Earth-1 is never scored against, tabled beside, or footnoted with a prompted LLM. The category is the claim; the comparison concedes it. | IV.3 ("coverage for head-to-head comparability with the LLM literature"); VI.A baselines ("LLM coverage numbers from IV.3"); §13 Benchmark C rung (i) ("Earth-1 beats the raw frontier LLM"); §11 task (iv) ("beat the LLM/semantic-neighbor baseline"). | Admissible baselines are only: national-copy and region-copy demographic floors; MrsP/MRP; naive grand-mean; poll or market price at time T; no-change and trend baselines for cross-wave. Task (iv) is re-baselined on semantic-neighbour only. Coverage is still reported — as the abstention statistic, not for comparability. |
+| R-B | **No unspent WVS holdout exists.** GOQA-40, the 98-item set and the v1 question holdout are recorded CONSUMED. WVS-7 is calibration/DEV only, forever. | VI.A instrument ("held-out WVS-7 items, pinned CV folds"). | Benchmark A's judges become external estates under the **wave-split rule** (4.2.2). Within WVS-7 the team calibrates hard; nothing there is spent twice. |
+| R-C | **Publication order: (1) GlobalOpinionQA absolute score on a fresh sealed split; (2) cross-survey out-of-sample on Pew Global Attitudes, Gallup World Poll, ANES, ESS; (3) resolved belief-causal events via rolling-origin `null_branch()` against poll/market at T.** | Part VI paper ordering A → B → C. | Paper A becomes results (1)+(2); Paper B becomes (3) under the §12 metric set; Paper C is the prospective register, reported as it accumulates. The Technical Architecture (ODD+) paper is unchanged. |
+| R-D | **Population-structure ceiling for v1.** The transferable cross-country cohort signal in the 98-item set is measured at ≈0.2–0.3pp above national-copy; no mechanism programme before Epoch 4. Cohort structure is reported as a secondary table under a declared ceiling, with a reliability-weighted readout and coverage. | §11 task (ii) target (≥10% relative error reduction). | Task (ii) target is retained as the **v1.1** gate. v1 reports the measured ceiling as a finding. **Condition:** the ruling is provisional until the within-unit-covariate readout (`living_features`, Phase 0.4's own remedy) has been tested on frozen cells and found inert — XI.A permits a ceiling only after the literature-derived approach has been tried. |
+
+### 4.2.2 — Refinements adopted (consistent with v4.1)
+
+1. **The wave-split rule.** For every external survey estate, the latest wave/round is HOLDOUT (purpose `final_scoring` only, hash committed before any scoring); every prior wave is VALIDATION. For events: everything resolved before the register date is DEV; everything registered forward is PROSPECTIVE. This is the four-partition doctrine (§9) applied to estates the program does not own.
+2. **The production ladder.** 20k-agent cycles (~27 s) for CALIBRATE ⇄ RETEST → 200k once, sign-flip check only, no calibration at that rung → FREEZE 0.9 (tagged; physics closed; only operators and adapters may change) → 4M birth as Epoch 4, Epoch 3 archived → HOLDOUT spent once, in one sitting → publish and ship through the one typed adapter, as the same event. This refines Phases 1–3 and 6; it does not replace them.
+3. **Substrate-keyed constants.** Any calibration file derived on a substrate carries that substrate's tag; `life.py` refuses to load a constant against a different substrate at birth. Fulfils §15 (parameter registry: train-data hash, introducing commit).
+4. **Runner tripwires** (Standing Rule 2 made mechanical): a row with a named change is unrecordable if the working-tree hash equals the previous row's; a changed anchors hash with an unchanged label is illegal; the national-copy floor is computed on **frozen WVS-7 DEV cells and weights**, invariant to any physics change by construction. Seed-replicate σ is a column; no win counts below 2σ.
+5. **Fixed-capacity adult-slot semantics declared** (§3): mortality anchors are life expectancy at 18 and the 65+ share on the adult denominator, both derived from fetched WPP/World Bank series, never eyeballed.
+6. **Benchmark D is the anchor gate table.** Income (PIP median, $3.00/$4.20/$8.30 headcounts, mean/median), mortality (CDR, LE-at-18, age-at-death, cause-of-death shares from WHO GHE/GBD), labour (ILO unemployment via an explicit `H_unemployment` operator), cascade rate — each a fetched series with id, vintage, sha256. Any unfetchable anchor is BLOCKED_ON_DATA in the row, never authored.
+7. **Data beyond GDELT** enters only through the `NewsItem → PerceivedEvent` boundary (§6 event ontology: LLM extracts, never writes the outcome). Market prices are INPUT_EXPOSURE; market resolutions are PROSPECTIVE/EVALUATION_OUTCOME; the Benchmark C claim is Earth-1's Brier improvement over the market at T, with frozen and no-market-channel arms as controls (§13 rung iii).
+
+### 4.2.3 — Drift found and corrected on 2026-08-31
+
+| drift | Bible text | correction |
+|---|---|---|
+| Cycles ran MISS → DIAGNOSE → CALIBRATE → RETEST without RESEARCH or ABLATE. | XI.A steps 4–5, 7; Rule 7 | Every named change now emits the XI.A.2 miss report (template in `ops/alive/CYCLE_TEMPLATE_XI_A.md`); RESEARCH and ABLATION are required sections; retroactive reports owed for the hazard restructure, WANT fold, external-channel RR, income calibration v1. |
+| Moments matched one at a time by fixed-point iteration. | VII.1 (MSM, pre-registered moment set, fitted jointly) | Moment set declared in `ops/alive/MOMENTS_v1.md` before the next calibration cycle; serial fixed points are permitted as diagnostic steps but the freeze package carries one joint MSM fit over the declared set with the full parameter vector and provenance classes. |
+| Benchmark A gated on region-copy only. | VI.A tiers (ACCEPT ≤7.0 / GOOD ≤5.0 / WIN ≤3.5 pp; beat naive and MrsP); §11 five tasks | Freeze package carries the five-task table; level is reported against ACCEPT and against MrsP (8.56pp) with excess MAE; unrun tasks marked NOT RUN, not omitted. |
+| Retrodiction planned outside the §12 metric set. | §12 | Result (3) reports direction, magnitude vs strongest causal baseline, geography Spearman, timing, 80%-interval coverage, discrimination above noise, paired placebo ≈ 0; V1 gate ≥3 resolved events across ≥2 domains; domain causal adapters before any backtest paper. |
+| Module ablation absent. | §2 acceptance test (iv) | For every mechanism touched this week, one row with the mechanism disabled on the benchmark built to exercise it. |
+| Phase 0 treated as closed. | 08-22 audit: 0.4 PARTIAL, 0.5 PARTIAL, 0.7 OPEN, 0.8 NOT DONE | 0.5's benchmark-module repoint (`benchmark.py`, `predictions.py` off `engine`) is a **freeze prerequisite**; the Benchmark B DEV retest must run through the clean `branch`/`backtest_run` path and its manifest must say so. 0.8 re-measurement is scheduled after FREEZE on the frozen executable. 0.7's incremental backup remains OPEN by ruling. |
+
+### 4.2.4 — Loop position on the date of this amendment
+
+CALIBRATE ⇄ RETEST on development evidence. Living baseline: income, poverty lines, CDR, 65+ share, cascades green through 200k; mortality age structure mid-loop (external channels at DIAGNOSE). Population fidelity: substrate at RETEST-green; structure at provisional ceiling pending the `living_features` cycle. Benchmark B: RETEST owed under candidate physics. Experience Loop: v0.2 at RETEST with the informed-non-learner control as primary gate. Nothing at PASS on the full board; nothing at FREEZE.
+
+### 4.2.5 — Claim ladder, unchanged
+
+Current public claim remains: "a living, branchable synthetic civilization kernel with material, biological, social, institutional and memory state." Nothing in this amendment advances it. The next rung is earned only by the HOLDOUT-once spend after Epoch 4.
+
+*Every number in this section was measured on 2026-08-27 → 08-31 on the cycle runner or prime and is recorded with provenance in `ops/alive/CALIBRATION_CYCLES.md`.*
