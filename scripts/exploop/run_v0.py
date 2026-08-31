@@ -400,7 +400,7 @@ def stage_score():
                 "p": float(t.pvalue)}
 
     crps = {a: {s: res[a][s]["crps"] for s in SEEDS}
-            for a in ("frozen", "exp", "placebo")}
+            for a in arms_list}
     g1 = paired(crps["frozen"], crps["exp"], ws)
     g1c = paired(crps["filter"], crps["exp"], ws) if "filter" in crps else None
     g7p = paired(crps["placebo"], crps["exp"], ws)
