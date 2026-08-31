@@ -1,6 +1,20 @@
 # EARTH-1 LIVE STATUS
 _Chat updates mirrored here. Newest first. Timestamps UTC._
 
+## 2026-08-31 — RULING: Option B (narrowly) + benchmark campaign opens
+One mechanism cycle (c-SHOCK) on the B-DEV shock-response regression
+before the 0.9 tag; benchmark campaign registered and running in
+parallel (ops/alive/CAMPAIGN_BENCH_v1.md). VERIFY done from last
+night's artifacts: direction failures cluster on force-threshold
+channels (arab govs ✗, covid hope/deaths ✗; GFC economic chain 100% ✓).
+H1: graded deprivation halves the linear dep→force push against
+cliff-tuned hard thresholds (surge COLLECTIVE>0.75 & FEAR>0.6, protest
+dep>0.4) — the gradient world absorbs what the cliff transmitted.
+DIAGNOSE probe prereg'd + launched on prime (cliff-vs-gradient ×
+dose-vs-null, positive control: cliff must transmit). No fix named
+until it lands. Freeze tag / holdout spend / Gallup purchase all wait
+for the founder's explicit word. Cycle doc: ops/alive/cycles/cshock.md
+
 ## 2026-09-01 — FREEZE PACKAGE COMPLETE → founder ruling requested
 Joint-MSM θ verified at 200k true census: pov$8.30 45.9% vs real 46.1%,
 ageAtDeath 69.0 (band center), CDR ✓. Learning demonstrated (all gates,
