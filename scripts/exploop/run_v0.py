@@ -23,16 +23,22 @@ from earth1.experience import Ledger, model_hash  # noqa: E402
 from sbi.theta import CANONICAL, prior_ppf  # noqa: E402
 
 V01 = os.environ.get("EXPLOOP_V01") == "1"
+V02 = os.environ.get("EXPLOOP_V02") == "1"
+if V02:
+    V01 = True          # v0.2 inherits every v0.1 mechanism
 OUT = os.environ.get("EXPLOOP_OUT",
-                     "/opt/earth1-data/exploop_v01" if V01
-                     else "/opt/earth1-data/exploop")
+                     "/opt/earth1-data/exploop_v02" if V02
+                     else ("/opt/earth1-data/exploop_v01" if V01
+                           else "/opt/earth1-data/exploop"))
 SEALED = os.path.join(OUT, "sealed")
 _SMOKE = os.environ.get("EXPLOOP_SMOKE") == "1"
-_BASE = 9101 if V01 else 9001
+_BASE = 9201 if V02 else (9101 if V01 else 9001)
+_N = 20 if V02 else 12
+_NM = 4
 SEEDS = list(range(_BASE, _BASE + 6)) if _SMOKE \
-    else list(range(_BASE, _BASE + 12))
+    else list(range(_BASE, _BASE + _N))
 MIS = set(range(_BASE + 4, _BASE + 6)) if _SMOKE \
-    else set(range(_BASE + 8, _BASE + 12))
+    else set(range(_BASE + _N - _NM, _BASE + _N))
 POP, WINDOW, CYCLES, P, FROZEN_K = \
     (2_000, 5, 4, 8, 6) if _SMOKE else (20_000, 30, 24, 64, 20)
 PROBE_DAYS = {10, 190, 370, 550}
@@ -57,7 +63,17 @@ def theta_from_u(u):
 
 
 def _shock(w):
-    """v0.1 registered known forcing u_t — identical in every world."""
+    """Registered known forcing u_t — identical in every world.
+    v0.2: SHARP branch-engine scenario (discontinuous economics), not a
+    smoothly-decaying memory."""
+    if V02:
+        from earth1.branch import Scenario, apply as _apply
+        _apply(w, Scenario(id=f"shock_{int(w.day)}", label="v02 shock",
+                           forces={"fear": 0.2}, countries=None,
+                           firm_damage=0.25, trade_shock=0.15,
+                           persists_days=60),
+               np.random.default_rng(int(w.day)))
+        return
     from earth1.memory import Memory
     from earth1.types import Force
     sig = np.zeros(8)
@@ -171,7 +187,7 @@ def stage_run(seed, arm):
     upd_stream = own if arm != "placebo" else json.load(open(
         os.path.join(OUT, "streams", f"{_derange(seed)}.json")))["windows"]
     rng = np.random.default_rng([seed, {"exp": 1, "placebo": 2,
-                                        "frozen": 3}[arm]])
+                                        "frozen": 3, "filter": 4}[arm]])
     K = FROZEN_K if arm == "frozen" else P
     U = rng.random((K, 2))
     base = birth_world(POP, seed)
@@ -199,6 +215,8 @@ def stage_run(seed, arm):
                      if resid_sq is not None and n_resid >= 2
                      else np.zeros(V))
             offs = np.array([-1.28, -0.52, 0.0, 0.52, 1.28])
+            if V02:
+                offs = offs * 0.5
             aug = (vecs[None, :, :]
                    + offs[:, None, None] * sig_o[None, None, :]
                    ).reshape(-1, V)
@@ -218,6 +236,15 @@ def stage_run(seed, arm):
         prior_summary = {"mean_u": U.T.dot(wgt).tolist(),
                          "sd_u": np.sqrt(((U - U.T.dot(wgt))**2).T.dot(wgt)).tolist()}
         diff = {"updated": False}
+        if arm == "filter":
+            # INFORMED NON-LEARNER (founder condition, v0.2): fresh
+            # per-cycle conditioning weights; nothing persists.
+            yu = np.array(upd_stream[c]) / scale
+            d = np.linalg.norm(xz - yu[None, :], axis=1) / np.sqrt(V)
+            h = max(float(np.median(d)), 1e-6)
+            wgt = np.exp(-d**2 / (2 * h**2))
+            wgt = wgt / wgt.sum()
+            diff = {"updated": False, "conditioned": True}
         if arm in ("exp", "placebo"):
             yu = np.array(upd_stream[c]) / scale
             d = np.linalg.norm(xz - yu[None, :], axis=1) / np.sqrt(V)
