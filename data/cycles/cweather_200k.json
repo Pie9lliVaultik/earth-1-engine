@@ -1,0 +1,91 @@
+{
+ "substrate": "c2plus",
+ "mode": "gradient",
+ "pop": 200000,
+ "days": 180,
+ "poverty": {
+  "anchor_line_ppp": 3.0,
+  "reference_source": "World Bank open indicator API (api.worldbank.org/v2)",
+  "poverty_300_2021ppp_headcount": 0.19669335618002856,
+  "poverty_300_2021ppp_gap": 0.08552456570517035,
+  "poverty_300_2021ppp_reference": 0.10400000000000001,
+  "poverty_300_2021ppp_reference_year": 2024,
+  "poverty_300_2021ppp_series_id": "SI.POV.DDAY",
+  "poverty_420_2021ppp_headcount": 0.2782981752190092,
+  "poverty_420_2021ppp_gap": 0.1291909243362523,
+  "poverty_420_2021ppp_reference": 0.18899999999999997,
+  "poverty_420_2021ppp_reference_year": 2024,
+  "poverty_420_2021ppp_series_id": "SI.POV.LMIC",
+  "poverty_830_2021ppp_headcount": 0.48284741593194,
+  "poverty_830_2021ppp_gap": 0.25742691680901325,
+  "poverty_830_2021ppp_reference": 0.461,
+  "poverty_830_2021ppp_reference_year": 2024,
+  "poverty_830_2021ppp_series_id": "SI.POV.UMIC",
+  "median_welfare_ppp": 8.96736878066396
+ },
+ "mortality_structure": {
+  "n": 760,
+  "scored": false,
+  "reference_status": "BLOCKED_ON_DATA (UN WPP / WHO life tables)",
+  "share_18_40": 0.19473684210526315,
+  "share_40_55": 0.10394736842105264,
+  "share_55_70": 0.10921052631578948,
+  "share_70_120": 0.5921052631578947,
+  "mean_age_at_death": 67.1680046235963
+ },
+ "crude_death_rate_yr": 0.007705555555555555,
+ "reference_crude_death_rate_yr": 0.0076,
+ "deaths": 760,
+ "starved": 0,
+ "disease_deaths": 742,
+ "war_deaths": 4,
+ "weather_deaths": 0,
+ "gm_deaths": 742,
+ "deaths_by_cause": {
+  "0": {
+   "n": 735,
+   "mean_age": 67.3
+  },
+  "99": {
+   "n": 23,
+   "mean_age": 62.4
+  },
+  "5": {
+   "n": 1,
+   "mean_age": 48.4
+  },
+  "8": {
+   "n": 1,
+   "mean_age": 62.0
+  }
+ },
+ "births": 760,
+ "cascades": 1112,
+ "firms_failed": 449,
+ "employment_rate": 0.9028683131641199,
+ "wealth_mean": 101.07205356102187,
+ "dep_mean": 0.10511597853183037,
+ "dep_gt_half": 0.10328628592738005,
+ "dep_gt_99": 0.0,
+ "force_mean": [
+  0.5852465121997334,
+  0.6865590279243181,
+  0.6287017645757791,
+  0.7335527871057818,
+  0.33118477829457227,
+  0.6467628166994315,
+  0.41438016406403333,
+  0.4759845715247254
+ ],
+ "force_sd": [
+  0.0658045014827334,
+  0.08374534613563367,
+  0.07626768857546821,
+  0.09058201935800843,
+  0.11413072619072114,
+  0.07604266722932689,
+  0.12826165891896527,
+  0.040015751661186816
+ ],
+ "alive_end": 200000
+}
