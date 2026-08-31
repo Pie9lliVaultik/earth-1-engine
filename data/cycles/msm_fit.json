@@ -1,0 +1,26 @@
+{
+ "serial": {
+  "WAGE_LEVEL": 2.3038,
+  "WAGE_LOG_SD": 1.2196,
+  "GM_OTHER_SHARE": 0.2,
+  "WANT_RR": 5.0,
+  "WEATHER_SCALE": 0.02
+ },
+ "joint": {
+  "WAGE_LEVEL": 2.4868207633998214,
+  "WAGE_LOG_SD": 1.1448860613679899,
+  "GM_OTHER_SHARE": 0.21407724082954704,
+  "WANT_RR": 4.933765606879083,
+  "WEATHER_SCALE": 0.020333010074315046
+ },
+ "objective_serial": 327.98966180042606,
+ "objective_joint": 176.50149596857872,
+ "n_evals": 55,
+ "displacement_pct": {
+  "WAGE_LEVEL": 7.94,
+  "WAGE_LOG_SD": -6.13,
+  "GM_OTHER_SHARE": 7.04,
+  "WANT_RR": -1.32,
+  "WEATHER_SCALE": 1.67
+ }
+}

@@ -1,0 +1,81 @@
+eval 1: obj 328.0 theta [np.float64(2.3038), np.float64(1.2196), np.float64(0.2), np.float64(5.0), np.float64(0.02)]
+eval 2: obj 213.9 theta [np.float64(2.419), np.float64(1.2196), np.float64(0.2), np.float64(5.0), np.float64(0.02)]
+eval 3: obj 355.6 theta [np.float64(2.3038), np.float64(1.2806), np.float64(0.2), np.float64(5.0), np.float64(0.02)]
+eval 4: obj 327.7 theta [np.float64(2.3038), np.float64(1.2196), np.float64(0.21), np.float64(5.0), np.float64(0.02)]
+eval 5: obj 336.2 theta [np.float64(2.3038), np.float64(1.2196), np.float64(0.2), np.float64(5.25), np.float64(0.02)]
+eval 6: obj 328.0 theta [np.float64(2.3038), np.float64(1.2196), np.float64(0.2), np.float64(5.0), np.float64(0.021)]
+eval 7: obj 262.1 theta [np.float64(2.3499), np.float64(1.1586), np.float64(0.204), np.float64(5.1), np.float64(0.0204)]
+eval 8: obj 256.7 theta [np.float64(2.3683), np.float64(1.1952), np.float64(0.2056), np.float64(4.79), np.float64(0.0206)]
+eval 9: obj 238.1 theta [np.float64(2.3941), np.float64(1.1855), np.float64(0.2078), np.float64(4.956), np.float64(0.0194)]
+eval 10: obj 200.7 theta [np.float64(2.4302), np.float64(1.1718), np.float64(0.211), np.float64(4.9384), np.float64(0.0201)]
+eval 11: obj 180.7 theta [np.float64(2.4934), np.float64(1.1479), np.float64(0.2165), np.float64(4.9076), np.float64(0.0202)]
+eval 12: obj 182.1 theta [np.float64(2.5061), np.float64(1.1431), np.float64(0.2036), np.float64(4.9014), np.float64(0.0202)]
+eval 13: obj 194.5 theta [np.float64(2.5225), np.float64(1.1979), np.float64(0.2094), np.float64(4.722), np.float64(0.0197)]
+eval 14: obj 214.9 theta [np.float64(2.5658), np.float64(1.1624), np.float64(0.2093), np.float64(5.0048), np.float64(0.0193)]
+eval 15: obj 221.8 theta [np.float64(2.6086), np.float64(1.1629), np.float64(0.2076), np.float64(4.8584), np.float64(0.0204)]
+eval 16: obj 200.7 theta [np.float64(2.555), np.float64(1.1685), np.float64(0.2077), np.float64(4.8828), np.float64(0.0201)]
+eval 17: obj 202.9 theta [np.float64(2.4327), np.float64(1.1884), np.float64(0.2055), np.float64(4.7607), np.float64(0.0209)]
+eval 18: obj 214.2 theta [np.float64(2.5849), np.float64(1.1187), np.float64(0.2171), np.float64(4.6698), np.float64(0.0205)]
+eval 19: obj 198.7 theta [np.float64(2.4605), np.float64(1.1944), np.float64(0.2043), np.float64(4.9175), np.float64(0.0201)]
+eval 20: obj 211.7 theta [np.float64(2.5823), np.float64(1.1523), np.float64(0.211), np.float64(4.9718), np.float64(0.0193)]
+eval 21: obj 194.8 theta [np.float64(2.4701), np.float64(1.1794), np.float64(0.2069), np.float64(4.8135), np.float64(0.0205)]
+eval 22: obj 211.4 theta [np.float64(2.4261), np.float64(1.1765), np.float64(0.2085), np.float64(4.822), np.float64(0.0202)]
+eval 23: obj 194.6 theta [np.float64(2.5227), np.float64(1.1705), np.float64(0.2079), np.float64(4.8676), np.float64(0.0201)]
+eval 24: obj 202.9 theta [np.float64(2.5455), np.float64(1.1411), np.float64(0.2134), np.float64(4.7674), np.float64(0.0202)]
+eval 25: obj 185.6 theta [np.float64(2.4817), np.float64(1.1811), np.float64(0.2066), np.float64(4.8799), np.float64(0.0201)]
+eval 26: obj 193.2 theta [np.float64(2.5405), np.float64(1.1568), np.float64(0.2106), np.float64(4.8979), np.float64(0.0197)]
+eval 27: obj 187.3 theta [np.float64(2.495), np.float64(1.1602), np.float64(0.2107), np.float64(4.856), np.float64(0.0199)]
+eval 28: obj 187.8 theta [np.float64(2.4842), np.float64(1.1177), np.float64(0.2098), np.float64(5.0552), np.float64(0.0203)]
+eval 29: obj 189.5 theta [np.float64(2.4436), np.float64(1.1432), np.float64(0.2082), np.float64(4.9421), np.float64(0.0206)]
+eval 30: obj 189.9 theta [np.float64(2.4679), np.float64(1.1466), np.float64(0.2088), np.float64(4.9311), np.float64(0.0204)]
+eval 31: obj 182.6 theta [np.float64(2.4998), np.float64(1.1455), np.float64(0.21), np.float64(4.9045), np.float64(0.0202)]
+eval 32: obj 190.8 theta [np.float64(2.4876), np.float64(1.1645), np.float64(0.2115), np.float64(4.8938), np.float64(0.0202)]
+eval 33: obj 189.9 theta [np.float64(2.4942), np.float64(1.154), np.float64(0.2136), np.float64(4.8818), np.float64(0.02)]
+eval 34: obj 186.3 theta [np.float64(2.4888), np.float64(1.1328), np.float64(0.2131), np.float64(4.9814), np.float64(0.0203)]
+eval 35: obj 187.3 theta [np.float64(2.517), np.float64(1.1523), np.float64(0.2136), np.float64(4.9028), np.float64(0.02)]
+eval 36: obj 187.2 theta [np.float64(2.5097), np.float64(1.1285), np.float64(0.2152), np.float64(4.9375), np.float64(0.0201)]
+eval 37: obj 184.7 theta [np.float64(2.5093), np.float64(1.1288), np.float64(0.2137), np.float64(4.9717), np.float64(0.0203)]
+eval 38: obj 186.8 theta [np.float64(2.4834), np.float64(1.1211), np.float64(0.2139), np.float64(4.9783), np.float64(0.0205)]
+eval 39: obj 181.3 theta [np.float64(2.4802), np.float64(1.1419), np.float64(0.2117), np.float64(4.9599), np.float64(0.0205)]
+eval 40: obj 186.7 theta [np.float64(2.5052), np.float64(1.1577), np.float64(0.2122), np.float64(4.9118), np.float64(0.0201)]
+eval 41: obj 184.0 theta [np.float64(2.4997), np.float64(1.1485), np.float64(0.2126), np.float64(4.9284), np.float64(0.0202)]
+eval 42: obj 187.3 theta [np.float64(2.5042), np.float64(1.1522), np.float64(0.2127), np.float64(4.8875), np.float64(0.0203)]
+eval 43: obj 190.0 theta [np.float64(2.4927), np.float64(1.1377), np.float64(0.213), np.float64(4.9579), np.float64(0.0203)]
+eval 44: obj 176.5 theta [np.float64(2.4868), np.float64(1.1449), np.float64(0.2141), np.float64(4.9338), np.float64(0.0203)]
+eval 45: obj 180.8 theta [np.float64(2.4966), np.float64(1.1467), np.float64(0.2132), np.float64(4.9061), np.float64(0.0202)]
+eval 46: obj 180.4 theta [np.float64(2.4966), np.float64(1.1482), np.float64(0.2145), np.float64(4.918), np.float64(0.0202)]
+eval 47: obj 189.6 theta [np.float64(2.5014), np.float64(1.1383), np.float64(0.2151), np.float64(4.9396), np.float64(0.0202)]
+eval 48: obj 180.9 theta [np.float64(2.4911), np.float64(1.1403), np.float64(0.2148), np.float64(4.9445), np.float64(0.0202)]
+eval 49: obj 191.0 theta [np.float64(2.4845), np.float64(1.1529), np.float64(0.2141), np.float64(4.9043), np.float64(0.0202)]
+eval 50: obj 187.1 theta [np.float64(2.4971), np.float64(1.142), np.float64(0.2149), np.float64(4.9308), np.float64(0.0202)]
+eval 51: obj 183.0 theta [np.float64(2.4887), np.float64(1.1492), np.float64(0.2144), np.float64(4.9131), np.float64(0.0202)]
+eval 52: obj 182.8 theta [np.float64(2.4908), np.float64(1.1474), np.float64(0.2145), np.float64(4.9176), np.float64(0.0202)]
+eval 53: obj 188.9 theta [np.float64(2.495), np.float64(1.1438), np.float64(0.2147), np.float64(4.9264), np.float64(0.0202)]
+eval 54: obj 185.1 theta [np.float64(2.4919), np.float64(1.1465), np.float64(0.2146), np.float64(4.9198), np.float64(0.0202)]
+eval 55: obj 180.8 theta [np.float64(2.4917), np.float64(1.1465), np.float64(0.2143), np.float64(4.9259), np.float64(0.0203)]
+{
+ "serial": {
+  "WAGE_LEVEL": 2.3038,
+  "WAGE_LOG_SD": 1.2196,
+  "GM_OTHER_SHARE": 0.2,
+  "WANT_RR": 5.0,
+  "WEATHER_SCALE": 0.02
+ },
+ "joint": {
+  "WAGE_LEVEL": 2.4868207633998214,
+  "WAGE_LOG_SD": 1.1448860613679899,
+  "GM_OTHER_SHARE": 0.21407724082954704,
+  "WANT_RR": 4.933765606879083,
+  "WEATHER_SCALE": 0.020333010074315046
+ },
+ "objective_serial": 327.98966180042606,
+ "objective_joint": 176.50149596857872,
+ "n_evals": 55,
+ "displacement_pct": {
+  "WAGE_LEVEL": 7.94,
+  "WAGE_LOG_SD": -6.13,
+  "GM_OTHER_SHARE": 7.04,
+  "WANT_RR": -1.32,
+  "WEATHER_SCALE": 1.67
+ }
+}

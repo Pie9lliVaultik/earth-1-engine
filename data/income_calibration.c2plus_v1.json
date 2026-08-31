@@ -1,12 +1,17 @@
 {
- "WAGE_LEVEL": 2.3038,
- "WAGE_LOG_SD": 1.2196,
+ "WAGE_LEVEL": 2.4868,
+ "WAGE_LOG_SD": 1.1449,
  "c2plus_raw_mean": 4.104,
  "c2plus_raw_median": 3.483,
  "derivation": "C2+ frame, calibration off: median $3.48, mean $4.10, implied total log-sd 0.573. WAGE_LEVEL = 9.27/median; WAGE_LOG_SD keeps total log-sd at the fetched 1.3012 holding non-wage variance components fixed. Targets fetched (anchors_worldbank.json); headcounts untargeted.",
  "iteration_2": "c002 measured pooled-household median $10.71 under level 2.6617 (dispersion raise lifts pooled median nonlinearly, same as incumbent derivation); level scaled by 9.27/10.71.",
+ "msm_note": "Joint MSM adoption per v4.2 displacement protocol (msm_fit.json): WAGE_LEVEL displacement +7.9% ~ 11 sigma of the median gate -> joint values govern; serial values retained above.",
  "real_implied_log_sd": 1.3012,
  "real_mean_daily": 21.6153,
  "real_median_daily": 9.27,
+ "serial_pre_msm": {
+  "WAGE_LEVEL": 2.3038,
+  "WAGE_LOG_SD": 1.2196
+ },
  "substrate": "c2plus_v1"
 }
