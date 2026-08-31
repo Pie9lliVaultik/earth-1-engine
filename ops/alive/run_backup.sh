@@ -26,6 +26,12 @@ ENV_FILE="$ROOT/ops/alive/BACKUP_ENV"
 KEEP="${BACKUP_KEEP:-7}"
 STAMP="$(date -u +%Y-%m-%dT%H%M%SZ)"
 
+# Integrity chain BEFORE copying: the chained manifest rides inside
+# every snapshot (founder ruling 2026-08-31; tamper-evidence for the
+# Result-2 reconstruction record).
+"$ROOT/.venv/bin/python3" "$ROOT/ops/alive/chain_manifest.py" "$ALIVE" \
+  || printf 'WARN: chain manifest failed (backup continues)\n' >&2
+
 log() { printf '%s  %s\n' "$(date -u +%H:%M:%S)" "$*"; }
 die() { printf 'BACKUP FAILED: %s\n' "$*" >&2; exit 1; }
 
