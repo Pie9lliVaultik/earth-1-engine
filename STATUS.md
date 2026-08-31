@@ -1,6 +1,13 @@
 # EARTH-1 LIVE STATUS
 _Chat updates mirrored here. Newest first. Timestamps UTC._
 
+## 2026-09-01 — REAL-DATA NIGHT: three external tables committed
+SCOREBOARD_v1 (Earth-1 12.05/11.78 vs region-copy 10.31/9.70 — MISS,
+gap named) · RETRODICTION_v1 (**null-arm protest geography Spearman
+0.552 p=0.005, 13× separation, placebo clean**; dose suppresses —
+mechanism question) · PROSPECTIVE_REGISTER tagged (30 signed lines,
+29 abstain-by-design). Full summary: ops/alive/REAL_DATA_MORNING_2026-09-01.md
+
 ## 2026-08-27 ~21:45 UTC — FIRST FULL-GREEN CYCLE (c010)
 All 7 gates pass at 20k on the registered seed: attitudes (gap −0.70,
 green on all 4 seeds, 11σ), median $9.27, $8.30 line 48.5%, CDR 0.0077
