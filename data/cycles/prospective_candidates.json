@@ -1,0 +1,302 @@
+[
+ {
+  "question_id": "pZpEqPAq5U",
+  "source": "manifold",
+  "question": "Will Democrats win the 2026 New Hampshire Governor election? (Kalshi)",
+  "close": "2026-11-03",
+  "p_market": 0.17840432581830581,
+  "url": "https://manifold.markets/Jack1/will-democrats-win-the-2026-new-ham",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "RcL0Q9O0EU",
+  "source": "manifold",
+  "question": "Will the Democratic Party Candidate win the 2026 Maine Senate Election?",
+  "close": "2026-11-03",
+  "p_market": 0.6656836919863388,
+  "url": "https://manifold.markets/Jack1/will-the-democratic-party-candidate-NQOPZAnOA8",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "SyhgEZC68s",
+  "source": "manifold",
+  "question": "Will the Democrats win the 2026 Texas Senate Election?",
+  "close": "2026-11-04",
+  "p_market": 0.48614791804532625,
+  "url": "https://manifold.markets/Jack1/will-the-democrats-win-the-2026-tex",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "s6IEnP0Ig8",
+  "source": "manifold",
+  "question": "Will the Democrats win a majority in the House of Representatives in the 2026 elections?",
+  "close": "2026-11-15",
+  "p_market": 0.8879155069099006,
+  "url": "https://manifold.markets/HillaryClinton/will-the-democrats-win-a-majority-i-ClQ6g6lntn",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "SyQlAllqEQ",
+  "source": "manifold",
+  "question": "Will there be a tie vote in a November election?",
+  "close": "2026-11-03",
+  "p_market": 0.19024310665341373,
+  "url": "https://manifold.markets/EvanDaniel/will-there-be-a-tie-vote-in-a-novem",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "lchuI99Qlc",
+  "source": "manifold",
+  "question": "Troy Jackson wins 2026 US Senate election in Maine?",
+  "close": "2026-11-04",
+  "p_market": 0.6764133000941055,
+  "url": "https://manifold.markets/Jack1/troy-jackson-wins-2026-us-senate-el",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "qUIpIulZcs",
+  "source": "manifold",
+  "question": "Will Luiz In\u00e1cio Lula da Silva win the 2026 Brazilian presidential election?",
+  "close": "2026-10-28",
+  "p_market": 0.8500000000000001,
+  "url": "https://manifold.markets/AdamBraff/will-luiz-inacio-lula-da-silva-win",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "C66lCR8yl8",
+  "source": "manifold",
+  "question": "Will the AfD win an absolute majority in the state election in Saxony-Anhalt in 2026",
+  "close": "2026-09-06",
+  "p_market": 0.2855143509941145,
+  "url": "https://manifold.markets/NFNL2zc/will-the-afd-win-an-absolute-majori",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "ULun8EOAAn",
+  "source": "manifold",
+  "question": "Will Dan Sullivan win re-election to Alaska's Senate seat in 2026?",
+  "close": "2026-11-03",
+  "p_market": 0.3900000000000002,
+  "url": "https://manifold.markets/SaviorofPlant/will-dan-sullivan-win-reelection-to",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "LuU2p2uI0U",
+  "source": "manifold",
+  "question": "Will the Republicans win a majority in the House of Representatives in the 2026 elections?",
+  "close": "2026-11-15",
+  "p_market": 0.12372825587603871,
+  "url": "https://manifold.markets/HillaryClinton/will-the-republicans-win-a-majority",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "S9AEccnOlL",
+  "source": "manifold",
+  "question": "U.S. federal government announces delay or suspension of 2026 midterm elections before November 3, 2026",
+  "close": "2026-11-02",
+  "p_market": 0.05321824482939898,
+  "url": "https://manifold.markets/jgyou/us-federal-government-announces-del",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "0vKlyn2r8EemXfaRF3xH",
+  "source": "manifold",
+  "question": "Will the Sweden Democrats increase their share in parliament in the Swedish 2026 general election?",
+  "close": "2026-09-21",
+  "p_market": 0.36609126264833475,
+  "url": "https://manifold.markets/HenriThunberg/will-the-sweden-democrats-increase",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "2ldCculsqt",
+  "source": "manifold",
+  "question": "SPD above 5% in 2026 Saxony-Anhalt state election?",
+  "close": "2026-09-06",
+  "p_market": 0.9235450749472301,
+  "url": "https://manifold.markets/Simon74fe/spd-above-5-in-2026-saxonyanhalt-st",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "PUySSCQEcu",
+  "source": "manifold",
+  "question": "Will the AfD win more than 40% of the vote in the 2026 Saxony-Anhalt state election?",
+  "close": "2026-09-07",
+  "p_market": 0.8299999999999998,
+  "url": "https://manifold.markets/Terminator2/will-the-afd-win-more-than-40-of-th",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "g0zN5ghS90",
+  "source": "manifold",
+  "question": "Will Democrats win the 2026 Wisconsin Gubernatorial election?",
+  "close": "2026-11-04",
+  "p_market": 0.8005850234883576,
+  "url": "https://manifold.markets/Jack1/will-democrats-win-the-2026-wiscons",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "ptPPqESSNC",
+  "source": "manifold",
+  "question": "Will the midterm elections take place on November 3rd?",
+  "close": "2026-11-04",
+  "p_market": 0.9561431790646409,
+  "url": "https://manifold.markets/CommanderKeen/will-the-midterm-elections-be-moved",
+  "search_term": "election",
+  "class": "election"
+ },
+ {
+  "question_id": "ylqRuERnhq",
+  "source": "manifold",
+  "question": "Will there be a Quebec referendum in the next provincial term?",
+  "close": "2026-10-03",
+  "p_market": 0.1525463292583636,
+  "url": "https://manifold.markets/Bayesian/will-there-be-a-quebec-referendum-i",
+  "search_term": "referendum",
+  "class": "referendum"
+ },
+ {
+  "question_id": "h8nzsLSnUl",
+  "source": "manifold",
+  "question": "2026 Alberta referendum asks about secession from Canada?",
+  "close": "2026-10-19",
+  "p_market": 0.3800000000000001,
+  "url": "https://manifold.markets/brod/2026-alberta-referendum-asks-about",
+  "search_term": "referendum",
+  "class": "referendum"
+ },
+ {
+  "question_id": "SttEd9UARg",
+  "source": "manifold",
+  "question": "Will there be over 215 Republican seats after the midterm elections in the House of Representatives?",
+  "close": "2026-11-03",
+  "p_market": 0.29999999999999993,
+  "url": "https://manifold.markets/KingAK/will-there-be-over-215-republican-s",
+  "search_term": "referendum",
+  "class": "election"
+ },
+ {
+  "question_id": "R9y62C8sdP",
+  "source": "manifold",
+  "question": "\ud83c\uddfa\ud83c\uddf8 Will the Fed raise interest rates in September 2026?",
+  "close": "2026-09-16",
+  "p_market": 0.4740897834352943,
+  "url": "https://manifold.markets/MAKER/-will-the-fed-raise-interest-rates",
+  "search_term": "interest rate",
+  "class": "rate-decision"
+ },
+ {
+  "question_id": "lqtROphAhp",
+  "source": "manifold",
+  "question": "Will the Fed cut rates by at least 25 bps at the Sept. 16, 2026 FOMC meeting?",
+  "close": "2026-09-16",
+  "p_market": 0.01145643514836123,
+  "url": "https://manifold.markets/CalibratedGhosts/will-the-fed-cut-rates-by-at-least",
+  "search_term": "interest rate",
+  "class": "rate-decision"
+ },
+ {
+  "question_id": "D860ef2e7b",
+  "source": "manifold",
+  "question": "Will Dan Sullivan win re-election to Alaska's Senate seat in 2026?",
+  "close": "2026-11-03",
+  "p_market": 0.38326767566166486,
+  "url": "https://manifold.markets/JasonMendoza2008/will-dan-sullivan-win-reelection-to-6EEQOsQhQp",
+  "search_term": "interest rate",
+  "class": "election"
+ },
+ {
+  "question_id": "udAUupudlE",
+  "source": "manifold",
+  "question": "Will the Fed cut rates by at least 25 bps at the Oct. 28, 2026 FOMC meeting?",
+  "close": "2026-10-28",
+  "p_market": 0.05708048251385106,
+  "url": "https://manifold.markets/CalibratedGhosts/will-the-fed-cut-rates-by-at-least-gsyCdSpcsg",
+  "search_term": "interest rate",
+  "class": "rate-decision"
+ },
+ {
+  "question_id": "Qg8Oqcq8pz",
+  "source": "manifold",
+  "question": "Will a stage at the 2026 Vuelta a Espana be cut short due to pro-Palestine protests?",
+  "close": "2026-09-30",
+  "p_market": 0.20082329942028035,
+  "url": "https://manifold.markets/JoshuaWilkes/will-a-stage-at-the-2026-vuelta-a-e",
+  "search_term": "protest",
+  "class": "protest-wave"
+ },
+ {
+  "question_id": "yN0QdzZ0C6",
+  "source": "manifold",
+  "question": "Will any person be arrested in connection with protests at Mohan Bhagwat\u2019s Madison Square Garden event?",
+  "close": "2026-09-28",
+  "p_market": 0.4653581531277433,
+  "url": "https://manifold.markets/TatuSamant/will-any-person-be-arrested-in-conn",
+  "search_term": "protest",
+  "class": "protest-wave"
+ },
+ {
+  "question_id": "C0Z8pgAAIR",
+  "source": "manifold",
+  "question": "Will there be mass protests on Oct 14, 2026 in the USA?",
+  "close": "2026-10-14",
+  "p_market": 0.05405736245205508,
+  "url": "https://manifold.markets/strutheo/will-there-be-mass-protests-on-oct",
+  "search_term": "protest",
+  "class": "protest-wave"
+ },
+ {
+  "question_id": "hZsE0A09Sd",
+  "source": "manifold",
+  "question": "Will the Fed cut rates by 25 bps at its next meeting?",
+  "close": "2026-09-23",
+  "p_market": 0.029390530720346433,
+  "url": "https://manifold.markets/subhamsingh/will-the-fed-cut-rates-by-25-bps-at-N6AnPp8uC8",
+  "search_term": "bank run",
+  "class": "rate-decision"
+ },
+ {
+  "question_id": "SEAOlPRs0P",
+  "source": "manifold",
+  "question": "Summer of 2026: Major Unrest in the USA?",
+  "close": "2026-09-22",
+  "p_market": 0.21106941838649165,
+  "url": "https://manifold.markets/CryptoNeoLiberalist/summer-of-2026-major-unrest-in-the",
+  "search_term": "unrest",
+  "class": "protest-wave"
+ },
+ {
+  "question_id": "O625g5IsyA",
+  "source": "manifold",
+  "question": "Will there be at least 1 death due to political unrest on Oct 14, 2026 in the USA?",
+  "close": "2026-10-14",
+  "p_market": 0.130712668330863,
+  "url": "https://manifold.markets/strutheo/will-there-be-at-least-1-death-due-y2PPyE8n6S",
+  "search_term": "unrest",
+  "class": "protest-wave"
+ },
+ {
+  "question_id": "uZs9yPcdLU",
+  "source": "manifold",
+  "question": "Will Federal Agents draw guns on voters on Election Day 2026",
+  "close": "2026-11-04",
+  "p_market": 0.16499686219416423,
+  "url": "https://manifold.markets/Teddy/will-federal-agents-draw-guns-on-vo",
+  "search_term": "unrest",
+  "class": "election"
+ }
+]
