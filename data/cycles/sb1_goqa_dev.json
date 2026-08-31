@@ -1,0 +1,99 @@
+{
+ "earth1": {
+  "mae_pp": 12.052,
+  "seed_sigma": 0.086
+ },
+ "mrsp": {
+  "mae_pp": 11.058,
+  "seed_sigma": 0.0
+ },
+ "naive": {
+  "mae_pp": 12.017,
+  "seed_sigma": 0.0
+ },
+ "region": {
+  "mae_pp": 10.307,
+  "seed_sigma": 0.0
+ },
+ "excess_vs_mrsp": 0.994,
+ "tier": "MISS",
+ "beats_naive": false,
+ "n_items_scored": 468,
+ "worst5": [
+  {
+   "err_pp": 90.3,
+   "country": "BR",
+   "family": "economy"
+  },
+  {
+   "err_pp": 84.1,
+   "country": "JO",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 79.7,
+   "country": "KW",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 79.0,
+   "country": "CN",
+   "family": "other"
+  },
+  {
+   "err_pp": 77.0,
+   "country": "GR",
+   "family": "intl-relations"
+  }
+ ],
+ "best5": [
+  {
+   "err_pp": 0.0,
+   "country": "BE",
+   "family": "economy"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "JO",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "TZ",
+   "family": "other"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "UG",
+   "family": "tech/climate"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "NG",
+   "family": "democracy/governance"
+  }
+ ],
+ "top3_error_cells": [
+  {
+   "family": "other",
+   "region": "Western Europe",
+   "income": "HIC",
+   "share_weighted_mae": 10451.0,
+   "n": 978
+  },
+  {
+   "family": "other",
+   "region": "Eastern Europe",
+   "income": "HIC",
+   "share_weighted_mae": 6730.4,
+   "n": 554
+  },
+  {
+   "family": "other",
+   "region": "Middle East/N. Africa",
+   "income": "LMIC",
+   "share_weighted_mae": 5997.7,
+   "n": 396
+  }
+ ]
+}
