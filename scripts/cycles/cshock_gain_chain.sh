@@ -12,7 +12,7 @@ LOG=$CSHOCK_GAIN_OUT/chain.log
 mkdir -p "$CSHOCK_GAIN_OUT"
 echo "GAIN CHAIN START $(date -u +%FT%TZ) HEAD=$(git rev-parse --short HEAD)" >> "$LOG"
 
-for SEED in 401 402 403; do
+for SEED in 401 402 403 404 405 406 407 408 409 410; do
   for GAIN in 0.002 0.005 0.01 0.02 0.05 0.10; do
     EARTH1_DISTRESS_LAYOFFS=on EARTH1_LAYOFF_GAIN=$GAIN \
       $PY scripts/cycles/cshock_gain_sweep.py $SEED covid >> "$LOG" 2>&1 &
@@ -21,6 +21,6 @@ for SEED in 401 402 403; do
     $PY scripts/cycles/cshock_gain_sweep.py $SEED null >> "$LOG" 2>&1 &
   EARTH1_DISTRESS_LAYOFFS=off \
     $PY scripts/cycles/cshock_gain_sweep.py $SEED null >> "$LOG" 2>&1 &
+  wait
 done
-wait
 echo "GAIN CHAIN COMPLETE $(date -u +%FT%TZ)" >> "$LOG"

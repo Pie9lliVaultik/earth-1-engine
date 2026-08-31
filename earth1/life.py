@@ -640,6 +640,13 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
         + 0.004 * (0.8 - life.firm_health), 0.0, 1.0)
     if failed.size:
         life.firm_health[failed] = u_reseed[failed]
+        # a reseeded slot is a NEW firm — its distress-EMA history is
+        # meaningless, and without this sync a reseed reads as a 0.4
+        # health crash that can open the coherence gate (measured: ~600
+        # phantom null-arm layoffs per 455d at 20k)
+        _ema = getattr(life, "firm_health_ema", None)
+        if _ema is not None:
+            _ema[failed] = u_reseed[failed]
 
     # ── THE BODY AND THE SELF ─────────────────────────────────────────
     # Everything below is stochastic, discrete and irreversible-ish, and

@@ -13,7 +13,7 @@ import numpy as np
 OUT = os.environ.get("CSHOCK_GAIN_OUT", "/opt/earth1-data/cshock_gain")
 TARGET = 0.999
 GAINS = (0.002, 0.005, 0.01, 0.02, 0.05, 0.1)
-SEEDS = (401, 402, 403)
+SEEDS = tuple(range(401, 411))
 
 runs = {}
 for p in glob.glob(os.path.join(OUT, "*.json")):
