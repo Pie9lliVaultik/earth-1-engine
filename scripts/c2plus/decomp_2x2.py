@@ -38,6 +38,7 @@ def main(substrate, mode):
                           "starved_or_parched", "war_deaths",
                           "weather_deaths", "gm_deaths")}
     dead_ages = []
+    by_cause = {}
     prev_alive = w.health.alive.copy()
     for _ in range(DAYS):
         st = live_one_day(w, rng)
@@ -45,7 +46,11 @@ def main(substrate, mode):
             cum[k] += int(st.get(k, 0) or 0)
         died = prev_alive & ~w.health.alive
         if died.any():
-            dead_ages.extend((18.0 + w.civ.age[died] * 72.0).tolist())
+            ages_d = 18.0 + w.civ.age[died] * 72.0
+            dead_ages.extend(ages_d.tolist())
+            cod = w.health.cause_of_death[died]
+            for a_, c_ in zip(ages_d.tolist(), cod.tolist()):
+                by_cause.setdefault(int(c_), []).append(a_)
         prev_alive = w.health.alive.copy()
     o = collect(w, cum)
     a = w.health.alive
@@ -60,6 +65,9 @@ def main(substrate, mode):
         "reference_crude_death_rate_yr": 0.0076,
         "deaths": cum["deaths"], "starved": cum["starved_or_parched"],
         "gm_deaths": cum["gm_deaths"],
+        "deaths_by_cause": {str(k): {"n": len(v),
+                                     "mean_age": round(sum(v)/len(v), 1)}
+                            for k, v in by_cause.items()},
         "births": cum["births"], "cascades": cum["cascades_fired"],
         "firms_failed": cum["firms_failed"],
         "employment_rate": o["employment_rate"],
