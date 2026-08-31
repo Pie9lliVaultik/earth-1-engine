@@ -262,7 +262,8 @@ def live_one_day(w: World, rng, *,
     _found = st_life.pop("found_idx", None)
     st.update(st_life)
     # 2 bodies
-    st.update(health_tick(civ, life, w.health, rng, float(w.day), dt_days))
+    st.update(health_tick(civ, life, w.health, rng, float(w.day), dt_days,
+                           flourishing=w.flourishing))
     # 4 class
     st_cls = class_tick(civ, life, w.knowledge, w.gov, w.klass, rng,
                         dt_days, alive=w.health.alive)

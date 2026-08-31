@@ -164,7 +164,7 @@ def cancer_hazard(age_years: np.ndarray, tier: np.ndarray,
 
 
 def health_tick(civ, life, health: Health, rng, day: float,
-                dt_days: float = 1.0) -> dict:
+                dt_days: float = 1.0, flourishing=None) -> dict:
     """One day of bodies. Returns what happened, including who died."""
     n = civ.n
     dt_yr = dt_days / 365.0
@@ -315,6 +315,23 @@ def health_tick(civ, life, health: Health, rng, day: float,
         # table ~79.7). Correct epidemiological form: hardship decides
         # who dies WITHIN a cohort; the age curve belongs to the life
         # table by construction.
+        want_share = 0.0
+        if os.environ.get("EARTH1_WANT_MODE") == "rr" \
+                and flourishing is not None \
+                and getattr(flourishing, "hunger", None) is not None:
+            # c012: WANT as relative risk on the baseline. Point anchor
+            # (nutrition-death share) remains BLOCKED_ON_DATA (WHO GHO/
+            # FAOSTAT unreachable); the gain below is identified via the
+            # fetched age-structure anchor and reported against the
+            # fetched cause-composition bound.
+            k_want = float(os.environ.get("EARTH1_WANT_RR", "5.0"))
+            want_term = k_want * (
+                np.clip(flourishing.hunger, 0, 1) ** 3
+                + np.clip(flourishing.thirst, 0, 1) ** 3)
+            rr = rr * (1.0 + want_term)
+            with np.errstate(invalid="ignore"):
+                want_share = float(np.mean(
+                    (want_term / (1.0 + want_term))[a_alive & (rr > 0)]))
         rr_n = rr.copy()
         _bins = np.digitize(age_years, [30, 40, 50, 60, 70, 80])
         for _b in range(7):
@@ -323,6 +340,8 @@ def health_tick(civ, life, health: Health, rng, day: float,
                 rr_n[_m] = rr[_m] / float(rr[_m].mean())
         p = m_age / 365.0 * dt_days * rr_n * (1.0 - GM_OTHER_SHARE)
         gm_dead = a_alive & (rng.random(n) < p)
+        st_want = {"want_rr_mean_share": round(want_share, 5),
+                   "gm_deaths": int(gm_dead.sum())}
         if gm_dead.any():
             health.alive[gm_dead] = False
             health.cause_of_death[gm_dead] = np.where(
@@ -344,6 +363,7 @@ def health_tick(civ, life, health: Health, rng, day: float,
         life.mental[touched] = np.clip(life.mental[touched] - 0.08, 0.0, 1.0)
 
     return {"onsets": onsets,
+            **(locals().get('st_want') or {}),
             "falls_total": (int(health.falls.sum())
                             if health.falls is not None else 0),
             "in_decline_after_a_fall": (

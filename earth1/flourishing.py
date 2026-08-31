@@ -177,6 +177,12 @@ def flourishing_tick(civ, life, fl: Flourishing, kn, health, rng,
                        * dt_days)
     parched = live & (rng.random(n) < DEHYDRATION_DEATH * WANT_SCALE * fl.thirst ** 3
                       * dt_days)
+    if os.environ.get("EARTH1_WANT_MODE") == "rr":
+        # c012 (founder form): hunger/thirst kill as RELATIVE RISK
+        # inside the age-standardized GM baseline (earth1/health.py),
+        # not as a separate draw that bypasses the life table.
+        starving[:] = False
+        parched[:] = False
     gone = starving | parched
     if gone.any() and health is not None:
         health.alive[gone] = False

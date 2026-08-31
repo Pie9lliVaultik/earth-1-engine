@@ -36,7 +36,7 @@ def main(substrate, mode):
     cum = {k: 0 for k in ("deaths", "births", "disease_deaths",
                           "cascades_fired", "firms_failed",
                           "starved_or_parched", "war_deaths",
-                          "weather_deaths")}
+                          "weather_deaths", "gm_deaths")}
     dead_ages = []
     prev_alive = w.health.alive.copy()
     for _ in range(DAYS):
@@ -59,6 +59,7 @@ def main(substrate, mode):
         "crude_death_rate_yr": cum["deaths"] / POP * (365.0 / DAYS),
         "reference_crude_death_rate_yr": 0.0076,
         "deaths": cum["deaths"], "starved": cum["starved_or_parched"],
+        "gm_deaths": cum["gm_deaths"],
         "births": cum["births"], "cascades": cum["cascades_fired"],
         "firms_failed": cum["firms_failed"],
         "employment_rate": o["employment_rate"],
