@@ -76,6 +76,8 @@ def main(substrate, mode):
         "crude_death_rate_yr": cum["deaths"] / POP * (365.0 / DAYS),
         "reference_crude_death_rate_yr": 0.0076,
         "deaths": cum["deaths"], "starved": cum["starved_or_parched"],
+        "disease_deaths": cum["disease_deaths"], "war_deaths": cum["war_deaths"],
+        "weather_deaths": cum["weather_deaths"],
         "gm_deaths": cum["gm_deaths"],
         "deaths_by_cause": {str(k): {"n": len(v),
                                      "mean_age": round(sum(v)/len(v), 1)}
