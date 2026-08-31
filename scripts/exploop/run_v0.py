@@ -362,9 +362,16 @@ def _naive_forced(own):
 def stage_score():
     import scipy.stats as st
     ws = [s for s in SEEDS if s not in MIS]
-    res = {a: {s: json.load(open(os.path.join(OUT, "arms",
-                                              f"{s}_{a}.json")))
-               for s in SEEDS} for a in ("frozen", "exp", "placebo")}
+    arms_list = ["frozen", "exp", "placebo"]
+    if V02:
+        arms_list.append("filter")
+
+    def _arm_path(s_, a_):
+        p = os.path.join(OUT, "arms", f"{s_}_{a_}.json")
+        return p if os.path.exists(p) else os.path.join(
+            OUT, "arms", f"{s_}_{a_}.orig.json")
+    res = {a: {s: json.load(open(_arm_path(s, a)))
+               for s in SEEDS} for a in arms_list}
     streams = {s: json.load(open(os.path.join(
         OUT, "streams", f"{s}.json")))["windows"] for s in SEEDS}
     naive = {s: _naive(streams[s]) for s in SEEDS}
@@ -395,6 +402,8 @@ def stage_score():
     crps = {a: {s: res[a][s]["crps"] for s in SEEDS}
             for a in ("frozen", "exp", "placebo")}
     g1 = paired(crps["frozen"], crps["exp"], ws)
+    g1c = paired(crps["filter"], crps["exp"], ws) if "filter" in crps else None
+    g7p = paired(crps["placebo"], crps["exp"], ws)
     g1b = paired(naive, crps["exp"], ws)
     g1bf = paired(naive_f, crps["exp"], ws)
     _g8c = [c for c in SHOCK_CYCLES if c < CYCLES]
@@ -443,7 +452,16 @@ def stage_score():
                and 0.80 <= cover <= 0.97)
     if V01 and g8 is not None:
         verdict = verdict and g8["mean"] > 0 and g8["ci"][0] > 0
+    if V02 and g1c is not None:
+        verdict = (g1["mean"] > 0 and g1["ci"][0] > 0
+                   and g1b["mean"] > 0 and g1b["ci"][0] > 0
+                   and g1c["mean"] > 0 and g1c["ci"][0] > 0
+                   and g7p["mean"] > 0 and g7p["ci"][0] > 0
+                   and (g8 is None or (g8["mean"] > 0 and g8["ci"][0] > 0))
+                   and 0.80 <= cover <= 0.97)
     rep = {"G1_frozen_minus_exp": g1, "G1b_naive_minus_exp": g1b,
+           "G1c_filter_minus_exp": g1c,
+           "G7prime_placebo_minus_exp": g7p,
            "G1b_stretch_naiveforced_minus_exp": g1bf,
            "G8_shock_cycles_naive_minus_exp": g8,
            "G7_frozen_minus_placebo": g7, "G2_cover90_late": cover,
