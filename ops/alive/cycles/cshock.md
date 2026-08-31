@@ -100,13 +100,70 @@ through direct force injection, and fear transmits MORE under gradient (+0.143 v
 +0.104). Mechanism locus is somewhere between threshold-crossing and onset
 accounting, which is exactly what v2 instruments.
 
-## RESEARCH / IMPLEMENTATION / ABLATION / RETEST
+## DIAGNOSE — COMPLETE (v2 event-time chain + event-scale artifact analysis)
 
-Blocked until DIAGNOSE lands. Admissible change classes will be named from the measured
-failing stage (coupling gains vs threshold levels vs dep-rate term), each with the exact
-DEV retest: full B-DEV direction gate rerun + retro dose-response rerun + the standing
-200k census gates (poverty/mortality must not regress — frozen floors apply).
+**v2 probe (event-time counting, 200k seed 301 + 20k×3):**
+- Positive control FAILS on surge ENTRIES (cliff dose−null = 0 exactly): the onset-entry
+  observable measures cold→hot flicker, not dose response → declared UNINFORMATIVE for
+  dose response; RETRODICTION dose-suppression sub-finding **VOID (instrument defect:
+  metric semantics)**. Null-arm geography Spearman unaffected.
+- On INTENSITY (hot-locality-days) the gradient world transmits MORE than cliff
+  (+2,167 vs +300 at 200k; +2,841 vs +470 at 20k): the graded world turns a sustained
+  dose into sustained unrest episodes. Rule-mix: gradient responds via identity_collapse
+  (+575 events), cliff via panic_cascade (+1,476). The physics responds; the channels
+  moved.
+- protest_risk absorption is real (cliff +282 vs gradient +7): the `dep>0.4` conjunct
+  (consequences.py:160) is cliff-tuned. Real, but SECONDARY — protest_risk is not in
+  the failing B-DEV direction set.
+
+**Event-scale transmission (B arm snapshots, candidate, n=5, vs paired controls):**
+covid: jobs −24±671 (real: ~10⁸), destitute +2.7 people (real: ~1pp of humanity),
+excess deaths ≈0 (no epidemic channel — deliberate exclusion), hope +0.004 (wrong
+sign); yet hungry +2,801, evicted +2,501, legitimacy −0.064 — the world responds
+internally, the scored observables never see it. gfc: employed −309±885 (noise-scale;
+its 100% direction is luck). arab: migrants −2.7 (wrong sign), legitimacy falls −0.034.
+
+**ROOT CAUSE (measured, three links):** (1) the only shock→jobs path is total firm
+failure, hazard `0.08/yr × (2−health)` — a MAXIMUM shock merely doubles a 9.6%/yr rate,
+while firm health self-heals (173d half-life). covid's firm_damage=0.35 leaves health
+at ~0.45: barely distressed, no wave. (2) With jobs ≈ noise, income/gap never move, and
+the gradient's cushion (correct for LEVELS) means what little hardship arrives is
+absorbed by savings. (3) The old cliff physics transmitted only because binary 0→1
+destitution flips manufactured large Δdep from the same weak inputs — an amplifier of
+noise, not a transmission channel. The 80%→60% "regression" is mostly the coin
+re-flipping on noise-scale responses.
+
+## RESEARCH
+
+Real anchor, fetched and hashed (`data/anchors_unemployment_series.v1.json`, raw sha
+fe7ea9012b9995f4…, WB SL.UEM.TOTL.ZS, WLD, 2005–2024): world unemployment
+2019→2020 **+0.999pp** (covid), 2008→2009 **+0.585pp** (GFC). Economics: employment
+responds to demand CHANGES (Okun); firms shed workers under distress well before
+failing. The model's missing mechanism is exactly that.
+
+## IMPLEMENTATION — THE NAMED CHANGE
+
+**Distress-layoff channel** (`earth1/life.py` §2b, flag `EARTH1_DISTRESS_LAYOFFS`,
+default off; flag-off is bit-identical — RNG drawn only when on):
+per-worker daily layoff probability = `LAYOFF_GAIN × max(0, ema − health − 0.10)` of
+their firm, where ema is the firm's own 30-day trailing health. A DROP detector:
+exactly zero at any steady state (baseline anchors untouched by construction);
+deadband 0.10 ≈ 5× the daily health-noise σ (0.02) so noise never fires it.
+LAYOFF_EMA_TAU=30 and DEADBAND=0.10 are FIXED constants (bracket-checked in ablation,
+not tuned). LAYOFF_GAIN is the cycle's single FITTED constant.
+
+**Calibration prereg (frozen before results):** sweep GAIN ∈ {0.002, 0.005, 0.01,
+0.02, 0.05, 0.10} on the covid_2020 REGISTRY scenario, 20k × seeds {401,402,403},
+365d, paired against null-branch. GAIN\* = interpolated to hit **+0.999pp** Δu-rate at
+day 365 (census-weighted LF frame). Gates: (G-inv) null-arm flag-on ≡ flag-off within
+seed noise; (G-gfc) HELD-OUT check — gfc_2008 scenario at GAIN\* lands +0.585pp within
+sign and factor-2 (NOT fitted); (G-anchor) 200k standing census gates unchanged.
+RETEST: full B-DEV battery + retro v2-metric rerun under
+candidate+`DISTRESS_LAYOFFS=on,GAIN=GAIN\*` — direction gate target ≥80% per the
+freeze decision rule.
 
 ## STATUS
 
-ITERATING. Chain launched on prime (see `chain.log` in `/opt/earth1-data/cshock/`).
+ITERATING — named change implemented behind flag; gain-calibration chain launching.
+Artifacts: `/opt/earth1-data/cshock/` (v1), `/opt/earth1-data/cshock_v2/` (event-time),
+`/opt/earth1-data/cshock_gain/` (calibration).

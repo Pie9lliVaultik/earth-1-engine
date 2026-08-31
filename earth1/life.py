@@ -149,6 +149,20 @@ DESTITUTE_BUFFER = 3.0           # under 3 days of reserve = destitute
 # Default stays canonical: no deployed physics changes without a ruling.
 HARDSHIP_MODE = os.environ.get("EARTH1_HARDSHIP_MODE", "cliff")
 
+# DISTRESS LAYOFFS (c-SHOCK named change, ops/alive/cycles/cshock.md).
+# A firm in sudden decline sheds workers before it dies. Without this
+# the only shock->jobs path is total firm failure, whose hazard tops
+# out at 2x baseline even for a maximum shock — which is how a
+# covid-scale scenario destroyed -24±671 jobs on a 200k world. The
+# detector is a DROP against the firm's own trailing health (EMA), so
+# it is exactly zero at any steady state: baseline unemployment
+# anchors are untouched by construction. The deadband sits ~5x the
+# daily health-noise sigma (0.02) so steady-state noise never fires.
+DISTRESS_LAYOFFS = os.environ.get("EARTH1_DISTRESS_LAYOFFS", "off")
+LAYOFF_GAIN = float(os.environ.get("EARTH1_LAYOFF_GAIN", "0.0"))
+LAYOFF_EMA_TAU = 30.0
+LAYOFF_DEADBAND = 0.10
+
 # INCOME CALIBRATION (M-INCOME-SCALE, 2026-08-27). Earth-1's income
 # distribution was ~2.5x too low and less than half as unequal as the
 # world: median 1.23x subsistence vs a fetched 3.09x, total log-sd
@@ -456,7 +470,26 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     tenure_mult = 1.0 + 1.5 * np.exp(-life.tenure / 365.0)
     sep = (u_sep < sep_base * tenure_mult) & life.employed & ~laid_off
 
-    lost = laid_off | sep
+    # ── 2b. distress layoffs (flag-gated; see DISTRESS_LAYOFFS above) ─
+    # Fires on the DROP of firm health below its own 30-day trail, past
+    # a deadband above the noise floor. RNG is drawn only when the flag
+    # is on, so flag-off runs stay bit-identical to canonical physics.
+    dcut = np.zeros(n, dtype=bool)
+    if DISTRESS_LAYOFFS == "on":
+        ema = getattr(life, "firm_health_ema", None)
+        if ema is None:
+            ema = life.firm_health.copy()
+        gap_f = np.clip(ema - life.firm_health - LAYOFF_DEADBAND, 0.0, 1.0)
+        life.firm_health_ema = ema + (life.firm_health - ema) \
+            * (dt_days / LAYOFF_EMA_TAU)
+        if float(gap_f.max()) > 0.0:
+            u_cut = rng.random(n)
+            agent_gap = np.where(life.firm >= 0,
+                                 gap_f[np.maximum(life.firm, 0)], 0.0)
+            dcut = ((u_cut < LAYOFF_GAIN * dt_days * agent_gap)
+                    & life.employed & ~laid_off & ~sep)
+
+    lost = laid_off | sep | dcut
     life.employed[lost] = False
     life.firm[lost] = -1
     life.tenure[lost] = 0.0
