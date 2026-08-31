@@ -337,6 +337,12 @@ def rows_task_iv(out_dir, repo, av2_sb, confirm, held_art, held_path):
                 r["verdict"] = tier(r["earth1"]) if isinstance(
                     r["earth1"], (int, float)) else "SEE_ARTIFACT"
                 r["coverage"] = pick(blk, "coverage", "n_items", "n_cells")
+            elif estate != "wvs_heldout":
+                r["status"] = "NOT_RUN"
+                r["reason"] = ("task iv is registered WITHIN-WVS "
+                               "(campaign order B1: fit 70% of WVS items, "
+                               "score the untouched 30%); Pew/GOQA estates "
+                               "carry no independent item-fitting frame")
             else:
                 r["reason"] = ("afull_heldout_items artifact missing or "
                                "lacks this estate")
