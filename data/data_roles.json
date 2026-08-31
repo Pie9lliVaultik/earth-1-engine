@@ -10,6 +10,15 @@
    "role": "EVALUATION_OUTCOME",
    "sha256": "76ea47c47190c0df31df620a4145ecc7e6ea8e743b49686049f1ff4c6e8a5bfc"
   },
+  "anes_judge": {
+   "licence": "ANES terms (audited)",
+   "lineage": [
+    "ANES latest public release"
+   ],
+   "notes": "PENDING_FETCH.",
+   "path": "PENDING_FETCH",
+   "role": "HOLDOUT"
+  },
   "c2plus_tables_v1": {
    "licence": "WVS-derived DEVELOPMENT artifact \u2014 not clear for commercial deployment until WVSA permission (LICENCE_AUDIT_2026-08-26).",
    "lineage": [
@@ -21,6 +30,35 @@
    "path": "data/c2plus_tables_v1.json",
    "role": "TRAIN"
   },
+  "ess_judge": {
+   "licence": "CC BY-NC-SA; ERIC Art.23 pending",
+   "lineage": [
+    "ESS latest round"
+   ],
+   "notes": "PENDING_FETCH; permission email drafted.",
+   "path": "PENDING_FETCH",
+   "role": "HOLDOUT"
+  },
+  "goqa_dev": {
+   "licence": "as goqa_judge",
+   "lineage": [
+    "GOQA GAS-source odd-hash half, 469 items, top-half-of-substantive rule"
+   ],
+   "notes": "Scoreboard dev estate.",
+   "path": "data/concordance/goqa_dev.json",
+   "role": "VALIDATION",
+   "sha256": "775016524441e500e47eb4ea693f92cc3408bed4a78e8bd83c3d1b8e4900f850"
+  },
+  "goqa_judge": {
+   "licence": "GOQA public dataset (see HF card) \u2014 verify before commercial claim",
+   "lineage": [
+    "GOQA (HF Anthropic/llm_global_opinions) GAS-source items, deterministic even-hash half; ids only, targets never extracted"
+   ],
+   "notes": "SEALED judge half. final_scoring only, at 4M. Created 2026-08-31; no prior sealed-split hash existed (discrepancy with session order recorded).",
+   "path": "data/goqa_judge_split.json",
+   "role": "HOLDOUT",
+   "sha256": "9d125263214e90ac4f6d29193f10ad52f83f4b3cd72c16fccfc9a86c31db29fe"
+  },
   "gss_r1_consumed": {
    "licence": "GSS public-use terms: commercial use not prohibited; citation (Davern et al.) + responsible use + no respondent re-identification. Confirmation email to gss@norc.org recommended before commercial training (LICENCE_AUDIT_2026-08-26.md).",
    "lineage": [
@@ -30,6 +68,15 @@
    "path": "data/gss_cohort_seeds_v1.csv",
    "role": "TRAIN",
    "sha256": "c94692fff7e8a49db4e798da2db849c9bd1b74486bba478bc9c3f289b4459bae"
+  },
+  "pew2019_judge": {
+   "licence": "Pew terms \u2014 audit before commercial reliance",
+   "lineage": [
+    "Pew Global Attitudes latest wave \u2014 direct microdata behind registration wall"
+   ],
+   "notes": "PENDING_FETCH (login wall probed 2026-08-31); GAS frame reaches us tonight via GOQA.",
+   "path": "PENDING_FETCH",
+   "role": "HOLDOUT"
   },
   "sbi_theta_star_v1": {
    "licence": "",
