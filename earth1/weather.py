@@ -32,6 +32,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import os
+
 import numpy as np
 
 from earth1.types import Force
@@ -145,6 +147,15 @@ def weather_tick(civ, life, health, cl: Climate, rng, dt_days: float = 1.0,
                         else 0.0))
     p_die = (HEAT_MORTALITY * over + COLD_MORTALITY * under) \
         * frailty * dt_days
+    # c-WEATHER (2026-08-31): the weather channel supplied 28.5% of all
+    # deaths at mean age ~48 (FP4 named-composition census, 200k×180d:
+    # 211/739) against a real disaster share well under 0.5% of global
+    # deaths — a ~60× over-share and the dominant residual on the
+    # age-at-death gate. Scale is a flagged calibratable identified via
+    # the fetched age-structure anchor; the point anchor (EM-DAT/WHO
+    # disaster mortality) is BLOCKED_ON_DATA pending licence/API access
+    # and the share is reported against the fetched composition bound.
+    p_die = p_die * float(os.environ.get("EARTH1_WEATHER_SCALE", "1.0"))
     died = live & (rng.random(n) < p_die)
     if died.any():
         health.alive[died] = False
