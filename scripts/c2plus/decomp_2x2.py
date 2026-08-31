@@ -39,19 +39,31 @@ def main(substrate, mode):
                           "weather_deaths", "gm_deaths")}
     dead_ages = []
     by_cause = {}
+    # INSTRUMENT FIX (2026-08-31): dead slots are REBORN within the
+    # same tick, so prev_alive & ~alive missed ~95% of deaths (per-run
+    # capture was ~30 of ~780 at 200k; every prior age-at-death figure
+    # from this script carried ±3.5yr noise, not the claimed ±1).
+    # Detection now uses person_id turnover; ages from the PRE-tick
+    # snapshot; cause_of_death read post-tick is the dead occupant's
+    # (rebirth does not rewrite it before the next death).
     prev_alive = w.health.alive.copy()
+    prev_pid = w.civ.person_id.copy()
+    prev_age = w.civ.age.copy()
     for _ in range(DAYS):
         st = live_one_day(w, rng)
         for k in cum:
             cum[k] += int(st.get(k, 0) or 0)
-        died = prev_alive & ~w.health.alive
+        died = prev_alive & (~w.health.alive
+                             | (w.civ.person_id != prev_pid))
         if died.any():
-            ages_d = 18.0 + w.civ.age[died] * 72.0
+            ages_d = 18.0 + prev_age[died] * 72.0
             dead_ages.extend(ages_d.tolist())
             cod = w.health.cause_of_death[died]
             for a_, c_ in zip(ages_d.tolist(), cod.tolist()):
                 by_cause.setdefault(int(c_), []).append(a_)
         prev_alive = w.health.alive.copy()
+        prev_pid = w.civ.person_id.copy()
+        prev_age = w.civ.age.copy()
     o = collect(w, cum)
     a = w.health.alive
     cw = census_weights(w.civ)[a]
