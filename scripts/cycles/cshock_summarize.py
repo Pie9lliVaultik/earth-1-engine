@@ -29,13 +29,22 @@ for (mode, arm, pop, seed), d in sorted(runs.items()):
         continue
     eff = {k: d["final"][k] - n["final"][k] for k in KEYS}
     eff["onsets"] = d["onsets_total"] - n["onsets_total"]
-    summary["pairs"].append({"mode": mode, "pop": pop, "seed": seed,
-                             "dose_onsets": d["onsets_total"],
-                             "null_onsets": n["onsets_total"],
-                             "effect": eff})
+    row = {"mode": mode, "pop": pop, "seed": seed,
+           "dose_onsets": d["onsets_total"],
+           "null_onsets": n["onsets_total"],
+           "effect": eff}
+    if "onsets_event_total" in d and "onsets_event_total" in n:
+        eff["onsets_event"] = d["onsets_event_total"] - n["onsets_event_total"]
+        eff["hot_locality_days"] = (d["hot_locality_days"]
+                                    - n["hot_locality_days"])
+        row["dose_onsets_event"] = d["onsets_event_total"]
+        row["null_onsets_event"] = n["onsets_event_total"]
+    summary["pairs"].append(row)
 
+EXTRA = [k for k in ("onsets_event", "hot_locality_days")
+         if any(k in r["effect"] for r in summary["pairs"])]
 for pop in (20000, 200000):
-    for k in list(KEYS) + ["onsets"]:
+    for k in list(KEYS) + ["onsets"] + EXTRA:
         by = {}
         for row in summary["pairs"]:
             if row["pop"] == pop:
@@ -47,9 +56,12 @@ for pop in (20000, 200000):
                 "gradient_mean_effect": g, "cliff_mean_effect": c,
                 "absorption": (c - g)}
 
-pc = summary.get("contrast_200000_onsets")
+pc = (summary.get("contrast_200000_onsets_event")
+      or summary.get("contrast_200000_onsets"))
 if pc is not None:
     summary["positive_control"] = {
+        "basis": ("event-time" if "contrast_200000_onsets_event" in summary
+                  else "terminal-residue (expiry-biased, v1)"),
         "cliff_transmits": pc["cliff_mean_effect"] > 0,
         "note": "if false the instrument is defective (VOID-eligible), "
                 "no mechanism inference"}

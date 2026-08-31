@@ -67,6 +67,39 @@ dep>0.4 and force-threshold shares as the mediating stages.
 - Pre-committed reading: H1 supported iff absorption = cliff_effect − gradient_effect
   is positive on surge_joint AND onsets at 200k.
 
+## VERIFY-2 (2026-08-31, before reading v2 results) — counting instrument defect found
+
+The v1 probe (and `run_retro.py`, and any onset count read from terminal residues)
+counts collective_surge onsets from the residue list **surviving at end-of-window**.
+Two suppressors live in that instrument, not in the physics:
+
+1. **Residue expiry** (`alive.py:163-181`): a residue leaves the active set when
+   `level < 0.01`; at h=30d and |effect|≈0.10 that is ~100 days — shorter than the
+   120-day window. Onsets fired in the first ~20 days post-branch are invisible at
+   count time. The dose fires exactly there.
+2. **Episode-entry semantics** (`alive.py`, H-CASCADE-1): collective_surge counts
+   cold→hot ENTRIES. A dose that makes localities hot and keeps them hot yields one
+   entry; a flickering null world yields many. "Onsets" measures entries, not pressure.
+
+20k v1 data shows the dissociation these predict: dose RAISES the joint
+threshold-crosser share under gradient (+0.040) while terminal-counted onsets FALL
+(−70). The RETRODICTION_v1 dose-suppression finding is therefore **suspect as an
+instrument artifact** (VOID-eligible for that sub-finding; the null-arm geography
+Spearman is unaffected — counting bias is uniform across countries in a ranking).
+
+**Probe v2 (prereg):** event-time capture (every residue logged the tick it appears),
+terminal count retained to quantify the bias, all rules logged (competing-rule
+dynamics, e.g. polarization_lock's collective −0.12), plus hot-locality-days
+(episode intensity, immune to entry counting). Positive control re-read on
+event-time counts. v1 200k reads are superseded by v2 on arrival.
+
+Interim v1 20k findings (recorded before v2): absorption REAL on protest_risk
+transmission (cliff +182 vs gradient +36, 5×); H1's mediating stage REFUTED — the
+dose barely moves deprivation in either mode (dep>0.4 effect ≤0.0014); the dose acts
+through direct force injection, and fear transmits MORE under gradient (+0.143 vs
++0.104). Mechanism locus is somewhere between threshold-crossing and onset
+accounting, which is exactly what v2 instruments.
+
 ## RESEARCH / IMPLEMENTATION / ABLATION / RETEST
 
 Blocked until DIAGNOSE lands. Admissible change classes will be named from the measured

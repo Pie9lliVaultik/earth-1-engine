@@ -58,25 +58,53 @@ def main(seed, arm, pop):
     apply(w, sc, rng)
     t0 = float(w.day)
     series = []
+    # v2 EVENT-TIME counting (VERIFY-2, cshock.md): terminal-residue
+    # counting is expiry-biased — residues leave the active set at
+    # level<0.01 (~100d at h=30), so onsets fired in the first ~20d of
+    # a 120d window are invisible at end-of-window. Capture every
+    # residue the tick it appears instead; keep the terminal count to
+    # quantify the bias. Also log ALL rules (competing-rule dynamics)
+    # and hot-locality-days (episode intensity, immune to
+    # entry-counting).
+    events, seen = [], set()
+    hot_days = 0
     for d in range(WINDOW):
         live_one_day(w, rng)
+        for r in (getattr(w.chronicle, "cascade_residues", None) or []):
+            key = (r["rule"], float(r["day"]), int(r["loc"]))
+            if key not in seen:
+                seen.add(key)
+                events.append({"rule": r["rule"], "day": float(r["day"]),
+                               "loc": int(r["loc"])})
+        ep = getattr(w.chronicle, "cascade_episode_active", None) or set()
+        hot_days += sum(1 for k in ep if k[0] == "collective_surge")
         if (d + 1) % EVERY == 0:
             series.append({"day": d + 1, **chain_metrics(w)})
-    onsets = {}
+    onsets, onsets_ev = {}, {}
     for r in (getattr(w.chronicle, "cascade_residues", None) or []):
         if r["rule"] == "collective_surge" and r["day"] >= t0:
             iso = GENESIS_COUNTRY_CODES[int(r["loc"]) // 1000]
             onsets[iso] = onsets.get(iso, 0) + 1
+    for e in events:
+        if e["rule"] == "collective_surge" and e["day"] >= t0:
+            iso = GENESIS_COUNTRY_CODES[e["loc"] // 1000]
+            onsets_ev[iso] = onsets_ev.get(iso, 0) + 1
     out = os.environ.get("CSHOCK_OUT", "/opt/earth1-data/cshock")
     os.makedirs(out, exist_ok=True)
     mode = life_mod.HARDSHIP_MODE
     json.dump({"seed": seed, "arm": arm, "pop": pop, "mode": mode,
                "pre": pre, "series": series, "final": chain_metrics(w),
-               "onsets": onsets, "onsets_total": int(sum(onsets.values()))},
+               "onsets": onsets, "onsets_total": int(sum(onsets.values())),
+               "onsets_event": onsets_ev,
+               "onsets_event_total": int(sum(onsets_ev.values())),
+               "hot_locality_days": int(hot_days),
+               "events": events},
               open(os.path.join(out, f"{mode}_{arm}_{pop}_{seed}.json"), "w"),
               indent=1)
     print("CSHOCK DONE", mode, arm, pop, seed,
-          "onsets", sum(onsets.values()))
+          "onsets_terminal", sum(onsets.values()),
+          "onsets_event", sum(onsets_ev.values()),
+          "hot_days", hot_days)
 
 
 if __name__ == "__main__":
