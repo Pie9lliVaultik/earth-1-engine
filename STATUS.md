@@ -1,6 +1,25 @@
 # EARTH-1 LIVE STATUS
 _Chat updates mirrored here. Newest first. Timestamps UTC._
 
+## 2026-08-31 ~21:00 — c-SHOCK diagnosed to root + fix calibrated; A-FULL-1 running
+The B-DEV "regression" dissolved under measurement: macro shock
+transmission was ~zero in ALL physics (covid: −24±671 jobs on 200k;
+destitute +2.7 people; the cliff's old "transmission" was binary-flip
+noise amplification; direction 60% ≈ coin flips). Retro dose-suppression
+VOID (entry-metric semantics — on intensity the gradient world transmits
+MORE: hot-locality-days +2,167 vs cliff +300). NAMED CHANGE: distress
+layoffs — acute firm distress as its own state (apply() writes it,
+τ=60d, layoffs ∝ it). Two detector forms failed their own G-inv gate
+and were replaced (OU health noise ≈ shock scale — measured, recorded);
+final form passes G-inv BITWISE (0 phantom layoffs, identical
+trajectories, 10 seeds). GAIN\*=0.00633 calibrated to FETCHED WB
+2019→2020 +0.999pp (sha fe7ea901). GFC held-out unresolved at 20k
+(OECD-scoped, signal below noise) → 200k confirmation at frozen GAIN\*
+in flight. Then: full B-DEV battery retest (≥80% = freeze rule).
+B1: A-FULL-1 chain launched (5 tasks × 3 estates, workflow-built
+harnesses, all selftests green; crosswave honestly NOT_RUN — no wave-6
+state). Epoch 3 untouched. Cycle: ops/alive/cycles/cshock.md
+
 ## 2026-08-31 — RULING: Option B (narrowly) + benchmark campaign opens
 One mechanism cycle (c-SHOCK) on the B-DEV shock-response regression
 before the 0.9 tag; benchmark campaign registered and running in

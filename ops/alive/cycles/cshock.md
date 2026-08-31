@@ -176,8 +176,41 @@ unchanged. Baseline: all gates closed → exact zero, and a `distress_layoffs` c
 now makes G-inv directly measurable. Sweep 1 artifacts retained
 (`cshock_gain/` v1 files); sweep 2 re-runs the same prereg grid.
 
+## IMPLEMENTATION v3 (final form) + CALIBRATION
+
+Detector v2 (coherence gate) ALSO failed G-inv (~600 phantom layoffs/455d at 20k):
+firm health is an OU process (reversion 0.004/d, noise 0.02/d) whose 30-day deviation
+σ≈0.11 is the same order as real shock damage — with ~9 firms/country at 20k, a 0.08
+country-mean gate is ~2σ and 194 countries × 455 days of trials guarantees false
+opens. **No within-firm drop detector works in this noise regime.** Final form:
+acute distress is its OWN state — `branch.apply()` adds firm_damage to
+`firm_distress` (τ=60d exponential decay), layoffs ∝ GAIN × distress of your firm.
+Ambient churn and acute shock are now different quantities. Limitation (recorded):
+only exogenous/scenario damage drives it until firms have an endogenous P&L.
+
+**Sweep 4 (10 seeds × 6 gains, 20k, covid vs paired null):**
+- **G-inv PASSES BITWISE**: 0 layoffs in all null runs; u_on ≡ u_off and pre_u
+  identical to 4 decimals on all 10 seeds.
+- Dose-response monotone; layoff counters tight (CV ~2%) and linear in gain.
+- **GAIN\* = 0.00633** (log-interp to the fetched +0.999pp covid target).
+
+**G-gfc at 20k: UNRESOLVED, not refuted** (mean −0.318, sem 0.39): the registry GFC is
+`countries=OECD` — ~18% of the census-weighted world — so its expected world-u signal
+is ~+0.3pp, below this instrument's resolution (covid fired ~1,450 layoffs at GAIN\*,
+gfc ~85: exactly the scope ratio). Escalated per the standing 20k→200k ladder:
+200k × 6 seeds confirmation at FROZEN GAIN\*=0.00633 (nothing retuned) running —
+covid must hold +0.999pp; gfc read at decision precision there.
+
+**G-anchor passes by construction**: G-inv is bitwise, and scenario-free worlds have
+zero distress — baseline census gates, Benchmark A, and the frozen cohort floor are
+untouched by this channel identically. (Corollary: A-FULL-1 will never need a
+SUPERSEDED rerun for this change.)
+
 ## STATUS
 
-ITERATING — named change implemented behind flag; gain-calibration chain launching.
-Artifacts: `/opt/earth1-data/cshock/` (v1), `/opt/earth1-data/cshock_v2/` (event-time),
-`/opt/earth1-data/cshock_gain/` (calibration).
+ITERATING — detector v3 calibrated (GAIN\*=0.00633); 200k confirmation in flight;
+next: full B-DEV battery retest at candidate+flag (direction gate ≥80% per the freeze
+decision rule), then retro rerun on the intensity metric.
+Artifacts: `/opt/earth1-data/cshock/` (v1), `cshock_v2/` (event-time),
+`cshock_gain_v1detector/`, `_v2detector/`, `_v3detector/` (sweep archaeology),
+`cshock_gain/` (sweep 4 + gfc), `cshock_gain_200k/` (confirmation).
