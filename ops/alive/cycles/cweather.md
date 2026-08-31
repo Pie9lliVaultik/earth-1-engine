@@ -57,6 +57,17 @@ RESULT). Sensitivity: scale 1.0/0.02 endpoints; share is ~linear in
 scale (draw is linear); 0.05 restores ~0.1–0.3% share if the
 composition bound argues for a nonzero floor.
 
+## UNTARGETED CONFIRMATION (founder ruling: the gate must not read circular)
+Age-at-death was the identification TARGET for WEATHER_SCALE (recorded
+as FITTED-in-c-WEATHER in MOMENTS_v1 m6). The untargeted check is the
+census cause-composition: external (non-GM) deaths now 18/760 = 2.4%
+of all deaths (real external/violent share ~6–8%: we sit BELOW the
+real bound, consistent with weather over-corrected to ~0% — the
+registered 0.05 nudge would restore ~1–2 points), with no young-age
+concentration remaining (residual unnamed causes: 23 deaths at mean
+age 62.4; road/fall singletons). The confirmation is not circular:
+composition shares were never fitted.
+
 ## RETEST
 Full gate table re-run in this cycle at 200k (RESULT). 20k replicate
 σ pending (queued with the freeze-package replicate sweep).
