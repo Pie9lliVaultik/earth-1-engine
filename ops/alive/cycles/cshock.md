@@ -162,6 +162,20 @@ RETEST: full B-DEV battery + retro v2-metric rerun under
 candidate+`DISTRESS_LAYOFFS=on,GAIN=GAIN\*` — direction gate target ≥80% per the
 freeze decision rule.
 
+## IMPLEMENTATION v2 (detector corrected — first sweep's G-inv analysis caught it)
+
+Sweep 1 (24 runs, 50s wall-clock) showed null-arm flag-on drifting **+0.7pp** above
+flag-off: the deadband was sized to the DAILY health-noise σ (0.02), but health is a
+mean-reverting walk whose 30-day deviation from its own EMA has σ≈0.11 — baseline
+noise routinely crossed 0.10 and fired phantom layoffs. Detector v2 adds a
+**coherence gate**: layoffs open only where the country-MEAN drop clears
+`LAYOFF_COHERENCE=0.08` (~2σ of a small country's mean noise; idiosyncratic noise
+cannot move a mean, a real shock hitting a country's firms together can — covid 0.35,
+gfc 0.28, arab 0.15 all clear it). Per-firm proportionality past the 0.10 deadband
+unchanged. Baseline: all gates closed → exact zero, and a `distress_layoffs` counter
+now makes G-inv directly measurable. Sweep 1 artifacts retained
+(`cshock_gain/` v1 files); sweep 2 re-runs the same prereg grid.
+
 ## STATUS
 
 ITERATING — named change implemented behind flag; gain-calibration chain launching.

@@ -56,6 +56,7 @@ def main(seed, arm, pop):
                "gain": life_mod.LAYOFF_GAIN,
                "hardship_mode": life_mod.HARDSHIP_MODE,
                "pre_u": pre_u, "path": path, "final_u": path[-1]["u"],
+               "distress_layoffs": int(getattr(w.life, "distress_layoffs", 0)),
                "dep_mean": float(w.life.deprivation[w.health.alive].mean()),
                "destitute": float((w.life.deprivation[w.health.alive]
                                    > 0.99).mean())},

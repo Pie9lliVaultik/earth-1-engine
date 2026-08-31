@@ -162,6 +162,7 @@ DISTRESS_LAYOFFS = os.environ.get("EARTH1_DISTRESS_LAYOFFS", "off")
 LAYOFF_GAIN = float(os.environ.get("EARTH1_LAYOFF_GAIN", "0.0"))
 LAYOFF_EMA_TAU = 30.0
 LAYOFF_DEADBAND = 0.10
+LAYOFF_COHERENCE = 0.08
 
 # INCOME CALIBRATION (M-INCOME-SCALE, 2026-08-27). Earth-1's income
 # distribution was ~2.5x too low and less than half as unequal as the
@@ -471,23 +472,39 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     sep = (u_sep < sep_base * tenure_mult) & life.employed & ~laid_off
 
     # ── 2b. distress layoffs (flag-gated; see DISTRESS_LAYOFFS above) ─
-    # Fires on the DROP of firm health below its own 30-day trail, past
-    # a deadband above the noise floor. RNG is drawn only when the flag
-    # is on, so flag-off runs stay bit-identical to canonical physics.
+    # A firm's drop below its own 30-day trail is not enough on its own:
+    # health is a mean-reverting walk (daily sigma 0.02 -> ~0.11 spread
+    # against a 30d EMA), so a per-firm deadband alone fires on noise
+    # (measured: +0.7pp phantom baseline unemployment — the G-inv gate
+    # caught it). A real shock is COHERENT: it hits a country's firms
+    # together, and idiosyncratic noise cannot move a country MEAN. So
+    # layoffs open only where the country-mean drop clears 0.08 (~2
+    # sigma of a small country's mean noise), then each open country's
+    # firms shed in proportion to their own drop past the deadband.
+    # RNG is drawn only when the flag is on AND a gate is open, so
+    # flag-off runs stay bit-identical to canonical physics.
     dcut = np.zeros(n, dtype=bool)
     if DISTRESS_LAYOFFS == "on":
         ema = getattr(life, "firm_health_ema", None)
         if ema is None:
             ema = life.firm_health.copy()
-        gap_f = np.clip(ema - life.firm_health - LAYOFF_DEADBAND, 0.0, 1.0)
+        drop = ema - life.firm_health
         life.firm_health_ema = ema + (life.firm_health - ema) \
             * (dt_days / LAYOFF_EMA_TAU)
-        if float(gap_f.max()) > 0.0:
+        f_cnt = np.bincount(life.firm_country).astype(np.float64)
+        mean_drop = (np.bincount(life.firm_country, weights=drop)
+                     / np.maximum(f_cnt, 1.0))
+        open_c = mean_drop > LAYOFF_COHERENCE
+        if open_c.any():
+            gap_f = (np.clip(drop - LAYOFF_DEADBAND, 0.0, 1.0)
+                     * open_c[life.firm_country])
             u_cut = rng.random(n)
             agent_gap = np.where(life.firm >= 0,
                                  gap_f[np.maximum(life.firm, 0)], 0.0)
             dcut = ((u_cut < LAYOFF_GAIN * dt_days * agent_gap)
                     & life.employed & ~laid_off & ~sep)
+            life.distress_layoffs = (getattr(life, "distress_layoffs", 0)
+                                     + int(dcut.sum()))
 
     lost = laid_off | sep | dcut
     life.employed[lost] = False
