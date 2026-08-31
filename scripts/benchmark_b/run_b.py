@@ -27,7 +27,9 @@ def stamp():
 
 
 def run_warm():
-    w = birth_world(POP, 42); rng = np.random.default_rng(42)
+    _sub = None if os.environ.get("EARTH1_SUBSTRATE_FLAG", "off") == "off" \
+        else "c2plus_v1"
+    w = birth_world(POP, 42, substrate=_sub); rng = np.random.default_rng(42)
     for _ in range(WARM):
         live_one_day(w, rng)
     persistence.save_world(w, os.path.join(OUT, "warm.pkl"), rng=rng)
