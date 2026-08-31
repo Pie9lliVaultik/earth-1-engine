@@ -1,7 +1,7 @@
 {
  "earth1": {
-  "mae_pp": 12.052,
-  "seed_sigma": 0.086
+  "mae_pp": 12.008,
+  "seed_sigma": 0.155
  },
  "mrsp": {
   "mae_pp": 11.058,
@@ -15,42 +15,42 @@
   "mae_pp": 10.307,
   "seed_sigma": 0.0
  },
- "excess_vs_mrsp": 0.994,
+ "excess_vs_mrsp": 0.95,
  "tier": "MISS",
- "beats_naive": false,
+ "beats_naive": true,
  "n_items_scored": 468,
  "worst5": [
   {
-   "err_pp": 90.3,
+   "err_pp": 95.7,
    "country": "BR",
    "family": "economy"
   },
   {
-   "err_pp": 84.1,
+   "err_pp": 88.7,
+   "country": "UA",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 86.5,
    "country": "JO",
    "family": "democracy/governance"
   },
   {
-   "err_pp": 79.7,
-   "country": "KW",
-   "family": "democracy/governance"
-  },
-  {
-   "err_pp": 79.0,
+   "err_pp": 78.8,
    "country": "CN",
    "family": "other"
   },
   {
-   "err_pp": 77.0,
-   "country": "GR",
-   "family": "intl-relations"
+   "err_pp": 73.3,
+   "country": "DE",
+   "family": "democracy/governance"
   }
  ],
  "best5": [
   {
    "err_pp": 0.0,
-   "country": "BE",
-   "family": "economy"
+   "country": "CN",
+   "family": "tech/climate"
   },
   {
    "err_pp": 0.0,
@@ -59,17 +59,17 @@
   },
   {
    "err_pp": 0.0,
+   "country": "MX",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 0.0,
    "country": "TZ",
-   "family": "other"
+   "family": "democracy/governance"
   },
   {
    "err_pp": 0.0,
-   "country": "UG",
-   "family": "tech/climate"
-  },
-  {
-   "err_pp": 0.0,
-   "country": "NG",
+   "country": "JO",
    "family": "democracy/governance"
   }
  ],
@@ -78,21 +78,21 @@
    "family": "other",
    "region": "Western Europe",
    "income": "HIC",
-   "share_weighted_mae": 10451.0,
+   "share_weighted_mae": 10084.3,
    "n": 978
   },
   {
    "family": "other",
    "region": "Eastern Europe",
    "income": "HIC",
-   "share_weighted_mae": 6730.4,
+   "share_weighted_mae": 6882.5,
    "n": 554
   },
   {
    "family": "other",
    "region": "Middle East/N. Africa",
    "income": "LMIC",
-   "share_weighted_mae": 5997.7,
+   "share_weighted_mae": 5782.8,
    "n": 396
   }
  ]
