@@ -262,6 +262,42 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
                               "responds inside that world; they are not "
                               "probabilities that the world will occur."})
 
+    # F1: geography from material headcount fields when the runs carry
+    # them (post-F1 snapshots); otherwise the force-shift basis is
+    # stamped so no reader mistakes it for hunger geography.
+    geo_basis = None
+    geo_rows = []
+    from earth1.genesis import GENESIS_COUNTRY_CODES as _GCC
+    for key in ("hungry_by_country", "destitute_by_country"):
+        per_c = {}
+        for r in runs:
+            avail = sorted(r["scn"]["snaps"])
+            use = 90 if 90 in r["scn"]["snaps"] else (avail[-1] if avail
+                                                      else None)
+            if use is None:
+                continue
+            a = r["scn"]["snaps"][use].get(key)
+            b = r["null"]["snaps"][use].get(key)
+            ppa = r["scn"]["snaps"][use].get("people_per_agent_by_country")
+            if a is None or b is None or ppa is None:
+                continue
+            for ci in range(len(a)):
+                per_c.setdefault(ci, []).append(
+                    float((a[ci] - b[ci]) * ppa[ci]))
+        if per_c:
+            geo_basis = key
+            for ci, ds in per_c.items():
+                arr = np.array(ds)
+                m_ = float(arr.mean())
+                sem_ = (float(arr.std(ddof=1) / max(len(arr) - 1, 1) ** 0.5)
+                        if len(arr) > 1 else float("inf"))
+                if abs(m_) >= 2 * sem_ and m_ != 0.0:
+                    geo_rows.append({"country": _GCC[ci],
+                                     "delta_people": round(m_, 0),
+                                     "sem": round(sem_, 0)})
+            geo_rows.sort(key=lambda r_: -abs(r_["delta_people"]))
+            break
+
     lines = order1["forces_global"] + order2 + order3
     counts = {}
     for r in lines:
@@ -284,5 +320,8 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
                        "seeds": list(seeds), "pop": base_pop},
             "headline": headline,
             "order1": order1, "order2": order2, "order3": order3,
+            "order2_geography": {"basis": geo_basis or
+                                 "force_shift (pre-F1 snapshots)",
+                                 "top": geo_rows[:15]},
             "order4": order4,
             "tier_counts": counts}

@@ -130,6 +130,13 @@ def snapshot(w) -> dict:
             civ, (~life.employed & life.in_lf & alive), nc),
         "destitute_by_country": _by_country(
             civ, (life.deprivation > 0.99) & alive, nc),
+        # F1 (UKR-2022 cycle, founder order 2026-09-02): the geography
+        # fields the consequence report scores on — hunger and hardship
+        # headcounts per country, agent-counted like their siblings
+        "hungry_by_country": (_by_country(civ, (fl.hunger > 0.5) & alive,
+                                          nc) if fl else None),
+        "hardship_by_country": _by_country(
+            civ, (life.deprivation > 0.5) & alive, nc),
         "workers_by_country": np.maximum(
             _by_country(civ, life.in_lf & alive, nc), 1.0),
         # how many real people each agent stands for, per country —
