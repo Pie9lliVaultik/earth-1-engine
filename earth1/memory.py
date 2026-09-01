@@ -97,6 +97,9 @@ class Chronicle:
                     m.salience for m in self.events)), 4)
                     if self.events else 0.0)}
 
+    def _spread_indexed(self, civ, rng, rate, active, deg):
+        return _chronicle_spread_indexed(self, civ, rng, rate, active, deg)
+
     def spread(self, civ, rng: np.random.Generator,
                rate: float = 0.06) -> int:
         """Memories travel to the people who know the people it happened to.
@@ -121,6 +124,9 @@ class Chronicle:
         # memories, same order, one rng.random(n) each.
         active = [m for m in self.events
                   if m.scope is not None and m.scope.any()]
+        import os as _os
+        if _os.environ.get("EARTH1_CHRONICLE_INDEX") == "v1" and active:
+            return self._spread_indexed(civ, rng, rate, active, deg)
         _B = 8                       # bounds the (n, B) staging buffer
         for s in range(0, len(active), _B):
             block = active[s:s + _B]
@@ -135,6 +141,52 @@ class Chronicle:
                     m.scope = m.scope | catch
                     moved += int(catch.sum())
         return moved
+
+
+# ── CHRONICLE INDEX v1 (chronicle-tax cycle, founder 2026-09-02) ─────
+# Bitwise-exact sparse-support spread. Within a tick every scope is read
+# pre-mutation (each memory is processed exactly once and blocks never
+# re-read earlier memories), so per-memory exposure computed on demand
+# from pre-tick scopes equals the batched form. For each memory the
+# exposure's support is the scope's neighbourhood: rows found via the
+# CSC columns, values via a CSR ROW-SLICE matvec — which preserves each
+# row's stored summation order, so every nonzero is the identical
+# floating-point sum, and out-of-support rows are exactly +0.0 in both
+# forms (non-negative weights x {0,1} scope). RNG draw order unchanged:
+# one rng.random(n) per memory, same order. Gate: 20k day-30/90 world-
+# hash equality vs flag-off before any 200k use.
+
+
+def _chronicle_spread_indexed(self, civ, rng, rate, active, deg):
+    import numpy as _np
+    adj = civ.adj.tocsr()
+    csc = getattr(civ, "_adj_csc_cache", None)
+    if csc is None:
+        csc = civ.adj.tocsc()
+        try:
+            civ._adj_csc_cache = csc
+        except Exception:
+            pass
+    moved = 0
+    n = civ.n
+    for m in active:
+        scope_idx = _np.flatnonzero(m.scope)
+        # support rows = union of the scope columns' row indices
+        parts = [csc.indices[csc.indptr[j]:csc.indptr[j + 1]]
+                 for j in scope_idx]
+        rows = (_np.unique(_np.concatenate(parts)) if parts
+                else _np.empty(0, dtype=_np.int64))
+        exposure = _np.zeros(n)
+        if rows.size:
+            sub = adj[rows]                       # row-order preserved
+            e_rows = _np.asarray(
+                sub @ m.scope.astype(adj.dtype)).ravel()
+            exposure[rows] = e_rows / deg[rows]
+        catch = (~m.scope) & (rng.random(n) < rate * exposure)
+        if catch.any():
+            m.scope = m.scope | catch
+            moved += int(catch.sum())
+    return moved
 
 
 def event_from_news(headline: str, tone: float, day: float,
