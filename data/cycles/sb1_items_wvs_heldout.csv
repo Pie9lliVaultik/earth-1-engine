@@ -1,0 +1,99 @@
+item,family,n_countries,earth1_mae_pp,mrsp_mae_pp,naive_mae_pp,region_mae_pp,best,e1_minus_region_pp,beats_region,beats_all,text
+Q11,other,63,7.63,8.09,8.77,8.31,earth1,-0.67,True,True,Should children be encouraged to learn imagination at home?
+Q113,democracy/governance,61,17.77,16.33,18.75,15.72,region,2.05,False,False,Are state authorities in your country involved in corruption?
+Q115,democracy/governance,60,12.93,13.53,16.21,13.13,earth1,-0.2,True,True,Are local authorities in your country involved in corruption?
+Q117,democracy/governance,61,12.99,12.64,12.17,12.09,region,0.91,False,False,Are journalists and the media in your country involved in corruption?
+Q12,other,63,12.17,9.24,11.11,8.59,region,3.58,False,False,Should children be encouraged to learn tolerance and respect for other people?
+Q13,other,63,8.47,7.77,8.56,7.43,region,1.04,False,False,"Should children be encouraged to learn thrift, saving money and things?"
+Q130,democracy/governance,62,12.4,13.7,12.91,12.02,region,0.38,False,False,"Should the government let anyone come who wants to, rather than restrict immigration?"
+Q132,other,62,12.87,9.88,11.21,9.68,region,3.19,False,False,Do robberies occur frequently in your neighbourhood?
+Q133,other,62,17.29,13.69,15.72,11.83,region,5.46,False,False,Is alcohol consumed in the streets in your neighbourhood?
+Q134,security,61,7.61,5.72,7.16,5.61,region,2.0,False,False,Do police or the military interfere with people's private life in your neighbourhood?
+Q135,other,62,7.64,7.14,7.49,6.75,region,0.89,False,False,Does racist behaviour occur in your neighbourhood?
+Q136,other,62,14.11,10.92,12.45,9.51,region,4.6,False,False,Are drugs sold in the streets in your neighbourhood?
+Q137,other,62,11.35,8.64,11.6,7.89,region,3.46,False,False,Do street violence and fights occur in your neighbourhood?
+Q14,other,63,10.52,8.58,10.99,9.74,mrsp,0.78,False,False,Should children be encouraged to learn determination and perseverance?
+Q141,other,58,5.9,4.82,4.79,5.06,naive,0.84,False,False,"Have you carried a knife, gun or other weapon for reasons of security?"
+Q144,security,62,4.69,4.56,5.59,3.44,region,1.24,False,False,Have you been the victim of a crime during the past year?
+Q15,religion/values,63,15.7,15.95,21.11,14.53,region,1.18,False,False,Should children be encouraged to learn religious faith at home?
+Q151,security,62,12.64,10.72,13.22,11.07,mrsp,1.57,False,False,Would you be willing to fight for your country in a war?
+Q158,tech/climate,62,8.84,8.25,7.45,6.2,region,2.64,False,False,"Does science and technology make our lives healthier, easier and more comfortable?"
+Q159,tech/climate,62,7.71,6.35,6.01,6.05,naive,1.66,False,False,Does science and technology give the next generation more opportunities?
+Q16,other,63,11.2,9.98,9.62,9.86,naive,1.34,False,False,Should children be encouraged to learn unselfishness at home?
+Q160,tech/climate,62,9.66,11.7,11.46,9.63,region,0.03,False,False,Does science make our way of life change too fast?
+Q161,tech/climate,62,8.41,9.26,9.54,7.9,region,0.51,False,False,Do we depend too much on science and not enough on faith?
+Q163,tech/climate,62,10.74,10.37,10.22,7.84,region,2.9,False,False,Is it important for you to know about science in your daily life?
+Q165,religion/values,61,11.57,10.94,17.93,10.53,region,1.04,False,False,Do you believe in God?
+Q166,other,61,17.09,13.96,17.69,11.59,region,5.5,False,False,Do you believe in life after death?
+Q167,other,61,21.67,19.64,22.06,14.13,region,7.54,False,False,Do you believe in hell?
+Q168,other,61,18.42,14.57,22.07,13.13,region,5.29,False,False,Do you believe in heaven?
+Q17,other,63,14.58,12.3,15.82,12.08,region,2.5,False,False,Should children be encouraged to learn obedience at home?
+Q170,religion/values,62,20.96,19.01,23.31,13.15,region,7.8,False,False,Is the only acceptable religion your religion?
+Q173,religion/values,63,5.29,4.64,7.68,4.66,mrsp,0.64,False,False,Are you a religious person?
+Q18,other,63,12.3,10.43,10.39,8.92,region,3.39,False,False,Would you object to having drug addicts as neighbours?
+Q181,other,63,4.86,4.71,4.43,4.15,region,0.7,False,False,Is accepting a bribe justifiable?
+Q188,other,63,11.99,12.1,15.54,11.43,region,0.55,False,False,Is euthanasia justifiable?
+Q189,other,62,4.34,3.97,3.94,4.18,naive,0.16,False,False,Is it justifiable for a man to beat his wife?
+Q19,other,63,9.62,8.16,10.61,8.61,mrsp,1.01,False,False,Would you object to having people of a different race as neighbours?
+Q190,other,63,8.69,7.99,9.76,7.89,region,0.8,False,False,Is it justifiable for parents to beat their children?
+Q191,other,63,4.67,3.91,3.78,3.83,naive,0.84,False,False,Is violence against other people justifiable?
+Q192,religion/values,62,4.75,3.84,3.67,3.75,naive,0.99,False,False,"Is terrorism as a political, ideological or religious means justifiable?"
+Q193,other,59,13.94,12.86,15.8,9.82,region,4.12,False,False,Is casual sex justifiable?
+Q195,other,63,12.41,11.31,11.0,9.66,region,2.75,False,False,Is the death penalty justifiable?
+Q197,democracy/governance,62,13.31,12.04,15.13,11.77,region,1.54,False,False,Should the government have the right to monitor all emails and information exchanged on the internet?
+Q198,democracy/governance,62,11.26,9.71,12.97,10.22,mrsp,1.04,False,False,Should the government have the right to collect information about anyone living in this country without their knowledge?
+Q20,other,63,19.55,17.92,20.99,15.07,region,4.48,False,False,Would you object to having people who have AIDS as neighbours?
+Q200,other,63,11.53,9.95,9.71,9.46,region,2.08,False,False,Do you follow politics in the news daily?
+Q201,other,63,16.55,13.85,14.94,13.92,mrsp,2.63,False,False,Do you get political information from daily newspapers?
+Q209,other,63,13.75,15.87,18.28,12.11,region,1.64,False,False,Have you signed a petition?
+Q21,intl-relations,63,10.96,10.74,11.84,9.22,region,1.74,False,False,Would you object to having immigrants or foreign workers as neighbours?
+Q210,other,63,13.2,14.56,15.19,11.85,region,1.35,False,False,Have you joined in a boycott?
+Q211,other,63,13.9,12.57,14.04,9.99,region,3.91,False,False,Have you attended a peaceful demonstration?
+Q22,religion/values,61,19.94,18.63,25.36,17.04,region,2.9,False,False,Would you object to having homosexuals as neighbours?
+Q221,democracy/governance,61,11.78,10.07,9.91,9.58,region,2.2,False,False,Do you always vote in national elections?
+Q236,democracy/governance,63,10.86,9.49,9.87,8.75,region,2.12,False,False,"Is having experts, not government, make decisions a good way of governing this country?"
+Q237,democracy/governance,61,14.18,12.56,16.98,10.99,region,3.19,False,False,Is having the army rule a good way of governing this country?
+Q238,democracy/governance,63,7.44,7.11,6.83,6.4,region,1.03,False,False,Is having a democratic political system a good way of governing this country?
+Q239,democracy/governance,63,11.66,10.51,16.13,9.89,region,1.77,False,False,"Is having a system governed by religious law, with no political parties or elections, a good way of governing this country?"
+Q24,other,63,15.1,12.99,13.52,11.29,region,3.81,False,False,Would you object to having heavy drinkers as neighbours?
+Q25,other,62,17.67,15.89,21.39,11.75,region,5.92,False,False,Would you object to having unmarried couples living together as neighbours?
+Q250,democracy/governance,63,5.87,5.42,5.24,5.46,naive,0.41,False,False,Is it important to you to live in a country that is governed democratically?
+Q26,other,63,8.69,7.3,9.9,7.96,mrsp,0.72,False,False,Would you object to having people who speak a different language as neighbours?
+Q28,other,63,14.02,13.06,16.28,12.12,region,1.89,False,False,Do children suffer when a mother works for pay?
+Q30,other,63,10.79,10.16,12.01,8.59,region,2.2,False,False,Is a university education more important for a boy than for a girl?
+Q31,religion/values,63,13.02,13.55,17.02,9.42,region,3.6,False,False,Do men make better business executives than women do?
+Q32,other,63,16.19,11.97,11.31,10.98,region,5.21,False,False,Is being a housewife just as fulfilling as working for pay?
+Q35,religion/values,63,9.42,8.64,13.33,8.81,mrsp,0.62,False,False,Are homosexual couples as good parents as other couples?
+Q37,other,63,12.01,12.93,20.09,12.73,earth1,-0.72,True,True,Do adult children have a duty to provide long-term care for their parents?
+Q47,other,63,10.09,9.02,9.14,9.46,mrsp,0.62,False,False,Is your state of health good?
+Q49,other,63,10.89,9.43,10.09,7.99,region,2.9,False,False,Are you satisfied with your life as a whole?
+Q50,economy,63,13.07,11.22,11.71,9.22,region,3.85,False,False,Are you satisfied with the financial situation of your household?
+Q52,security,63,10.36,7.55,10.44,8.24,mrsp,2.12,False,False,"In the past year, have you or your family felt unsafe from crime in your own home?"
+Q53,other,63,10.01,8.01,11.77,8.48,mrsp,1.53,False,False,"In the past year, have you or your family gone without needed medicine or medical treatment?"
+Q54,economy,63,10.07,10.07,13.62,10.98,mrsp,-0.91,True,False,"In the past year, have you or your family gone without a cash income?"
+Q55,other,63,5.11,4.3,5.64,4.42,mrsp,0.69,False,False,"In the past year, have you or your family gone without a safe shelter over your head?"
+Q58,other,63,3.22,2.7,3.11,2.0,region,1.23,False,False,Do you trust your family?
+Q59,other,63,11.14,11.08,11.1,9.35,region,1.79,False,False,Do you trust people in your neighbourhood?
+Q60,other,63,8.91,10.79,12.1,8.53,region,0.37,False,False,Do you trust people you know personally?
+Q61,other,63,7.49,9.63,9.3,8.69,earth1,-1.2,True,True,Do you trust people you meet for the first time?
+Q62,religion/values,63,9.88,13.35,13.91,11.09,earth1,-1.21,True,True,Do you trust people of another religion?
+Q63,other,63,8.92,12.42,13.73,10.02,earth1,-1.1,True,True,Do you trust people of another nationality?
+Q66,other,63,14.4,15.04,14.87,12.36,region,2.04,False,False,Do you have confidence in the press?
+Q67,other,63,15.97,16.01,16.98,13.41,region,2.57,False,False,Do you have confidence in television?
+Q7,other,63,13.99,11.23,10.72,9.47,region,4.53,False,False,Should children be encouraged to learn good manners at home?
+Q70,other,62,15.91,18.63,18.48,13.95,region,1.96,False,False,Do you have confidence in the courts?
+Q72,other,63,15.24,15.35,16.57,12.95,region,2.3,False,False,Do you have confidence in political parties?
+Q74,other,63,16.65,17.62,18.22,12.64,region,4.0,False,False,Do you have confidence in the civil service?
+Q75,other,63,10.87,12.22,12.88,9.51,region,1.36,False,False,Do you have confidence in universities?
+Q77,other,63,11.87,12.43,13.03,8.87,region,3.0,False,False,Do you have confidence in major companies?
+Q78,other,63,15.11,16.75,18.54,10.83,region,4.28,False,False,Do you have confidence in banks?
+Q79,tech/climate,63,10.77,12.53,12.18,9.56,region,1.21,False,False,Do you have confidence in environmental organizations?
+Q8,other,63,10.88,11.25,11.84,8.99,region,1.89,False,False,Should children be encouraged to learn independence at home?
+Q80,religion/values,63,11.32,13.0,12.68,10.63,region,0.69,False,False,Do you have confidence in women's organizations?
+Q81,other,63,10.42,11.23,10.89,9.95,region,0.47,False,False,Do you have confidence in charitable or humanitarian organizations?
+Q83,other,62,15.07,14.48,15.46,10.53,region,4.54,False,False,Do you have confidence in the United Nations?
+Q84,other,62,14.93,14.4,16.61,9.85,region,5.07,False,False,Do you have confidence in the International Monetary Fund?
+Q85,other,62,14.11,13.09,15.12,10.35,region,3.77,False,False,Do you have confidence in the International Criminal Court?
+Q87,other,61,16.04,15.39,18.07,9.46,region,6.58,False,False,Do you have confidence in the World Bank?
+Q88,other,61,12.27,13.37,13.67,9.13,region,3.14,False,False,Do you have confidence in the World Health Organization?
+Q9,other,63,15.57,12.96,15.32,12.86,region,2.71,False,False,Should children be encouraged to learn hard work at home?
