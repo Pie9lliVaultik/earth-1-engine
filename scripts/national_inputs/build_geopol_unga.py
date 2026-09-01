@@ -26,12 +26,18 @@ sys.path.insert(0, ROOT)
 
 def main(path):
     from earth1.benchmark_questions import ISO3_TO_ISO2
-    from earth1.genesis import GENESIS_COUNTRY_CODES
+    from earth1.genesis import GENESIS_COUNTRIES, GENESIS_COUNTRY_CODES
+    sys.path.insert(0, os.path.join(ROOT, "scripts", "national_inputs"))
+    from build_religiosity_factbook import ALIASES, norm
     genesis = set(GENESIS_COUNTRY_CODES)
+    name2iso = {norm(c["name"]): c["iso2"] for c in GENESIS_COUNTRIES}
+    for k, v in ALIASES.items():
+        name2iso.setdefault(norm(k), v)
     latest = {}
     with open(path) as f:
         for row in csv.DictReader(f, delimiter="\t"):
-            iso2 = ISO3_TO_ISO2.get(row["iso3c"])
+            iso2 = (ISO3_TO_ISO2.get(row["iso3c"])
+                    or name2iso.get(norm(row.get("countryname", ""))))
             if iso2 not in genesis:
                 continue
             try:
