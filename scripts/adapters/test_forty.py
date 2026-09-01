@@ -23,23 +23,31 @@ TEN = [
 ]
 
 
-def main():
+def main(mode="all", shard=0, nshards=1):
     from earth1 import persistence
     from earth1.adapters import router as rt
     from test_thirty import Q
     w, _, _ = persistence.load_world("/opt/earth1-data/sign_b/base.pkl")
     shrugs, rows = 0, []
-    for qid, text in TEN:
-        p = rt.answer_any({"question_id": f"forty:{qid}", "text": text},
-                          w, seed=4000, horizon_days=45,
-                          include_reaction=False)
-        rows.append((qid, p))
-    for qid, text, cls, country in Q:
-        p = rt.answer_any({"question_id": f"forty:{qid}", "text": text,
-                           "class": cls, "country": country},
-                          w, seed=4000, horizon_days=45,
-                          include_reaction=False)
-        rows.append((qid, p))
+    if mode in ("all", "ten"):
+        for qid, text in TEN:
+            p = rt.answer_any({"question_id": f"forty:{qid}", "text": text},
+                              w, seed=4000, horizon_days=45,
+                              include_reaction=False)
+            rows.append((qid, p))
+    if mode in ("all", "thirty"):
+        for i, (qid, text, cls, country) in enumerate(Q):
+            if i % nshards != shard:
+                continue
+            p = rt.answer_any({"question_id": f"forty:{qid}", "text": text,
+                               "class": cls, "country": country},
+                              w, seed=4000, horizon_days=45,
+                              include_reaction=False)
+            rows.append((qid, p))
+            import json as _j, os as _o
+            _o.makedirs("/opt/earth1-data/forty", exist_ok=True)
+            _j.dump(p, open(f"/opt/earth1-data/forty/{qid}.json", "w"),
+                    default=str)
     for qid, p in rows:
         ans = p.get("answer", "")
         src = p.get("source", "") or p.get("calibration_tier", "")
@@ -50,7 +58,7 @@ def main():
               f"{p.get('scope','?'):13s} | {ans[:110]}")
         if src:
             print(f"     src/tier: {str(src)[:100]}")
-    ten_rows = rows[:10]
+    ten_rows = rows[:10] if mode != "thirty" else []
     bad = [q for q, p in ten_rows
            if p.get("resolved_at") not in ("premise", "grounding")]
     print(f"\n40 questions | shrugs: {shrugs} (must be 0) | "
@@ -62,4 +70,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys as _s
+    a = _s.argv[1:] or ["all"]
+    main(a[0], int(a[1]) if len(a) > 2 else 0,
+         int(a[2]) if len(a) > 2 else 1)
