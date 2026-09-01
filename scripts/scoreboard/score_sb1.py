@@ -39,9 +39,13 @@ def load_estate(name):
             ROOT, 'data/concordance/goqa_dev.json')))['items']
         return {it['qid']: it['targets'] for it in items}, \
                {it['qid']: it['question'] for it in items}
-    if name == 'wvs_heldout':
-        ct = json.load(open(os.path.join(
-            ROOT, 'data/benchmark_a/confirm_targets_v2.json')))
+    if name in ('wvs_heldout', 'wvs_extended'):
+        # wvs_extended: the 131 unlabeled substantive-core items registered
+        # 2026-09-01 (build_confirm_v3.py) — same rules, same reconstruction
+        # as wvs_heldout, provably unspent by TRAIN (never labeled).
+        fn = ('confirm_targets_v2.json' if name == 'wvs_heldout'
+              else 'confirm_targets_v3.json')
+        ct = json.load(open(os.path.join(ROOT, 'data/benchmark_a', fn)))
         out, txt = {}, {}
         for item, cc in ct['cohorts'].items():
             t = {}
