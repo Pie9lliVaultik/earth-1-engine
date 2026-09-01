@@ -51,3 +51,21 @@ the channel that hit MENA bread prices, so the spec is conservative for Egypt.
 - M1 anchors to fetch (one pass, post-freeze): country-level "acutely food insecure"
   changes from the 2022 Global Report on Food Crises + WFP Egypt/Lebanon/Syria
   country briefs, Q2 2022.
+
+## FOUNDER PRIOR — recorded 2026-09-02 BEFORE the judge was fetched (verbatim)
+M1 borderline: reality ≈ +63M acutely food insecure (WFP 282M→345M) and +30M
+undernourished (FAO SOFI); +326M is ~5× the first, ~10× the second — could squeak
+inside the band against WFP, fail against FAO; the overshoot mechanism is legible:
+no adaptive channels (substitution, subsidies — Egypt's bread subsidy absorbed a
+huge share in reality — stock drawdown) — the dampers that turn a 20% price shock
+into a 5–10% hunger shock. M2/M3 likely to miss, and the miss is the more useful
+result: Romania and Uzbekistan in the top movers is the tell — the model has no
+food-import-dependence input, so poverty geography emerged, not food-exposure
+geography; Egypt/Lebanon/Syria absent from the top eight ⇒ low M3 overlap. Named
+fix: FAO/WB cereal import dependency ratio, provenance-gated, family-scoped to the
+food injector. "If that's how the scoring comes out, it's a good night's result...
+And it was all predicted before the judge was opened."
+
+## Grounding source-notes (fix queue, pre-public-API): officeholder facts resolve
+against the official government site (not Wikipedia summary); gold resolves against
+a bullion feed (not the PAXG proxy); FOMC-calendar fetcher closes g7.
