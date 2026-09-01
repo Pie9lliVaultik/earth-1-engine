@@ -1,0 +1,47 @@
+{
+ "note": "BIBLE v4.2.2 refinement 9: class-specific code is limited to these outcome->injection templates. Every class owes a XI.A.2 report before its verdicts leave DEV. Force values are PREREGISTERED templates (status prereg_uncalibrated) except protest, which reuses the registered uniform dose from RETRODICTION_v1. noise_floor 0.0 = measure at first signing via multiverse.measure_noise_floor and freeze here. temperature 1.0 = default until FIT-half fits exist.",
+ "classes": {
+  "election": {
+   "owner": "operator", "status": "prereg_uncalibrated", "xi_a2_report": null,
+   "injector": {"scope": "country", "persists_days": 60,
+    "forces": {"YES": {"identity": 0.2, "collective": 0.15, "desire": 0.1},
+               "NO": {"identity": -0.2, "collective": 0.15, "desire": -0.1}}},
+   "noise_floor": 0.0, "temperature": 1.0},
+  "referendum": {
+   "owner": "operator", "status": "prereg_uncalibrated", "xi_a2_report": null,
+   "injector": {"scope": "country", "persists_days": 60,
+    "forces": {"YES": {"identity": 0.15, "collective": 0.2, "desire": 0.1},
+               "NO": {"identity": -0.15, "collective": 0.2, "desire": -0.1}}},
+   "noise_floor": 0.0, "temperature": 1.0},
+  "rate_decision": {
+   "owner": "operator", "status": "prereg_uncalibrated", "xi_a2_report": null,
+   "injector": {"scope": "country", "persists_days": 30,
+    "forces": {"YES": {"economics": -0.15, "fear": 0.1, "desire": -0.05},
+               "NO": {"economics": 0.1, "fear": -0.05, "desire": 0.05}}},
+   "noise_floor": 0.0, "temperature": 1.0},
+  "protest": {
+   "owner": "operator", "status": "registered_dose (RETRODICTION_v1)", "xi_a2_report": "ops/alive/cycles/cshock.md",
+   "injector": {"scope": "country", "persists_days": 60, "firm_damage": 0.1,
+    "forces": {"YES": {"fear": 0.2, "economics": -0.15},
+               "NO": {"fear": -0.1, "economics": 0.05}}},
+   "noise_floor": 0.0, "temperature": 1.0},
+  "conflict": {
+   "owner": "operator", "status": "prereg_uncalibrated", "xi_a2_report": null,
+   "injector": {"scope": "country", "persists_days": 90,
+    "forces": {"YES": {"fear": 0.35, "collective": 0.2, "economics": -0.2},
+               "NO": {"fear": -0.15, "desire": 0.1}}},
+   "noise_floor": 0.0, "temperature": 1.0},
+  "market_cascade": {
+   "owner": "operator", "status": "prereg_uncalibrated", "xi_a2_report": null,
+   "injector": {"scope": "global", "persists_days": 30, "firm_damage": 0.15,
+    "forces": {"YES": {"fear": 0.3, "economics": -0.3},
+               "NO": {"fear": -0.1, "economics": 0.1}}},
+   "noise_floor": 0.0, "temperature": 1.0},
+  "policy": {
+   "owner": "operator", "status": "prereg_uncalibrated", "xi_a2_report": null,
+   "injector": {"scope": "country", "persists_days": 60,
+    "forces": {"YES": {"collective": 0.1, "economics": 0.05, "identity": 0.1},
+               "NO": {"collective": -0.05, "identity": -0.1}}},
+   "noise_floor": 0.0, "temperature": 1.0}
+ }
+}
