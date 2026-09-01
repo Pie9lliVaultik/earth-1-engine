@@ -150,10 +150,10 @@ def ask(body: dict, authorization: Optional[str] = Header(None)):
 
         def run():
             try:
-                from earth1.adapters import multiverse as mv
+                from earth1.adapters import router as rt
                 w = copy.deepcopy(_world("200k"))
                 _jobs[jid] = {"status": "done",
-                              "payload": mv.ask(q, w, seed=int(hashlib.sha256(
+                              "payload": rt.answer_any(q, w, seed=int(hashlib.sha256(
                                   q["question_id"].encode()
                               ).hexdigest()[:8], 16) % 99991,
                               horizon_days=60)}
@@ -161,11 +161,11 @@ def ask(body: dict, authorization: Optional[str] = Header(None)):
                 _jobs[jid] = {"status": "error", "error": repr(e)}
         threading.Thread(target=run, daemon=True).start()
         return _envelope(fidelity, {"job_id": jid, "status": "queued"})
-    from earth1.adapters import multiverse as mv
+    from earth1.adapters import router as rt
     w = copy.deepcopy(_world(fidelity))
-    payload = mv.ask(q, w, seed=int(hashlib.sha256(
+    payload = rt.answer_any(q, w, seed=int(hashlib.sha256(
         q["question_id"].encode()).hexdigest()[:8], 16) % 99991,
-                     horizon_days=45)
+                            horizon_days=45)
     return _envelope(fidelity, {"result": payload})
 
 

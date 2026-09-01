@@ -41,7 +41,7 @@
    "noise_floor": 0.01645,
    "owner": "auto",
    "provisional_from_keywords": [],
-   "status": "provisional_auto",
+   "status": "RETIRED_TO_GROUNDING (exogenous; founder ruling 2026-09-01)",
    "temperature": 1.0,
    "xi_a2_report": null
   },
@@ -248,7 +248,7 @@
    "noise_floor": 0.01645,
    "owner": "auto",
    "provisional_from_keywords": [],
-   "status": "provisional_auto",
+   "status": "RETIRED_TO_GROUNDING (exogenous; founder ruling 2026-09-01)",
    "temperature": 1.0,
    "xi_a2_report": null
   }
