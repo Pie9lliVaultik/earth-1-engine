@@ -62,3 +62,22 @@ Pew worst-5: BR economy 95.7, UA democracy 88.7, JO democracy 86.5, CN 78.8, DE 
   as "goqa_dev".
 - The c-SHOCK distress-layoff channel (in calibration tonight) is bitwise-zero in
   scenario-free worlds: this table can never need a SUPERSEDED rerun for it.
+
+## ADDENDUM 2026-09-01 — WVS_EXTENDED_v3 (founder challenge: "the WVS doesn't have only 141 questions")
+
+Correct. The 141 was OUR labels file's curation, not the WVS. Measured: the wvs7
+duckdb (97,220 respondents, 66 countries) holds 331 Q-columns; 132 unlabeled
+substantive-core items existed, 131 scoreable under the SAME frozen rules. After
+recode-dedupe, **110 new items registered** (`data/benchmark_a/confirm_targets_v3.json`,
+texts PENDING_FETCH from the official codebook — scoring never consumes text) and
+scored on the same three candidate feature worlds, identical protocol:
+
+| estate | items | Earth-1 | MrsP | naive | region-copy | verdict |
+|---|---|---|---|---|---|---|
+| wvs_heldout (v2) | 98 | 11.84 | 11.18 | 12.80 | 9.70 | MISS |
+| **wvs_extended (v3)** | **110** | **11.20 ± 0.16** | 10.43 | 11.33 | 9.81 | **MISS — replicates** |
+
+These 110 items were never labeled, never calibrated on, never seen: a cleaner judge
+than the original 98. The identical result (beats naive only; ~0.8pp behind MrsP,
+~1.4pp behind region-copy) settles that the A-board verdict is not an item-selection
+artifact. Total judged WVS items: **208**.
