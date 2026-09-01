@@ -42,3 +42,14 @@ tagged until codebook texts land (PENDING_FETCH).
 ## Forecast scoring rule (founder order 2026-09-01, item 6)
 Earth-1 forecasts are scored as **p_model only**; market prices enter the model
 exclusively as INPUT_EXPOSURE via the perception boundary, never into the readout.
+
+## Named section (founder 2026-09-02): "Material stress predicts unrest geography"
+The campaign's most robust finding, converged from four independent directions:
+c-SHOCK (protest transmission via material channels), UKR-2022 (hunger geography),
+the consequence battery (material shocks resolve before institutional ones), and the
+Arab Spring retrodiction (hunger ρ=0.168 p=0.022 vs fear 0.069 ns on real 2011
+protest events). Block-0 sentence for reviewers: three independent paths — rebirth,
+save/load continuation, flag-on baseline — produce one bit-identical world
+(hash 49bb7d1d, 6/6 determinism suite). Placebo-artifact provenance: the B-DEV
+placebo arm PREDATES the adapter contract (old run_b harness) and is being
+regenerated under the contract; the ledger will carry both provenances.

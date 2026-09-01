@@ -16,7 +16,8 @@
     "regime outcomes (public record)",
     "UNHCR displacement"
    ],
-   "prior": "geography partially right (protest-geo rho~0.55 lineage); magnitude under (injector thin); govs weak (legitimacy chain |t|<1.2); displacement wrong-sign risk (migration defect t=-5.1)"
+   "prior": "geography partially right (protest-geo rho~0.55 lineage); magnitude under (injector thin); govs weak (legitimacy chain |t|<1.2); displacement wrong-sign risk (migration defect t=-5.1)",
+   "fidelity": "20k"
   },
   {
    "id": "gfc_2008",
@@ -30,7 +31,8 @@
     "PIP poverty",
     "WVS-5to6 trust where mapped"
    ],
-   "prior": "jobs direction right, low significance (t=+0.7 at 5 reps; 16 seeds may lift); poverty ~0 (cushion); hope WRONG SIGN (KNOWN-DEFECT t=+2.1)"
+   "prior": "jobs direction right, low significance (t=+0.7 at 5 reps; 16 seeds may lift); poverty ~0 (cushion); hope WRONG SIGN (KNOWN-DEFECT t=+2.1)",
+   "fidelity": "200k"
   },
   {
    "id": "trump_2016",
@@ -45,7 +47,8 @@
     "polls-at-T",
     "GDELT post-election protest"
    ],
-   "prior": "p~0.5 until election injector v2 grounds candidate positions; consequence trust/protest direction plausible; BLOCKED on injector v2"
+   "prior": "p~0.5 until election injector v2 grounds candidate positions; consequence trust/protest direction plausible; BLOCKED on injector v2",
+   "fidelity": "200k"
   },
   {
    "id": "brexit_2016",
@@ -60,7 +63,8 @@
     "polls/markets at T",
     "regional vote"
    ],
-   "prior": "same as trump_2016: flat until injector v2; regional direction untestable before it"
+   "prior": "same as trump_2016: flat until injector v2; regional direction untestable before it",
+   "fidelity": "20k"
   },
   {
    "id": "covid_2020",
@@ -75,7 +79,8 @@
     "trust",
     "WHO mortality by country"
    ],
-   "prior": "jobs REAL (t=+2.2 with distress channel); deaths ABSENT (no epidemic channel, KNOWN-DEFECT); mobility unmodeled; trust weak"
+   "prior": "jobs REAL (t=+2.2 with distress channel); deaths ABSENT (no epidemic channel, KNOWN-DEFECT); mobility unmodeled; trust weak",
+   "fidelity": "200k"
   },
   {
    "id": "svb_2023",
@@ -90,7 +95,8 @@
     "FDIC/H.8 deposit flows",
     "market at T"
    ],
-   "prior": "UNDER-contagion expected: firm_distress propagates within-country via failures only, no interbank network channel; p_model likely < market"
+   "prior": "UNDER-contagion expected: firm_distress propagates within-country via failures only, no interbank network channel; p_model likely < market",
+   "fidelity": "200k"
   },
   {
    "id": "truss_2022",
@@ -104,7 +110,8 @@
     "outcome (public record)",
     "markets at T"
    ],
-   "prior": "no bond/pension channel -> consequence thin; resignation is political-class with v1 symmetric injector -> ~0.5 or abstain"
+   "prior": "no bond/pension channel -> consequence thin; resignation is political-class with v1 symmetric injector -> ~0.5 or abstain",
+   "fidelity": "20k"
   },
   {
    "id": "sri_lanka_2022",
@@ -119,7 +126,8 @@
     "ACLED protest",
     "IMF data"
    ],
-   "prior": "hardship->protest chain live (dose class): onset direction plausibly right; government-fall chain weak (legitimacy response thin)"
+   "prior": "hardship->protest chain live (dose class): onset direction plausibly right; government-fall chain weak (legitimacy response thin)",
+   "fidelity": "20k"
   },
   {
    "id": "chile_2019",
@@ -133,7 +141,8 @@
     "ACLED",
     "referendum result"
    ],
-   "prior": "protest scale partially reachable via dose class; constitutional-process institutional chain weak"
+   "prior": "protest scale partially reachable via dose class; constitutional-process institutional chain weak",
+   "fidelity": "20k"
   },
   {
    "id": "iran_war_2025",
@@ -147,7 +156,8 @@
     "oil price pass-through",
     "displacement"
    ],
-   "prior": "rally-round-flag UNMODELED (sign risk on domestic protest); oil pass-through partially via trade_shock; displacement sign risk"
+   "prior": "rally-round-flag UNMODELED (sign risk on domestic protest); oil pass-through partially via trade_shock; displacement sign risk",
+   "fidelity": "20k"
   },
   {
    "id": "spacex_ipo",
@@ -161,7 +171,8 @@
     "sentiment",
     "market data"
    ],
-   "prior": "retail-sentiment channel unmodeled; consequences expected thin; the FACT rung may resolve the premise (dated or not happened) before any run"
+   "prior": "retail-sentiment channel unmodeled; consequences expected thin; the FACT rung may resolve the premise (dated or not happened) before any run",
+   "fidelity": "20k"
   },
   {
    "id": "jan6_2021",
@@ -174,7 +185,8 @@
     "Pew 2021 trust/polarisation",
     "ACLED protest"
    ],
-   "prior": "identity/culture forces exist but no registered polarisation-index judge mapping; expect thin, honest coverage"
+   "prior": "identity/culture forces exist but no registered polarisation-index judge mapping; expect thin, honest coverage",
+   "fidelity": "20k"
   }
  ],
  "leakage_guards": [
@@ -183,5 +195,7 @@
   "no national input derived from an estate that is also a judge",
   "injector grounding uses sources dated <= T",
   "violation => event VOID"
- ]
+ ],
+ "fidelity_ruling_2026-09-02": "Chronicle ruling (d): fidelity-tier the battery. FLAGSHIP 200k x 16: svb_2023, gfc_2008, covid_2020, trump_2016 (post injector v2). ALL OTHERS 20k x 16, fidelity stamped in every payload; any 20k event with a significant result is PROMOTED to 200k for confirmation (calibration-ladder rule). Option (a) ulp-drift REJECTED (breaks the Block-0 claim); option (b) chronicle consolidation = FIRST v1.1 mechanism cycle (physics closed at freeze-0.9), gated on anchor board + learning gates.",
+ "judge_normalization": "From event 3 onward: GDELT judges normalized by country total event volume, RAW table reported beside normalized \u2014 forward-only, never retroactive."
 }
