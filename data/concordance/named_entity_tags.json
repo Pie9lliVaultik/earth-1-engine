@@ -1,0 +1,727 @@
+{
+ "n_tagged": 99,
+ "rule": "abstain when entity not in world news ledger; cold benchmark worlds => all tagged items abstain",
+ "tags": {
+  "0377f197090b": {
+   "entities": [
+    "Hamas Party",
+    "hamas"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "043e1926cdf1": {
+   "entities": [
+    "Joe Biden"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "064e6cff15e9": {
+   "entities": [
+    "eu"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "0956372b00d5": {
+   "entities": [
+    "Pacific Partnership"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "0afa31a7611f": {
+   "entities": [
+    "Jacques Chirac"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "0bac2929be29": {
+   "entities": [
+    "isis"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "0bb31d524a3b": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "0d23fca9b3e1": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "0fc53e3927f9": {
+   "entities": [
+    "Pakistani President",
+    "Pervez Musharraf"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "0fd554375593": {
+   "entities": [
+    "Hugo Chavez",
+    "Venezuelan President"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "18566aa09ad7": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "197c907cd9bf": {
+   "entities": [
+    "Saudi King"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "1bc2e9ad588f": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "1d40db4c498f": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "25877cf5b2b3": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "25a8e59d1775": {
+   "entities": [
+    "Nicolas Sarkozy",
+    "isis"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "2a2d5fc92907": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "304c386f66e7": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "34bbf8b38e5d": {
+   "entities": [
+    "European Commission"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "376165562ef1": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "3d8b2d32b7f9": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "40e20bc0d4a1": {
+   "entities": [
+    "Barack Obama"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "44254abd66f5": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "44cb21c434e7": {
+   "entities": [
+    "Japanese Prime",
+    "Minister Shinzo"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "49a9a5d4638b": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "4d4a983de509": {
+   "entities": [
+    "Sheik Hassan",
+    "hezbollah"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "4e99ebd367e7": {
+   "entities": [
+    "Barack Obama"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "4ff9d4219a9d": {
+   "entities": [
+    "European Parliament"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "508dee230a95": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "522cf77ed42b": {
+   "entities": [
+    "Joe Biden"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "57408257c459": {
+   "entities": [
+    "President Donald"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "57c673aa0a71": {
+   "entities": [
+    "Vladimir Putin"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "6313a5555aaf": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "6341a223d3bf": {
+   "entities": [
+    "Hassan Rouhani"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "63998c253793": {
+   "entities": [
+    "un",
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "6b6610d6b7c7": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "704e1c472dbf": {
+   "entities": [
+    "Minister Tony"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "7291eaf42e65": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "75cf12926b79": {
+   "entities": [
+    "President George"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "75e8409ee341": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "76d8e4722713": {
+   "entities": [
+    "hezbollah"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "77b7eb431899": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "796117d064d5": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "7abb8f44bf7d": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "7b9842bb83c7": {
+   "entities": [
+    "Democratic Party"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "7fea465efc55": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "8018358fdacb": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "8044ce380935": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "83ac49462daf": {
+   "entities": [
+    "Joe Biden"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "840eafef1c4d": {
+   "entities": [
+    "Saddam Hussein"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "86aa17cff811": {
+   "entities": [
+    "North Korea"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "893a386e49f5": {
+   "entities": [
+    "President Vladimir"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "8c8a57cd960f": {
+   "entities": [
+    "President Emmanuel"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "8edcad532eb3": {
+   "entities": [
+    "General Ban",
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "93d96bbcb0dd": {
+   "entities": [
+    "Saddam Hussein"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "9442aa4eb987": {
+   "entities": [
+    "Yasir Arafat"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "981106812b6b": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "98f4ef3815ab": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "9d9afccb721b": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "9d9ec6db1f0b": {
+   "entities": [
+    "Joe Biden"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "9ddde6d0c319": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "Q83": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "wvs_heldout",
+   "named_entity": true
+  },
+  "Q84": {
+   "entities": [
+    "International Monetary",
+    "international monetary fund"
+   ],
+   "estate": "wvs_heldout",
+   "named_entity": true
+  },
+  "Q85": {
+   "entities": [
+    "International Criminal"
+   ],
+   "estate": "wvs_heldout",
+   "named_entity": true
+  },
+  "Q87": {
+   "entities": [
+    "world bank"
+   ],
+   "estate": "wvs_heldout",
+   "named_entity": true
+  },
+  "Q88": {
+   "entities": [
+    "world health organization"
+   ],
+   "estate": "wvs_heldout",
+   "named_entity": true
+  },
+  "a106e2a369d7": {
+   "entities": [
+    "hamas"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "a4925205f6c5": {
+   "entities": [
+    "Minister Ariel"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "a88344b88b09": {
+   "entities": [
+    "isis"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "ab0bbf9fe62d": {
+   "entities": [
+    "nato"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "adfa47b9de27": {
+   "entities": [
+    "isis"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "aedbba64a965": {
+   "entities": [
+    "united nations"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "b0e91dedcc3d": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "b1bba9c188cb": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "b4c5f49cd1ad": {
+   "entities": [
+    "al qaeda"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "b7804e78fa21": {
+   "entities": [
+    "Summer Olympics"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "bd80ca4f3821": {
+   "entities": [
+    "Saddam Hussein"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "c0f43d23a35b": {
+   "entities": [
+    "Kofi Annan",
+    "Secretary General"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "c94d12e52b39": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "cba5c48c9f79": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "ccc052b1eb4b": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "d37b81b21577": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "d42a8a91658b": {
+   "entities": [
+    "Preventing Iran"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "d5593d632a2f": {
+   "entities": [
+    "Bernie Sanders"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "d64a4050e67d": {
+   "entities": [
+    "European Union",
+    "european union",
+    "isis"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "da6dcd045b13": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "dea2ade34b0b": {
+   "entities": [
+    "Abu Graib"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "e45cdd8edc27": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "e6441dd6e8ef": {
+   "entities": [
+    "Saudi Arabia"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "e734ce594e25": {
+   "entities": [
+    "President Barack"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "eb9594073967": {
+   "entities": [
+    "Dmitry Medvedev"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "ee3be9c793d3": {
+   "entities": [
+    "nato"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "ef15ca7a8d39": {
+   "entities": [
+    "Donald Trump"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "ef218a4a61c5": {
+   "entities": [
+    "General Kofi"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "efdf8a03ee83": {
+   "entities": [
+    "isis"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "f8b4be08404b": {
+   "entities": [
+    "eu"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "fa187d74d909": {
+   "entities": [
+    "Egyptian President",
+    "Hosni Mubarak"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "fa502577a371": {
+   "entities": [
+    "Joe Biden",
+    "world health organization"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  },
+  "fdcb06871183": {
+   "entities": [
+    "European Union",
+    "european union"
+   ],
+   "estate": "goqa_dev",
+   "named_entity": true
+  }
+ }
+}

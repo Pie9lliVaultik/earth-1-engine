@@ -1,0 +1,26 @@
+{
+ "wvs_heldout": {
+  "mae_before": 11.84,
+  "mae_after": 11.7,
+  "items_before": 98,
+  "items_after": 93,
+  "coverage_pairs": "5807/6115",
+  "abstained_items": 5
+ },
+ "wvs_extended": {
+  "mae_before": 11.2,
+  "mae_after": 11.2,
+  "items_before": 110,
+  "items_after": 110,
+  "coverage_pairs": "6862/6862",
+  "abstained_items": 0
+ },
+ "goqa_dev": {
+  "mae_before": 12.01,
+  "mae_after": 11.78,
+  "items_before": 468,
+  "items_after": 374,
+  "coverage_pairs": "9107/10997",
+  "abstained_items": 94
+ }
+}
