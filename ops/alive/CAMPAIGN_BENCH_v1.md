@@ -47,3 +47,22 @@ change.
 c-SHOCK (mechanism cycle) has the box first; Track 1 launches when it clears; Tracks 2
 and 4 are data/register work that needs no compute. Freeze tag, 4M pilot, Epoch 4, and
 any holdout spend wait for the founder's explicit word after c-SHOCK reports.
+
+## Imports from VNF (registered, founder-ruled 2026-09-01)
+
+Full audit: ops/alive/VNF_MECHANISM_AUDIT_2026-09-01.md. Four imports, nothing else:
+1. **Multiverse pattern → the single typed question adapter** (all classes, not
+   elections only): real Earth-1 branches via null_branch() (never logit shifts),
+   force-distance readout (k-outcome softmax over −d(present, world_i), per-class
+   FITTED temperature), abstention when branch ≈ control (noise floor), p_model the
+   ONLY scored field (asserted in the scorer), market blend product-layer only.
+   BIBLE v4.2.2 refinement 9. Module: earth1/adapters/multiverse.py.
+2. **Keyless market endpoints** (Polymarket gamma public-search, Kalshi elections
+   API, browser UA, jurisdiction/year/liquidity disqualifiers, immutable first-seen
+   price) → prospective-register adapter.
+3. **Ground-question ladder → ledger only** (EARTH1_GROUND_LADDER=v1): live-web rung
+   writes hash-chained NewsItems (URL + snippet sha256), NO seed minting into judged
+   corpora; forward-estimate rung returns Abstain at the type level; relevance rule
+   "no seed match ⇒ R=0 for every force" adopted verbatim. No cron before XI.A.2.
+4. **c3 confirmed** by VNF's premise/entity machinery; the never-abstaining legacy
+   door is the registered anti-pattern.

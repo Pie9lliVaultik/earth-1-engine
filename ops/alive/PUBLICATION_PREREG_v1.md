@@ -38,3 +38,7 @@ every tagged item abstains (empty news ledger). Effect on DEV: wvs_heldout
 11.84→11.70pp (93/98 items), Pew 12.01→11.78pp (374/468 items, 83% pair coverage).
 Abstentions are reported as coverage, never hidden. Extended-estate items cannot be
 tagged until codebook texts land (PENDING_FETCH).
+
+## Forecast scoring rule (founder order 2026-09-01, item 6)
+Earth-1 forecasts are scored as **p_model only**; market prices enter the model
+exclusively as INPUT_EXPOSURE via the perception boundary, never into the readout.

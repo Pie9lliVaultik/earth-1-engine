@@ -1629,3 +1629,9 @@ CALIBRATE ⇄ RETEST on development evidence. Living baseline: income, poverty l
 Current public claim remains: "a living, branchable synthetic civilization kernel with material, biological, social, institutional and memory state." Nothing in this amendment advances it. The next rung is earned only by the HOLDOUT-once spend after Epoch 4.
 
 *Every number in this section was measured on 2026-08-27 → 08-31 on the cycle runner or prime and is recorded with provenance in `ops/alive/CALIBRATION_CYCLES.md`.*
+
+## v4.2.2 — refinement 9 (founder-ruled 2026-09-01)
+All questions route through the multiverse adapter (earth1/adapters/multiverse.py):
+real branches via null_branch(), force-distance readout, class noise-floor
+abstention, p_model-only scoring. Class-specific code is limited to the outcome
+injector (data/question_classes.json, one XI.A.2 report per class).
