@@ -1,0 +1,27 @@
+{
+ "D1_same_seed_rebirth": {
+  "pass": true,
+  "hash": "49bb7d1d949f28f3"
+ },
+ "D2_save_load_continuation": {
+  "pass": true,
+  "hash": "49bb7d1d949f28f3"
+ },
+ "D3_distress_flag_baseline": {
+  "pass": true,
+  "hash": "49bb7d1d949f28f3"
+ },
+ "D4_branch_crn": {
+  "pass": true,
+  "hash": "5482274bd0f45fba"
+ },
+ "D5_historical_rebirth": {
+  "pass": true,
+  "hash": "8d81fb2b61308871"
+ },
+ "D6_adapter_determinism": {
+  "pass": true,
+  "p_model": 0.43116241198923094
+ },
+ "_summary": "6/6 PASS"
+}
