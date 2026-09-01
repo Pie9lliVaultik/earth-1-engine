@@ -207,3 +207,176 @@ def measure_noise_floor(base_world, seed: int, horizon_days: int = 60,
             es.append(_force_mean(w, m, cw))
         ds.append(float(np.linalg.norm(es[0] - es[1])))
     return 2.0 * float(np.mean(ds))
+
+
+# ═══ THREE DOORS, ONE ADAPTER (founder ruling 2026-09-01: ANY question,
+# calibration tiers, no refusal) ══════════════════════════════════════
+# Router is DETERMINISTIC v1 (question-form regex) — Earth-1's runtime
+# stays LLM-free; an LLM router is a product-layer upgrade, registered
+# deviation from the ruling's "ladder LLM step".
+
+import re as _re
+
+_FORECAST_RX = _re.compile(
+    r"^(will|who will|which |when will|does .{1,40} (win|pass|happen))|"
+    r"\b(win the|be elected|announce|resolve|by 20\d\d)\b", _re.I)
+_CONDITIONAL_RX = _re.compile(
+    r"\bwhat (would )?(happens?|changes?|follows?)\b|\bwhat if\b|"
+    r"^if .{3,80}(what|how|then)", _re.I)
+
+
+def route(text: str):
+    """-> (door, ambiguous). Never refuses: ambiguous forms take the
+    OPINION door with the flag set."""
+    if _CONDITIONAL_RX.search(text or ""):
+        return "conditional", False
+    if _FORECAST_RX.search(text or ""):
+        return "forecast", False
+    if _re.search(r"\b(do people|should|feel about|trust|support|believe|"
+                  r"opinion|attitude|favor|approve)\b", text or "", _re.I):
+        return "opinion", False
+    return "opinion", True
+
+
+def _tier(cls_name: str, verdict_abstain: bool) -> str:
+    if verdict_abstain:
+        return "ABSTAIN"
+    tpl = classes().get(cls_name, {})
+    return "CALIBRATED" if tpl.get("temperature_fitted") else "UNCALIBRATED"
+
+
+def _ensure_class(cls_name: str, question_text: str) -> str:
+    """Unknown class -> auto-register a provisional class from the
+    question's own grounded keywords (deterministic extractor on the
+    question text). Nothing is ever 'not a supported class'."""
+    if cls_name in classes():
+        return cls_name
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(_ROOT, "earth1", "ground"))
+    from earth1.ground.ladder import _extract_forces
+    forces, hits = _extract_forces(question_text or "")
+    yes = forces or {"desire": 0.1, "fear": 0.1}
+    no = {k: -v for k, v in yes.items()}
+    p = os.path.join(_ROOT, "data", "question_classes.json")
+    d = json.load(open(p))
+    d["classes"][cls_name] = {
+        "owner": "auto", "status": "provisional_auto",
+        "xi_a2_report": None,
+        "injector": {"scope": "global", "persists_days": 60,
+                     "forces": {"YES": yes, "NO": no}},
+        "noise_floor": d["classes"]["market_cascade"]["noise_floor"],
+        "temperature": 1.0,
+        "provisional_from_keywords": hits}
+    json.dump(d, open(p, "w"), indent=1, sort_keys=True)
+    global _CLASSES
+    _CLASSES = None
+    return cls_name
+
+
+def _opinion_door(q, base_world):
+    from earth1.types import FORCE_KEYS
+    m, cw = _scoped(base_world, q.get("country"))
+    f = base_world.civ.forces[m]
+    wt = cw[m]
+    sig = {fk.name.lower(): round(float((f[:, i] * wt).sum()
+                                        / max(wt.sum(), 1e-9)), 4)
+           for i, fk in enumerate(FORCE_KEYS)}
+    stance_share = None
+    grounding = None
+    try:
+        from earth1.ground.ladder import Grounded, ground
+        g = ground(q["question_id"], q["text"][:120], allow_live=False)
+        if isinstance(g, Grounded):
+            grounding = g.rung
+            proj = np.zeros(f.shape[0])
+            for i, fk in enumerate(FORCE_KEYS):
+                w = g.force_position.get(fk.name.lower(), 0.0)
+                proj += w * (f[:, i] - f[:, i].mean())
+            stance_share = float(((proj > 0) * wt).sum()
+                                 / max(wt.sum(), 1e-9))
+    except Exception:
+        pass
+    return {"force_signature": sig, "stance_share": stance_share,
+            "grounding_rung": grounding,
+            "coverage": {"agents": int(m.sum()),
+                         "scope": q.get("country") or "global"}}
+
+
+def _conditional_door(q, base_world, seed, horizon_days):
+    forks = q.get("outcomes") or ["intensifies", "resolves", "fades"]
+    keys = [f"O{i}" for i in range(len(forks))]
+    spec = dict(q)
+    spec["outcomes"] = forks
+    cls = spec.get("class") or "provisional_conditional"
+    spec["class"] = _ensure_class(cls, q.get("text", ""))
+    tpl = classes()[spec["class"]]
+    if any(k not in tpl["injector"]["forces"] for k in keys):
+        base_yes = tpl["injector"]["forces"]["YES"]
+        scales = [1.0, -0.6, -0.2, 0.5][:len(keys)]
+        tpl["injector"]["forces"].update(
+            {k: {f: round(v * s, 3) for f, v in base_yes.items()}
+             for k, s in zip(keys, scales)})
+    v = answer(spec, base_world, seed, horizon_days)
+    worlds = []
+    if not v.abstain:
+        for i, fk in enumerate(forks):
+            key = keys[i]
+            deltas = v.force_signature[key]
+            reaction = 0.5 + 0.5 * np.tanh(
+                10 * (deltas.get("desire", 0) - deltas.get("fear", 0)))
+            worlds.append({"fork": fk, "force_delta": deltas,
+                           "reaction_share": round(float(reaction), 3)})
+    return {"forks": worlds, "verdict": v,
+            "epistemics": ("Reaction shares describe how the population "
+                           "responds inside that world; they are not "
+                           "probabilities that the world will occur.")}
+
+
+def ask(q: dict, base_world, seed: int, horizon_days: int = 60) -> dict:
+    """THE one door. q: {question_id, text, class?, outcomes?, country?,
+    p_market?}. p_market is carried for DISPLAY only and never touches
+    the computation (see answer() contract)."""
+    door, ambiguous = route(q.get("text", ""))
+    if q.get("outcomes") and door == "opinion":
+        door = "forecast"
+    payload = {"question": q.get("text"), "question_id": q["question_id"],
+               "door": door, "ambiguous_form": ambiguous,
+               "ledger_cutoff_day": float(base_world.day),
+               "p_market_display_only": q.get("p_market")}
+    if door == "opinion":
+        payload.update(_opinion_door(q, base_world))
+        payload["class"] = q.get("class") or "opinion"
+        payload["calibration_tier"] = "UNCALIBRATED"
+    elif door == "conditional":
+        out = _conditional_door(q, base_world, seed, horizon_days)
+        v = out["verdict"]
+        payload.update({"forks": out["forks"], "epistemics": out["epistemics"],
+                        "class": v.question_class,
+                        "calibration_tier": _tier(v.question_class, v.abstain),
+                        "abstain_reason": v.abstain_reason,
+                        "force_signature": v.force_signature,
+                        "conviction_index": v.conviction_index,
+                        "branch_hashes": v.branch_hashes})
+    else:
+        spec = dict(q)
+        spec.setdefault("outcomes", ["YES", "NO"])
+        cls = spec.get("class") or "provisional_forecast"
+        spec["class"] = _ensure_class(cls, q.get("text", ""))
+        v = answer(spec, base_world, seed, horizon_days)
+        payload.update({"class": v.question_class,
+                        "calibration_tier": _tier(v.question_class, v.abstain),
+                        "p_model": v.p_model, "p_by_outcome": v.p_by_outcome,
+                        "abstain_reason": v.abstain_reason,
+                        "force_signature": v.force_signature,
+                        "conviction_index": v.conviction_index,
+                        "branch_hashes": v.branch_hashes,
+                        "distances": v.distances,
+                        "noise_floor": v.noise_floor})
+        if payload["calibration_tier"] == "UNCALIBRATED":
+            up = os.path.join(_ROOT, "data", "uncalibrated_questions.jsonl")
+            with open(up, "a") as f:
+                f.write(json.dumps({"question_id": q["question_id"],
+                                    "text": q.get("text"),
+                                    "class": v.question_class,
+                                    "asked": True}) + "\n")
+    return payload

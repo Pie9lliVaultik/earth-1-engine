@@ -1,0 +1,26 @@
+{
+ "version": "v1", "owner": "operator", "status": "registered 2026-09-01; XI.A.2 owed",
+ "note": "Deterministic keyword->force extractor for URL-grounded text. Values in [-1,1]; per-entity vector is the sum over matched rules, renormalized to max |1|. No LLM anywhere on this path.",
+ "rules": [
+  {"keywords": ["nationalist", "sovereignty", "anti-immigration", "immigration restriction", "far-right", "patriot"], "forces": {"identity": 0.6, "fear": 0.2, "culture": 0.3}},
+  {"keywords": ["far-left", "socialist", "redistribution", "welfare state", "workers party", "labour party", "social spending"], "forces": {"collective": 0.6, "economics": -0.3, "identity": -0.2}},
+  {"keywords": ["free market", "deregulation", "tax cut", "privatization", "pro-business", "liberalization"], "forces": {"economics": 0.6, "desire": 0.3, "collective": -0.2}},
+  {"keywords": ["law and order", "tough on crime", "security force", "military service", "hardline"], "forces": {"fear": 0.4, "temperament": -0.3, "identity": 0.2}},
+  {"keywords": ["environmental", "climate policy", "green party", "renewable"], "forces": {"culture": 0.4, "collective": 0.3, "experience": 0.2}},
+  {"keywords": ["conservative", "traditional values", "religious right", "evangelical"], "forces": {"culture": -0.4, "identity": 0.3, "experience": -0.2}},
+  {"keywords": ["progressive", "liberal", "reformist", "modernizer"], "forces": {"culture": 0.4, "desire": 0.3, "identity": -0.2}},
+  {"keywords": ["populist", "anti-establishment", "outsider"], "forces": {"collective": 0.4, "doubt": 0.3, "identity": 0.3, "experience": -0.3}},
+  {"keywords": ["austerity", "budget cut", "spending cut", "fiscal discipline"], "forces": {"economics": -0.4, "fear": 0.3, "desire": -0.2}},
+  {"keywords": ["rate hike", "raise interest", "tighten", "hawkish"], "forces": {"economics": -0.3, "fear": 0.2, "desire": -0.2}},
+  {"keywords": ["rate cut", "lower interest", "stimulus", "dovish", "quantitative easing"], "forces": {"economics": 0.3, "desire": 0.2, "fear": -0.1}},
+  {"keywords": ["ceasefire", "peace agreement", "truce", "de-escalation"], "forces": {"fear": -0.5, "desire": 0.3, "collective": 0.2}},
+  {"keywords": ["invasion", "offensive", "airstrike", "mobilization", "escalation"], "forces": {"fear": 0.6, "collective": 0.3, "economics": -0.3}},
+  {"keywords": ["corruption", "scandal", "impeach", "indict"], "forces": {"doubt": 0.5, "fear": 0.2, "collective": 0.2}},
+  {"keywords": ["strike", "walkout", "protest movement", "mass demonstration"], "forces": {"collective": 0.5, "fear": 0.2, "economics": -0.2}},
+  {"keywords": ["tariff", "trade war", "protectionis", "import duty"], "forces": {"economics": -0.3, "identity": 0.3, "fear": 0.2}},
+  {"keywords": ["default", "bank run", "crash", "sell-off", "recession"], "forces": {"fear": 0.6, "economics": -0.5, "desire": -0.3}},
+  {"keywords": ["breakthrough", "expansion", "boom", "record high", "surge in hiring"], "forces": {"desire": 0.4, "economics": 0.4, "fear": -0.2}},
+  {"keywords": ["pandemic", "outbreak", "epidemic", "quarantine"], "forces": {"fear": 0.6, "collective": 0.2, "economics": -0.3}},
+  {"keywords": ["centrist", "moderate", "coalition", "compromise"], "forces": {"temperament": 0.3, "doubt": -0.2, "collective": 0.2}}
+ ]
+}
