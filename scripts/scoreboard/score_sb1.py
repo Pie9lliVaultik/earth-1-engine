@@ -87,8 +87,10 @@ def family(text):
 
 
 def main(estates):
+    fdir = os.environ.get('SB1_FEATURES_DIR', os.path.join(ROOT, 'data/cycles'))
+    sfx = os.environ.get('SB1_OUT_SUFFIX', '')
     feats = {s: json.load(open(os.path.join(
-        ROOT, f'data/cycles/features_{s}.json'))) for s in SEEDS}
+        fdir, f'features_{s}.json'))) for s in SEEDS}
     for estate in estates:
         targets, texts = load_estate(estate)
         per_seed = {m: [] for m in ("earth1", "mrsp", "naive", "region")}
@@ -145,7 +147,7 @@ def main(estates):
              "share_weighted_mae": round(s_, 1), "n": n}
             for s_, k, n in agg[:3]]
         json.dump(res, open(os.path.join(
-            ROOT, f'data/cycles/sb1_{estate}.json'), 'w'), indent=1)
+            ROOT, f'data/cycles/sb1_{estate}{sfx}.json'), 'w'), indent=1)
         print(estate, json.dumps({k: res[k] for k in
                                   ("earth1", "mrsp", "naive", "region",
                                    "excess_vs_mrsp", "tier",

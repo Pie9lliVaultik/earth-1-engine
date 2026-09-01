@@ -1,0 +1,1378 @@
+{
+ "absent": [
+  {
+   "iso2": "ER",
+   "name": "Eritrea",
+   "why": "no percentages"
+  },
+  {
+   "iso2": "SD",
+   "name": "Sudan",
+   "why": "no percentages"
+  },
+  {
+   "iso2": "KN",
+   "name": "Saint Kitts and Nevis",
+   "why": "no percentages"
+  },
+  {
+   "iso2": "RU",
+   "name": "Russia",
+   "why": "no nonreligious category, listed shares sum 37%"
+  },
+  {
+   "iso2": "KP",
+   "name": "North Korea",
+   "why": "no percentages"
+  },
+  {
+   "iso2": "SM",
+   "name": "San Marino",
+   "why": "no percentages"
+  },
+  {
+   "iso2": "UA",
+   "name": "Ukraine",
+   "why": "no percentages"
+  },
+  {
+   "iso2": "VA",
+   "name": "Holy See (Vatican City)",
+   "why": "no percentages"
+  },
+  {
+   "iso2": "MV",
+   "name": "Maldives",
+   "why": "no percentages"
+  }
+ ],
+ "countries": {
+  "AD": {
+   "cells": {},
+   "marginal": 0.983,
+   "nonreligious_pct": 1.7,
+   "pew_derived": false,
+   "source_note": "Christian (predominantly Roman Catholic) 89.5, other 8.8%, unaffiliated 1.7% (2020 est.)"
+  },
+  "AE": {
+   "cells": {},
+   "marginal": 0.987,
+   "nonreligious_pct": 1.3,
+   "pew_derived": false,
+   "source_note": "Muslim 74.5% (official) (Sunni 63.3%, Shia 6.7%, other 4.4%), Christian 12.9%, Hindu 6.2%, Buddhist 3.2%, agnostic 1.3%, other 1.9% (2020 est.)"
+  },
+  "AF": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 99.7% (Sunni 84.7 - 89.7%, Shia 10 - 15%), other &lt;0.3% (2009 est.)"
+  },
+  "AG": {
+   "cells": {},
+   "marginal": 0.941,
+   "nonreligious_pct": 5.9,
+   "pew_derived": false,
+   "source_note": "Protestant 68.3% (Anglican 17.6%, Seventh Day Adventist 12.4%, Pentecostal 12.2%, Moravian 8.3%, Methodist 5.6%, Wesleyan Holiness 4.5%, Church of God 4.1%, Baptist 3.6%), Roman Catholic 8.2%, other 12.2%, unspecified 5.5%, none 5.9% (2011 est.)"
+  },
+  "AL": {
+   "cells": {},
+   "marginal": 0.975,
+   "nonreligious_pct": 2.5,
+   "pew_derived": false,
+   "source_note": "Muslim 56.7%, Roman Catholic 10%, Orthodox 6.8%, atheist 2.5%, Bektashi (a Sufi order) 2.1%, other 5.7%, unspecified 16.2% (2011 est.)"
+  },
+  "AM": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Armenian Apostolic 95.2%, not stated 1.7%; less than 1%: Catholic, no religion, Evangelical, Shar-fadinian, other, Armenian Orthodox, Jehovah's Witness, Pagan, Molokan (2022 est.)"
+  },
+  "AO": {
+   "cells": {},
+   "marginal": 0.877,
+   "nonreligious_pct": 12.3,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 41.1%, Protestant 38.1%, other 8.6%, none 12.3% (2014 est.)"
+  },
+  "AR": {
+   "cells": {},
+   "marginal": 0.811,
+   "nonreligious_pct": 18.9,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 62.9%, Evangelical 15.3% (Pentecostal 13%, other Evangelical 2.3%), Jehovah's Witness and Church of Jesus Christ 1.4%, other 1.2% (includes Muslim, Jewish), none 18.9% (includes agnostic and atheist), unspecified 0.3% (2019 est.)"
+  },
+  "AT": {
+   "cells": {},
+   "marginal": 0.776,
+   "nonreligious_pct": 22.4,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 55.2%, Muslim 8.3%, Orthodox 4.9%, Evangelical Christian 3.8%, Jewish 0.1%, other 5.4%, none 22.4% (2021 est.)"
+  },
+  "AU": {
+   "cells": {},
+   "marginal": 0.616,
+   "nonreligious_pct": 38.4,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 20%, Protestant 18.1% (Anglican 9.8%, Uniting Church 2.6%, Presbyterian and Reformed 1.6%, Baptist 1.4%, Pentecostal 1%, other Protestant 1.7%), other Christian 3.5%, Muslim 3.2%, Hindu 2.7%, Buddhist 2.4%, Orthodox 2.3% (Eastern Orthodox 2.1%, Oriental Orthodox 0.2%), other 2.1%, none 38.4%, unspecified 7.3% (2021 est.)"
+  },
+  "AZ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 97.3% (predominantly Shia), Christian 2.6%, other &lt;0.1, unaffiliated &lt;0.1 (2020 est.)"
+  },
+  "BA": {
+   "cells": {},
+   "marginal": 0.989,
+   "nonreligious_pct": 1.1,
+   "pew_derived": false,
+   "source_note": "Muslim 50.7%, Orthodox 30.7%, Roman Catholic 15.2%, atheist 0.8%, agnostic 0.3%, other 1.2%, undeclared/no answer 1.1% (2013 est.)"
+  },
+  "BB": {
+   "cells": {},
+   "marginal": 0.794,
+   "nonreligious_pct": 20.6,
+   "pew_derived": false,
+   "source_note": "Protestant 66.4% (includes Anglican 23.9%, other Pentecostal 19.5%, Adventist 5.9%, Methodist 4.2%, Wesleyan 3.4%, Nazarene 3.2%, Church of God 2.4%, Baptist 1.8%, Moravian 1.2%, other Protestant 0.9%), Roman Catholic 3.8%, other Christian 5.4% (includes Jehovah's Witness 2.0%, other 3.4%), Rastafarian 1%, other 1.5%, none 20.6%, unspecified 1.2% (2010 est.)"
+  },
+  "BD": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 91%, Hindu 8%, other 1% (2022 est.)"
+  },
+  "BE": {
+   "cells": {},
+   "marginal": 0.707,
+   "nonreligious_pct": 29.3,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 57.1%, Protestant 2.3%, other Christian, 2.8%, Muslim 6.8%, other 1.7%, atheist 9.1%, nonbeliever/agnostic 20.2% (2018 est.)"
+  },
+  "BF": {
+   "cells": {},
+   "marginal": 0.993,
+   "nonreligious_pct": 0.7,
+   "pew_derived": false,
+   "source_note": "Muslim 63.8%, Roman Catholic 20.1%, Animiste 9%, Protestant 6.2%, other 0.2%, none 0.7% (2019 est.)"
+  },
+  "BG": {
+   "cells": {},
+   "marginal": 0.953,
+   "nonreligious_pct": 4.7,
+   "pew_derived": false,
+   "source_note": "Christian 64.7%, Muslim 9.8%, other 0.1%, none 4.7%, unspecified 20.7% (2021 est.)"
+  },
+  "BH": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 74.2%, other 25.9% (2020 est)"
+  },
+  "BI": {
+   "cells": {},
+   "marginal": 0.987,
+   "nonreligious_pct": 1.3,
+   "pew_derived": false,
+   "source_note": "Christian 93.9% (Roman Catholic 58.6%, Protestant 35.3% [includes Adventist 2.7% and other Protestant religions 32.6%]), Muslim 3.4%, other 1.3%, none 1.3% (2016-17 est.)"
+  },
+  "BJ": {
+   "cells": {},
+   "marginal": 0.942,
+   "nonreligious_pct": 5.8,
+   "pew_derived": false,
+   "source_note": "Muslim 27.7%, Roman Catholic 25.5%, Protestant 13.5% (Celestial 6.7%, Methodist 3.4%, other Protestant 3.4%), Vodoun 11.6%, other Christian 9.5%, other traditional religions 2.6%, other 2.6%, none 5.8% (2013 est.)"
+  },
+  "BN": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official) 82.1%, Christian 6.7%, Buddhist 6.3%, other 4.9% (2021 est.)"
+  },
+  "BO": {
+   "cells": {},
+   "marginal": 0.916,
+   "nonreligious_pct": 8.4,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 65%, Protestant 19.6% (Evangelical (non-specific) 11.9%, Evangelical Baptist 2.1%, Evangelical Pentecostal 1.8%, Evangelical Methodist 0.7%, Adventist 2.8%, Protestant (non-specific) 0.3%), Believer (not belonging to the church) 0.9%, other 4.8%, atheist 1.7%, agnostic 0.6%, none 6.1%, unspecified 1.3% (2023 est.)"
+  },
+  "BR": {
+   "cells": {},
+   "marginal": 0.907,
+   "nonreligious_pct": 9.3,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 56.8%, Evangelical 26.9%, none 9.3%, other 4%, Spirtism (Esp&iacute;rita) 1.8%, unspecified 1.4%, Umbanda and Candombl&eacute; 1.1%, Indigenous religions .06%, undeclared 0.2% (2022)"
+  },
+  "BS": {
+   "cells": {},
+   "marginal": 0.981,
+   "nonreligious_pct": 1.9,
+   "pew_derived": false,
+   "source_note": "Protestant 69.9% (includes Baptist 34.9%, Anglican 13.7%, Pentecostal 8.9% Seventh Day Adventist 4.4%, Methodist 3.6%, Church of God 1.9%, Plymouth Brethren 1.6%, other Protestant 0.9%), Roman Catholic 12%, other Christian 13% (includes Jehovah's Witness 1.1%), other 0.6%, none 1.9%, unspecified 2.6% (2010 est.)"
+  },
+  "BT": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Lamaistic Buddhist 75.3%, Indian- and Nepali-influenced Hinduism 22.1%, other 2.6% (2005 est.)"
+  },
+  "BW": {
+   "cells": {},
+   "marginal": 0.848,
+   "nonreligious_pct": 15.2,
+   "pew_derived": false,
+   "source_note": "Christian 79.1%, Badimo 4.1%, other 1.4% (includes Baha'i, Hindu, Muslim, Rastafarian), none 15.2%, unspecified 0.3% (2011 est.)"
+  },
+  "BY": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Orthodox 48.3%, Catholic 7.1%, other 3.5%, non-believers 41.1% (2011 est.)"
+  },
+  "BZ": {
+   "cells": {},
+   "marginal": 0.845,
+   "nonreligious_pct": 15.5,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 40.1%, Protestant 31.5% (includes Pentecostal 8.4%, Seventh Day Adventist 5.4%, Anglican 4.7%, Mennonite 3.7%, Baptist 3.6%, Methodist 2.9%, Nazarene 2.8%), Jehovah's Witness 1.7%, other 10.5% (includes Baha'i, Buddhist, Hindu, Church of Jesus Christ, Muslim, Rastafarian, Salvation Army), unspecified 0.6%, none 15.5% (2010 est.)"
+  },
+  "CA": {
+   "cells": {},
+   "marginal": 0.654,
+   "nonreligious_pct": 34.6,
+   "pew_derived": false,
+   "source_note": "Christian 53.3%, Muslim 4.9%, Hindu 2.3%, Sikh 2.1%, Buddhist 1%, Jewish 0.9%, Traditional (North American Indigenous) 0.2%, other religions and traditional spirituality 0.6%, none 34.6% (2021 est.)"
+  },
+  "CD": {
+   "cells": {},
+   "marginal": 0.987,
+   "nonreligious_pct": 1.3,
+   "pew_derived": false,
+   "source_note": "&nbsp;Christian 93/1% (Roman Catholic 29.9%, Protestant 26.7%, other Christian 36.5%), Kimbanguist 2.8%, Muslim 1.3%, other (includes syncretic sects and indigenous beliefs) 1.2%, none 1.3%, unspecified 0.2% (2014 est.)"
+  },
+  "CF": {
+   "cells": {},
+   "marginal": 0.993,
+   "nonreligious_pct": 0.7,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 34.6%, Protestant 15.7%, other Christian 22.9%, Muslim 13.8%, ethnic religionist 12%, Baha'i 0.2%, agnostic/atheist 0.7% (2020 est.)"
+  },
+  "CG": {
+   "cells": {},
+   "marginal": 0.887,
+   "nonreligious_pct": 11.3,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 33.1%, Awakening Churches/Christian Revival 22.3%, Protestant 19.9%, Salutiste 2.2%, Muslim 1.6%, Kimbanguist 1.5%, other 8.1%, none 11.3% (2007 est.)"
+  },
+  "CH": {
+   "cells": {},
+   "marginal": 0.706,
+   "nonreligious_pct": 29.4,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 34.4%, Protestant 22.5%, other Christian 5.7%, Muslim 5.4%, other 1.5%, none 29.4%, unspecified 1.1% (2020 est.)"
+  },
+  "CI": {
+   "cells": {},
+   "marginal": 0.809,
+   "nonreligious_pct": 19.1,
+   "pew_derived": false,
+   "source_note": "Muslim 42.9%, Catholic 17.2%, Evangelical 11.8%, Methodist 1.7%, other Christian 3.2%, animist 3.6%, other religion 0.5%, none 19.1% (2014 est.)"
+  },
+  "CL": {
+   "cells": {},
+   "marginal": 0.743,
+   "nonreligious_pct": 25.7,
+   "pew_derived": false,
+   "source_note": "Catholic 57%, none 25.7%, Evangelical or Protestant 16.2%, other Christians and traditions related to Christ 1.3%; less than 1%: Buddhist, Catholic Orthodox, Church of Jesus Christ of Latter-Day Saints, Islam, Judaism, other religions, no religion (2024)"
+  },
+  "CM": {
+   "cells": {},
+   "marginal": 0.988,
+   "nonreligious_pct": 1.2,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 33.1%, Muslim 30.6%, Protestant 27.1% other Christian 6.1%, animist 1.3%, other 0.7%, none 1.2% (2022 est.)"
+  },
+  "CN": {
+   "cells": {},
+   "marginal": 0.479,
+   "nonreligious_pct": 52.1,
+   "pew_derived": false,
+   "source_note": "folk religion 21.9%, Buddhist 18.2%, Christian 5.1%, Muslim 1.8%, Hindu &lt; 0.1%, Jewish &lt; 0.1%, other 0.7% (includes Daoist (Taoist)), unaffiliated 52.1% (2021 est.)"
+  },
+  "CO": {
+   "cells": {},
+   "marginal": 0.838,
+   "nonreligious_pct": 16.2,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 63.6%, Protestant 17.2% (Evangelical 16.7%, Adventist 0.3%, other Protestant 0.2%), Jehovah's Witness 0.6%, Church of Jesus Christ 0.1%, other 0.3%, believer, 0.2%. agnostic 1%, atheist 1%, none 14.2%, unspecified 1.8% (2023 est.)"
+  },
+  "CR": {
+   "cells": {},
+   "marginal": 0.73,
+   "nonreligious_pct": 27.0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 47.5%, Evangelical and Pentecostal 19.8%, Jehovah's Witness 1.4%, other Protestant 1.2%, other 3.1%, none 27% (2021 est.)"
+  },
+  "CU": {
+   "cells": {},
+   "marginal": 0.768,
+   "nonreligious_pct": 23.2,
+   "pew_derived": false,
+   "source_note": "Christian 58.9%, folk religion 17.6%, Buddhist &lt;1%, Hindu &lt;1%, Jewish &lt;1%, Muslim &lt;1%, other &lt;1%, none 23.2% (2020 est.)"
+  },
+  "CV": {
+   "cells": {},
+   "marginal": 0.844,
+   "nonreligious_pct": 15.6,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 72.5%, Protestant 4% (includes Adventist 1.9%, Nazarene 1.8%, Assembly of God 0.2%, God is Love 0.1%), Christian Rationalism 1.7%, Muslim 1.3%, Jehovah's Witness 1.2%, Church of Jesus Christ 1%, other Christian 1.3%, other 1.2%, none 15.6%, no response 0.4% (2021 est.)"
+  },
+  "CY": {
+   "cells": {},
+   "marginal": 0.994,
+   "nonreligious_pct": 0.6,
+   "pew_derived": false,
+   "source_note": "Eastern Orthodox Christian 89.1%, Roman Catholic 2.9%, Protestant/Anglican 2%, Muslim 1.8%, Buddhist 1%, other (includes Maronite Catholic, Armenian Apostolic, Hindu) 1.4%, unknown 1.1%, none/atheist 0.6% (2011 est.)"
+  },
+  "CZ": {
+   "cells": {},
+   "marginal": 0.431,
+   "nonreligious_pct": 56.9,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 7%, other believers belonging to a church or religious society 6% (includes Evangelical United Brethren Church and Czechoslovak Hussite Church), believers unaffiliated with a religious society 9.1%, none 47.8%, unspecified 30.1% (2021 est.)"
+  },
+  "DE": {
+   "cells": {},
+   "marginal": 0.562,
+   "nonreligious_pct": 43.8,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 24.8%, Protestant 22.6%, Muslim 3.7%, other 5.1%, none 43.8% (2022 est.)"
+  },
+  "DJ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Sunni Muslim 94% (nearly all Djiboutians), other 6% (mainly foreign-born residents - Shia Muslim, Christian, Hindu, Jewish, Baha'i, and atheist)"
+  },
+  "DK": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Evangelical Lutheran (official) 71.4%, Muslim 4.3%, other/none/unspecified (denominations include Roman Catholic, Jehovah's Witness, Serbian Orthodox Christian, Jewish, Baptist, Buddhist, Church of Jesus Christ, Pentecostal, and nondenominational Christian) 24.3% (2024 est.)"
+  },
+  "DM": {
+   "cells": {},
+   "marginal": 0.906,
+   "nonreligious_pct": 9.4,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 52.7%, Protestant 29.7% (includes Seventh Day Adventist 6.7%, Pentecostal 6.1%, Baptist 5.2%, Christian Union Church 3.9%, Methodist 2.6%, Gospel Mission 2.1%, other Protestant 3.1%), Jehovah's Witness 1.3%, Rastafarian 1.1%, other 4.3%, none 9.4%, unspecified 1.4% (2011 est.)"
+  },
+  "DO": {
+   "cells": {},
+   "marginal": 0.815,
+   "nonreligious_pct": 18.5,
+   "pew_derived": false,
+   "source_note": "Evangelical 50.2%, Roman Catholic 30.1%, none 18.5%, unspecified 1.2% (2023 est.)"
+  },
+  "DZ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official; predominantly Sunni) 99%, other (includes Christian, Jewish, Ahmadi Muslim, Shia Muslim, Ibadi Muslim) &lt;1% (2012 est.)"
+  },
+  "EC": {
+   "cells": {},
+   "marginal": 0.918,
+   "nonreligious_pct": 8.2,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 68.2%, Protestant 19% (Evangelical 18.3%, Adventist 0.6%, other Protestant 0.2%), Jehovah's Witness 1.4%, other 2.3%, none 8.2% don't know/no response 1% (2023 est.)"
+  },
+  "EE": {
+   "cells": {},
+   "marginal": 0.416,
+   "nonreligious_pct": 58.4,
+   "pew_derived": false,
+   "source_note": "Orthodox 16.5%, Protestant 9.2% (Lutheran 7.7%, other Protestant 1.5%), other 3% (includes Roman Catholic, Muslim, Jehovah's Witness, Pentecostal, Buddhist, and Taara Believer), none 58.4%, unspecified 12.9% (2021 est.)"
+  },
+  "EG": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (predominantly Sunni) 90%, Christian (majority Coptic Orthodox, other Christians include Armenian Apostolic, Catholic, Maronite, Orthodox, and Anglican) 10%"
+  },
+  "ES": {
+   "cells": {},
+   "marginal": 0.73,
+   "nonreligious_pct": 27.0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 58.2%, atheist 16.2%, agnostic 10.8%, other 2.7%, non-believer 10.5%, unspecified 1.7% (2021 est.)"
+  },
+  "ET": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Ethiopian Orthodox 43.8%, Muslim 31.3%, Protestant 22.8%, Catholic 0.7%, traditional 0.6%, other 0.8% (2016 est.)"
+  },
+  "FI": {
+   "cells": {},
+   "marginal": 0.694,
+   "nonreligious_pct": 30.6,
+   "pew_derived": false,
+   "source_note": "Lutheran 66.6%, Greek Orthodox 1.1%, other 1.7%, none 30.6% (2022 est.)"
+  },
+  "FJ": {
+   "cells": {},
+   "marginal": 0.992,
+   "nonreligious_pct": 0.8,
+   "pew_derived": false,
+   "source_note": "Protestant 45% (Methodist 34.6%, Assembly of God 5.7%, Seventh Day Adventist 3.9%, and Anglican 0.8%), Hindu 27.9%, other Christian 10.4%, Roman Catholic 9.1%, Muslim 6.3%, Sikh 0.3%, other 0.3%, none 0.8% (2007 est.)"
+  },
+  "FR": {
+   "cells": {},
+   "marginal": 0.67,
+   "nonreligious_pct": 33.0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 47%, Muslim 4%, Protestant 2%, Buddhist 2%, Orthodox 1%, Jewish 1%, other 1%, none 33%, unspecified 9% (2021 est.)"
+  },
+  "GA": {
+   "cells": {},
+   "marginal": 0.93,
+   "nonreligious_pct": 7.0,
+   "pew_derived": false,
+   "source_note": "Protestant 46.4% (Revival Church 37%, other Protestant 9.4%), Roman Catholic 29.8%, other Christian 4%, Muslim 10.8%, traditional/animist 1.1%, other 0.9%, none 7% (2019-21 est.)"
+  },
+  "GB": {
+   "cells": {},
+   "marginal": 0.743,
+   "nonreligious_pct": 25.7,
+   "pew_derived": false,
+   "source_note": "Christian (includes Anglican, Roman Catholic, Presbyterian, Methodist) 59.5%, Muslim 4.4%, Hindu 1.3%, other 2%, unspecified 7.2%, none 25.7% (2011 est.)"
+  },
+  "GD": {
+   "cells": {},
+   "marginal": 0.943,
+   "nonreligious_pct": 5.7,
+   "pew_derived": false,
+   "source_note": "Protestant 49.2% (includes Pentecostal 17.2%, Seventh Day Adventist 13.2%, Anglican 8.5%, Baptist 3.2%, Church of God 2.4%, Evangelical 1.9%, Methodist 1.6%, other 1.2%), Roman Catholic 36%, Jehovah's Witness 1.2%, Rastafarian 1.2%, other 5.5%, none 5.7%, unspecified 1.3% (2011 est.)"
+  },
+  "GE": {
+   "cells": {},
+   "marginal": 0.995,
+   "nonreligious_pct": 0.5,
+   "pew_derived": false,
+   "source_note": "Eastern Orthodox Christian (official) 83.4%, Muslim 10.7%, Armenian Apostolic Christian 2.9%, other 1.2% (includes Roman Catholic Christian, Jehovah's Witness, Yazidi, Protestant Christian, Jewish), none 0.5%, unspecified/no answer 1.2% (2014 est.)"
+  },
+  "GH": {
+   "cells": {},
+   "marginal": 0.989,
+   "nonreligious_pct": 1.1,
+   "pew_derived": false,
+   "source_note": "Christian 71.3% (Pentecostal/Charismatic 31.6%, Protestant 17.4%, Catholic 10%, other 12.3%), Muslim 19.9%, traditionalist 3.2%, other 4.5%, none 1.1% (2021 est.)"
+  },
+  "GM": {
+   "cells": {},
+   "marginal": 0.999,
+   "nonreligious_pct": 0.1,
+   "pew_derived": false,
+   "source_note": "Muslim 96.4%, Christian 3.5%, other or none 0.1% (2019-20 est.)"
+  },
+  "GN": {
+   "cells": {},
+   "marginal": 0.988,
+   "nonreligious_pct": 1.2,
+   "pew_derived": false,
+   "source_note": "Muslim 85.2%, Christian 13.4%, animist 0.2%, none 1.2% (2018 est.)"
+  },
+  "GQ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 88%, Protestant 5%, Muslim 2%, other 5% (animist, Baha'i, Jewish) (2015 est.)"
+  },
+  "GR": {
+   "cells": {},
+   "marginal": 0.85,
+   "nonreligious_pct": 15.0,
+   "pew_derived": false,
+   "source_note": "Greek Orthodox 81-90%, Muslim 2%, other 3%, none 4-15%, unspecified 1% (2015 est.)"
+  },
+  "GT": {
+   "cells": {},
+   "marginal": 0.89,
+   "nonreligious_pct": 11.0,
+   "pew_derived": false,
+   "source_note": "Evangelical 45.7%, Roman Catholic 42.4%, none 11%, unspecified 0.9% (2023 est.)"
+  },
+  "GW": {
+   "cells": {},
+   "marginal": 0.956,
+   "nonreligious_pct": 4.4,
+   "pew_derived": false,
+   "source_note": "Muslim 46.1%, folk religions 30.6%, Christian 18.9%, other or unaffiliated 4.4% (2020 est.)"
+  },
+  "HK": {
+   "cells": {},
+   "marginal": 0.457,
+   "nonreligious_pct": 54.3,
+   "pew_derived": false,
+   "source_note": "Buddhist or Taoist 27.9%, Protestant 6.7%, Roman Catholic 5.3%, Muslim 4.2%, Hindu 1.4%, Sikh 0.2%, other or none 54.3% (2016 est.)"
+  },
+  "HN": {
+   "cells": {},
+   "marginal": 0.899,
+   "nonreligious_pct": 10.1,
+   "pew_derived": false,
+   "source_note": "Evangelical 55%, Roman Catholic 33.4%, none 10.1%, unspecified 1.5% (2023 est.)"
+  },
+  "HR": {
+   "cells": {},
+   "marginal": 0.936,
+   "nonreligious_pct": 6.4,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 79%, Orthodox 3.3%, Protestant 0.3%, other Christian 4.8%, Muslim 1.3%, other 1.1%, agnostic 1.7%, none or atheist 4.7%, unspecified 3.9% (2021 est.)"
+  },
+  "HT": {
+   "cells": {},
+   "marginal": 0.9,
+   "nonreligious_pct": 10.0,
+   "pew_derived": false,
+   "source_note": "Catholic 55%, Protestant 29%, Vodou 2.1%, other 4.6%, none 10% (2018 est.)"
+  },
+  "HU": {
+   "cells": {},
+   "marginal": 0.839,
+   "nonreligious_pct": 16.1,
+   "pew_derived": false,
+   "source_note": "Catholic 30.1% (Roman Catholic 27.5%, Greek Catholic 1.7%, other Catholic 0.9%), Calvinist 9.8%, Lutheran 1.8%, other Christian (includes Orthodox) 1.6%, other 0.4%, none 16.1%, no answer 40.1% (2022 est.)"
+  },
+  "ID": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 87.4%, Protestant 7.5%, Roman Catholic 3.1%, Hindu 1.7%, other 0.8% (includes Buddhist and Confucian) (2022 est.)"
+  },
+  "IE": {
+   "cells": {},
+   "marginal": 0.854,
+   "nonreligious_pct": 14.6,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 69.2% (includes lapsed), Protestant 3.7% (Church of Ireland/England/Anglican/Episcopalian 2.5%, other Protestant 1.2%), Orthodox 2%, other Christian 0.9%, Muslim 1.6%, other 1.4%, agnostic/atheist 0.1%, none 14.5%, unspecified 6.7% (2022 est.)"
+  },
+  "IL": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Jewish 73.5%, Muslim 18.1%, Christian 1.9%, Druze 1.6%, other 4.9% (2022 est.)"
+  },
+  "IN": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Hindu 79.8%, Muslim 14.2%, Christian 2.3%, Sikh 1.7%, other and unspecified 2% (2011 est.)"
+  },
+  "IQ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official) 95-98% (Shia 61-64%, Sunni 29-34%), Christian 1% (includes Catholic, Orthodox, Protestant, Assyrian Church of the East), other 1-4% (2015 est.)"
+  },
+  "IR": {
+   "cells": {},
+   "marginal": 0.997,
+   "nonreligious_pct": 0.3,
+   "pew_derived": false,
+   "source_note": "Muslim (official) 98.5%, Christian 0.7%, Baha'i 0.3%, agnostic 0.3%, other (includes Zoroastrian, Jewish, Hindu) 0.2% (2020 est.)"
+  },
+  "IS": {
+   "cells": {},
+   "marginal": 0.923,
+   "nonreligious_pct": 7.7,
+   "pew_derived": false,
+   "source_note": "Evangelical Lutheran Church of Iceland (official) 58.6% Roman Catholic 3.8%, Independent Congregation of Reykjavik 2.6%, Independent Congregation of Hafnarfjordur 1.9%, pagan worship 1.5%, Icelandic Ethical Humanist Association 1.4%, other (includes Zuist and Pentecostal) or unspecified 18.7%, none 7.7% (2024 est.)"
+  },
+  "IT": {
+   "cells": {},
+   "marginal": 0.866,
+   "nonreligious_pct": 13.4,
+   "pew_derived": false,
+   "source_note": "Christian 80.8% (overwhelmingly Roman Catholic with very small groups of Jehovah's Witnesses and Protestants), Muslim 4.9%, unaffiliated 13.4%, other 0.9% (2020 est.)"
+  },
+  "JM": {
+   "cells": {},
+   "marginal": 0.787,
+   "nonreligious_pct": 21.3,
+   "pew_derived": false,
+   "source_note": "Protestant 64.8% (includes Seventh Day Adventist 12.0%, Pentecostal 11.0%, Other Church of God 9.2%, New Testament Church of God 7.2%, Baptist 6.7%, Church of God in Jamaica 4.8%, Church of God of Prophecy 4.5%, Anglican 2.8%, United Church 2.1%, Methodist 1.6%, Revived 1.4%, Brethren 0.9%, and Moravian 0.7%), Roman Catholic 2.2%, Jehovah's Witness 1.9%, Rastafarian 1.1%, other 6.5%, none 21.3%, unspecified 2.3% (2011 est.)"
+  },
+  "JO": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 97.1% (official; predominantly Sunni), Christian 2.1% (majority Greek Orthodox, but some Greek and Roman Catholics, Syrian Orthodox, Coptic Orthodox, Armenian Orthodox, and Protestant denominations), Buddhist 0.4%, Hindu 0.1%, Jewish &lt;0.1%, folk &lt;0.1%, other &lt;0.1%, unaffiliated &lt;0.1% (2020 est.)"
+  },
+  "JP": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Shintoism 48.6%, Buddhism 46.4%, Christianity 1.1%, other 4% (2021 est.)"
+  },
+  "KE": {
+   "cells": {},
+   "marginal": 0.984,
+   "nonreligious_pct": 1.6,
+   "pew_derived": false,
+   "source_note": "Christian 85.5% (Protestant 33.4%, Catholic 20.6%, Evangelical 20.4%, African Instituted Churches 7%, other Christian 4.1%), Muslim 10.9%, other 1.8%, none 1.6%,&nbsp;don't&nbsp;know/no answer&nbsp;0.2% (2019 est.)"
+  },
+  "KG": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 90% (majority Sunni), Christian 7% (Russian Orthodox 3%), other 3% (includes Jewish, Buddhist, Baha'i) (2017 est.)"
+  },
+  "KH": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Buddhist (official) 97.1%, Muslim 2%, Christian 0.3%, other 0.5% (2019 est.)"
+  },
+  "KI": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 58.9%, Kiribati Uniting Church 21.2%, Kiribati Protestant Church 8.4%, Church of Jesus Christ 5.6%, Seventh Day Adventist 2.1%, Baha'i 2.1%, other 1.7% (2020 est.)"
+  },
+  "KM": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 98.1% (overwhelmingly Sunni Muslim, small Shia Muslim and Ahmadiyya Muslim populations), ethnic religionist 1.1%, Christian 0.6%, other 0.3% (2020 est.)"
+  },
+  "KR": {
+   "cells": {},
+   "marginal": 0.4,
+   "nonreligious_pct": 60.0,
+   "pew_derived": false,
+   "source_note": "Protestant 17%, Buddhist 16%, Catholic 6%, none 60% (2021 est.)"
+  },
+  "KW": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official) 74.6%, Christian 18.2%, other and unspecified 7.2% (2013 est.)"
+  },
+  "KZ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 69.3%, Christian 17.2% (Orthodox 17%, other 0.2%), Buddhism 0.1%, other 0.1%, non-believers 2.3%, unspecified 11% (2021 est.)"
+  },
+  "LA": {
+   "cells": {},
+   "marginal": 0.686,
+   "nonreligious_pct": 31.4,
+   "pew_derived": false,
+   "source_note": "Buddhist 64.7%, Christian 1.7%, none 31.4%, other/not stated 2.1% (2015 est.)"
+  },
+  "LB": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 67.8% (31.9% Sunni, 31.2% Shia, smaller percentages of Alawites and Ismailis), Christian 32.4% (Maronite Catholics are the largest Christian group), Druze 4.5%, very small numbers of Jews, Baha'is, Buddhists, and Hindus (2020 est.)"
+  },
+  "LC": {
+   "cells": {},
+   "marginal": 0.941,
+   "nonreligious_pct": 5.9,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 61.5%, Protestant 25.5% (includes Seventh Day Adventist 10.4%, Pentecostal 8.9%, Baptist 2.2%, Anglican 1.6%, Church of God 1.5%, other Protestant 0.9%), other Christian 3.4% (includes Evangelical 2.3% and Jehovah's Witness 1.1%), Rastafarian 1.9%, other 0.4%, none 5.9%, unspecified 1.4% (2010 est.)"
+  },
+  "LI": {
+   "cells": {},
+   "marginal": 0.93,
+   "nonreligious_pct": 7.0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic (official) 73.4%, Protestant Reformed 6.3%, Muslim 5.9%, Christian Orthodox 1.3%, Lutheran 1.2%, other Protestant 0.7%, other Christian 0.3%, other 0.8%, none 7%, unspecified 3.3% (2015 est.)"
+  },
+  "LK": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Buddhist (official) 70.2%, Hindu 12.6%, Muslim 9.7%, Roman Catholic 6.1%, other Christian 1.3%, other 0.05% (2012 est.)"
+  },
+  "LR": {
+   "cells": {},
+   "marginal": 0.974,
+   "nonreligious_pct": 2.6,
+   "pew_derived": false,
+   "source_note": "Christian 84.9%, Muslim 12%, Traditional 0.5%, other 0.1%, none 2.6% (2022 est.)"
+  },
+  "LS": {
+   "cells": {},
+   "marginal": 0.977,
+   "nonreligious_pct": 2.3,
+   "pew_derived": false,
+   "source_note": "Protestant 47.8% (Pentecostal 23.1%, Lesotho Evangelical 17.3%, Anglican 7.4%), Roman Catholic 39.3%, other Christian 9.1%, non-Christian 1.4%, none 2.3% (2014 est.)"
+  },
+  "LT": {
+   "cells": {},
+   "marginal": 0.939,
+   "nonreligious_pct": 6.1,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 74.2%, Russian Orthodox 3.7%, Old Believer 0.6%, Evangelical Lutheran 0.6%, Evangelical Reformist 0.2%, other (including Sunni Muslim, Jewish, Greek Catholic, and Karaite) 0.9%, none 6.1%, unspecified 13.7% (2021 est.)"
+  },
+  "LU": {
+   "cells": {},
+   "marginal": 0.733,
+   "nonreligious_pct": 26.7,
+   "pew_derived": false,
+   "source_note": "Christian (predominantly Roman Catholic) 70.6%, Muslim 2.3%, other (includes Buddhist, folk religions, Hindu, Jewish) 0.4%, unaffiliated 26.7% (2020 est.)"
+  },
+  "LV": {
+   "cells": {},
+   "marginal": 0.765,
+   "nonreligious_pct": 23.5,
+   "pew_derived": false,
+   "source_note": "Lutheran 36.2%, Roman Catholic 19.5%, Orthodox 19.1%, other Christian 1.6%, other 0.1%, unspecified/none 23.5% (2017 est.)"
+  },
+  "LY": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official; virtually all Sunni) 96.6%, Christian 2.7%, Buddhist &lt;1%, Hindu &lt;1%, Jewish &lt;1%, folk religion &lt;1%, other &lt;1%, unaffiliated &lt;1% (2020 est.)"
+  },
+  "MA": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 99% (official; virtually all Sunni, &lt;0.1% Shia), other 1% (includes Christian, Jewish, and Baha'i); note - Jewish about 3,000-3,500 (2020 est.)"
+  },
+  "MC": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 90% (official), other 10%"
+  },
+  "MD": {
+   "cells": {},
+   "marginal": 0.998,
+   "nonreligious_pct": 0.2,
+   "pew_derived": false,
+   "source_note": "Orthodox 90.1%, other Christian 2.6%, other 0.1%, agnostic &lt;0.1%, atheist 0.2%, unspecified 6.9% (2014 est.)"
+  },
+  "ME": {
+   "cells": {},
+   "marginal": 0.988,
+   "nonreligious_pct": 1.2,
+   "pew_derived": false,
+   "source_note": "Orthodox 72.1%, Muslim 19.1%, Catholic 3.4%, atheist 1.2%, other 1.5%, unspecified 2.6% (2011 est.)"
+  },
+  "MG": {
+   "cells": {},
+   "marginal": 0.781,
+   "nonreligious_pct": 21.9,
+   "pew_derived": false,
+   "source_note": "Church of Jesus Christ in Madagascar/Malagasy Lutheran Church/Anglican Church 34%, Roman Catholic 32.3%, other Christian 8.1%, traditional/Animist 1.7%, Muslim 1.4%, other 0.6%, none 21.9% (2021 est.)"
+  },
+  "MH": {
+   "cells": {},
+   "marginal": 0.989,
+   "nonreligious_pct": 1.1,
+   "pew_derived": false,
+   "source_note": "Protestant 79.3% (United Church of Christ 47.9%, Assembly of God 14.1%, Full Gospel 5%, Bukot Nan Jesus 3%, Salvation Army 2.3%, Reformed Congressional Church 2.2%, Seventh Day Adventist 1.7%, New Beginning Church 1.4%, other Protestant 1.6%), Roman Catholic 9.3%, Church of Jesus Christ 5.7%, Jehovah's Witness 1.3%, other 3.3%, none 1.1% (2021 est.)"
+  },
+  "MK": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Orthodox 46.1%, Islam 32.2%, Christian 13.2%, Other 7.2%; less than 1%: atheist, Catholic, other religions, not specified, Protestant (2021 est.)"
+  },
+  "ML": {
+   "cells": {},
+   "marginal": 0.975,
+   "nonreligious_pct": 2.5,
+   "pew_derived": false,
+   "source_note": "Muslim 93.9%, Christian 2.8%, animist 0.7%, none 2.5% (2018 est.)"
+  },
+  "MM": {
+   "cells": {},
+   "marginal": 0.999,
+   "nonreligious_pct": 0.1,
+   "pew_derived": false,
+   "source_note": "Buddhist 87.9%, Christian 6.2%, Muslim 4.3%, Animist 0.8%, Hindu 0.5%, other 0.2%, none 0.1% (2014 est.)"
+  },
+  "MN": {
+   "cells": {},
+   "marginal": 0.594,
+   "nonreligious_pct": 40.6,
+   "pew_derived": false,
+   "source_note": "Buddhist 51.8%, no religion 40.6%, Muslim 3.2%, Shaman 2.5%, Christian 1.3%, Other 0.6% (2020 est.)"
+  },
+  "MO": {
+   "cells": {},
+   "marginal": 0.846,
+   "nonreligious_pct": 15.4,
+   "pew_derived": false,
+   "source_note": "folk religion 58.9%, Buddhist 17.3%, Christian 7.2%, other 1.2%, none 15.4% (2020 est.)"
+  },
+  "MR": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official) 100%"
+  },
+  "MT": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic (official) more than 90% (2006 est.)"
+  },
+  "MU": {
+   "cells": {},
+   "marginal": 0.993,
+   "nonreligious_pct": 0.7,
+   "pew_derived": false,
+   "source_note": "Hindu 48.5%, Roman Catholic 26.3%, Muslim 17.3%, other Christian 6.4%, other 0.6%, none 0.7%, unspecified 0.1% (2011 est.)"
+  },
+  "MW": {
+   "cells": {},
+   "marginal": 0.979,
+   "nonreligious_pct": 2.1,
+   "pew_derived": false,
+   "source_note": "Protestant 33.5% (includes Church of Central Africa Presbyterian 14.2%, Seventh Day Adventist/Baptist 9.4%, Pentecostal 7.6%, Anglican 2.3%), Roman Catholic 17.2%, other Christian 26.6%, Muslim 13.8%, traditionalist 1.1%, other 5.6%, none 2.1% (2018 est.)"
+  },
+  "MX": {
+   "cells": {},
+   "marginal": 0.894,
+   "nonreligious_pct": 10.6,
+   "pew_derived": false,
+   "source_note": "Catholic 77.7%, no religion 10.6%, other Evangelical Churches 7.5%, Jehovah Witness 1.2%; less than 1 percent: Pentecostal, Seventh Day Adventist, Historics, not specified, Latter Day Saints, other religions&nbsp; (2020 est.)"
+  },
+  "MY": {
+   "cells": {},
+   "marginal": 0.982,
+   "nonreligious_pct": 1.8,
+   "pew_derived": false,
+   "source_note": "Muslim (official) 63.5%, Buddhist 18.7%, Christian 9.1%, Hindu 6.1%, other (Confucianism, Taoism, other traditional Chinese religions) 0.9%, none/unspecified 1.8% (2020 est.)"
+  },
+  "MZ": {
+   "cells": {},
+   "marginal": 0.865,
+   "nonreligious_pct": 13.5,
+   "pew_derived": false,
+   "source_note": "Catholic 27.3%, Islam 19.1%, Pentecostal 16.7%, Saio/Zione 16.3%, no religion 13.5%, other 4.3%, Anglican 1.7%, unknown 1.2% (2017 est.)"
+  },
+  "NA": {
+   "cells": {},
+   "marginal": 0.981,
+   "nonreligious_pct": 1.9,
+   "pew_derived": false,
+   "source_note": "Christian 97.5%, other 0.6% (includes Muslim, Baha'i, Jewish, Buddhist), unaffiliated 1.9% (2020 est.)"
+  },
+  "NE": {
+   "cells": {},
+   "marginal": 0.999,
+   "nonreligious_pct": 0.1,
+   "pew_derived": false,
+   "source_note": "Muslim 95.5%, ethnic religionist 4.1%, Christian 0.3%, agnostics and other 0.1% (2020 est.)"
+  },
+  "NG": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 53.5%, Roman Catholic 10.6%, other Christian 35.3%, other 0.6% (2018 est.)"
+  },
+  "NI": {
+   "cells": {},
+   "marginal": 0.859,
+   "nonreligious_pct": 14.1,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 44.9%, Protestant 38.7% (Evangelical 38.2, Adventist 0.5%), other 1.2%, (includes Jehovah's Witness and Church of Jesus Christ), believer but not belonging to a church 1%, agnostic or atheist 0.4%, none 13.7%, unspecified 0.2% (2020 est.)"
+  },
+  "NL": {
+   "cells": {},
+   "marginal": 0.459,
+   "nonreligious_pct": 54.1,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 20.1%, Protestant 14.8% (includes Dutch Reformed, Protestant Church of The Netherlands, Calvinist), Muslim 5%, other 5.9% (includes Hindu, Buddhist, Jewish), none 54.1% (2019 est.)"
+  },
+  "NO": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Church of Norway (Evangelical Lutheran - official) 67.5%, Muslim 3.1%, Roman Catholic 3.1%, other Christian 3.8%, other 2.6%, unspecified 19.9% (2021 est.)"
+  },
+  "NP": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Hindu 81.2%, Buddhist 8.2%, Muslim 5.1%, Kirat 3.2%, Christian 1.8%; less than 1%:&nbsp; Prakriti, Bon, Jains, Sikh (2021 est.)"
+  },
+  "NR": {
+   "cells": {},
+   "marginal": 0.987,
+   "nonreligious_pct": 1.3,
+   "pew_derived": false,
+   "source_note": "Protestant 60.4% (Nauruan Congregational 34.7%, Assemblies of God 11.6%, Pacific Light House 6.3%, Nauru Independent 3.6%, Baptist 1.5, Seventh Day Adventist 1.3%, other Protestant 1.4%), Roman Catholic 33.9%, other 4.2%, none 1.3%, no answer 0.3% (2021 est.)"
+  },
+  "NZ": {
+   "cells": {},
+   "marginal": 0.514,
+   "nonreligious_pct": 48.6,
+   "pew_derived": false,
+   "source_note": "Christian 37.3% (Catholic 10.1%, Anglican 6.8%, Presbyterian and Congregational 5.2%, Pentecostal 1.8%, Methodist 1.6%, Church of Jesus Christ 1.2%, other 10.7%), Hindu 2.7%, Maori 1.3%, Muslim, 1.3%, Buddhist 1.1%, other religion 1.6% (includes Judaism, Spiritualism and New Age religions, Baha'i, Asian religions other than Buddhism), no religion 48.6%, objected to answering 6.7% (2018 est.)"
+  },
+  "OM": {
+   "cells": {},
+   "marginal": 0.98,
+   "nonreligious_pct": 2.0,
+   "pew_derived": false,
+   "source_note": "Muslim 85.9%, Christian 6.4%, Hindu 5.7%, other and unaffiliated 2% (2020 est.)"
+  },
+  "PA": {
+   "cells": {},
+   "marginal": 0.899,
+   "nonreligious_pct": 10.1,
+   "pew_derived": false,
+   "source_note": "Evangelical 55%, Roman Catholic 33.4%, none 10.1%, unspecified 1.5% (2023 est.)"
+  },
+  "PE": {
+   "cells": {},
+   "marginal": 0.949,
+   "nonreligious_pct": 5.1,
+   "pew_derived": false,
+   "source_note": "Catholic 76%, Evangelical Christian 15.7%, no religion 5.1%, other religions 3.2% (2017 est.)"
+  },
+  "PG": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Protestant 64.3% (Evangelical Lutheran 18.4%, Seventh Day Adventist 12.9%, Pentecostal 10.4%, United Church 10.3%, Evangelical Alliance 5.9%, Anglican 3.2%, Baptist 2.8%, Salvation Army 0.4%), Roman Catholic 26%, other Christian 5.3%, non-Christian 1.4%, unspecified 3.1% (2011 est.)"
+  },
+  "PH": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 78.8%, Muslim 6.4%, Iglesia ni Cristo 2.6%, other Christian 3.9%, other 8.2%, none/unspecified &lt;0.1 (2020 est.)"
+  },
+  "PK": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 96.4%, Hindu 1.6%, Christian 1.4%; less than 1%: scheduled castes, Qadiani/Ahmadi, other, Sikh. (2020 est.)"
+  },
+  "PL": {
+   "cells": {},
+   "marginal": 0.931,
+   "nonreligious_pct": 6.9,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 70.7%, refused to answer 20.9%, no religion 6.9%; less than 1 percent: Orthodox, Jehovah Witness, Evangelic of Augsburg, Greek Catholic, Pentecostal, other Protestant, not stated, old Catholic Mariavite Church, other Christians, Islam, Buddhist, Polish Catholic Church, other, Baptist Union of Poland, Pagan, Seventh Day Adventist, Hindu, other Catholic (2021 est.)"
+  },
+  "PR": {
+   "cells": {},
+   "marginal": 0.92,
+   "nonreligious_pct": 8.0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 56%, Protestant 33% (largely Pentecostal), other 2%, atheist 1%, none 7% (2014 est.)"
+  },
+  "PS": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 80-85% (predominantly Sunni), Jewish 12-14%, Christian 1-2.5% (mainly Greek Orthodox), other, unaffiliated, unspecified &lt;1% (2012 est.)"
+  },
+  "PT": {
+   "cells": {},
+   "marginal": 0.88,
+   "nonreligious_pct": 12.0,
+   "pew_derived": false,
+   "source_note": "Catholic 68.1%, not applicable 12.9%, no religion 12.0%, no response 2.2%, Protestant 1.8%, other 1.0%; less than 1%: other Christians, Orthodox, Muslim (2021 est.)"
+  },
+  "PW": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 46.9%, Protestant 30.9% (Evangelical 24.6%, Seventh Day Adventist 5%, other Protestant 1.4%), Modekngei 5.1% (indigenous to Palau), Muslim 4.9%, other 12.3% (2020 est.)"
+  },
+  "PY": {
+   "cells": {},
+   "marginal": 0.998,
+   "nonreligious_pct": 0.2,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 80.4%, Protestant 7% (Evangelical (non-specific) 6.7%, Evangelical Pentecostal &lt;0.1%, Adventist &lt;0.1%, Protestant (non-specific) &lt;0.1%), Believer (not belonging to the church) 5.7%, other 0.6%, agnostic &lt;0.1%, none 0.2%, unspecified 6.2% (2023 est.)"
+  },
+  "QA": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 65.2%, Christian 13.7%, Hindu 15.9%, Buddhist 3.8%, folk religion &lt;0.1%, Jewish &lt;0.1%, other &lt;1%, unaffiliated &lt;1% (2020 est.)"
+  },
+  "RO": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Romanian Orthodox 85.3%, Roman Catholic 4.5%, Reformed 3%, Pentecostal 2.5%, other 4.7% (2021 est.)"
+  },
+  "RS": {
+   "cells": {},
+   "marginal": 0.989,
+   "nonreligious_pct": 1.1,
+   "pew_derived": false,
+   "source_note": "Serbian Orthodox 81.1%, unknown 5.3%, Islam 4.2%, Catholic 3.9%, no response 2.5%, atheist 1.1%; less than 1%: other Christians, Protestant, agnostic (2022)"
+  },
+  "RW": {
+   "cells": {},
+   "marginal": 0.97,
+   "nonreligious_pct": 3.0,
+   "pew_derived": false,
+   "source_note": "Catholic 39.9%, Pentecostal 21.3%, Protestant 14.6%, Adventist 12.2%, other Christians 4.2%, no religion 3.0%, Muslim 2.0%, other religions 2.0%; less than 1%: Jehovah Witness, not specified, Animist&nbsp; (2022 est.)"
+  },
+  "SA": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official; citizens are 85-90% Sunni and 10-12% Shia), other (includes Eastern Orthodox, Protestant, Roman Catholic, Jewish, Hindu, Buddhist, and Sikh) (2020 est.)"
+  },
+  "SB": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Protestant 73.4% (Church of Melanesia 31.9%, South Sea Evangelical 17.1%, Seventh Day Adventist 11.7%, United Church 10.1%, Christian Fellowship Church 2.5%), Roman Catholic 19.6%, other Christian 2.9%, other 4%, unspecified 0.1% (2009 est.)"
+  },
+  "SC": {
+   "cells": {},
+   "marginal": 0.991,
+   "nonreligious_pct": 0.9,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 76.2%, Protestant 10.5% (Anglican 6.1%, Pentecostal Assembly 1.5%, Seventh Day Adventist 1.2%, other Protestant 1.7%), other Christian 2.4%, Hindu 2.4%, Muslim 1.6%, other non-Christian 1.1%, unspecified 4.8%, none 0.9% (2010 est.)"
+  },
+  "SE": {
+   "cells": {},
+   "marginal": 0.628,
+   "nonreligious_pct": 37.2,
+   "pew_derived": false,
+   "source_note": "Church of Sweden (Lutheran) 53.9%, other (includes Roman Catholic, Orthodox, Baptist, Muslim, Jewish, and Buddhist) 8.9%, none or unspecified 37.2% (2021 est.)"
+  },
+  "SG": {
+   "cells": {},
+   "marginal": 0.8,
+   "nonreligious_pct": 20.0,
+   "pew_derived": false,
+   "source_note": "Buddhist 31.1%, Christian 18.9%, Muslim 15.6%, Taoist 8.8%, Hindu 5%, other 0.6%, none 20% (2020 est.)"
+  },
+  "SI": {
+   "cells": {},
+   "marginal": 0.82,
+   "nonreligious_pct": 18.0,
+   "pew_derived": false,
+   "source_note": "Catholic 69%, Orthodox 4%, Muslim 3%, Christian 1%, other 3%, atheist 14%, non-believer/agnostic 4%, refused to answer 2% (2019 est.)"
+  },
+  "SK": {
+   "cells": {},
+   "marginal": 0.762,
+   "nonreligious_pct": 23.8,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 55.8%, Evangelical Church of the Augsburg Confession 5.3%, Greek Catholic 4%, Reformed Christian 1.6%, other 3%, none 23.8%, unspecified 6.5% (2021 est.)"
+  },
+  "SL": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 77.1%, Christian 22.9% (2019 est.)"
+  },
+  "SN": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 97.2% (most adhere to one of the four main Sufi brotherhoods), Christian 2.7% (mostly Roman Catholic) (2019 est.)"
+  },
+  "SO": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 99.9% (Sunni Muslim 98.1%, Shia Muslim 1.2%, Islamic schismatic 0.6%), ethnic religionist 0.1% (2020 est.)"
+  },
+  "SR": {
+   "cells": {},
+   "marginal": 0.925,
+   "nonreligious_pct": 7.5,
+   "pew_derived": false,
+   "source_note": "Protestant 23.6% (includes Evangelical 11.2%, Moravian 11.2%, Reformed 0.7%, Lutheran 0.5%), Hindu 22.3%, Roman Catholic 21.6%, Muslim 13.8%, other Christian 3.2%, Winti 1.8%, Jehovah's Witness 1.2%, other 1.7%, none 7.5%, unspecified 3.2% (2012 est.)"
+  },
+  "SS": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Christian 60.5%, folk religion 32.9%, Muslim 6.2%, other &lt;1%, unaffiliated &lt;1% (2020 est.)"
+  },
+  "ST": {
+   "cells": {},
+   "marginal": 0.788,
+   "nonreligious_pct": 21.2,
+   "pew_derived": false,
+   "source_note": "Catholic 55.7%, Adventist 4.1%, Assembly of God 3.4%, New Apostolic 2.9%, Mana 2.3%, Universal Kingdom of God 2%, Jehovah's Witness 1.2%, other 6.2%, none 21.2%, unspecified 1% (2012 est.)"
+  },
+  "SV": {
+   "cells": {},
+   "marginal": 0.837,
+   "nonreligious_pct": 16.3,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 43.9%, Protestant 39.6% (Evangelical - unspecified 38.2%, Evangelical - Methodist 1.3%, Evangelical - Baptist 0.1%), none 16.3%, unspecified 0.2% (2023 est.)"
+  },
+  "SY": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 87% (official; includes Sunni 74% and Alawi, Ismaili, and Shia 13%), Christian 10% (includes Orthodox, Uniate, and Nestorian), Druze 3%"
+  },
+  "SZ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Christian 90% (Zionist - a blend of Christianity and traditional African religions - 40%, Roman Catholic 20%, other Christian 30% - includes Anglican, Methodist, Church of Jesus Christ, Jehovah's Witness), Muslim 2%, other 8% (includes Baha'i, Buddhist, Hindu, indigenous, Jewish) (2015 est.)"
+  },
+  "TD": {
+   "cells": {},
+   "marginal": 0.972,
+   "nonreligious_pct": 2.8,
+   "pew_derived": false,
+   "source_note": "Muslim 52.1%, Protestant 23.9%, Roman Catholic 20%, animist 0.3%, other Christian 0.2%, none 2.8%, unspecified 0.7% (2014-15 est.)"
+  },
+  "TG": {
+   "cells": {},
+   "marginal": 0.938,
+   "nonreligious_pct": 6.2,
+   "pew_derived": false,
+   "source_note": "Christian 42.3%, folk religion 36.9%, Muslim 14%, Hindu &lt;1%, Buddhist &lt;1%, Jewish &lt;1%, other &lt;1%, none 6.2% (2020 est.)"
+  },
+  "TH": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Buddhist 92.5%, Muslim 5.4%, Christian 1.2%, other 0.9% (includes animist, Confucian, Hindu, Jewish, Sikh, and Taoist) (2021 est.)"
+  },
+  "TJ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 98% (Sunni 95%, Shia 3%) other 2% (2014 est.)"
+  },
+  "TL": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Catholic 90.7%, other 7.1%, Protestant Evangelical 1.9%; less than 1%: Islam, Buddhist, Hindu (2022 est.)"
+  },
+  "TM": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 93%, Christian 6.4%, Buddhist &lt;1%, folk religion &lt;1%, Jewish &lt;1%, other &lt;1%, unspecified &lt;1% (2020 est.)"
+  },
+  "TN": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim (official; Sunni) 99%, other (includes Christian, Jewish, Shia Muslim, and Baha'i) &lt;1%"
+  },
+  "TO": {
+   "cells": {},
+   "marginal": 0.994,
+   "nonreligious_pct": 0.6,
+   "pew_derived": false,
+   "source_note": "Protestant 63.9% (Free Wesleyan Church 34.2%, Free Church of Tonga 11.3%, Church of Tonga 6.8%, Seventh Day Adventist 2.5%, Assembly of God 2.5%, Tokaikolo/Maamafo'ou 1.5%, Constitutional Church of Tonga 1.2%, other Protestant 4%), Church of Jesus Christ 19.7%, Roman Catholic 13.7%, other 2.1%, none 0.6%, no answer 0.1% (2021 est.)"
+  },
+  "TR": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 99.8% (mostly Sunni), other 0.2% (mostly Christians and Jews)"
+  },
+  "TT": {
+   "cells": {},
+   "marginal": 0.978,
+   "nonreligious_pct": 2.2,
+   "pew_derived": false,
+   "source_note": "Protestant 32.1% (Pentecostal/Evangelical/Full Gospel 12%, Baptist 6.9%, Anglican 5.7%, Seventh Day Adventist 4.1%, Presbyterian/Congregational 2.5%, other Protestant 0.9%), Roman Catholic 21.6%, Hindu 18.2%, Muslim 5%, Jehovah's Witness 1.5%, other 8.4%, none 2.2%, unspecified 11.1% (2011 est.)"
+  },
+  "TV": {
+   "cells": {},
+   "marginal": 0.996,
+   "nonreligious_pct": 0.4,
+   "pew_derived": false,
+   "source_note": "Protestant 92.7% (Congregational Christian Church of Tuvalu 85.9%, Brethren 2.8%, Seventh Day Adventist 2.5%, Assemblies of God 1.5%), Baha'i 1.5%, Jehovah's Witness 1.5%, other 3.9%, none or refused 0.4% (2017 est.)"
+  },
+  "TW": {
+   "cells": {},
+   "marginal": 0.818,
+   "nonreligious_pct": 18.2,
+   "pew_derived": false,
+   "source_note": "Buddhist 35.3%, Taoist 33.2%, Christian 3.9%, folk religion (includes Confucian) approximately 10%, none or unspecified 18.2% (2005 est.)"
+  },
+  "TZ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Christian 63.1%, Muslim 34.1%, folk religion 1.1%, Buddhist &lt;1%, Hindu &lt;1%, Jewish &lt;1%, other &lt;1%, unspecified 1.6% (2020 est.)"
+  },
+  "UG": {
+   "cells": {},
+   "marginal": 0.998,
+   "nonreligious_pct": 0.2,
+   "pew_derived": false,
+   "source_note": "Protestant 45.1% (Anglican 32.0%, Pentecostal/Born Again/Evangelical 11.1%, Seventh Day Adventist 1.7%, Baptist .3%), Roman Catholic 39.3%, Muslim 13.7%, other 1.6%, none 0.2% (2014 est.)"
+  },
+  "US": {
+   "cells": {},
+   "marginal": 0.772,
+   "nonreligious_pct": 22.8,
+   "pew_derived": false,
+   "source_note": "Protestant 46.5%, Roman Catholic 20.8%, Jewish 1.9%, Church of Jesus Christ 1.6%, other Christian 0.9%, Muslim 0.9%, Jehovah's Witness 0.8%, Buddhist 0.7%, Hindu 0.7%, other 1.8%, unaffiliated 22.8%, don't know/refused 0.6% (2014 est.)"
+  },
+  "UY": {
+   "cells": {},
+   "marginal": 0.381,
+   "nonreligious_pct": 61.9,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 36.5%, Protestant 5% (Evangelical (non-specific) 4.6%, Adventist 0.2%, Protestant (non-specific) 0.3%), African American Cults/Umbanda 2.8%, Jehovah's Witness 0.6%, Church of Jesus Christ 0.2%, other 1%, Believer (not belonging to the church) 1.8%, agnostic 0.3%, atheist 1.3%, none 47.3%, unspecified 3.4%<br><br>Roman Catholic 42%, Protestant 15%, other 6%, agnostic 3%, atheist 10%, unspecified 24% (2023 est.)"
+  },
+  "UZ": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 88% (mostly Sunni), Eastern Orthodox 9%, other 3%"
+  },
+  "VC": {
+   "cells": {},
+   "marginal": 0.925,
+   "nonreligious_pct": 7.5,
+   "pew_derived": false,
+   "source_note": "Protestant 75% (Pentecostal 27.6%, Anglican 13.9%, Seventh Day Adventist 11.6%,&nbsp; Baptist 8.9%, Methodist 8.7%, Evangelical 3.8%, Salvation Army 0.3%, Presbyterian/Congregational 0.3%), Roman Catholic 6.3%,&nbsp; Rastafarian 1.1%, Jehovah's Witness 0.8%, other 4.7%, none 7.5%, unspecified 4.7% (2012 est.)"
+  },
+  "VE": {
+   "cells": {},
+   "marginal": 0.863,
+   "nonreligious_pct": 13.7,
+   "pew_derived": false,
+   "source_note": "Roman Catholic 48.1%, Protestant 31.6% (Evangelical 31.4%, Adventist 0.2%), Jehovah's Witness 1.4%, African American/umbanda 0.7%, other 0.1%, believer 3.5%, agnostic 0.1%, atheist, 0.4%, none 13.6%, unspecified 0.6% (2023 est.)"
+  },
+  "VN": {
+   "cells": {},
+   "marginal": 0.137,
+   "nonreligious_pct": 86.3,
+   "pew_derived": false,
+   "source_note": "Catholic 6.1%, Buddhist 5.8%, Protestant 1%, other 0.8%, none 86.3% (2019 est.)"
+  },
+  "VU": {
+   "cells": {},
+   "marginal": 0.986,
+   "nonreligious_pct": 1.4,
+   "pew_derived": false,
+   "source_note": "Protestant 39.9% (Presbyterian 27.2%, Seventh Day Adventist 14.8%, Anglican 12%, Churches of Christ 5%, Assemblies of God 4.9%, Neil Thomas Ministry/Inner Life Ministry 3.2%), Roman Catholic 12.1%, Apostolic 2.3%, Church of Jesus Christ 1.8%, customary beliefs (including Jon Frum cargo cult) 3.1%, other 12%, none 1.4%, unspecified 0.1% (2020 est.)"
+  },
+  "WS": {
+   "cells": {},
+   "marginal": 0.998,
+   "nonreligious_pct": 0.2,
+   "pew_derived": false,
+   "source_note": "Protestant 54.9% (Congregationalist 29%, Methodist 12.4%, Assembly of God 6.8%, Seventh Day Adventist 4.4%, other Protestant 2.3%), Roman Catholic 18.8%, Church of Jesus Christ 16.9%, Worship Centre 2.8%, other Christian 3.6%, other 2.9% (includes Baha'i, Muslim), none 0.2% (2016 est.)"
+  },
+  "XK": {
+   "cells": {},
+   "marginal": 0.999,
+   "nonreligious_pct": 0.1,
+   "pew_derived": false,
+   "source_note": "Muslim 95.6%, Roman Catholic 2.2%, Orthodox 1.5%, other 0.1%, none 0.1%, unspecified 0.6% (2011 est.)"
+  },
+  "YE": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Muslim 99.1% (official; virtually all are citizens, an estimated 65% are Sunni and 35% are Shia), other 0.9% (includes Jewish, Baha'i, Hindu, and Christian; many are refugees or temporary foreign residents) (2020 est.)"
+  },
+  "ZA": {
+   "cells": {},
+   "marginal": 1.0,
+   "nonreligious_pct": 0,
+   "pew_derived": false,
+   "source_note": "Christian 86%, ancestral, tribal, animist, or other traditional African religions 5.4%, Muslim 1.9%, other 1.5%, nothing in particular 5.2% (2015 est.)"
+  },
+  "ZM": {
+   "cells": {},
+   "marginal": 0.982,
+   "nonreligious_pct": 1.8,
+   "pew_derived": false,
+   "source_note": "Protestant 75.3%, Roman Catholic 20.2%, other 2.7% (includes Muslim, Buddhist, Hindu, and Baha'i), none 1.8% (2010 est.)"
+  },
+  "ZW": {
+   "cells": {},
+   "marginal": 0.917,
+   "nonreligious_pct": 8.3,
+   "pew_derived": false,
+   "source_note": "Apostolic Sect 40.3%, Pentecostal 17%, Protestant 13.8%, other Christian 7.8%, Roman Catholic 6.4%, African traditionalist 5%, other 1.5% (includes Muslim, Jewish, Hindu), none 8.3% (2022 est.)"
+  }
+ },
+ "n_countries": 189,
+ "retrieved": "2026-09-01",
+ "rule": "religiosity = 1 - explicit nonreligious share; implicit 0 only when listed shares sum >=90%; else ABSENT",
+ "source": "CIA World Factbook via github.com/factbook/factbook.json (public domain), clone commit c8cfe21cd019d7748a6b0d57a75d6a77f5ec6ac6"
+}

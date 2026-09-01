@@ -467,9 +467,17 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
                 return (_rng_inj.random(actual_pop) < p_vec).astype(np.float64)
             return np.clip(p_vec + _rng_inj.normal(0, 0.08, actual_pop), 0, 1)
 
-        _rp = _root / "religiosity_priors.json"
+        # B2-c1d: the prior file is env-selectable; the default is the
+        # legacy WVS-derived file (untouched). External files nest the
+        # per-country priors under "countries".
+        _rf = os.environ.get("EARTH1_RELIGIOSITY_FILE",
+                             "religiosity_priors.json")
+        _rp = _root / _rf
+        if not _rp.exists():
+            _rp = _root / "national_inputs" / _rf
         if _rp.exists():
-            religiosity = _draw(_json.loads(_rp.read_text()), True)
+            _rd = _json.loads(_rp.read_text())
+            religiosity = _draw(_rd.get("countries", _rd), True)
         _jp = _root / "joint_priors.json"
         if _jp.exists():
             _pri = _json.loads(_jp.read_text())

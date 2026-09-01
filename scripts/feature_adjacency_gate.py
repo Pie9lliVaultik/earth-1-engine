@@ -7,15 +7,27 @@ The resulting 10.59 -> 9.42pp "improvement" was the answer key, not
 structure. Caught by an external reviewer AFTER it was committed —
 this gate exists so the check happens BEFORE.
 
-Rules (a candidate FAILS if any is true):
-  R1  its source variable id appears as a GOQA item id
-  R2  |corr| with ANY single target > MAX_SINGLE (0.50)
-  R3  count of targets with |corr| > 0.35 exceeds MAX_BROAD (4)
-Exit code 1 on any failure. The full table is always written to
-data/feature_adjacency.json and committed with the result.
+INSTRUMENT CHANGE (founder order 2026-09-01, B2-c1c): the ban
+criterion is PROVENANCE — a candidate is BANNED iff its source shares
+respondents, instrument, or derivation with any judged estate.
+Correlation with targets is a WARNING, never a ban: an external
+religiosity level SHOULD correlate with religion items — that is
+signal; the 2026-08-18 fake gain was banned because the source WAS the
+judged survey, which the provenance rule captures directly. Undeclared
+provenance fails CLOSED (BANNED). The report records the exact file
+(name + sha256) each verdict cleared; consumers must refuse a verdict
+borrowed by a different file.
+
+Rules:
+  R1-PROV (BAN)   provenance in SHARED_WITH_JUDGED, or undeclared
+  W2      (WARN)  |corr| with any single target > 0.50
+  W3      (WARN)  count of targets with |corr| > 0.35 exceeds 4
+Exit code 1 only on R1-PROV for a feature in the active EARTH1_INJECT
+set. The full table is always written to data/feature_adjacency.json.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import sys
@@ -30,7 +42,11 @@ MAX_SINGLE = 0.50
 MAX_BROAD = 4
 BROAD_LEVEL = 0.35
 
-# candidate feature -> WVS source variable id (for R1)
+# provenance classes that share respondents/instrument/derivation with
+# a judged estate (WVS-7 estates, GOQA/Pew estates)
+SHARED_WITH_JUDGED = {"wvs7-microdata", "goqa", "pew-gas"}
+
+# candidate feature -> WVS source variable id (legacy R1 provenance note)
 SOURCES = {
     "religiosity": "Q164",
     "marital": "Q273",
@@ -44,24 +60,47 @@ SOURCES = {
     "income_scale": "Q288",
 }
 
+# legacy prior files carry no provenance declaration; their origin is
+# documented in genesis.py: WVS-7 microdata
+LEGACY_PROVENANCE = "wvs7-microdata"
+
+
+def _file_provenance(path: str, data: dict) -> str:
+    src = str(data.get("source", "")).lower()
+    if "factbook" in src:
+        return "external:cia-world-factbook"
+    if "provenance" in data:
+        return str(data["provenance"])
+    if os.path.basename(path) in ("religiosity_priors.json",
+                                  "joint_priors.json"):
+        return LEGACY_PROVENANCE
+    return "UNDECLARED"
+
 
 def load_priors() -> dict:
+    """feature -> (per-country prior dict, file path, provenance)."""
     out = {}
-    p = "data/religiosity_priors.json"
-    if os.path.exists(p):
-        out["religiosity"] = json.load(open(p))
+    rp = os.environ.get("EARTH1_RELIGIOSITY_FILE", "religiosity_priors.json")
+    for cand in (os.path.join("data", rp),
+                 os.path.join("data", "national_inputs", rp), rp):
+        if os.path.exists(cand):
+            d = json.load(open(cand))
+            prov = _file_provenance(cand, d)
+            out["religiosity"] = (d.get("countries", d), cand, prov)
+            break
     p = "data/joint_priors.json"
     if os.path.exists(p):
-        out.update(json.load(open(p)))
+        d = json.load(open(p))
+        for feat, pri in d.items():
+            out[feat] = (pri, p, _file_provenance(p, d))
     return out
 
 
 def main() -> None:
     gt = json.load(open("data/benchmark/goqa_ground_truth.json"))
-    target_ids = {q["id"] for q in gt}
     priors = load_priors()
-    report, failed = {}, []
-    for feat, pri in priors.items():
+    report, banned = {}, []
+    for feat, (pri, path, prov) in priors.items():
         src = SOURCES.get(feat, "?")
         corrs = {}
         for q in gt:
@@ -78,29 +117,37 @@ def main() -> None:
         vals = list(corrs.values())
         mx = max(vals, key=abs) if vals else 0.0
         broad = sum(1 for v in vals if abs(v) > BROAD_LEVEL)
-        r1 = src in target_ids
-        r2 = abs(mx) > MAX_SINGLE
-        r3 = broad > MAX_BROAD
-        verdict = "BANNED" if (r1 or r2 or r3) else "clean"
-        if verdict == "BANNED":
-            failed.append(feat)
-        report[feat] = {"source_var": src, "is_benchmark_item": r1,
+        r1 = (prov in SHARED_WITH_JUDGED) or (prov == "UNDECLARED")
+        w2 = abs(mx) > MAX_SINGLE
+        w3 = broad > MAX_BROAD
+        verdict = "BANNED" if r1 else "clean"
+        if r1:
+            banned.append(feat)
+        sha = hashlib.sha256(open(path, "rb").read()).hexdigest()[:16]
+        report[feat] = {"source_var": src, "provenance": prov,
+                        "cleared_file": os.path.basename(path),
+                        "cleared_sha256": sha,
                         "max_abs_corr": mx, "n_broad": broad,
+                        "warnings": ([f"W2 max|corr| {abs(mx):.3f}>0.50"]
+                                     if w2 else [])
+                        + ([f"W3 broad {broad}>4"] if w3 else []),
                         "verdict": verdict, "corrs": corrs}
-        print(f"  {feat:13s} src {src:5s} | max|corr| {abs(mx):.3f} "
-              f"({max(corrs, key=lambda k: abs(corrs[k])) if corrs else '-'}) "
-              f"| >0.35: {broad:2d} | item-on-benchmark: {r1} -> {verdict}",
+        print(f"  {feat:13s} prov {prov:28s} | max|corr| {abs(mx):.3f} "
+              f"| >0.35: {broad:2d} | warn: {w2 or w3} -> {verdict}",
               flush=True)
-    json.dump({"rules": {"max_single": MAX_SINGLE, "broad_level": BROAD_LEVEL,
-                         "max_broad": MAX_BROAD},
+    json.dump({"rules": {"criterion": "provenance (B2-c1c instrument change)",
+                         "shared_with_judged": sorted(SHARED_WITH_JUDGED),
+                         "warn_max_single": MAX_SINGLE,
+                         "warn_broad_level": BROAD_LEVEL,
+                         "warn_max_broad": MAX_BROAD},
                "features": report}, open("data/feature_adjacency.json", "w"),
               indent=1)
     active = [f.strip() for f in
               os.environ.get("EARTH1_INJECT", "").split(",") if f.strip()]
-    blocked = [f for f in active if f in failed]
-    print(f"ADJACENCY-GATE: banned {failed or 'none'} | active set {active} "
+    blocked = [f for f in active if f in banned]
+    print(f"ADJACENCY-GATE: banned {banned or 'none'} | active set {active} "
           f"| blocked {blocked or 'none'}")
-    if blocked or (failed and not active):
+    if blocked:
         sys.exit(1)
 
 

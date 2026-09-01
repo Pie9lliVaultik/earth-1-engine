@@ -46,7 +46,14 @@ def _banned_features():
     if not p.exists():
         return set(_INJECTED)  # fail CLOSED: no gate report => no injection
     rep = _json.loads(p.read_text())["features"]
-    return {f for f, v in rep.items() if v["verdict"] == "BANNED"}
+    out = {f for f, v in rep.items() if v["verdict"] == "BANNED"}
+    # B2-c1c: a clean verdict belongs to the exact FILE the gate cleared;
+    # a different configured religiosity file cannot borrow it (fail closed)
+    rf = _os.environ.get("EARTH1_RELIGIOSITY_FILE", "religiosity_priors.json")
+    rv = rep.get("religiosity")
+    if rv is not None and rv.get("cleared_file") not in (None, rf):
+        out.add("religiosity")
+    return out
 
 
 def _active_traits():
