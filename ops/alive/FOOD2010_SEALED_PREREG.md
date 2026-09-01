@@ -29,3 +29,10 @@ after the F1–F4-adopted model's 2010 run is committed.
 Every fitted constant used in the 2010 run carries its FIT-half hash from the 2022
 DEV work; anchors bitwise unchanged; one output freeze; one judge fetch; one scoring
 pass. 2022 appears in any report as the DEV case that named the mechanisms.
+
+## SEAL HARDENING (2026-09-02): the sealed estate is physically present on disk
+The FAOSTAT Food-Security bulk zip fetched for F2's CIDR (sha 1ccced40d8e22869…)
+CONTAINS the SOFI undernourishment (PoU) items — the sealed outcome estate. The
+fetcher read only Item Code 21035 (CIDR) and flagged this. BINDING RULE: every
+parser touching this file whitelists Item Code 21035 / Element 6121 exclusively;
+ingesting any undernourishment item from it before the 2010 freeze VOIDs the judge.
