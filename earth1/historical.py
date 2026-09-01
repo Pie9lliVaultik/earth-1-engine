@@ -32,7 +32,7 @@ GDELT_DIR = "/opt/earth1-data/gdelt"
 # battery's first scored event)
 QUAD_FORCES = {1: {},                                  # verbal coop
                2: {"desire": 0.02, "collective": 0.01},  # material coop
-               3: {"fear": 0.04, "doubt": 0.02},         # verbal conflict
+               3: {"fear": 0.04, "identity": 0.02},      # verbal conflict
                4: {"fear": 0.08, "collective": 0.04,     # material conflict
                    "economics": -0.02}}
 FIPS = json.load(open(os.path.join(_ROOT, "data/geo/fips_to_iso2.json")))["map"]
