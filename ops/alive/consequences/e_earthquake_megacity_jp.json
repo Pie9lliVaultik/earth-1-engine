@@ -1,0 +1,278 @@
+{
+ "order0": {
+  "question_id": "five:e_earthquake_megacity_jp",
+  "class": "disaster",
+  "scenario_id": "five:e",
+  "forces": {
+   "fear": 0.4,
+   "economics": -0.15,
+   "collective": 0.2
+  },
+  "geography": [
+   "JP"
+  ],
+  "ledger_cutoff_day": 60.0,
+  "branch_hashes": [
+   "0561df80819ef0bf",
+   "8feb380024b3b047",
+   "693f46a3d77755a5",
+   "e04441e20bdf450f",
+   "15375745c8453a7f",
+   "c4c45b80d67cbbee",
+   "3e4efcc53db46e5e",
+   "79e1259c34f63726"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18
+  ],
+  "pop": 200000
+ },
+ "headline": [
+  "force_economics: -0.00022 force units (\u00b11e-05, UNCALIBRATED)",
+  "destitute: +0 agents (\u00b10, UNCALIBRATED)",
+  "dead: +0 agents (\u00b10, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00022,
+    "sem": 1e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "JP",
+    "force_shift": 0.0519
+   },
+   {
+    "country": "IE",
+    "force_shift": 0.0229
+   },
+   {
+    "country": "BW",
+    "force_shift": 0.0225
+   },
+   {
+    "country": "CN",
+    "force_shift": 0.0204
+   },
+   {
+    "country": "GE",
+    "force_shift": 0.0201
+   },
+   {
+    "country": "GM",
+    "force_shift": 0.0197
+   },
+   {
+    "country": "IS",
+    "force_shift": 0.0196
+   },
+   {
+    "country": "GN",
+    "force_shift": 0.0195
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 0.0,
+   "sem": 0.0,
+   "real_world_approx": "~+0.0M people"
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 0.0,
+   "sem": 0.0,
+   "real_world_approx": "~+0.0M people"
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "KNOWN-DEFECT",
+   "note": "migration sign under economic shocks (t=-5.1)",
+   "delta": 0.74926,
+   "sem": 1.7567,
+   "real_world_approx": "~+0.0M people"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": 0.0047,
+   "sem": 0.00397
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  }
+ ],
+ "order4": [
+  {
+   "fork": "escalates",
+   "order1_force_shift": {
+    "observable": "force_shift_d7",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null
+   },
+   "order2_unemployed_delta": 0.0,
+   "epistemics": "Reaction shares describe how the population responds inside that world; they are not probabilities that the world will occur."
+  },
+  {
+   "fork": "stabilizes",
+   "order1_force_shift": {
+    "observable": "force_shift_d7",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null
+   },
+   "order2_unemployed_delta": 0.0,
+   "epistemics": "Reaction shares describe how the population responds inside that world; they are not probabilities that the world will occur."
+  }
+ ],
+ "tier_counts": {
+  "ABSTAIN": 16,
+  "UNCALIBRATED": 3,
+  "KNOWN-DEFECT": 2
+ }
+}

@@ -1,0 +1,87 @@
+{
+ "a_rate_hike_us": {
+  "2": {
+   "UNCALIBRATED": 12,
+   "ABSTAIN": 7,
+   "KNOWN-DEFECT": 2
+  },
+  "4": {
+   "UNCALIBRATED": 7,
+   "ABSTAIN": 12,
+   "KNOWN-DEFECT": 2
+  },
+  "8": {
+   "UNCALIBRATED": 8,
+   "ABSTAIN": 11,
+   "KNOWN-DEFECT": 2
+  }
+ },
+ "b_bank_failure_us": {
+  "2": {
+   "UNCALIBRATED": 8,
+   "ABSTAIN": 11,
+   "KNOWN-DEFECT": 2
+  },
+  "4": {
+   "UNCALIBRATED": 4,
+   "ABSTAIN": 15,
+   "KNOWN-DEFECT": 2
+  },
+  "8": {
+   "UNCALIBRATED": 5,
+   "ABSTAIN": 14,
+   "KNOWN-DEFECT": 2
+  }
+ },
+ "c_contested_election_br": {
+  "2": {
+   "UNCALIBRATED": 9,
+   "ABSTAIN": 10,
+   "KNOWN-DEFECT": 2
+  },
+  "4": {
+   "ABSTAIN": 16,
+   "UNCALIBRATED": 3,
+   "KNOWN-DEFECT": 2
+  },
+  "8": {
+   "ABSTAIN": 16,
+   "UNCALIBRATED": 3,
+   "KNOWN-DEFECT": 2
+  }
+ },
+ "d_food_spike_mena": {
+  "2": {
+   "UNCALIBRATED": 11,
+   "ABSTAIN": 8,
+   "KNOWN-DEFECT": 2
+  },
+  "4": {
+   "ABSTAIN": 13,
+   "UNCALIBRATED": 6,
+   "KNOWN-DEFECT": 2
+  },
+  "8": {
+   "UNCALIBRATED": 7,
+   "ABSTAIN": 12,
+   "KNOWN-DEFECT": 2
+  }
+ },
+ "e_earthquake_megacity_jp": {
+  "2": {
+   "UNCALIBRATED": 7,
+   "ABSTAIN": 12,
+   "KNOWN-DEFECT": 2
+  },
+  "4": {
+   "ABSTAIN": 16,
+   "UNCALIBRATED": 3,
+   "KNOWN-DEFECT": 2
+  },
+  "8": {
+   "ABSTAIN": 16,
+   "UNCALIBRATED": 3,
+   "KNOWN-DEFECT": 2
+  }
+ }
+}

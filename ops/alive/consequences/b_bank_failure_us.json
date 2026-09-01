@@ -1,0 +1,280 @@
+{
+ "order0": {
+  "question_id": "five:b_bank_failure_us",
+  "class": "market_cascade",
+  "scenario_id": "five:b",
+  "forces": {
+   "fear": 0.3,
+   "economics": -0.25
+  },
+  "geography": [
+   "US"
+  ],
+  "ledger_cutoff_day": 60.0,
+  "branch_hashes": [
+   "de5a6b7b9bb939b7",
+   "ea46804734db031d",
+   "e82eb7eab2b65aeb",
+   "e553f5364f816eb8",
+   "9f30e142bc8d9bbf",
+   "01874094eed4d12c",
+   "c6cdf2f54c91305d",
+   "177ba84eb20a4266"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18
+  ],
+  "pop": 200000
+ },
+ "headline": [
+  "protest_risk_sum: -0.75 hot localities (\u00b10.33503, UNCALIBRATED)",
+  "force_fear: +0.00249 force units (\u00b10.00087, UNCALIBRATED)",
+  "force_economics: -0.00106 force units (\u00b13e-05, UNCALIBRATED)",
+  "force_temperament: -0 force units (\u00b10, UNCALIBRATED)",
+  "destitute: +0 agents (\u00b10, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.00249,
+    "sem": 0.00087,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00106,
+    "sem": 3e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.0,
+    "sem": 0.0,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "US",
+    "force_shift": 0.0466
+   },
+   {
+    "country": "FM",
+    "force_shift": 0.0254
+   },
+   {
+    "country": "RW",
+    "force_shift": 0.0237
+   },
+   {
+    "country": "MU",
+    "force_shift": 0.0229
+   },
+   {
+    "country": "BW",
+    "force_shift": 0.0215
+   },
+   {
+    "country": "IE",
+    "force_shift": 0.021
+   },
+   {
+    "country": "AE",
+    "force_shift": 0.0209
+   },
+   {
+    "country": "BG",
+    "force_shift": 0.0207
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 0.0,
+   "sem": 0.0,
+   "real_world_approx": "~+0.0M people"
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "KNOWN-DEFECT",
+   "note": "migration sign under economic shocks (t=-5.1)",
+   "delta": 1.85199,
+   "sem": 1.71147,
+   "real_world_approx": "~+0.1M people"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": 0.00101,
+   "sem": 0.00521
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.75,
+   "sem": 0.33503
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  }
+ ],
+ "order4": [
+  {
+   "fork": "intervention",
+   "order1_force_shift": {
+    "observable": "force_shift_d7",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null
+   },
+   "order2_unemployed_delta": 0.0,
+   "epistemics": "Reaction shares describe how the population responds inside that world; they are not probabilities that the world will occur."
+  },
+  {
+   "fork": "contagion",
+   "order1_force_shift": {
+    "observable": "force_shift_d7",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null
+   },
+   "order2_unemployed_delta": 0.0,
+   "epistemics": "Reaction shares describe how the population responds inside that world; they are not probabilities that the world will occur."
+  }
+ ],
+ "tier_counts": {
+  "UNCALIBRATED": 5,
+  "ABSTAIN": 14,
+  "KNOWN-DEFECT": 2
+ }
+}

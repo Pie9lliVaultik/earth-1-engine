@@ -1,0 +1,293 @@
+{
+ "order0": {
+  "question_id": "five:d_food_spike_mena",
+  "class": "protest",
+  "scenario_id": "five:d",
+  "forces": {
+   "fear": 0.15,
+   "economics": -0.2
+  },
+  "geography": [
+   "EG",
+   "TN",
+   "LY",
+   "YE",
+   "SY",
+   "JO",
+   "MA",
+   "DZ",
+   "IQ",
+   "LB",
+   "SA"
+  ],
+  "ledger_cutoff_day": 60.0,
+  "branch_hashes": [
+   "ac1f64ab11109b8e",
+   "a08b2529ce0c6b6c",
+   "480cdb7cb2ffed82",
+   "7288577edd9d4e1d",
+   "463c86545eb7bfe7",
+   "254aae0ed0ca9af4",
+   "f52f8328d75d426f",
+   "026123b4b1b3784e"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18
+  ],
+  "pop": 200000
+ },
+ "headline": [
+  "hungry: +103.729 agents (\u00b126.1173, UNCALIBRATED)",
+  "collective_surge_onsets_event: -81.625 onset events (\u00b112.0813, UNCALIBRATED)",
+  "force_fear: +0.00128 force units (\u00b10.00057, UNCALIBRATED)",
+  "force_economics: -0.00113 force units (\u00b10, UNCALIBRATED)",
+  "legitimacy_mean: -0.00054 legitimacy units (\u00b16e-05, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.00128,
+    "sem": 0.00057,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.0001,
+    "sem": 2e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00113,
+    "sem": 0.0,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "EG",
+    "force_shift": 0.0343
+   },
+   {
+    "country": "SY",
+    "force_shift": 0.0327
+   },
+   {
+    "country": "LB",
+    "force_shift": 0.0326
+   },
+   {
+    "country": "YE",
+    "force_shift": 0.0323
+   },
+   {
+    "country": "MA",
+    "force_shift": 0.0321
+   },
+   {
+    "country": "JO",
+    "force_shift": 0.0314
+   },
+   {
+    "country": "DZ",
+    "force_shift": 0.0313
+   },
+   {
+    "country": "TN",
+    "force_shift": 0.0307
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 0.0,
+   "sem": 0.0,
+   "real_world_approx": "~+0.0M people"
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 103.72886,
+   "sem": 26.11728,
+   "real_world_approx": "~+4.2M people"
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "KNOWN-DEFECT",
+   "note": "migration sign under economic shocks (t=-5.1)",
+   "delta": 2.23361,
+   "sem": 0.87995,
+   "real_world_approx": "~+0.1M people"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": 0.00402,
+   "sem": 0.00742
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -81.625,
+   "sem": 12.08125
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.00054,
+   "sem": 6e-05
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  }
+ ],
+ "order4": [
+  {
+   "fork": "crackdown",
+   "order1_force_shift": {
+    "observable": "force_shift_d7",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null
+   },
+   "order2_unemployed_delta": 0.0,
+   "epistemics": "Reaction shares describe how the population responds inside that world; they are not probabilities that the world will occur."
+  },
+  {
+   "fork": "concession",
+   "order1_force_shift": {
+    "observable": "force_shift_d7",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null
+   },
+   "order2_unemployed_delta": 0.0,
+   "epistemics": "Reaction shares describe how the population responds inside that world; they are not probabilities that the world will occur."
+  }
+ ],
+ "tier_counts": {
+  "UNCALIBRATED": 7,
+  "ABSTAIN": 12,
+  "KNOWN-DEFECT": 2
+ }
+}
