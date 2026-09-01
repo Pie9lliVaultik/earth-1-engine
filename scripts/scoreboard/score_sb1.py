@@ -86,9 +86,28 @@ def family(text):
     return "other"
 
 
+def _scoped_cols():
+    """B2-c1 wiring: SB1_SCOPED_FEATURES="religiosity:religion/values"
+    -> that feature column enters an item's design matrix ONLY for items
+    of that family. Other families' matrices are bitwise-unchanged, so
+    the no-other-family-regression clause holds by construction."""
+    spec = os.environ.get('SB1_SCOPED_FEATURES', '')
+    if not spec:
+        return {}
+    from earth1.calibration import living_feature_names
+    names = living_feature_names(extended=True)
+    out = {}
+    for part in spec.split(';'):
+        feat, fam = part.split(':', 1)
+        if feat.strip() in names:
+            out[names.index(feat.strip())] = fam.strip()
+    return out
+
+
 def main(estates):
     fdir = os.environ.get('SB1_FEATURES_DIR', os.path.join(ROOT, 'data/cycles'))
     sfx = os.environ.get('SB1_OUT_SUFFIX', '')
+    scoped = _scoped_cols()
     feats = {s: json.load(open(os.path.join(
         fdir, f'features_{s}.json'))) for s in SEEDS}
     for estate in estates:
@@ -106,6 +125,12 @@ def main(estates):
                 y = np.array([t[c] for c in iso])
                 grp = np.arange(len(iso))
                 Xe = np.array([F[c]['f'] for c in iso])
+                if scoped:
+                    fam_i = family(texts[item])
+                    drop = [j for j, fm in scoped.items()
+                            if fm != fam_i and j < Xe.shape[1]]
+                    if drop:
+                        Xe = np.delete(Xe, drop, axis=1)
                 Xm = np.array([census_vec(c) for c in iso])
                 pe = loo_ridge(Xe, y, grp)
                 pm = loo_ridge(Xm, y, grp)
