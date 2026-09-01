@@ -98,8 +98,12 @@ def _forces_by_country(w):
 def _line(name, deltas, unit, tier_hint, pop_scale=None):
     """Aggregate one observable's paired deltas across seeds."""
     a = np.array(deltas, dtype=float)
-    mean, sem = float(a.mean()), float(a.std(ddof=1) / max(len(a) - 1, 1) ** 0.5) \
-        if len(a) > 1 else (float(a.mean()), float("inf"))
+    if a.size == 0:
+        return {"observable": name, "unit": unit, "tier": "ABSTAIN",
+                "delta": None, "note": "no snapshot data"}
+    mean = float(a.mean())
+    sem = (float(a.std(ddof=1) / max(len(a) - 1, 1) ** 0.5)
+           if len(a) > 1 else float("inf"))
     if not np.isfinite(sem):
         sem = abs(mean)
     if name in KNOWN_DEFECT:
