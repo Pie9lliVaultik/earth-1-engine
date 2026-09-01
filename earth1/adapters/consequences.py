@@ -145,7 +145,13 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
     def deltas(key, day, sub=None):
         out = []
         for r in runs:
-            a, b = r["scn"]["snaps"].get(day), r["null"]["snaps"].get(day)
+            avail = sorted(r["scn"]["snaps"])
+            use = day if day in r["scn"]["snaps"] else (
+                max([d for d in avail if d <= day], default=avail[-1])
+                if avail else None)
+            if use is None:
+                continue
+            a, b = r["scn"]["snaps"].get(use), r["null"]["snaps"].get(use)
             if a is None or b is None:
                 continue
             va, vb = a.get(key), b.get(key)
@@ -194,10 +200,12 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
     order3.append(_line("collective_surge_onsets_event",
                         deltas("_onsets_event", 180), "onset events",
                         tier_hint))
+    _legdays = [max([d for d in sorted(r["scn"]["snaps"]) if d <= 90],
+                    default=None) for r in runs]
     order3.append(_line("legitimacy_mean",
-                        [float(np.mean(r["scn"]["snaps"][90]["legitimacy"])
-                               - np.mean(r["null"]["snaps"][90]["legitimacy"]))
-                         for r in runs if 90 in r["scn"]["snaps"]],
+                        [float(np.mean(r["scn"]["snaps"][dd]["legitimacy"])
+                               - np.mean(r["null"]["snaps"][dd]["legitimacy"]))
+                         for r, dd in zip(runs, _legdays) if dd],
                         "legitimacy units", tier_hint))
     order3.append(_line("memory_imprint_experience",
                         deltas("_forces", 180,

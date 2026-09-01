@@ -84,6 +84,15 @@ from earth1.api.routes import civilization, branches   # API-COMPLETE-1
 app.include_router(civilization.router)
 app.include_router(branches.router)
 
+# v1 — THE typed ship surface (BIBLE v4.2.2 refinement 9). Fail-open
+# mount: the legacy surface keeps serving if v1 deps are absent.
+try:
+    from earth1.api.v1 import router as _v1_router
+    app.include_router(_v1_router)
+    print("[earth1] v1 ship surface mounted")
+except Exception as _v1e:                                  # noqa: BLE001
+    print(f"[earth1] v1 surface NOT mounted: {_v1e}")
+
 from earth1.api.auth import APIKeyMiddleware
 from earth1.api.metering import BudgetMiddleware
 from earth1.api.middleware import PauseSwitchMiddleware, RateLimitMiddleware
