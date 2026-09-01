@@ -1635,3 +1635,11 @@ All questions route through the multiverse adapter (earth1/adapters/multiverse.p
 real branches via null_branch(), force-distance readout, class noise-floor
 abstention, p_model-only scoring. Class-specific code is limited to the outcome
 injector (data/question_classes.json, one XI.A.2 report per class).
+
+## v4.2.2 — refinement 10 (founder-ruled 2026-09-02)
+Historical birth: `birth(year=T)` resolves every anchor and national input to the
+latest vintage ≤ T (versioned sources resolved; unversioned inputs carried with an
+explicit VINTAGE_MISMATCH flag in the payload); warms on the GDELT archive filtered
+to date ≤ T; mechanically asserts no input, anchor or news item postdates T. The
+historical event battery (HISTORICAL_EVENTS_v1.json) runs forecast-first on this
+capability: freeze output, then fetch judges, score once; misses become named cycles.

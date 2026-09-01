@@ -1,0 +1,187 @@
+{
+ "registered": "2026-09-02",
+ "protocol": "frozen-forecast-then-score (DEV retrodictions; outcomes public; no reruns after judge fetch; misses become named cycles)",
+ "compute": "200k x 16 seeds per event; two in parallel; order: arab_spring, svb_2023, trump_2016 (awaits injector v2), then register order",
+ "events": [
+  {
+   "id": "arab_spring",
+   "T": "2010-12-16",
+   "doors": [
+    "forecast",
+    "consequences"
+   ],
+   "question": "protest onset by country within 90d; regime change within 12m",
+   "judges": [
+    "ACLED/GDELT onsets by country",
+    "regime outcomes (public record)",
+    "UNHCR displacement"
+   ],
+   "prior": "geography partially right (protest-geo rho~0.55 lineage); magnitude under (injector thin); govs weak (legitimacy chain |t|<1.2); displacement wrong-sign risk (migration defect t=-5.1)"
+  },
+  {
+   "id": "gfc_2008",
+   "T": "2008-09-14",
+   "doors": [
+    "consequences"
+   ],
+   "question": null,
+   "judges": [
+    "ILO unemployment",
+    "PIP poverty",
+    "WVS-5to6 trust where mapped"
+   ],
+   "prior": "jobs direction right, low significance (t=+0.7 at 5 reps; 16 seeds may lift); poverty ~0 (cushion); hope WRONG SIGN (KNOWN-DEFECT t=+2.1)"
+  },
+  {
+   "id": "trump_2016",
+   "T": "2016-11-07",
+   "doors": [
+    "forecast",
+    "consequences"
+   ],
+   "question": "winner; state-level direction",
+   "judges": [
+    "result",
+    "polls-at-T",
+    "GDELT post-election protest"
+   ],
+   "prior": "p~0.5 until election injector v2 grounds candidate positions; consequence trust/protest direction plausible; BLOCKED on injector v2"
+  },
+  {
+   "id": "brexit_2016",
+   "T": "2016-06-22",
+   "doors": [
+    "forecast",
+    "consequences"
+   ],
+   "question": "Leave/Remain; regional direction",
+   "judges": [
+    "result",
+    "polls/markets at T",
+    "regional vote"
+   ],
+   "prior": "same as trump_2016: flat until injector v2; regional direction untestable before it"
+  },
+  {
+   "id": "covid_2020",
+   "T": "2020-02-28",
+   "doors": [
+    "consequences"
+   ],
+   "question": null,
+   "judges": [
+    "unemployment",
+    "mobility reports",
+    "trust",
+    "WHO mortality by country"
+   ],
+   "prior": "jobs REAL (t=+2.2 with distress channel); deaths ABSENT (no epidemic channel, KNOWN-DEFECT); mobility unmodeled; trust weak"
+  },
+  {
+   "id": "svb_2023",
+   "T": "2023-03-08",
+   "doors": [
+    "forecast",
+    "consequences"
+   ],
+   "question": "contagion to >=2 further banks within 30d",
+   "judges": [
+    "actual failures (public record)",
+    "FDIC/H.8 deposit flows",
+    "market at T"
+   ],
+   "prior": "UNDER-contagion expected: firm_distress propagates within-country via failures only, no interbank network channel; p_model likely < market"
+  },
+  {
+   "id": "truss_2022",
+   "T": "2022-09-22",
+   "doors": [
+    "forecast",
+    "consequences"
+   ],
+   "question": "PM resignation within 60d",
+   "judges": [
+    "outcome (public record)",
+    "markets at T"
+   ],
+   "prior": "no bond/pension channel -> consequence thin; resignation is political-class with v1 symmetric injector -> ~0.5 or abstain"
+  },
+  {
+   "id": "sri_lanka_2022",
+   "T": "2022-03-31",
+   "doors": [
+    "forecast",
+    "consequences"
+   ],
+   "question": "government fall within 120d",
+   "judges": [
+    "outcome",
+    "ACLED protest",
+    "IMF data"
+   ],
+   "prior": "hardship->protest chain live (dose class): onset direction plausibly right; government-fall chain weak (legitimacy response thin)"
+  },
+  {
+   "id": "chile_2019",
+   "T": "2019-10-17",
+   "doors": [
+    "forecast",
+    "consequences"
+   ],
+   "question": "protest scale; constitutional process",
+   "judges": [
+    "ACLED",
+    "referendum result"
+   ],
+   "prior": "protest scale partially reachable via dose class; constitutional-process institutional chain weak"
+  },
+  {
+   "id": "iran_war_2025",
+   "T": "2025-06-12",
+   "doors": [
+    "consequences"
+   ],
+   "question": null,
+   "judges": [
+    "GDELT protest/rally by country",
+    "oil price pass-through",
+    "displacement"
+   ],
+   "prior": "rally-round-flag UNMODELED (sign risk on domestic protest); oil pass-through partially via trade_shock; displacement sign risk"
+  },
+  {
+   "id": "spacex_ipo",
+   "T": "grounding-dated (FACT rung resolves the date at run time)",
+   "doors": [
+    "consequences"
+   ],
+   "question": null,
+   "judges": [
+    "retail participation",
+    "sentiment",
+    "market data"
+   ],
+   "prior": "retail-sentiment channel unmodeled; consequences expected thin; the FACT rung may resolve the premise (dated or not happened) before any run"
+  },
+  {
+   "id": "jan6_2021",
+   "T": "2021-01-05",
+   "doors": [
+    "consequences"
+   ],
+   "question": null,
+   "judges": [
+    "Pew 2021 trust/polarisation",
+    "ACLED protest"
+   ],
+   "prior": "identity/culture forces exist but no registered polarisation-index judge mapping; expect thin, honest coverage"
+  }
+ ],
+ "leakage_guards": [
+  "birth(T) vintage assert on every source",
+  "news <= T mechanical check",
+  "no national input derived from an estate that is also a judge",
+  "injector grounding uses sources dated <= T",
+  "violation => event VOID"
+ ]
+}
