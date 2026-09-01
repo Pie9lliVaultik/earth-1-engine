@@ -1,0 +1,99 @@
+{
+ "earth1": {
+  "mae_pp": 11.304,
+  "seed_sigma": 0.193
+ },
+ "mrsp": {
+  "mae_pp": 10.431,
+  "seed_sigma": 0.0
+ },
+ "naive": {
+  "mae_pp": 11.33,
+  "seed_sigma": 0.0
+ },
+ "region": {
+  "mae_pp": 9.805,
+  "seed_sigma": 0.0
+ },
+ "excess_vs_mrsp": 0.873,
+ "tier": "MISS",
+ "beats_naive": true,
+ "n_items_scored": 110,
+ "worst5": [
+  {
+   "err_pp": 75.3,
+   "country": "MV",
+   "family": "other"
+  },
+  {
+   "err_pp": 69.0,
+   "country": "ZW",
+   "family": "other"
+  },
+  {
+   "err_pp": 66.8,
+   "country": "SK",
+   "family": "other"
+  },
+  {
+   "err_pp": 66.0,
+   "country": "DE",
+   "family": "other"
+  },
+  {
+   "err_pp": 65.2,
+   "country": "IQ",
+   "family": "other"
+  }
+ ],
+ "best5": [
+  {
+   "err_pp": 0.01,
+   "country": "DE",
+   "family": "other"
+  },
+  {
+   "err_pp": 0.01,
+   "country": "TH",
+   "family": "other"
+  },
+  {
+   "err_pp": 0.01,
+   "country": "IQ",
+   "family": "other"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "TR",
+   "family": "other"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "KZ",
+   "family": "other"
+  }
+ ],
+ "top3_error_cells": [
+  {
+   "family": "other",
+   "region": "Latin America",
+   "income": "UMIC",
+   "share_weighted_mae": 8817.5,
+   "n": 878
+  },
+  {
+   "family": "other",
+   "region": "Middle East/N. Africa",
+   "income": "LMIC",
+   "share_weighted_mae": 6969.3,
+   "n": 644
+  },
+  {
+   "family": "other",
+   "region": "Western Europe",
+   "income": "HIC",
+   "share_weighted_mae": 6571.2,
+   "n": 651
+  }
+ ]
+}

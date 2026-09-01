@@ -1,0 +1,99 @@
+{
+ "earth1": {
+  "mae_pp": 12.18,
+  "seed_sigma": 0.178
+ },
+ "mrsp": {
+  "mae_pp": 11.058,
+  "seed_sigma": 0.0
+ },
+ "naive": {
+  "mae_pp": 12.017,
+  "seed_sigma": 0.0
+ },
+ "region": {
+  "mae_pp": 10.307,
+  "seed_sigma": 0.0
+ },
+ "excess_vs_mrsp": 1.122,
+ "tier": "MISS",
+ "beats_naive": false,
+ "n_items_scored": 468,
+ "worst5": [
+  {
+   "err_pp": 95.4,
+   "country": "BR",
+   "family": "economy"
+  },
+  {
+   "err_pp": 88.8,
+   "country": "UA",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 86.6,
+   "country": "JO",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 78.7,
+   "country": "CN",
+   "family": "other"
+  },
+  {
+   "err_pp": 73.5,
+   "country": "KW",
+   "family": "democracy/governance"
+  }
+ ],
+ "best5": [
+  {
+   "err_pp": 0.01,
+   "country": "BE",
+   "family": "economy"
+  },
+  {
+   "err_pp": 0.01,
+   "country": "RU",
+   "family": "democracy/governance"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "KR",
+   "family": "economy"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "GB",
+   "family": "economy"
+  },
+  {
+   "err_pp": 0.0,
+   "country": "JO",
+   "family": "democracy/governance"
+  }
+ ],
+ "top3_error_cells": [
+  {
+   "family": "other",
+   "region": "Western Europe",
+   "income": "HIC",
+   "share_weighted_mae": 9939.5,
+   "n": 978
+  },
+  {
+   "family": "other",
+   "region": "Eastern Europe",
+   "income": "HIC",
+   "share_weighted_mae": 6934.6,
+   "n": 554
+  },
+  {
+   "family": "other",
+   "region": "Middle East/N. Africa",
+   "income": "LMIC",
+   "share_weighted_mae": 5760.3,
+   "n": 396
+  }
+ ]
+}

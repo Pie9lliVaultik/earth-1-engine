@@ -23,6 +23,28 @@
    "temperature": 1.0,
    "xi_a2_report": null
   },
+  "corporate_earnings": {
+   "injector": {
+    "forces": {
+     "NO": {
+      "desire": -0.1,
+      "fear": -0.1
+     },
+     "YES": {
+      "desire": 0.1,
+      "fear": 0.1
+     }
+    },
+    "persists_days": 60,
+    "scope": "global"
+   },
+   "noise_floor": 0.01645,
+   "owner": "auto",
+   "provisional_from_keywords": [],
+   "status": "provisional_auto",
+   "temperature": 1.0,
+   "xi_a2_report": null
+  },
   "election": {
    "injector": {
     "forces": {
@@ -67,6 +89,28 @@
    "noise_floor_basis": "twin-null 2x mean, 20k/60d, global",
    "owner": "operator",
    "status": "prereg_uncalibrated",
+   "temperature": 1.0,
+   "xi_a2_report": null
+  },
+  "papal_succession": {
+   "injector": {
+    "forces": {
+     "NO": {
+      "desire": -0.1,
+      "fear": -0.1
+     },
+     "YES": {
+      "desire": 0.1,
+      "fear": 0.1
+     }
+    },
+    "persists_days": 60,
+    "scope": "global"
+   },
+   "noise_floor": 0.01645,
+   "owner": "auto",
+   "provisional_from_keywords": [],
+   "status": "provisional_auto",
    "temperature": 1.0,
    "xi_a2_report": null
   },
@@ -116,6 +160,28 @@
    "temperature": 1.0,
    "xi_a2_report": "ops/alive/cycles/cshock.md"
   },
+  "provisional_conditional": {
+   "injector": {
+    "forces": {
+     "NO": {
+      "desire": -0.1,
+      "fear": -0.1
+     },
+     "YES": {
+      "desire": 0.1,
+      "fear": 0.1
+     }
+    },
+    "persists_days": 60,
+    "scope": "global"
+   },
+   "noise_floor": 0.01645,
+   "owner": "auto",
+   "provisional_from_keywords": [],
+   "status": "provisional_auto",
+   "temperature": 1.0,
+   "xi_a2_report": null
+  },
   "rate_decision": {
    "injector": {
     "forces": {
@@ -161,6 +227,28 @@
    "noise_floor_basis": "twin-null 2x mean, 20k/60d, US-scoped",
    "owner": "operator",
    "status": "prereg_uncalibrated",
+   "temperature": 1.0,
+   "xi_a2_report": null
+  },
+  "sports_final": {
+   "injector": {
+    "forces": {
+     "NO": {
+      "desire": -0.1,
+      "fear": -0.1
+     },
+     "YES": {
+      "desire": 0.1,
+      "fear": 0.1
+     }
+    },
+    "persists_days": 60,
+    "scope": "global"
+   },
+   "noise_floor": 0.01645,
+   "owner": "auto",
+   "provisional_from_keywords": [],
+   "status": "provisional_auto",
    "temperature": 1.0,
    "xi_a2_report": null
   }
