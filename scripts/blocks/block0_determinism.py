@@ -56,7 +56,12 @@ def main():
     run_days(w, rng, 15)
     p = os.path.join(OUT, "d2.pkl")
     persistence.save_world(w, p, rng=rng)
-    w2, rng2, _ = persistence.load_world(p)
+    w2, rs, _ = persistence.load_world(p)
+    rng2 = np.random.default_rng()
+    if isinstance(rs, dict):
+        rng2.bit_generator.state = rs
+    elif rs is not None:
+        rng2 = rs
     run_days(w2, rng2, 15)
     w3 = birth_world(POP, SEED, substrate="c2plus_v1")
     run_days(w3, np.random.default_rng(SEED), DAYS)
