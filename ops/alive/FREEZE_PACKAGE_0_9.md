@@ -78,3 +78,13 @@ ops/alive/cycles/cshock.md VERDICT. Opinion level: A-FULL table + per-item map +
 extended-estate replication stand as the registered MISS the B2 campaign continues
 against on this frozen config. Tag: freeze-0.9. Next per B5: 4M pilot sizing → Epoch
 4 birth plan → STOP before any holdout read (founder-witnessed session).
+
+## SIZING FINDING (2026-09-02, registered per founder): the chronicle tax
+First measurement of what a lived-in world costs: a 200k world warmed on 90 days of
+real GDELT news (historical battery) runs its daily tick at **~4–6× the cost of a
+cold world** (16 paired 90d runs: 2h43m+ CPU each vs ~35–40m clean; RSS 7.3GB vs
+~2.5GB). Cause: `chronicle.spread()` performs one adjacency-stream block per active
+memory per tick. **Epoch 4 implication:** the production chronicle grows every day
+the data adapters run, so this tax compounds with age — at 4M agents and months of
+news the current form is untenable. The chronicle-index cycle (bitwise-equivalence
+gated) is therefore a PRE-Epoch-4 requirement, not an optimization nicety.
