@@ -84,6 +84,7 @@ def gdelt_day_aggregates(T: date, warm_days: int = 90):
                           for i in range(warm_days + 1)})
     out = {}
     missing = []
+    skipped_post_T = 0
     for m in need_months:
         zp = os.path.join(GDELT_DIR, f"gdelt_{m}.zip")
         if not os.path.exists(zp):
@@ -101,8 +102,9 @@ def gdelt_day_aggregates(T: date, warm_days: int = 90):
                                  int(cols[1][6:8]))
                     except (ValueError, IndexError):
                         continue
-                    assert d <= T or (_ for _ in ()).throw(
-                        AssertionError(f"news item {d} > T={T}"))
+                    if d > T:
+                        skipped_post_T += 1     # present in archive,
+                        continue                # never consumed
                     if (T - d).days > warm_days:
                         continue
                     try:
@@ -116,8 +118,12 @@ def gdelt_day_aggregates(T: date, warm_days: int = 90):
                         continue
                     key = (d.isoformat(), iso2)
                     out.setdefault(key, [0, 0, 0, 0])[quad - 1] += mentions
+    # the mechanical guarantee: nothing consumed postdates T
+    assert all(date.fromisoformat(k[0]) <= T for k in out), \
+        "leakage: consumed news item postdates T"
     json.dump({"aggs": {f"{k[0]}|{k[1]}": v for k, v in out.items()},
-               "missing": missing}, open(cache, "w"))
+               "missing": missing, "skipped_post_T": skipped_post_T},
+              open(cache, "w"))
     return out, missing
 
 
