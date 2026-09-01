@@ -1,0 +1,677 @@
+estate,item,family,text,n_countries,mae_pp,abstained,median_noise_dist
+wvs_heldout,Q11,other,Should children be encouraged to learn imagination at home?,63,7.63,0,2.22
+wvs_heldout,Q113,democracy/governance,Are state authorities in your country involved in corruption?,61,17.77,0,6.31
+wvs_heldout,Q115,democracy/governance,Are local authorities in your country involved in corruption?,60,12.93,0,3.89
+wvs_heldout,Q117,democracy/governance,Are journalists and the media in your country involved in corruption?,61,12.99,0,3.71
+wvs_heldout,Q12,other,Should children be encouraged to learn tolerance and respect for other people?,63,12.17,0,4.53
+wvs_heldout,Q13,other,"Should children be encouraged to learn thrift, saving money and things?",63,8.47,0,2.7
+wvs_heldout,Q130,democracy/governance,"Should the government let anyone come who wants to, rather than restrict immigration?",62,12.4,0,4.28
+wvs_heldout,Q132,other,Do robberies occur frequently in your neighbourhood?,62,12.87,0,4.73
+wvs_heldout,Q133,other,Is alcohol consumed in the streets in your neighbourhood?,62,17.29,0,6.08
+wvs_heldout,Q134,security,Do police or the military interfere with people's private life in your neighbourhood?,61,7.61,0,3.11
+wvs_heldout,Q135,other,Does racist behaviour occur in your neighbourhood?,62,7.64,0,3.6
+wvs_heldout,Q136,other,Are drugs sold in the streets in your neighbourhood?,62,14.11,0,6.3
+wvs_heldout,Q137,other,Do street violence and fights occur in your neighbourhood?,62,11.35,0,4.51
+wvs_heldout,Q14,other,Should children be encouraged to learn determination and perseverance?,63,10.52,0,3.23
+wvs_heldout,Q141,other,"Have you carried a knife, gun or other weapon for reasons of security?",58,5.9,0,3.13
+wvs_heldout,Q144,security,Have you been the victim of a crime during the past year?,62,4.69,0,2.73
+wvs_heldout,Q15,religion/values,Should children be encouraged to learn religious faith at home?,63,15.7,0,4.87
+wvs_heldout,Q151,security,Would you be willing to fight for your country in a war?,62,12.64,0,4.35
+wvs_heldout,Q158,tech/climate,"Does science and technology make our lives healthier, easier and more comfortable?",62,8.84,0,3.58
+wvs_heldout,Q159,tech/climate,Does science and technology give the next generation more opportunities?,62,7.71,0,2.8
+wvs_heldout,Q16,other,Should children be encouraged to learn unselfishness at home?,63,11.2,0,3.9
+wvs_heldout,Q160,tech/climate,Does science make our way of life change too fast?,62,9.66,0,2.75
+wvs_heldout,Q161,tech/climate,Do we depend too much on science and not enough on faith?,62,8.41,0,2.6
+wvs_heldout,Q163,tech/climate,Is it important for you to know about science in your daily life?,62,10.74,0,4.02
+wvs_heldout,Q165,religion/values,Do you believe in God?,61,11.57,0,3.64
+wvs_heldout,Q166,other,Do you believe in life after death?,61,17.09,0,5.11
+wvs_heldout,Q167,other,Do you believe in hell?,61,21.67,0,7.89
+wvs_heldout,Q168,other,Do you believe in heaven?,61,18.42,0,5.4
+wvs_heldout,Q17,other,Should children be encouraged to learn obedience at home?,63,14.58,0,4.09
+wvs_heldout,Q170,religion/values,Is the only acceptable religion your religion?,62,20.96,0,8.02
+wvs_heldout,Q173,religion/values,Are you a religious person?,63,5.29,0,2.08
+wvs_heldout,Q18,other,Would you object to having drug addicts as neighbours?,63,12.3,0,5.57
+wvs_heldout,Q181,other,Is accepting a bribe justifiable?,63,4.86,0,3.01
+wvs_heldout,Q188,other,Is euthanasia justifiable?,63,11.99,0,4.94
+wvs_heldout,Q189,other,Is it justifiable for a man to beat his wife?,62,4.34,0,2.27
+wvs_heldout,Q19,other,Would you object to having people of a different race as neighbours?,63,9.62,0,3.07
+wvs_heldout,Q190,other,Is it justifiable for parents to beat their children?,63,8.69,0,3.41
+wvs_heldout,Q191,other,Is violence against other people justifiable?,63,4.67,0,2.91
+wvs_heldout,Q192,religion/values,"Is terrorism as a political, ideological or religious means justifiable?",62,4.75,0,2.66
+wvs_heldout,Q193,other,Is casual sex justifiable?,59,13.94,0,6.19
+wvs_heldout,Q195,other,Is the death penalty justifiable?,63,12.41,0,3.24
+wvs_heldout,Q197,democracy/governance,Should the government have the right to monitor all emails and information exchanged on the internet?,62,13.31,0,3.97
+wvs_heldout,Q198,democracy/governance,Should the government have the right to collect information about anyone living in this country without their knowledge?,62,11.26,0,3.69
+wvs_heldout,Q20,other,Would you object to having people who have AIDS as neighbours?,63,19.55,0,6.41
+wvs_heldout,Q200,other,Do you follow politics in the news daily?,63,11.53,0,3.81
+wvs_heldout,Q201,other,Do you get political information from daily newspapers?,63,16.55,0,6.23
+wvs_heldout,Q209,other,Have you signed a petition?,63,13.75,0,4.0
+wvs_heldout,Q21,intl-relations,Would you object to having immigrants or foreign workers as neighbours?,63,10.96,0,3.71
+wvs_heldout,Q210,other,Have you joined in a boycott?,63,13.2,0,3.68
+wvs_heldout,Q211,other,Have you attended a peaceful demonstration?,63,13.9,0,4.56
+wvs_heldout,Q22,religion/values,Would you object to having homosexuals as neighbours?,61,19.94,0,6.98
+wvs_heldout,Q221,democracy/governance,Do you always vote in national elections?,61,11.78,0,4.42
+wvs_heldout,Q236,democracy/governance,"Is having experts, not government, make decisions a good way of governing this country?",63,10.86,0,3.22
+wvs_heldout,Q237,democracy/governance,Is having the army rule a good way of governing this country?,61,14.18,0,4.7
+wvs_heldout,Q238,democracy/governance,Is having a democratic political system a good way of governing this country?,63,7.44,0,3.87
+wvs_heldout,Q239,democracy/governance,"Is having a system governed by religious law, with no political parties or elections, a good way of governing this country?",63,11.66,0,3.36
+wvs_heldout,Q24,other,Would you object to having heavy drinkers as neighbours?,63,15.1,0,5.08
+wvs_heldout,Q25,other,Would you object to having unmarried couples living together as neighbours?,62,17.67,0,7.81
+wvs_heldout,Q250,democracy/governance,Is it important to you to live in a country that is governed democratically?,63,5.87,0,2.97
+wvs_heldout,Q26,other,Would you object to having people who speak a different language as neighbours?,63,8.69,0,2.8
+wvs_heldout,Q28,other,Do children suffer when a mother works for pay?,63,14.02,0,3.37
+wvs_heldout,Q30,other,Is a university education more important for a boy than for a girl?,63,10.79,0,3.55
+wvs_heldout,Q31,religion/values,Do men make better business executives than women do?,63,13.02,0,4.95
+wvs_heldout,Q32,other,Is being a housewife just as fulfilling as working for pay?,63,16.19,0,4.99
+wvs_heldout,Q35,religion/values,Are homosexual couples as good parents as other couples?,63,9.42,0,3.53
+wvs_heldout,Q37,other,Do adult children have a duty to provide long-term care for their parents?,63,12.01,0,4.02
+wvs_heldout,Q47,other,Is your state of health good?,63,10.09,0,2.97
+wvs_heldout,Q49,other,Are you satisfied with your life as a whole?,63,10.89,0,3.7
+wvs_heldout,Q50,economy,Are you satisfied with the financial situation of your household?,63,13.07,0,3.82
+wvs_heldout,Q52,security,"In the past year, have you or your family felt unsafe from crime in your own home?",63,10.36,0,4.08
+wvs_heldout,Q53,other,"In the past year, have you or your family gone without needed medicine or medical treatment?",63,10.01,0,4.07
+wvs_heldout,Q54,economy,"In the past year, have you or your family gone without a cash income?",63,10.07,0,3.39
+wvs_heldout,Q55,other,"In the past year, have you or your family gone without a safe shelter over your head?",63,5.11,0,2.8
+wvs_heldout,Q58,other,Do you trust your family?,63,3.22,0,2.53
+wvs_heldout,Q59,other,Do you trust people in your neighbourhood?,63,11.14,0,3.43
+wvs_heldout,Q60,other,Do you trust people you know personally?,63,8.91,0,3.56
+wvs_heldout,Q61,other,Do you trust people you meet for the first time?,63,7.49,0,2.29
+wvs_heldout,Q62,religion/values,Do you trust people of another religion?,63,9.88,0,3.36
+wvs_heldout,Q63,other,Do you trust people of another nationality?,63,8.92,0,3.26
+wvs_heldout,Q66,other,Do you have confidence in the press?,63,14.4,0,4.55
+wvs_heldout,Q67,other,Do you have confidence in television?,63,15.97,0,5.61
+wvs_heldout,Q7,other,Should children be encouraged to learn good manners at home?,63,13.99,0,4.33
+wvs_heldout,Q70,other,Do you have confidence in the courts?,62,15.91,0,4.72
+wvs_heldout,Q72,other,Do you have confidence in political parties?,63,15.24,0,4.7
+wvs_heldout,Q74,other,Do you have confidence in the civil service?,63,16.65,0,5.69
+wvs_heldout,Q75,other,Do you have confidence in universities?,63,10.87,0,3.42
+wvs_heldout,Q77,other,Do you have confidence in major companies?,63,11.87,0,3.34
+wvs_heldout,Q78,other,Do you have confidence in banks?,63,15.11,0,4.82
+wvs_heldout,Q79,tech/climate,Do you have confidence in environmental organizations?,63,10.77,0,3.49
+wvs_heldout,Q8,other,Should children be encouraged to learn independence at home?,63,10.88,0,3.39
+wvs_heldout,Q80,religion/values,Do you have confidence in women's organizations?,63,11.32,0,3.35
+wvs_heldout,Q81,other,Do you have confidence in charitable or humanitarian organizations?,63,10.42,0,2.81
+wvs_heldout,Q83,other,Do you have confidence in the United Nations?,62,15.07,1,4.49
+wvs_heldout,Q84,other,Do you have confidence in the International Monetary Fund?,62,14.93,1,4.71
+wvs_heldout,Q85,other,Do you have confidence in the International Criminal Court?,62,14.11,1,3.23
+wvs_heldout,Q87,other,Do you have confidence in the World Bank?,61,16.04,1,4.38
+wvs_heldout,Q88,other,Do you have confidence in the World Health Organization?,61,12.27,1,3.88
+wvs_heldout,Q9,other,Should children be encouraged to learn hard work at home?,63,15.57,0,5.17
+wvs_extended,Q100,other,PENDING_FETCH (WVS-7 official codebook),63,5.11,0,2.77
+wvs_extended,Q101,other,PENDING_FETCH (WVS-7 official codebook),63,5.1,0,2.61
+wvs_extended,Q102,other,PENDING_FETCH (WVS-7 official codebook),63,5.06,0,3.57
+wvs_extended,Q103,other,PENDING_FETCH (WVS-7 official codebook),63,5.89,0,3.03
+wvs_extended,Q104,other,PENDING_FETCH (WVS-7 official codebook),63,4.68,0,2.49
+wvs_extended,Q105,other,PENDING_FETCH (WVS-7 official codebook),63,5.29,0,3.17
+wvs_extended,Q107,other,PENDING_FETCH (WVS-7 official codebook),63,10.44,0,3.65
+wvs_extended,Q108,other,PENDING_FETCH (WVS-7 official codebook),63,13.18,0,4.32
+wvs_extended,Q109,other,PENDING_FETCH (WVS-7 official codebook),63,8.73,0,2.3
+wvs_extended,Q110,other,PENDING_FETCH (WVS-7 official codebook),63,9.57,0,2.68
+wvs_extended,Q111,other,PENDING_FETCH (WVS-7 official codebook),63,3.12,0,2.62
+wvs_extended,Q112,other,PENDING_FETCH (WVS-7 official codebook),63,11.37,0,4.92
+wvs_extended,Q114,other,PENDING_FETCH (WVS-7 official codebook),61,14.09,0,4.78
+wvs_extended,Q116,other,PENDING_FETCH (WVS-7 official codebook),61,14.04,0,5.18
+wvs_extended,Q118,other,PENDING_FETCH (WVS-7 official codebook),62,13.73,0,4.72
+wvs_extended,Q119,other,PENDING_FETCH (WVS-7 official codebook),62,9.15,0,2.92
+wvs_extended,Q120,other,PENDING_FETCH (WVS-7 official codebook),62,12.96,0,4.8
+wvs_extended,Q122,other,PENDING_FETCH (WVS-7 official codebook),63,13.64,0,5.23
+wvs_extended,Q123,other,PENDING_FETCH (WVS-7 official codebook),63,12.54,0,4.67
+wvs_extended,Q124,other,PENDING_FETCH (WVS-7 official codebook),63,13.13,0,5.12
+wvs_extended,Q125,other,PENDING_FETCH (WVS-7 official codebook),62,14.32,0,4.55
+wvs_extended,Q126,other,PENDING_FETCH (WVS-7 official codebook),63,13.56,0,4.67
+wvs_extended,Q127,other,PENDING_FETCH (WVS-7 official codebook),63,12.5,0,4.42
+wvs_extended,Q128,other,PENDING_FETCH (WVS-7 official codebook),63,12.96,0,4.5
+wvs_extended,Q129,other,PENDING_FETCH (WVS-7 official codebook),63,14.35,0,4.76
+wvs_extended,Q139,other,PENDING_FETCH (WVS-7 official codebook),61,17.23,0,5.79
+wvs_extended,Q140,other,PENDING_FETCH (WVS-7 official codebook),61,17.57,0,5.84
+wvs_extended,Q143,other,PENDING_FETCH (WVS-7 official codebook),63,11.62,0,4.07
+wvs_extended,Q145,other,PENDING_FETCH (WVS-7 official codebook),62,6.04,0,3.27
+wvs_extended,Q146,other,PENDING_FETCH (WVS-7 official codebook),61,16.16,0,4.82
+wvs_extended,Q147,other,PENDING_FETCH (WVS-7 official codebook),62,15.45,0,5.5
+wvs_extended,Q148,other,PENDING_FETCH (WVS-7 official codebook),60,15.24,0,5.37
+wvs_extended,Q149,other,PENDING_FETCH (WVS-7 official codebook),63,13.48,0,4.7
+wvs_extended,Q150,other,PENDING_FETCH (WVS-7 official codebook),63,11.37,0,3.58
+wvs_extended,Q152,other,PENDING_FETCH (WVS-7 official codebook),63,10.24,0,3.32
+wvs_extended,Q153,other,PENDING_FETCH (WVS-7 official codebook),63,9.54,0,2.64
+wvs_extended,Q154,other,PENDING_FETCH (WVS-7 official codebook),63,10.16,0,3.24
+wvs_extended,Q155,other,PENDING_FETCH (WVS-7 official codebook),63,4.86,0,1.31
+wvs_extended,Q156,other,PENDING_FETCH (WVS-7 official codebook),63,8.02,0,2.8
+wvs_extended,Q157,other,PENDING_FETCH (WVS-7 official codebook),63,5.76,0,1.53
+wvs_extended,Q162,other,PENDING_FETCH (WVS-7 official codebook),62,12.53,0,3.96
+wvs_extended,Q174,other,PENDING_FETCH (WVS-7 official codebook),62,14.88,0,5.22
+wvs_extended,Q175,other,PENDING_FETCH (WVS-7 official codebook),62,16.45,0,5.62
+wvs_extended,Q202,other,PENDING_FETCH (WVS-7 official codebook),63,9.12,0,3.61
+wvs_extended,Q203,other,PENDING_FETCH (WVS-7 official codebook),63,15.57,0,5.42
+wvs_extended,Q204,other,PENDING_FETCH (WVS-7 official codebook),63,13.93,0,3.62
+wvs_extended,Q205,other,PENDING_FETCH (WVS-7 official codebook),63,10.28,0,3.07
+wvs_extended,Q206,other,PENDING_FETCH (WVS-7 official codebook),63,13.25,0,3.79
+wvs_extended,Q207,other,PENDING_FETCH (WVS-7 official codebook),62,12.97,0,3.86
+wvs_extended,Q208,other,PENDING_FETCH (WVS-7 official codebook),63,10.3,0,3.27
+wvs_extended,Q212,other,PENDING_FETCH (WVS-7 official codebook),63,13.32,0,4.5
+wvs_extended,Q213,other,PENDING_FETCH (WVS-7 official codebook),63,16.27,0,5.46
+wvs_extended,Q214,other,PENDING_FETCH (WVS-7 official codebook),63,15.9,0,5.26
+wvs_extended,Q215,other,PENDING_FETCH (WVS-7 official codebook),61,13.15,0,4.82
+wvs_extended,Q216,other,PENDING_FETCH (WVS-7 official codebook),63,14.7,0,4.52
+wvs_extended,Q217,other,PENDING_FETCH (WVS-7 official codebook),62,11.89,0,3.04
+wvs_extended,Q218,other,PENDING_FETCH (WVS-7 official codebook),61,12.53,0,3.67
+wvs_extended,Q219,other,PENDING_FETCH (WVS-7 official codebook),60,11.35,0,2.67
+wvs_extended,Q220,other,PENDING_FETCH (WVS-7 official codebook),60,10.34,0,3.0
+wvs_extended,Q224,other,PENDING_FETCH (WVS-7 official codebook),62,13.06,0,4.32
+wvs_extended,Q225,other,PENDING_FETCH (WVS-7 official codebook),62,8.96,0,2.69
+wvs_extended,Q226,other,PENDING_FETCH (WVS-7 official codebook),58,12.12,0,4.15
+wvs_extended,Q227,other,PENDING_FETCH (WVS-7 official codebook),62,17.78,0,5.23
+wvs_extended,Q228,other,PENDING_FETCH (WVS-7 official codebook),62,10.31,0,2.83
+wvs_extended,Q229,other,PENDING_FETCH (WVS-7 official codebook),62,12.02,0,3.66
+wvs_extended,Q230,other,PENDING_FETCH (WVS-7 official codebook),62,17.96,0,6.22
+wvs_extended,Q231,other,PENDING_FETCH (WVS-7 official codebook),62,12.29,0,3.8
+wvs_extended,Q232,other,PENDING_FETCH (WVS-7 official codebook),62,9.04,0,3.34
+wvs_extended,Q233,other,PENDING_FETCH (WVS-7 official codebook),62,10.55,0,4.12
+wvs_extended,Q234,other,PENDING_FETCH (WVS-7 official codebook),62,7.02,0,3.06
+wvs_extended,Q241,other,PENDING_FETCH (WVS-7 official codebook),63,11.42,0,3.1
+wvs_extended,Q242,other,PENDING_FETCH (WVS-7 official codebook),63,10.11,0,3.24
+wvs_extended,Q243,other,PENDING_FETCH (WVS-7 official codebook),63,8.9,0,3.36
+wvs_extended,Q244,other,PENDING_FETCH (WVS-7 official codebook),63,11.29,0,4.44
+wvs_extended,Q245,other,PENDING_FETCH (WVS-7 official codebook),61,11.62,0,4.13
+wvs_extended,Q246,other,PENDING_FETCH (WVS-7 official codebook),63,9.73,0,3.35
+wvs_extended,Q247,other,PENDING_FETCH (WVS-7 official codebook),63,11.19,0,3.28
+wvs_extended,Q248,other,PENDING_FETCH (WVS-7 official codebook),63,14.72,0,5.21
+wvs_extended,Q249,other,PENDING_FETCH (WVS-7 official codebook),63,8.75,0,3.17
+wvs_extended,Q251,other,PENDING_FETCH (WVS-7 official codebook),63,15.53,0,4.5
+wvs_extended,Q252,other,PENDING_FETCH (WVS-7 official codebook),62,16.32,0,4.46
+wvs_extended,Q253,other,PENDING_FETCH (WVS-7 official codebook),63,16.37,0,5.91
+wvs_extended,Q255,other,PENDING_FETCH (WVS-7 official codebook),62,4.41,0,2.5
+wvs_extended,Q256,other,PENDING_FETCH (WVS-7 official codebook),61,7.44,0,2.99
+wvs_extended,Q257,other,PENDING_FETCH (WVS-7 official codebook),63,8.01,0,3.32
+wvs_extended,Q258,other,PENDING_FETCH (WVS-7 official codebook),63,15.44,0,5.84
+wvs_extended,Q259,other,PENDING_FETCH (WVS-7 official codebook),63,12.93,0,3.82
+wvs_extended,Q33,other,PENDING_FETCH (WVS-7 official codebook),63,15.59,0,5.83
+wvs_extended,Q34,other,PENDING_FETCH (WVS-7 official codebook),63,10.2,0,4.13
+wvs_extended,Q38,other,PENDING_FETCH (WVS-7 official codebook),63,11.25,0,4.99
+wvs_extended,Q39,other,PENDING_FETCH (WVS-7 official codebook),63,9.24,0,2.88
+wvs_extended,Q40,other,PENDING_FETCH (WVS-7 official codebook),63,11.19,0,4.14
+wvs_extended,Q41,other,PENDING_FETCH (WVS-7 official codebook),63,11.91,0,4.17
+wvs_extended,Q42,other,PENDING_FETCH (WVS-7 official codebook),63,8.9,0,3.54
+wvs_extended,Q43,other,PENDING_FETCH (WVS-7 official codebook),63,16.4,0,4.63
+wvs_extended,Q44,other,PENDING_FETCH (WVS-7 official codebook),63,4.44,0,2.59
+wvs_extended,Q45,other,PENDING_FETCH (WVS-7 official codebook),63,9.96,0,4.09
+wvs_extended,Q56,other,PENDING_FETCH (WVS-7 official codebook),63,10.68,0,3.12
+wvs_extended,Q82,other,PENDING_FETCH (WVS-7 official codebook),59,15.18,0,4.22
+wvs_extended,Q89,other,PENDING_FETCH (WVS-7 official codebook),61,13.81,0,3.41
+wvs_extended,Q90,other,PENDING_FETCH (WVS-7 official codebook),62,11.2,0,3.85
+wvs_extended,Q91,other,PENDING_FETCH (WVS-7 official codebook),62,12.35,0,3.32
+wvs_extended,Q92,other,PENDING_FETCH (WVS-7 official codebook),62,9.56,0,2.67
+wvs_extended,Q93,other,PENDING_FETCH (WVS-7 official codebook),59,6.22,0,2.28
+wvs_extended,Q94,other,PENDING_FETCH (WVS-7 official codebook),63,9.59,0,3.99
+wvs_extended,Q95,other,PENDING_FETCH (WVS-7 official codebook),63,6.58,0,2.73
+wvs_extended,Q96,other,PENDING_FETCH (WVS-7 official codebook),63,5.75,0,3.04
+wvs_extended,Q97,other,PENDING_FETCH (WVS-7 official codebook),63,5.73,0,2.81
+wvs_extended,Q98,other,PENDING_FETCH (WVS-7 official codebook),63,6.86,0,4.19
+wvs_extended,Q99,other,PENDING_FETCH (WVS-7 official codebook),63,5.36,0,2.8
+goqa_dev,005781341e57,religion/values,"Please tell me whether you completely agree, mostly agree, mostly disagree, or completely disagree with the following statements...Women sho",15,21.47,0,
+goqa_dev,0063b02139b3,democracy/governance,"I'm going to describe various types of political systems and ask what you think about each as a way of governing our country. For each one, ",36,11.26,0,
+goqa_dev,0241b6173679,religion/values,"How likely do you think it is that women in our country will eventually have the same rights as men – very likely, somewhat likely, not too ",32,10.74,0,
+goqa_dev,0377f197090b,democracy/governance,"Now I will read a list of some things that have happened in the world recently. For each one,please tell me if you've heard of it or not...t",12,25.94,1,
+goqa_dev,03c55eef9379,other,"Do you think a way can be found for Israel and an independent Palestinian state to coexist peacefully with each other, or not?",12,11.53,0,
+goqa_dev,043e1926cdf1,democracy/governance,"For each, tell me how much confidence you have in each leader to do the right thing regarding world affairs – a lot of confidence, some conf",16,5.72,1,
+goqa_dev,04c587f0ad67,security,"Some people say the following things are important to them. On a scale of 0 to 10, how important is each thing to you personally, where 0 me",30,1.38,0,
+goqa_dev,06253d89e9a5,tech/climate,"(Now I am going to read you a list of things that may be problems in our country. As I read each one, please tell me if you think it is a ve",8,5.87,0,
+goqa_dev,064e6cff15e9,democracy/governance,For each one please tell me if you think the your nationality government should make decisions about this issue for ...  b. migration of EU ,9,6.13,1,
+goqa_dev,067fcb13cf3b,other,Do you think this change in the availability of food in stores is largely because of the way the world has become more connected or mostly f,27,12.0,0,
+goqa_dev,0684487f8e2d,economy,"I'd like your opinion about some possible international concerns for your country. Do you think that ___ is a major threat, a minor threat, ",14,7.88,0,
+goqa_dev,078775197ed7,other,Some say that most people who don't succeed in life fail because of society's failures. Others say that most people who don't succeed do so ,28,17.87,0,
+goqa_dev,0885d6856c71,tech/climate,"On another topic, in your view, is global climate change a very serious problem, somewhat serious, not too serious, or not a problem?",35,7.0,0,
+goqa_dev,0956372b00d5,economy,your country is negotiating a free-trade agreement with [U.S.: countries in the Asian-Pacific region / All others: the United States and oth,9,9.8,1,
+goqa_dev,09f65775b679,democracy/governance,"Here is a list of statements. For each one, please tell me whether you completely agree, mostly agree, mostly disagree or completely disagre",27,10.7,0,
+goqa_dev,0a93671f06f3,tech/climate,"How likely or unlikely do you think it is that, in the future, a cyberattack will result in the following situation? a. Public infrastructur",25,9.25,0,
+goqa_dev,0af180af5029,other,"Some people say the following things are important to them. On a scale of 0 to 10, how important is each thing to you personally, where 0 me",30,7.1,0,
+goqa_dev,0afa31a7611f,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...French President Jac",8,14.61,1,
+goqa_dev,0b0dbbadbdf3,other,"In your opinion, compared with a few years ago, is the U.S. doing more to help address major global problems, doing less, or about the same?",25,11.67,0,
+goqa_dev,0b40b1cff24b,democracy/governance,Do you think people should be able to say these types of things publically OR the government should be able to prevent people from saying th,35,16.84,0,
+goqa_dev,0bac2929be29,other,"I’d like your opinion about some possible international concerns for your country. Do you think that ____ is a major threat, a minor threat ",35,15.59,1,
+goqa_dev,0bb31d524a3b,other,Please tell me if you approve or disapprove of the way President Barack Obama is dealing with...the situation in Afghanistan.,23,18.21,1,
+goqa_dev,0bcd9f6b4213,democracy/governance,"All in all, do you think it is a good idea or a bad idea for the government to more strictly regulate the way large financial companies, suc",8,13.47,0,
+goqa_dev,0c26d13c1b63,democracy/governance,"How much of a danger is the current government in...Syria to stability in the Middle East and world peace? A great danger, moderate danger, ",15,12.79,0,
+goqa_dev,0c61e8764b8b,democracy/governance,"For each of the following issues, how likely are you personally to take political action on it, such as contact an elected official or parti",13,10.21,0,
+goqa_dev,0d23fca9b3e1,tech/climate,Please tell me if you approve or disapprove of the way President Barack Obama is dealing with...climate change.,38,16.56,1,
+goqa_dev,0d9bef474a93,intl-relations,"Which statement comes closer to your own views, even if neither is exactly right?...The U.S. accepts that China will eventually be as powerf",15,15.29,0,
+goqa_dev,0da57561b65d,democracy/governance,"For each, tell me how much confidence you have in each leader to do the right thing regarding world affairs — a lot of confidence, some conf",37,10.79,0,
+goqa_dev,0dd3d5390ee3,other,"How concerned, if at all, are you about extremism in the name of Islam in our country these days? Are you very concerned, somewhat concerned",12,7.25,0,
+goqa_dev,0e8ee6977aff,intl-relations,"In general, how would you describe relations today between the United States and your country? Would you say they are very good, somewhat go",30,16.09,0,
+goqa_dev,0eb49eb22f47,intl-relations,"Please tell me how closely you follow each type of news. Do you follow ____ very closely, somewhat closely, not very closely or not at all c",35,13.04,0,
+goqa_dev,0fc53e3927f9,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...[Pakistani President",8,13.16,1,
+goqa_dev,0fd554375593,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",36,12.21,1,
+goqa_dev,10b98935f5c1,other,"I'm going to read a list of some changes that have taken place. Please tell me if you think each one has been a change for the better, a cha",27,15.6,0,
+goqa_dev,1268ca553ff1,other,Some people say that the following things are important for being truly your nationality. Others say they are not important. How important d,12,2.68,0,
+goqa_dev,146e5f30314d,intl-relations,Which of these characteristics do you associate with people in Western countries such as the United States and Europe?...Generous...Do you a,10,14.36,0,
+goqa_dev,15456e304b79,other,"I'd like you to rate some different groups of people in your country according to how you feel about them.  For each group, please tell me w",16,16.61,0,
+goqa_dev,15edfe605243,security,"Which comes closer to describing your view?...I favor the US-led efforts to fight terrorism, OR I oppose the US-led efforts to fight terrori",44,22.23,0,
+goqa_dev,169338bd50fd,democracy/governance,Do you think the government of ____ respects the personal freedoms of its people or don’t you think so? a. China,52,11.37,0,
+goqa_dev,16efb6420f0b,democracy/governance,"According to news reports, the American government has been monitoring communications, such as emails and phone calls, in the U.S. and many ",40,9.4,0,
+goqa_dev,17047e531aab,economy,Does Statement #1 or Statement #2 comes closer to your own views: a. refugees make our country stronger because of their work and talents OR,10,16.79,0,
+goqa_dev,17890ef36391,democracy/governance,"Does our government cooperate too much, not enough, or about the right amount with the United States government?",19,11.56,0,
+goqa_dev,18566aa09ad7,economy,Please tell me whether you think the following statements apply to the United Nations or not. The United Nations… b. Promotes economic devel,14,4.27,1,
+goqa_dev,197c907cd9bf,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",18,22.65,1,
+goqa_dev,1b8c869b6c09,security,"If Iran were to develop nuclear weapons, do you think they would be likely to...provide nuclear weapons to terrorist organizations, or not?",12,10.84,0,
+goqa_dev,1bc2e9ad588f,intl-relations,"And what about the following countries or organizations, how would you rate the kind of influence they are having on the way things are goin",13,10.38,1,
+goqa_dev,1be9b7737eef,democracy/governance,"In general, would you say the government is run for the benefit of all the people in your country or is it run for the benefit of only a few",11,10.18,0,
+goqa_dev,1d40db4c498f,intl-relations,"Now that Donald Trump is the president of the United States, over the next few years do you think that relations between your country and th",35,13.06,1,
+goqa_dev,1df60d6a947f,democracy/governance,"(For each, tell me how much confidence you have in each leader to do the right thing regarding world affairs — a lot of confidence, some con",35,13.66,0,
+goqa_dev,1fab3598b49d,other,Please tell me whether the FIRST statement or the SECOND statement comes closer to your own views — even if neither is exactly right. a. Imm,17,14.23,0,
+goqa_dev,1fe61da9dc89,other,"Starting in late 1989, we changed from a country where there was just one party to a country with a multiparty system. Overall, do you stron",9,13.47,0,
+goqa_dev,21855a4939ef,other,Which of these statements comes closer to your view? your country should deal with its own problems and let other countries deal with their ,16,30.71,0,
+goqa_dev,21b2f08e9327,other,"Thinking about yourself, how confident are you that you will have an adequate standard of living in your old age - very confident, somewhat ",20,15.63,0,
+goqa_dev,22b3669af143,religion/values,"What is more to blame for this controversy (about the publication of cartoons with the image of the prophet Muhammad), Western nations' disr",10,7.73,0,
+goqa_dev,24c088f30341,economy,"Now thinking about our country, overall do you think that China's growing economy is a good thing or a bad thing for our country?",16,0.1,0,
+goqa_dev,251c52452e15,democracy/governance,"Here is a list of groups, organizations and institutions. For each, please tell me what kind of influence the group is having on the way thi",47,16.64,0,
+goqa_dev,25877cf5b2b3,other,Please tell me if you approve or disapprove of the way President Barack Obama is dealing with...the calls for political change in countries ,20,18.04,1,
+goqa_dev,25a8e59d1775,economy,And how good a job is French President Nicolas Sarkozy doing in dealing with the European economic crisis? Is French President Nicolas Sarko,8,16.07,1,
+goqa_dev,2687a4afd837,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",37,7.93,0,
+goqa_dev,26bdfd67b377,intl-relations,"Here is a list of groups, organizations and institutions. For each, please tell me what kind of influence the group is having on the way thi",38,11.44,0,
+goqa_dev,28cedfbecdab,democracy/governance,"Who should bear the greatest responsibility for people's economic wellbeing in their old age - their families, the government or themselves?",20,12.33,0,
+goqa_dev,28d0b427cde7,intl-relations,Overall do you think it would be a good thing or a bad thing if China were to become as powerful militarily as the US?,21,11.27,0,
+goqa_dev,293c201abff9,democracy/governance,I am going to read you a list of things that the government might do to improve public health and health care in our country.  As I read eac,26,4.54,0,
+goqa_dev,2985568b4571,intl-relations,"Please tell me what kind of influence the group is having on the way things are going in your country. Is the influence of media-such as tv,",48,12.29,0,
+goqa_dev,298d35f92f95,other,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",31,10.92,0,
+goqa_dev,29cb0dd7f7ad,religion/values,Which of these characteristics do you associate with Americans? Do you associate immoral with Americans or not?,14,8.17,0,
+goqa_dev,2a2d5fc92907,economy,"Would you say that each of the following is doing a very good, somewhat good, somewhat bad, or very bad job dealing with global climate chan",16,5.55,1,
+goqa_dev,2a4056cd3157,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or very unfavorable opinion of ____. c. Alternative fo",24,14.27,0,
+goqa_dev,2a7b9a298ab7,other,"Have you ever learned that someone’s political beliefs were different than you thought they were, based on something they posted on a social",23,13.15,0,
+goqa_dev,2adbb82dcba9,other,Has each of the following gotten better or worse over the last five years in our country: the spread of diseases.,27,13.64,0,
+goqa_dev,2baa3a34715b,other,"I am going to read you a list of things that might be important for getting ahead in life. On a scale of 0 to 10, in your opinion, how impor",41,12.6,0,
+goqa_dev,2c336f980eeb,economy,"Thinking about the future of your country, please tell me whether you feel generally optimistic or generally pessimistic about the following",32,14.16,0,
+goqa_dev,2c7d95a54235,other,(Which country does the most to help countries that have experienced natural disasters?)...And which country would you name next?,14,8.45,0,
+goqa_dev,2e6eeb8d7105,other,"Which side do you identify with more in this struggle, the groups who want to modernize the country or Islamic fundamentalists?",12,16.47,0,
+goqa_dev,2e99a9fc9179,democracy/governance,"As I read another list of statements, for each one, please tell me whether you completely agree, mostly agree, mostly disagree or completely",37,9.6,0,
+goqa_dev,2f34b6bd9fb5,other,"Some people say the following things are important to them. On a scale of 0 to 10, how important is each thing to you personally, where 0 me",30,3.62,0,
+goqa_dev,2f435a2cbcb9,other,Do you watch an international news channel ?,27,14.84,0,
+goqa_dev,2fb29fcfd0a5,other,I'd like you to rate some different groups of people in your country according to how you feel about them. Please tell me whether your opini,16,10.09,0,
+goqa_dev,304c386f66e7,intl-relations,Do you think the European Union ____? d. understands the needs of your nationality citizens,10,40.27,1,
+goqa_dev,307c9271073d,other,"In your country today, when it comes to ____ do you think …? d. Expressing their political views",32,11.22,0,
+goqa_dev,31662873a4fd,intl-relations,"Which of the following statements comes closer to your view, even if neither is exactly right? Improving human rights around the world shoul",22,22.75,0,
+goqa_dev,31bfb759d3b7,economy,"In general, what kind of influence has the increasing use of the Internet in our country had on each of the following things. Has the increa",30,12.55,0,
+goqa_dev,31f968cba849,other,"Some people say the following things are important to them. On a scale of 0 to 10, how important is each thing to you personally, where 0 me",30,1.93,0,
+goqa_dev,324d049463e9,other,Has each of the following gotten better or worse over the last five years in our country: the availability of food in stores.,27,13.25,0,
+goqa_dev,329de88ac535,democracy/governance,I'd like your opinion about the effectiveness of different ways of trying to influence what the government does. How effective is it to...pa,29,15.18,0,
+goqa_dev,32e41323e0ad,security,"Here is a list of things that may be problems in our country. As I read each one, please tell me if you think it is a very big problem, a mo",9,6.88,0,
+goqa_dev,33498d9cdf29,religion/values,"Which one of the religions that I name do you think of as most violent--Christianity, Islam, Judaism or Hinduism?",22,19.94,0,
+goqa_dev,344c70d61e17,other,"Please tell me whether you completely agree, mostly agree, mostly disagree, or completely disagree with the statement...I feel more solidari",9,8.86,0,
+goqa_dev,34af5897e427,democracy/governance,If the your country government used torture against people suspected of terrorism to try to gain information about possible attacks in our c,35,13.21,0,
+goqa_dev,34bbf8b38e5d,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or very unfavorable opinion of the European Commission",10,8.37,1,
+goqa_dev,35b50d4eab4b,other,"Which comes closer to describing your view?...I like American ways of doing business, OR I dislike American ways of doing business",45,16.47,0,
+goqa_dev,35ba14b750b9,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...India",36,14.67,0,
+goqa_dev,35bc013b241b,democracy/governance,"Here is a list of several statements about the role of religion here and elsewhere. For each statement, please tell me whether you completel",8,15.3,0,
+goqa_dev,371dc75f7689,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",19,11.08,0,
+goqa_dev,3739640ccee1,other,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",31,16.19,0,
+goqa_dev,376165562ef1,intl-relations,"Now I'm going to read you a list of countries.  For each one, please tell me whether you would favor or oppose admitting it into the Europea",11,6.94,1,
+goqa_dev,37be13018493,intl-relations,"In your opinion, do United States policies increase the gap between rich and poor countries, lessen the gap between rich and poor countries,",37,12.16,0,
+goqa_dev,3a94b6c38791,other,"I'd like to ask your opinion about some international issues.  Please tell me how concerned you are, if at all, about each of them - are you",37,10.97,0,
+goqa_dev,3ad993516b81,other,"Thinking about the issue of HIV/AIDS in our country, do you think HIV/AIDS is a bigger or a smaller problem now than it was 5 years ago, or ",35,17.07,0,
+goqa_dev,3bd0b3f97b61,other,"As I read another list of statements, for each one, please tell me whether you completely agree, mostly agree, mostly disagree or completely",37,14.73,0,
+goqa_dev,3c329b56f1f7,intl-relations,"And what about the following countries or organizations, how would you rate the kind of influence they are having on the way things are goin",12,13.12,0,
+goqa_dev,3c3ddcecaf4f,other,Which of these characteristics do you associate with Americans? Do you associate ____ with Americans or not? c. greedy,21,11.29,0,
+goqa_dev,3c82f603b403,other,"Does this statement describe your country very well, somewhat well, not too well, or not well at all? f. The rights of people to express the",25,13.28,0,
+goqa_dev,3d8b2d32b7f9,security,Now I'm going to read you some statements about what President Barack Obama might do in the future. Do you think he will seek international ,20,14.53,1,
+goqa_dev,3e47afbe507d,other,"Regardless of how you feel about the protests, were you sympathetic to Muslims who were offended by these cartoons, or not?",11,15.21,0,
+goqa_dev,40c9ddf1464b,economy,"When it comes to our country’s economy, how much influence do you think the United States is having on economic conditions in your country—a",14,8.64,0,
+goqa_dev,40e20bc0d4a1,democracy/governance,Would you like U.S. President Barack Obama to be reelected or not?,19,11.95,1,
+goqa_dev,417e7611aaf9,economy,"Please tell me whether you completely agree, mostly agree, mostly disagree, or completely disagree with the following statements...When jobs",35,11.61,0,
+goqa_dev,41c568bf0753,intl-relations,"Please tell me what kind of influence the group is having on the way things are going in your country. Is the influence of ____ very good, s",8,14.88,0,
+goqa_dev,41cdec4d4dbd,other,"Which of the following phrases comes closer to your view?  It's good that American ideas and customs are spreading here, OR it's bad that Am",49,15.38,0,
+goqa_dev,42240d2a58e1,other,"Thinking about immigration, would you support or oppose your country ____? c. encouraging highly skilled people to immigrate and work in you",14,11.98,0,
+goqa_dev,4368c11e316f,other,"On a scale of 0 to 10 how satisfied are you with each of the following items, where 0 means you are very dissatisfied and 10 means you are v",30,10.73,0,
+goqa_dev,43e7da848a6d,other,"I'd like your opinion about some possible international concerns for your country. What if Iran developed nuclear weapons, would this be a m",14,11.53,0,
+goqa_dev,4421b2e0dfb7,other,"In your opinion, are there any serious threats to Islam today?",10,15.55,0,
+goqa_dev,44254abd66f5,other,Please tell me whether you think the following describes U.S. President Donald Trump. Do you think of Donald Trump as ____? f. caring about ,35,14.08,1,
+goqa_dev,44cb21c434e7,other,"Do have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of Japanese Prime Minister Shinzo Abe?",12,27.27,1,
+goqa_dev,44d355b3e0e5,other,How much responsibility should each of the following have in making sure that the your nationality workforce has the right skills and educat,8,2.76,0,
+goqa_dev,45466a9404d5,democracy/governance,Which statement comes closer to your own views - even if neither is exactly right…Most government officials care what people like me think o,44,9.06,0,
+goqa_dev,456b21e8165b,democracy/governance,"How satisfied are you with the way democracy is working in the public – very satisfied, somewhat satisfied, not too satisfied, or not at all",16,11.8,0,
+goqa_dev,489330ebd375,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...the Chinese",19,16.65,0,
+goqa_dev,48adaa36ac83,intl-relations,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...China",58,16.05,0,
+goqa_dev,493899430159,democracy/governance,"Which statement comes closest to your view, even if none are exactly right? Democracy in the United States...",16,5.99,0,
+goqa_dev,49a9a5d4638b,intl-relations,"Now I'm going to read you a list of countries.  For each one, please tell me whether you would favor or oppose admitting it into the Europea",11,13.8,1,
+goqa_dev,4d0ee60998e1,religion/values,"Do you personally believe that gambling is morally acceptable, morally unacceptable, or is it not a moral issue?",37,9.61,0,
+goqa_dev,4d1e120e1f09,other,Suppose a young person who wanted to leave this country asked you to recommend where to go to lead a good life - what country would you reco,14,8.64,0,
+goqa_dev,4d4a983de509,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",12,23.82,1,
+goqa_dev,4dd8a564d275,other,(Please tell me how confident you are that the following organizations or groups will help solve the major problems in our country. Are you ,8,8.0,0,
+goqa_dev,4e99ebd367e7,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",51,19.97,1,
+goqa_dev,4f3659ccf2db,other,"I am going to read you a list of things people do on cell phones, other than making calls. For each, please tell me if this is something you",36,13.73,0,
+goqa_dev,4f89b3c80b07,intl-relations,"I’d like your opinion about some possible international concerns. Do you think that ____ is a major threat, a minor threat or not a threat t",12,12.94,0,
+goqa_dev,4ff9d4219a9d,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or very unfavorable opinion of the European Parliament",10,7.4,1,
+goqa_dev,503987f8e057,democracy/governance,"I'm going to describe various types of political systems and ask what you think about each as a way of governing our country. For each one, ",36,9.48,0,
+goqa_dev,508dee230a95,democracy/governance,"For each, tell me how much confidence you have in each leader to do the right thing regarding world affairs — a lot of confidence, some conf",43,14.48,1,
+goqa_dev,522cf77ed42b,democracy/governance,"As I read some proposed policies of U.S. President Joe Biden, please tell me if you approve or disapprove of each one. c. The U.S. hosting a",15,2.96,1,
+goqa_dev,527296dee985,economy,"Thinking about the public, would you say each of the following aspects needs to be completely reformed, needs major changes, needs minor cha",16,13.07,0,
+goqa_dev,52ec7e0d2209,religion/values,Which of the following statements comes closest to your opinion? It is not necessary to believe in God in order to be moral and have good va,32,12.37,0,
+goqa_dev,5496943daffb,other,"Some people say the following things are important to them. On a scale of 0 to 10, how important is each thing to you personally, where 0 me",30,6.79,0,
+goqa_dev,54ee4e949b45,other,"I’d like your opinion about some possible international concerns. Do you think that ____ is a major threat, a minor threat or not a threat t",12,14.53,0,
+goqa_dev,5506ef2eb5f5,intl-relations,I'd like your opinion about some possible international concerns for your country. Do you think that China's power and influence is a major ,37,12.28,0,
+goqa_dev,554f7eb27b21,other,I am going to list some different political and social actions that people can take. Have you done this ...  a. attended a political campaig,13,13.62,0,
+goqa_dev,55ede95f91af,other,Which of these characteristics do you associate with Americans? Do you associate ____ with Americans or not? a. violent,21,8.74,0,
+goqa_dev,55edecf698cf,economy,"In your country today, when it comes to ____ do you think …? c. Getting high-paying jobs",32,10.88,0,
+goqa_dev,56928a2d2c99,democracy/governance,I am going to list some different political and social actions that people can take. Have you done this ...  c. voted in an election,13,9.44,0,
+goqa_dev,573286aee0a9,economy,"When children today in the public grow up, do you think they will be better off or worse off financially than their parents?",16,8.26,0,
+goqa_dev,57408257c459,other,"As I read some proposed policies of President Donald Trump, please tell me if you approve or disapprove of each one. e. introduce tighter re",35,15.99,1,
+goqa_dev,57c673aa0a71,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",58,15.21,1,
+goqa_dev,58cae03532fd,other,Do you think this is a good thing or a bad thing for your country?,25,1.78,0,
+goqa_dev,58f2d49bee93,other,I'd like you to rate some different groups of people in your country according to how you feel about them. Please tell me whether your opini,16,20.38,0,
+goqa_dev,58fc8e31984f,tech/climate,"How concerned are you, if at all, that global climate change will harm you personally at some point in your lifetime? Are you very concerned",43,8.37,0,
+goqa_dev,592d229d259d,other,"How concerned, if at all, are you about the rise of Islamic extremism around the WORLD these days? Are you very concerned, somewhat concerne",18,9.55,0,
+goqa_dev,599965101ed7,intl-relations,"Thinking about our relations with Russia, in your view, which is more important?",10,14.52,0,
+goqa_dev,5a70c1a0aa33,other,"Thinking about some countries around the world...Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or ve",19,9.1,0,
+goqa_dev,5ab54ca58433,other,"Thinking about your country as a whole, do you think this country is now more united or more divided than before the coronavirus outbreak?",14,14.09,0,
+goqa_dev,5ba0573393f1,other,"I'd like your opinion about some possible international concerns for your country. Do you think that ____ is a major threat, a minor threat ",25,9.01,0,
+goqa_dev,5c27d9595ac5,democracy/governance,"Now I’m going to read a list of political leaders. For each, tell me how much confidence you have in each leader to do the right thing regar",53,15.04,0,
+goqa_dev,5d0301afe773,other,"Now turning to the world situation, here is a list of five dangers in the world today.  In your opinion, which one of these poses the greate",50,12.46,0,
+goqa_dev,5d310ad15bb1,economy,"Which statement comes closer to your view about your country’s involvement in the global economy, even if neither is exactly right? It is a ",18,15.73,0,
+goqa_dev,5d75a7761c53,other,Did the US and its allies try very hard to avoid civilian casualties in Iraq or didn't they try hard enough?,15,16.14,0,
+goqa_dev,5db360c7d1a7,tech/climate,Which one of the following countries would you trust most to do the right thing in protecting the world's environment?,21,18.47,0,
+goqa_dev,5dc965c7082d,intl-relations,"In general, what kind of influence has the increasing use of the Internet in our country had on each of the following things. Has the increa",30,7.63,0,
+goqa_dev,5e732a6a7059,security,"In your opinion, how many Europeans do you think are hostile toward Muslims - would you say most, many, just some or very few?",11,15.85,0,
+goqa_dev,5e77452cc7a1,other,Here is a ladder representing the ladder of life. Let's suppose the top of the ladder represents the best possible life for you; and the bot,32,5.13,0,
+goqa_dev,5e80fd7b85f3,other,"Thinking about the public, would you say each of the following aspects needs to be completely reformed, needs major changes, needs minor cha",16,15.53,0,
+goqa_dev,5fcbb7ffbfb1,religion/values,"Here is a list of things that may be problems in our country. As I read each one, please tell me if you think it is a very big problem, a mo",27,8.48,0,
+goqa_dev,60f8e1a270fb,security,"How worried are you, if at all, that the U.S. could become a military threat to our country someday?  Are you very worried, somewhat worried",10,18.13,0,
+goqa_dev,61065333625f,democracy/governance,I am going to read you the same list.  Does...the media can report the news without (state or government) censorship...describe our country ,37,14.41,0,
+goqa_dev,614d7a12f555,intl-relations,"In general, what kind of influence has the increasing use of the Internet in our country had on each of the following things. Has the increa",30,12.16,0,
+goqa_dev,61db3a8de5c5,other,Which country does the most to help countries that have experienced natural disasters?,14,16.05,0,
+goqa_dev,6313a5555aaf,economy,"How much does what happens in other European Union countries affect your own personal economic situation - a great deal, a fair amount, not ",8,10.51,1,
+goqa_dev,6341a223d3bf,democracy/governance,"Now I’d like to ask your views about some additional political leaders. Please tell me if you have a very favorable, somewhat favorable, som",19,10.53,1,
+goqa_dev,635121b2cdb9,other,(Which country is doing the most to help poor nations develop?)...And which country would you name next?,14,10.02,0,
+goqa_dev,63998c253793,intl-relations,"Thinking about the United Nations, what kind of influence is the UN having on the way things are going in your country.   Is the influence o",31,15.65,1,
+goqa_dev,640a43488d1d,other,"Now I will read a list of some things that have happened in the world recently. For each one,please tell me if you've heard of it or not...U",12,15.38,0,
+goqa_dev,648eeb6a867f,democracy/governance,I'd like your opinion about the effectiveness of different ways of trying to influence what the government does. How effective is it to...co,28,12.36,0,
+goqa_dev,65bf704282cf,other,"How much of a danger is the Israeli-Palestinian conflict to stability in the Middle East and world peace? A great danger, moderate danger, s",12,6.54,0,
+goqa_dev,67055d9171af,economy,"Right now, is the United States having a positive or negative impact on economic conditions in  your country?",17,27.35,0,
+goqa_dev,675410e9ee63,intl-relations,"As I read a list of groups and organizations, for each, please tell me what kind of influence the group is having on the way things are goin",30,11.9,0,
+goqa_dev,6a3ac8309b93,religion/values,"Over the past 20 years, do you think equality between men and women in your country has increased, decreased, or do you think there has been",25,9.0,0,
+goqa_dev,6b4dd0290eb1,democracy/governance,"And which should be the second most important priority?...Health care, education, agriculture and the supply of food, the supply of energy, ",8,9.76,0,
+goqa_dev,6b6610d6b7c7,intl-relations,"Now I'm going to read you a list of countries.  For each one, please tell me whether you would favor or oppose admitting it into the Europea",11,5.62,1,
+goqa_dev,6bc71c4456cf,other,Some people say that the following things are important for being truly your nationality. Others say they are not important. How important d,12,6.27,0,
+goqa_dev,6cd6751ac009,other,"Do you think ____ is a very big problem, a moderately big problem, a small problem or not a problem at all in our country? a. rising prices",20,6.09,0,
+goqa_dev,6d12365e239b,economy,"Again thinking back to 1989, do you strongly approve, approve, disapprove or strongly disapprove that our country moved from having a state ",9,14.82,0,
+goqa_dev,6d1d73908675,other,"As I read a list of things that you can and cannot do in some countries, please tell me how important each is to you.  How important is it t",13,2.47,0,
+goqa_dev,6d2dd0d643f3,other,"Do you think ____ plays a more important role in the world today compared to 10 years ago, a less important role, or about as important a ro",25,15.75,0,
+goqa_dev,6e4a911f910b,other,Do you ever use online social networking sites like ?,27,11.61,0,
+goqa_dev,6ea1ce904eed,economy,"In your opinion, do lower income have too much influence in our political system, not enough influence, or about the right amount?",31,5.71,0,
+goqa_dev,6f23d852a529,other,"Thinking about some countries around the world...Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or ve",16,17.9,0,
+goqa_dev,6f345b0278b3,intl-relations,Do you think that relations these days between Muslims around the world and people in Western countries such as the United States and Europe,12,8.78,0,
+goqa_dev,704e1c472dbf,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",21,15.8,1,
+goqa_dev,7242a9de7c7d,democracy/governance,I'd like your opinion about the effectiveness of different ways of trying to influence what the government does. How effective is it to...po,29,12.42,0,
+goqa_dev,7272bd659c43,other,Do you think most Muslims in our country today want to adopt your country customs and way of life or do you think they want to be distinct f,10,8.32,0,
+goqa_dev,728dc6da6e1d,other,"Do you use a computer at your workplace, at school, at home, or anywhere else on at least an occasional basis?",40,12.83,0,
+goqa_dev,7291eaf42e65,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...the United Nations",53,13.4,1,
+goqa_dev,755cef6c1eb5,economy,Is it more important for the public to have strong economic ties with China or the United States?,15,10.53,0,
+goqa_dev,75886bbdb397,religion/values,"Aside from weddings and funerals how often do you attend religious services... more than once a week, once a week, once or twice a month, a ",21,13.88,0,
+goqa_dev,75cf12926b79,democracy/governance,I am going to read a list of things that have happened recently. Did The re-election of President George W Bush lead you to have a more favo,13,3.23,1,
+goqa_dev,75e8409ee341,democracy/governance,Do you think the European Union ____? c. promotes democratic values,10,8.12,1,
+goqa_dev,7673f0c4274b,tech/climate,"I'd like to ask your opinion about some international issues.  Please tell me how concerned you are, if at all, about each of them - are you",37,7.72,0,
+goqa_dev,76d30e202b07,intl-relations,"In general, what kind of influence has the increasing use of the Internet in our country had on each of the following things. Has the increa",30,10.2,0,
+goqa_dev,76d8e4722713,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...Hezbollah",16,24.14,1,
+goqa_dev,778ac0dda433,other,"And do you ever use social networking sites like Facebook, Twitter (INSERT ) to share your views about...products you use or not?",28,10.81,0,
+goqa_dev,77b7eb431899,intl-relations,"Do you approve or disapprove of the way the European Union is dealing with ____? c. the United Kingdom leaving the EU, also known as Brexit",10,8.53,1,
+goqa_dev,77d20b298e99,economy,"Turning to China, overall do you think that China's growing economy is a good thing or a bad thing for our country?",51,15.93,0,
+goqa_dev,78621c931f85,economy,"Now thinking about our economic situation, how would you describe the current economic situation in your country - is it very good, somewhat",59,20.81,0,
+goqa_dev,78dba61567c1,other,"If Iran were to develop nuclear weapons, do you think they would be likely to...attack the U.S. or European nations, or not?",12,10.9,0,
+goqa_dev,796117d064d5,intl-relations,"Which statement best describes your views about the future of the European Union, even if none is exactly right?",10,9.94,1,
+goqa_dev,796da15b43b9,intl-relations,"What is your opinion--next year when there is a new US president, do you think that US foreign policy will change for the better, change for",18,12.22,0,
+goqa_dev,79b5174ac923,democracy/governance,"For each of the following issues, how likely are you personally to take political action on it, such as contact an elected official or parti",13,7.59,0,
+goqa_dev,7abb8f44bf7d,other,Please tell me whether you think the following statements apply to the United Nations or not. The United Nations… f. Advances the interests ,14,10.5,1,
+goqa_dev,7b9842bb83c7,democracy/governance,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or very unfavorable opinion of ____. e. National Democ",24,14.27,1,
+goqa_dev,7c35adb7d8d3,economy,"Which statement comes closer to your view, even if neither is exactly right? (Survey public)'s economy is...",16,3.46,0,
+goqa_dev,7c5cfa267203,democracy/governance,"How important is it to have ____ in our country? Is it very important, somewhat important, not too important or not important at all? d. peo",36,7.22,0,
+goqa_dev,7ca15523d1bb,economy,"Here is a list of groups, organizations and institutions. For each, please tell me what kind of influence the group is having on the way thi",28,16.14,0,
+goqa_dev,7cc57c90c913,intl-relations,Which of these characteristics do you associate with people in Western countries such as the United States and Europe?...Arrogant...Do you a,10,11.66,0,
+goqa_dev,7d874161cb59,other,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",39,14.34,0,
+goqa_dev,7e73e39602a1,other,"Please tell me how closely you follow each type of news. Do you follow ____ very closely, somewhat closely, not very closely or not at all c",36,5.98,0,
+goqa_dev,7ec28bc528c5,religion/values,"Do you personally believe that homosexuality is morally acceptable, morally unacceptable, or is it not a moral issue?",37,7.38,0,
+goqa_dev,7f3bd2ba0599,intl-relations,"Think of the changes that have taken place in your country since 1989  /  1991. Have those changes had a very good influence, a good influen",9,13.47,0,
+goqa_dev,7fa2cc6cbdf3,tech/climate,"Which of the following two statements about addressing global climate change comes closer to your own views, even if neither is exactly righ",41,11.77,0,
+goqa_dev,7fc1136d074d,democracy/governance,How much responsibility should each of the following have in making sure that the your nationality workforce has the right skills and educat,8,3.2,0,
+goqa_dev,7fea465efc55,intl-relations,(Please tell me how confident you are that the following organizations or groups will help solve the major problems in our country. Are you ,8,3.32,1,
+goqa_dev,7feb9f150015,other,"I'd like you to rate some different groups of people in your country according to how you feel about them.  For each group, please tell me w",13,7.73,0,
+goqa_dev,8018358fdacb,other,Please tell me whether you think the following statements apply to the United Nations or not. The United Nations… h. Promotes action on infe,14,7.33,1,
+goqa_dev,8044ce380935,other,"As I read some policies of U.S. President Donald Trump, please tell me if you approve or disapprove of each one. d. Allowing fewer immigrant",32,12.66,1,
+goqa_dev,813bd878d5a5,democracy/governance,"And which of these three statements is closest to your own opinion...Democracy is preferable to any other kind of government, In some circum",19,15.07,0,
+goqa_dev,81c1a0f73791,other,"In your opinion, in the public, are the conflicts very strong, strong, not very strong or are there not any conflicts between ____? d. Peopl",16,12.78,0,
+goqa_dev,82c7a187934d,other,"Here is the 'ladder of life.'  Let's suppose the top of the ladder represents the best possible life for you; and the bottom, the worst poss",57,11.01,0,
+goqa_dev,82e89c22dc0d,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...Spain?",8,10.75,0,
+goqa_dev,82e9b964b055,democracy/governance,Do you approve or disapprove of the recent military action by France against anti-government rebels in Mali?,11,19.2,0,
+goqa_dev,83678e37a0df,democracy/governance,Do you think the government of ____ respects the personal freedoms of its people or don’t you think so? b. the United States,53,12.17,0,
+goqa_dev,83ac49462daf,other,Please tell me whether you think the following describes U.S. president Joe Biden. Do you think of Joe Biden as ____? a. Well-qualified to b,15,4.36,1,
+goqa_dev,83b946090fb7,religion/values,"How important is it to have ____ in our country? Is it very important, somewhat important, not too important or not important at all? a. peo",36,5.86,0,
+goqa_dev,840eafef1c4d,democracy/governance,"Now that Saddam Hussein has been removed from power by the U.S. and its allies, do you think the Middle East region will become much more de",16,9.69,1,
+goqa_dev,8471209113b7,economy,"I’d like your opinion about some possible international concerns. Do you think that ____ is a major threat, a minor threat or not a threat t",12,14.27,0,
+goqa_dev,847eec161d63,economy,"Would you say that each of the following is doing a very good, somewhat good, somewhat bad, or very bad job dealing with global climate chan",15,6.92,0,
+goqa_dev,850083677e51,democracy/governance,I'd like your opinion about the effectiveness of different ways of trying to influence what the government does. How effective is it to...at,29,10.51,0,
+goqa_dev,8532f400b4f9,democracy/governance,I am going to read you a list of things that the government might do to improve public health and health care in our country.  As I read eac,26,4.97,0,
+goqa_dev,86185b0e66af,intl-relations,"And what about the following countries or organizations, how would you rate the kind of influence they are having on the way things are goin",12,8.53,0,
+goqa_dev,86aa17cff811,other,I'd like your opinion about some possible international concerns for your country. Do you think that North Korea's nuclear program is a majo,37,13.96,1,
+goqa_dev,8781f0774cb9,religion/values,"Thinking about the ethnic, religious, and racial makeup of your country, over the past 20 years do you think your country has become more di",25,9.93,0,
+goqa_dev,889f54949e1b,other,"I'd like your opinion about some possible international concerns for your country. Do you think that ___ is a major threat, a minor threat, ",14,8.93,0,
+goqa_dev,88f80aa31d87,other,Do you think this change in the availability of modern medicines and treatments is largely because of the way the world has become more conn,27,10.27,0,
+goqa_dev,893a386e49f5,democracy/governance,"For each, tell me how much confidence you have in each leader to do the right thing regarding world affairs — a lot of confidence, some conf",39,16.56,1,
+goqa_dev,8a57435e0c87,other,"Over the past 20 years, do you think family ties in your country have become stronger, weaker, or do you think there has been no change?",25,6.36,0,
+goqa_dev,8a70835722f1,tech/climate,Countries from around the world will meet in December (2015) in Paris to deal with global climate change. They will discuss an agreement to ,37,5.28,0,
+goqa_dev,8bab3968fcc9,other,"How closely have you been following news about the U.S. presidential race - very closely, somewhat closely, not too closely, or not at all?",24,12.09,0,
+goqa_dev,8c0548fca515,intl-relations,"The United States has announced plans to commit more military resources to Asia. Which statement comes closer to your own views, even if nei",19,14.34,0,
+goqa_dev,8c8a57cd960f,democracy/governance,"For each, tell me how much confidence you have in each leader to do the right thing regarding world affairs – a lot of confidence, some conf",36,15.59,1,
+goqa_dev,8d3a1d31de79,democracy/governance,I am going to read you a list of things that the government might do to improve public health and health care in our country.  As I read eac,26,6.59,0,
+goqa_dev,8d8aa1bf443d,other,"For each of the following, please tell me how news organizations in your country are doing on the issue. Would you say news organizations ar",36,13.74,0,
+goqa_dev,8edcad532eb3,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",19,14.2,1,
+goqa_dev,8feb09769e19,intl-relations,"I’d like your opinion about some possible international concerns. Do you think that ____ is a major threat, a minor threat or not a threat t",40,12.2,0,
+goqa_dev,90ba8763d04f,democracy/governance,"In your country today, when it comes to ____ do you think …? a. Being leaders in their local communities",32,17.67,0,
+goqa_dev,92b9ec5ab317,other,"How satisfied are you with the way the political system is working in this country? Are you very satisfied, somewhat satisfied, somewhat dis",28,14.33,0,
+goqa_dev,92bc560788a5,tech/climate,"In your view, is global climate change a very serious problem, somewhat serious, not too serious or not a problem?",37,6.77,0,
+goqa_dev,92fa397c43d3,democracy/governance,"(Now I am going to read you a list of things that may be problems in our country. As I read each one, please tell me if you think it is a ve",8,4.54,0,
+goqa_dev,93d96bbcb0dd,other,Do you think the people of Iraq will be better off or worse off in the long run than they were now that Saddam Hussein has been removed from,16,14.43,1,
+goqa_dev,9442aa4eb987,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",15,6.45,1,
+goqa_dev,94af6118505d,other,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",40,11.99,0,
+goqa_dev,951021e75883,democracy/governance,"Now thinking about Iraq, regardless of what you think about the original decision to use military force in Iraq, do you now believe that eff",19,8.64,0,
+goqa_dev,96689b96bbd9,intl-relations,"Here is a list of groups, organizations and institutions. For each, please tell me what kind of influence the group is having on the way thi",37,10.62,0,
+goqa_dev,97fda3785aef,other,"For each statement, please tell me whether you completely agree with it, mostly agree with it, mostly disagree with it or completely disagre",30,20.28,0,
+goqa_dev,981106812b6b,other,"As I read some policies of U.S. President Donald Trump, please tell me if you approve or disapprove of each one. e. U.S. increasing tariffs ",32,8.31,1,
+goqa_dev,987ed26772f9,other,What's more important in your country society that everyone be free to pursue their life's goals without interference from the state or that,34,14.02,0,
+goqa_dev,9883f25a22b7,other,"And in your household, do you have any of the following? Count only those that are in working order….motorcycle or scooter",41,14.59,0,
+goqa_dev,98f4ef3815ab,tech/climate,Please tell me whether you think the following statements apply to the United Nations or not. The United Nations… g. Promotes action on clim,14,5.91,1,
+goqa_dev,99a58fda80ad,other,I am going to read a list of things that have happened recently. Did US aid to Tsunami victims in Southeast Asia lead you to have a more fav,11,19.76,0,
+goqa_dev,9a10aa9f09d9,economy,"Does trade with other countries lead to an increase in the price of products sold in your country, a decrease in prices, or does it not make",46,10.64,0,
+goqa_dev,9a822cedbcbf,democracy/governance,Do you think people should be able to say these types of things publically OR the government should be able to prevent people from saying th,35,17.91,0,
+goqa_dev,9ae59b79add9,intl-relations,"Do you think products made in China are as safe as products made in other countries, or do you think they are less safe than products made i",19,8.29,0,
+goqa_dev,9b661e4aa479,other,"There has been a lot of talk about globalization these days.  Do you think that globalization is a very good thing, somewhat good, somewhat ",27,11.39,0,
+goqa_dev,9be562a01081,other,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",31,10.03,0,
+goqa_dev,9caee34a9a65,economy,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",37,16.94,0,
+goqa_dev,9cbfc48e60a7,security,Which of the following phrases comes closer to your point of view?...The U.S. is right to be so concerned about the threat of international ,9,21.83,0,
+goqa_dev,9d47c3884afb,other,"Please tell me whether you completely agree, mostly agree, mostly disagree or completely disagree with the following statements...Success in",54,8.92,0,
+goqa_dev,9d9100d020f1,intl-relations,Do you approve or disapprove of the United States conducting missile strikes from pilotless aircraft called drones to target extremists in c,45,12.97,0,
+goqa_dev,9d9afccb721b,intl-relations,Please tell me if you approve or disapprove of the way President Barack Obama is dealing with…China,37,15.31,1,
+goqa_dev,9d9ec6db1f0b,intl-relations,"As I read some proposed policies of U.S. President Joe Biden, please tell me if you approve or disapprove of each one. d. The U.S. allowing ",15,4.39,1,
+goqa_dev,9da5a6bbbb51,other,"Some people say the following things are important to them. On a scale of 0 to 10, how important is each thing to you personally, where 0 me",30,2.87,0,
+goqa_dev,9ddde6d0c319,intl-relations,Now I'm going to read you some statements about what President Barack Obama might do in the future. Do you think he will get the United Stat,20,10.64,1,
+goqa_dev,9dea131c25dd,intl-relations,Which of these characteristics do you associate with people in Western countries such as the United States and Europe?...Immoral...Do you as,10,16.41,0,
+goqa_dev,9dee653e5b37,other,"Do you have friends or relatives who live in another country that you write to, telephone or visit regularly?",38,15.66,0,
+goqa_dev,9e3e9b849c67,tech/climate,"And what is your next most frequent source of news about national and international issues--television, newspapers, radio, magazines, or the",37,7.39,0,
+goqa_dev,9fe54970de3d,intl-relations,"In your opinion, when foreign companies buy your nationality companies, does this have a very good, somewhat good, somewhat bad, or a very b",41,12.85,0,
+goqa_dev,9ff52562779f,democracy/governance,Do you think media organizations should be able to publish information about these types of things OR the government should be able to preve,35,15.32,0,
+goqa_dev,a00ad02b55d7,other,"(Now I am going to read you a list of things that may be problems in our country. As I read each one, please tell me if you think it is a ve",45,5.59,0,
+goqa_dev,a106e2a369d7,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...Hamas",16,19.28,1,
+goqa_dev,a1e21a44d179,democracy/governance,Why do you think the US is conducting the war on terrorism? Is...To target Muslim governments and groups it sees as unfriendly...an importan,8,8.29,0,
+goqa_dev,a20049529291,democracy/governance,I am going to read you the same list.  Does...you can openly say what you think and can criticize the (state or government)...describe our c,37,12.76,0,
+goqa_dev,a337313a011b,other,"Which comes closer to describing your view?...I like the pace of modern life, OR I do not like the pace of modern life",27,12.99,0,
+goqa_dev,a3af02f0bbab,democracy/governance,For each one please tell me if you think the your nationality government should make decisions about this issue for ...   a. international t,9,7.0,0,
+goqa_dev,a3bc7e0624c5,economy,"As I read each one, please tell me if you think it is a very important, somewhat important, not too important, or not at all important reaso",11,5.02,0,
+goqa_dev,a4925205f6c5,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",15,13.69,1,
+goqa_dev,a6da358308df,democracy/governance,I am going to read you a list of things that the government might do to improve public health and health care in our country.  As I read eac,24,5.44,0,
+goqa_dev,a81e1a4624cf,democracy/governance,"How important is it to you to live in a country where the military is under the control of civilian leaders?  Is it very important, somewhat",37,16.36,0,
+goqa_dev,a8553d371c73,other,"How much of a danger is the American presence in Iraq to stability in the Middle East and world peace? A great danger, moderate danger, smal",12,7.05,0,
+goqa_dev,a88344b88b09,other,"I'd like to ask your opinion about some international issues.  Please tell me how concerned you are, if at all, about each of them - are you",37,11.87,1,
+goqa_dev,a8df1e140913,democracy/governance,(Now thinking about foreign aid programs. Please tell me how well each of the following describes programs in your country funded by foreign,8,10.37,0,
+goqa_dev,a91e4577e81d,religion/values,Now I’d like to ask you about your preference – what kind of marriage do you think is the more satisfying way of life?,32,2.88,0,
+goqa_dev,aa0029f71873,other,Please tell me whether the FIRST statement or the SECOND statement comes closer to your own views — even if neither is exactly right. c. Imm,17,16.59,0,
+goqa_dev,aaabb02da60d,other,"Overall, do you think of the U.S. as more of a partner of your country, more of an enemy of your country, or neither?",36,20.62,0,
+goqa_dev,aab9e86f6b35,other,"I am going to read you the same list.  Does law and order is maintained describe our country very well, somewhat well, not too well or not w",13,14.43,0,
+goqa_dev,ab0bbf9fe62d,intl-relations,"Do you think the U.S. and NATO should keep military troops in Afghanistan until the situation has stabilized, or do you think the U.S. and N",40,14.45,1,
+goqa_dev,ab699c0070a3,other,I am going to list some different political and social actions that people can take. Have you done this ...  b. participated in an organized,13,7.83,0,
+goqa_dev,ad1797f6faf5,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or very unfavorable opinion of...Pakistan?",29,19.66,0,
+goqa_dev,ad25d16b9d1f,other,Do you think it's a good thing or a bad thing that people from the Middle East and North Africa come to live and work in this country?,8,13.09,0,
+goqa_dev,ad383abb2435,other,"Thinking about restrictions on public activity in the public over the course of the coronavirus outbreak, do you think there should have bee",16,14.89,0,
+goqa_dev,adb04e295de7,intl-relations,"Overall, how much influence do you think the United States is having on the way things are going in our country? Would you say it is having ",35,11.38,0,
+goqa_dev,adfa47b9de27,other,"I’d like your opinion about some possible international concerns. Do you think that ____ is a major threat, a minor threat or not a threat t",12,12.34,1,
+goqa_dev,aedbba64a965,other,Please tell me whether you think the following statements apply to the United Nations or not. The United Nations… d. Deals effectively with ,14,5.32,1,
+goqa_dev,af3a90d68683,economy,"For each item on this list, tell me if you think it is happening a lot more, somewhat more, only a little more or not more these days than f",27,14.11,0,
+goqa_dev,b05e229426f1,democracy/governance,"Here is a list of groups, organizations and institutions. For each, please tell me what kind of influence the group is having on the way thi",34,7.28,0,
+goqa_dev,b0e91dedcc3d,tech/climate,"As I read some policies of U.S. President Donald Trump, please tell me if you approve or disapprove of each one. a. U.S. withdrawal from int",32,7.77,1,
+goqa_dev,b148d0c2ba11,democracy/governance,I'd like your opinion about the effectiveness of different ways of trying to influence what the government does. How effective is it to...vo,28,6.82,0,
+goqa_dev,b15387257009,economy,"Please tell me whether you completely agree, mostly agree, mostly disagree or completely disagree with the following statements...Most peopl",32,10.38,0,
+goqa_dev,b194eb37bdd9,other,Which of the following worries you second most about Islamic identity in our country today?  It can lead to violence; it can lead to a loss ,9,4.39,0,
+goqa_dev,b1bba9c188cb,economy,"To deal with Europe's economic problems, would you favor or oppose giving more decision-making power to the European Union?",8,10.85,1,
+goqa_dev,b2266dc8fe39,other,"Do you think ____ plays a more important role in the world today compared to 10 years ago, a less important role, or about as important a ro",25,6.48,0,
+goqa_dev,b24620767e41,economy,"Overall, do you think current economic ties between your country and ____ are very good, somewhat good, somewhat bad or very bad? a. The Uni",15,21.67,0,
+goqa_dev,b2d886005b13,other,Which of the following two statements best describes you: 'I follow INTERNATIONAL news closely ONLY when something important is happening' O,35,9.31,0,
+goqa_dev,b4404d6b6f89,democracy/governance,"Does this statement describe your country very well, somewhat well, not too well, or not well at all? e. No matter who wins an election, thi",25,10.16,0,
+goqa_dev,b4c5f49cd1ad,other,"In your opinion, how many (Muslims/people) in our country support Islamic extremists like al Qaeda - would you say most, many, just some or ",11,12.88,1,
+goqa_dev,b6d1cf404b2d,security,Here are a few questions about how the war in Iraq may have changed your opinion of the U.S. Did the U.S. military show itself to be stronge,8,11.87,0,
+goqa_dev,b76e06ddcb3f,security,"Thinking about immigration, would you support or oppose your country ____? a. taking in refugees from countries where people are fleeing vio",17,12.23,0,
+goqa_dev,b7804e78fa21,intl-relations,"Turning to China, all things considered, was the decision to hold the 2008 Summer Olympics in China a good or bad decision?",19,18.57,1,
+goqa_dev,b803f1027631,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable or very unfavorable opinion of...Israel",11,12.86,0,
+goqa_dev,b82f4bd9c63f,other,"Thinking about the future of your country, please tell me whether you feel generally optimistic or generally pessimistic about the following",31,14.14,0,
+goqa_dev,b869c465c519,other,"I am going to read you a list of things that might be important for getting ahead in life. On a scale of 0 to 10, in your opinion, how impor",41,8.76,0,
+goqa_dev,b92fefe0f6bb,economy,"Now, thinking about some possible economic concerns for the country. Do you think that the power of financial institutions and banks pose(s)",9,10.55,0,
+goqa_dev,bae57aed0071,democracy/governance,Do you think the government of ____ respects the personal freedoms of its people or don’t you think so? d. Russia,46,13.46,0,
+goqa_dev,bb3f50f5bc7b,other,"Please tell me whether you completely agree, mostly agree, mostly disagree or completely disagree with the following statement. a. there are",32,9.77,0,
+goqa_dev,bb8835cfcf4b,other,"I'm going to read a list of some changes that have taken place. Please tell me if you think each one has been a change for the better, a cha",27,11.56,0,
+goqa_dev,bbfd1f6ac1eb,other,Which country is doing the most to help poor nations develop?,14,19.47,0,
+goqa_dev,bc2a15971173,security,"Were you happy that the Iraqi military put up so little resistance to the US and its allies, or were you disappointed about that?",12,19.01,0,
+goqa_dev,bc445f87145b,other,How much confidence do you have in the healthcare system in the public to handle a future global health emergency that might occur – a great,16,10.15,0,
+goqa_dev,bcb9d699e54d,intl-relations,"In making international policy decisions, to what extent do you think the United States takes into account the interests of countries like y",48,18.74,0,
+goqa_dev,bce803e0bee3,other,What poses the greatest threat to Islam today?,8,23.99,0,
+goqa_dev,bd1c60fa726b,other,"Now I will read a list of some things that have happened in the world recently. For each one,please tell me if you've heard of it or not...t",12,2.27,0,
+goqa_dev,bd53f59d5655,democracy/governance,"Now thinking about the situation in Iraq, do you believe that efforts to establish a stable government in Iraq will definitely succeed, prob",22,15.71,0,
+goqa_dev,bd80ca4f3821,security,"Overall, do you think the war with Iraq that removed Saddam Hussein from power made the world a safer place or a more dangerous place?",16,6.84,1,
+goqa_dev,bd8adf4d101d,tech/climate,"Now I will read a list of some things that have happened in the world recently. For each one,please tell me if you've heard of it or not...t",12,14.63,0,
+goqa_dev,be5b73d57987,other,"Thinking about the future of your country, please tell me whether you feel generally optimistic or generally pessimistic about the following",32,11.97,0,
+goqa_dev,beac3915a395,intl-relations,"When it comes to each of the following areas, do you think the United States is the best, above average, average, below average, or the wors",16,8.51,0,
+goqa_dev,c03964bd7b2f,security,Why do you think the US is conducting the war on terrorism? Is...To control Mideast oil...an important reason why the US is doing this or no,8,4.4,0,
+goqa_dev,c0f43d23a35b,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...UN Secretary General",8,14.45,1,
+goqa_dev,c0fbcc53c419,other,Has each of the following gotten better or worse over the last five years in our country: the affordability of health care.,27,19.53,0,
+goqa_dev,c114c45e88fd,intl-relations,"I’d like your opinion about some possible international concerns. Do you think that ____ is a major threat, a minor threat or not a threat t",11,15.88,0,
+goqa_dev,c1c61bcf4cb1,democracy/governance,"For each of the following issues, how likely are you personally to take political action on it, such as contact an elected official or parti",13,9.72,0,
+goqa_dev,c36f140961bf,intl-relations,"When it comes to each of the following areas, do you think the United States is the best, above average, average, below average, or the wors",16,4.91,0,
+goqa_dev,c3c5ced758e3,democracy/governance,"For each one, please tell me whether you completely agree, mostly agree, mostly disagree or completely disagree with it. The (state/governme",20,5.05,0,
+goqa_dev,c4ae034a37fb,other,Which of these characteristics do you associate with Americans? Do you associate ____ with Americans or not? f. arrogant,15,10.23,0,
+goqa_dev,c4ca409c0b6b,security,Please tell me whether the FIRST statement or the SECOND statement comes closer to your own views — even if neither is exactly right. b. Imm,17,12.09,0,
+goqa_dev,c4e796d15a2b,other,"Do you think there is a natural conflict between being a devout Muslim and living in a modern society, or don't you think so?",11,16.25,0,
+goqa_dev,c6a8735d790d,other,"In general, how well prepared do you think your country is to handle a major cyberattack on computer systems in this country—very well, some",25,17.42,0,
+goqa_dev,c7c5e258fc3d,democracy/governance,I'd like your opinion about the effectiveness of different ways of trying to influence what the government does. How effective is it to...ph,29,11.67,0,
+goqa_dev,c7e69ba57e89,economy,"In response to the situation involving Russia and Ukraine, do you support or oppose each of the following actions?...Economic aid to Ukraine",8,9.68,0,
+goqa_dev,c840334d63e1,democracy/governance,"I'm going to describe various types of political systems and ask what you think about each as a way of governing our country. For each one, ",36,10.6,0,
+goqa_dev,c9268fa1866f,democracy/governance,Do you think the government of ____ respects the personal freedoms of its people or don’t you think so? c. the public,16,5.26,0,
+goqa_dev,c94d12e52b39,other,Please tell me whether you think the following describes U.S. President Donald Trump. Do you think of Donald Trump as ____? g. arrogant,35,8.41,1,
+goqa_dev,c9fcbd66c6b7,intl-relations,"Think of the changes that have taken place in your country since 1989  /  1991. Have those changes had a very good influence, a good influen",9,16.98,0,
+goqa_dev,ca4a581f87c5,other,"Thinking about the future of your country, please tell me whether you feel generally optimistic or generally pessimistic about the following",32,8.34,0,
+goqa_dev,ca5920e0dd2f,economy,Please tell me which of the following statements is closest to your own opinion.  The closing of large inefficient factories (enterprises) i,20,10.87,0,
+goqa_dev,cb5785c9a107,democracy/governance,"Which statement comes closer to your own views -- even if neither is exactly right. Ukraine should accept economic aid from Western nations,",15,23.07,0,
+goqa_dev,cba5c48c9f79,other,As I read some specific policies of President Barack Obama tell me if you approve or disapprove of them...Withdrawing U.S. combat forces fro,20,9.45,1,
+goqa_dev,ccc052b1eb4b,intl-relations,Do you think the UK leaving the European Union will be a good thing or a bad thing for ____? b. the UK,10,4.96,1,
+goqa_dev,ccc2ef07977d,other,"How much of a problem, if at all, is the growing number of older people in your country - is it a major problem, a minor problem, or not a p",20,8.87,0,
+goqa_dev,cd1d4f7903d9,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...Japan",39,15.52,0,
+goqa_dev,cd55bbe2809f,other,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",39,9.01,0,
+goqa_dev,ce3778dc4759,security,"I'd like your opinion about some possible international concerns for your country. Do you think that ___ is a major threat, a minor threat, ",14,8.21,0,
+goqa_dev,ce5b71fc161b,economy,"Which statement comes closer to your own views, even if neither is exactly right? Hosting the World Cup is a good thing for Brazil, because ",15,28.22,0,
+goqa_dev,cf95312d044d,economy,I'd like your opinion about some possible international concerns for your country. Do you think that international financial instability is ,37,16.92,0,
+goqa_dev,d0ff8c03c7dd,other,Which one of the following worries you most about Islamic identity in our country today?  It can lead to violence; it can lead to a loss of ,9,8.51,0,
+goqa_dev,d1bd34b360c9,other,"I am going to read you a list of things that might be important for getting ahead in life. On a scale of 0 to 10, in your opinion, how impor",41,15.19,0,
+goqa_dev,d24394f4a361,other,"On a different subject, how concerned, if at all, are you about Islamic extremism in our country these days? Are you very concerned, somewha",25,13.04,0,
+goqa_dev,d26c08819cb3,democracy/governance,"How important is it to have ____ in our country? Is it very important, somewhat important, not too important or not important at all? b. the",36,5.75,0,
+goqa_dev,d291397b7de9,other,"Does this statement describe your country very well, somewhat well, not too well, or not well at all? d. Most people live in areas where it ",25,13.74,0,
+goqa_dev,d30b06fe0ab9,security,"Please tell me whether you completely agree, mostly agree, mostly disagree or completely disagree with the following statements...It is some",44,11.64,0,
+goqa_dev,d346a6600da5,intl-relations,"In general, what kind of influence has the increasing use of the Internet in our country had on each of the following things. Has the increa",30,11.38,0,
+goqa_dev,d35cdb4eaf7b,intl-relations,"Think of the changes that have taken place in your country since 1989 /  1991. Have those changes had a very good influence, a good influenc",9,15.6,0,
+goqa_dev,d37b81b21577,intl-relations,"Now I'm going to read you a list of countries.  For each one, please tell me whether you would favor or oppose admitting it into the Europea",11,10.44,1,
+goqa_dev,d3f36cb823ab,other,"I'd like you to rate some different groups of people in your country according to how you feel about them.  For each group, please tell me w",10,8.12,0,
+goqa_dev,d4119b62c4ad,other,"And how much of a role do you think Islam SHOULD play in the political life of our country - a very large role, a fairly large role, a fairl",8,16.64,0,
+goqa_dev,d42a8a91658b,security,"In your opinion, which is more important...Preventing Iran from developing nuclear weapons, even if it means taking military action, or avoi",26,9.29,1,
+goqa_dev,d5348dfa4eab,intl-relations,"How concerned are you, if at all, that your country has become too dependent on Russia for its energy resources? Are you very concerned, fai",13,8.96,0,
+goqa_dev,d5593d632a2f,democracy/governance,"For each, tell me how much confidence you have in each leader to do the right thing regarding world affairs — a lot of confidence, some conf",14,10.3,1,
+goqa_dev,d580a1e94839,other,"If Iran were to develop nuclear weapons, do you think they would be likely to...attack another Muslim country, or not?",12,7.49,0,
+goqa_dev,d5a840371ad5,other,"Does this statement describe your country very well, somewhat well, not too well, or not well at all? b. The court system treats everyone fa",25,15.22,0,
+goqa_dev,d5b2513a8333,economy,"In re-building Iraq, how good a job are the US and its allies doing in taking into account the needs and interests of the Iraqi people?  Is ",16,12.76,0,
+goqa_dev,d60eba3b3be9,other,And which of these poses the second greatest threat to the world?,50,6.89,0,
+goqa_dev,d64a4050e67d,economy,"Which of the following is taking the best approach to fixing the global economic crisis - the United States, China, or the European Union?",20,14.48,1,
+goqa_dev,d7b4007c6b41,other,"(Now I am going to read you a list of things that may be problems in our country. As I read each one, please tell me if you think it is a ve",8,5.23,0,
+goqa_dev,d7e644719ce3,democracy/governance,"How likely or unlikely do you think it is that, in the future, a cyberattack will result in the following situation? b. Elections in your co",25,8.62,0,
+goqa_dev,d7fb7b1d91db,democracy/governance,"Does this statement describe your country very well, somewhat well, not too well, or not well at all? a. Elected officials care what ordinar",25,12.58,0,
+goqa_dev,d992976817a9,security,Before the war the U.S. and Britain claimed that Iraq had weapons of mass destruction. These weapons have yet to be found. Why do you think ,8,8.44,0,
+goqa_dev,d9ad83b840af,other,"I am going to read you a list of things that might be important for getting ahead in life. On a scale of 0 to 10, in your opinion, how impor",41,18.06,0,
+goqa_dev,da0435dbf0bf,democracy/governance,Some feel that we should rely on a democratic form of government to solve our country's problems.  Others feel that we should rely on a lead,41,15.29,0,
+goqa_dev,da15a09e48bf,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...Muslims",27,19.3,0,
+goqa_dev,da6dcd045b13,other,Now I'm going to read you some statements about what President Barack Obama might do in the future. Do you think he will be fair in dealing ,20,16.36,1,
+goqa_dev,dbad169d81c3,other,"(Now I am going to read you a list of things that may be problems in our country. As I read each one, please tell me if you think it is a ve",8,7.97,0,
+goqa_dev,dc67fb384209,intl-relations,"When it comes to each of the following areas, do you think the United States is the best, above average, average, below average, or the wors",16,11.01,0,
+goqa_dev,dc69749ca82f,economy,"Which statement comes closer to your own views, even if neither is exactly right? We should reduce air pollution even if it means slower eco",15,4.52,0,
+goqa_dev,dd04818438bd,intl-relations,"When it comes to each of the following areas, do you think the United States is the best, above average, average, below average, or the wors",16,6.34,0,
+goqa_dev,de71ef7cdb85,intl-relations,"Do you think discrimination against people based on their race or ethnicity is a very serious problem, somewhat serious problem, not too ser",15,2.7,0,
+goqa_dev,dea2ade34b0b,other,"Now I will read a list of some things that have happened in the world recently. For each one,please tell me if you've heard of it or not...r",12,18.35,1,
+goqa_dev,dec7a01de253,economy,"Would you say that each of the following is doing a very good, somewhat good, somewhat bad, or very bad job dealing with global climate chan",16,11.49,0,
+goqa_dev,df836598f2fd,economy,"Would you say that each of the following has done a very good, somewhat good, somewhat bad, or very bad job dealing with the coronavirus out",17,13.12,0,
+goqa_dev,dff7ac81301d,intl-relations,"How concerned are you, if at all, that territorial disputes between China and neighboring countries could lead to a military conflict? Are y",11,14.64,0,
+goqa_dev,e1bae18c2bb9,democracy/governance,"How much of a danger is the current government in...Iran to stability in the Middle East and world peace? A great danger, moderate danger, s",19,12.98,0,
+goqa_dev,e20d63a908ad,democracy/governance,"How important is it to have ____ in our country? Is it very important, somewhat important, not too important or not important at all? e. hon",36,7.85,0,
+goqa_dev,e3039fcb6389,economy,"Some people say the following things are important to them. On a scale of 0 to 10, how important is each thing to you personally, where 0 me",30,3.73,0,
+goqa_dev,e32efdb22fa3,security,"Do you think the U.S. should keep military troops in Iraq until the situation has stabilized, or do you think the U.S. should remove its tro",35,12.11,0,
+goqa_dev,e45cdd8edc27,other,Please tell me if you approve or disapprove of the way President Barack Obama is dealing with...Iran.,23,18.9,1,
+goqa_dev,e4c3ee581117,other,"Now thinking about Iran, would you favor or oppose Iran acquiring nuclear weapons?",37,13.02,0,
+goqa_dev,e58f6d190cf3,intl-relations,"I'd like to ask your opinion about some international issues.  Please tell me how concerned you are, if at all, about each of them - are you",36,12.67,0,
+goqa_dev,e5c0da95a121,democracy/governance,"For each statement, please tell me whether you completely agree with it, mostly agree with it, mostly disagree with it or completely disagre",12,11.05,0,
+goqa_dev,e5e321d9df63,economy,"Does trade with other countries lead to an increase in the wages of your nationality workers, a decrease in wages, or does it not make a dif",41,13.59,0,
+goqa_dev,e6441dd6e8ef,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...Saudi Arabia",15,19.83,1,
+goqa_dev,e678f109a343,other,Some people think that suicide bombing and other forms of violence against civilian targets are justified in order to defend Islam from its ,23,12.3,0,
+goqa_dev,e734ce594e25,other,"What is most appealing to you about President Barack Obama, his personal qualities, his policies, both, or neither?",20,8.2,1,
+goqa_dev,e7da3d3ba01d,intl-relations,"Do you think ____ plays a more important role in the world today compared to 10 years ago, a less important role, or about as important a ro",25,12.99,0,
+goqa_dev,e92393f06441,democracy/governance,"Now I am going to read you a list of things that may be problems in our country.  As I read each one, please tell me if you think it is a ve",50,9.95,0,
+goqa_dev,e953f6dc9cb5,other,"Please tell me if you have a very favorable, somewhat favorable, somewhat unfavorable, or very unfavorable opinion of...the people of the (d",27,14.73,0,
+goqa_dev,eab0173311c1,democracy/governance,"I'm going to describe various types of political systems and ask what you think about each as a way of governing our country. For each one, ",36,7.42,0,
+goqa_dev,eb31a01c281f,other,"What about the way movies, TV and music from different parts of the world are now available in your country - do you think this is a very go",27,7.45,0,
+goqa_dev,eb9594073967,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",24,11.59,1,
+goqa_dev,ebc787b90dfb,other,"Thinking about the future, if you had to choose, which of the following scenarios would be better for the world?",25,8.99,0,
+goqa_dev,ec041e9e0eeb,economy,"All things considered, do you think that Muslim nations should be more economically prosperous than they are today, or don't you think so?",13,12.24,0,
+goqa_dev,ec6ba9563e6d,other,What countries pose the greatest threat to your country in the future?,9,15.38,0,
+goqa_dev,ed0699a6b10f,democracy/governance,"I am now going to read you a list of things some people say could be improved in our country. Of this list, please tell me which one you thi",8,12.54,0,
+goqa_dev,ed0f28ef8c49,other,"In your opinion, in the public, are the conflicts very strong, strong, not very strong or are there not any conflicts between ____? a. Peopl",16,18.52,0,
+goqa_dev,ee3be9c793d3,intl-relations,"In response to the situation involving Russia and Ukraine, do you support or oppose each of the following actions?...Ukraine becoming a memb",8,11.94,1,
+goqa_dev,eedb50715695,religion/values,"Do you personally believe that having an abortion is morally acceptable, morally unacceptable, or is it not a moral issue?",37,8.66,0,
+goqa_dev,ef100d199961,democracy/governance,"If you had to choose, which would you rather have?...Higher taxes in our country so the government can provide more services, lower taxes, e",9,11.65,0,
+goqa_dev,ef15ca7a8d39,other,Please tell me whether you think the following describes U.S. President Donald Trump. Do you think of Donald Trump as ____? e. intolerant,35,8.15,1,
+goqa_dev,ef218a4a61c5,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",15,9.92,1,
+goqa_dev,ef4c910e5b3b,other,"How important is it to you to live in a country where you can openly say what you think and can criticize the state?  Is it very important, ",37,4.8,0,
+goqa_dev,efdf8a03ee83,security,Do you support or oppose the U.S. military actions against the Islamic militant group in Iraq and Syria known as ISIS?,36,20.37,1,
+goqa_dev,f01a806f1fe5,other,Has each of the following gotten better or worse over the last five years in our country: the availability of modern medicines and treatment,27,17.93,0,
+goqa_dev,f0236011850b,security,As a consequence of the war do you have more confidence or less confidence that the US is trustworthy?,8,9.33,0,
+goqa_dev,f1e711a998f9,other,Which country do you think will win the 2010 World Cup?,20,20.96,0,
+goqa_dev,f36ad3c2d8e5,other,"I’m going to read you a list of things your country might do in dealing with developing countries. As I read each one, please tell me if you",12,14.42,0,
+goqa_dev,f41978240e5d,other,"Please tell me how closely you follow each type of news. Do you follow ____ very closely, somewhat closely, not very closely or not at all c",36,6.64,0,
+goqa_dev,f6886bc6b27b,security,Does statement #1 or statement #2 come closer to your own views: b. refugees in our country today are more to blame for crime than other gro,9,12.18,0,
+goqa_dev,f6e3086f0793,economy,"What do you think about the growing trade and business ties between your country and other countries - do you think it is a very good thing,",54,6.54,0,
+goqa_dev,f72bddc8513b,religion/values,"On a different subject, do you think women should have equal rights with men, or shouldn't they?",21,12.88,0,
+goqa_dev,f7b778ea16f5,religion/values,"Compared to 20 years ago, do you think religion has a more important role in your country, a less important role, or do you think there has ",32,10.04,0,
+goqa_dev,f7f94a9ae82b,tech/climate,"In the past 12 months, have you used the Internet to do any of the following things?...take an online class or take an online course that le",29,10.41,0,
+goqa_dev,f8199760c1cb,religion/values,"Do you personally believe that using contraceptives is morally acceptable, morally unacceptable, or is it not a moral issue?",37,10.71,0,
+goqa_dev,f81da6da6f87,democracy/governance,"Here are some different political and social actions that people can take. Please indicate, for each type of action, whether: you have done ",28,10.38,0,
+goqa_dev,f87818b96ef5,economy,"And thinking specifically about our country's economy, how much influence do you think the United States is having on economic conditions in",17,12.22,0,
+goqa_dev,f8b4be08404b,democracy/governance,For each one please tell me if you think the your nationality government should make decisions about this issue for ...  c. migration of peo,9,5.17,1,
+goqa_dev,f8ccf0233515,democracy/governance,"And which of these comes closer to your view? I like American ideas about democracy, OR I dislike American ideas about democracy.",49,14.81,0,
+goqa_dev,fa187d74d909,democracy/governance,"Now I'm going to read a list of political leaders.  For each, tell me how much confidence you have in each leader to do the right thing rega",9,16.91,1,
+goqa_dev,fa25fff79815,other,"Over the next few years do you think that relations between the public and the U.S. will get better, get worse or stay about the same?",15,8.46,0,
+goqa_dev,fa502577a371,other,"As I read some proposed policies of U.S. President Joe Biden, please tell me if you approve or disapprove of each one. b. The U.S. rejoining",15,1.75,1,
+goqa_dev,fb5ee75acbe7,economy,"I'd like to ask your opinion about some international issues.  Please tell me how concerned you are, if at all, about each of them - are you",37,7.37,0,
+goqa_dev,fbb26ad097bf,other,"Thinking about HIV prevention, that is preventing people from becoming infected with HIV - do you think our country is making progress in HI",35,16.3,0,
+goqa_dev,fbfde074a7d3,economy,"Would you say that each of the following has done a very good, somewhat good, somewhat bad, or very bad job dealing with the coronavirus out",16,23.15,0,
+goqa_dev,fc97936876c9,other,Which of these characteristics do you associate with Americans? Do you associate honest with Americans  or not?,14,10.21,0,
+goqa_dev,fcc32e089ba1,democracy/governance,"How satisfied are you with the way democracy is working in our country - very satisfied, somewhat satisfied, not too satisfied or not at all",45,16.01,0,
+goqa_dev,fce8060f5849,religion/values,"Which one of these comes closest to your opinion, number 1 or number 2?...#1 - Homosexuality should be accepted by society or #2 - Homosexua",47,0.1,0,
+goqa_dev,fdcb06871183,intl-relations,Do you think the European Union promotes peace?,10,12.11,1,
+goqa_dev,fe0bcff44d15,intl-relations,(Now thinking about foreign aid programs. Please tell me how well each of the following describes programs in your country funded by foreign,8,9.62,0,
+goqa_dev,febe6f3cf85b,other,"How much have ordinary people benefited from the changes since 1989/1991- a great deal, a fair amount, not too much, or not at all?",8,11.99,0,
+goqa_dev,fed19f307335,democracy/governance,"How important is it to have the following things in our country? Is it very important, somewhat important, not too important or not importan",32,7.42,0,
+goqa_dev,ff296586f9c1,democracy/governance,"Please tell me whether you completely agree, mostly agree, mostly disagree or completely disagree with the following statements. a. Most ele",32,15.85,0,
+goqa_dev,ffd86f9c1f97,democracy/governance,Some people in our country feel that democracy is a Western way of doing things that would not work here - others think that democracy is no,13,9.95,0,
