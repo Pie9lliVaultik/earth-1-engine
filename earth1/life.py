@@ -492,6 +492,19 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
             dist *= np.exp(-dt_days / DISTRESS_TAU)
 
     lost = laid_off | sep | dcut
+    from earth1 import eventwire as _ew
+    if _ew.enabled():
+        _li = np.flatnonzero(lost)
+        if _li.size:
+            _ew.emit("job_lost", -1, _li,
+                     int(civ.country[_li[0]]) if _li.size else -1)
+        if failed.size:
+            _ew.emit("firm_failed", -1, None,
+                     int(life.firm_country[failed[0]]),
+                     detail=f"{failed.size} firms failed")
+            _ew.emit("firm_opened", -1, None,
+                     int(life.firm_country[failed[0]]),
+                     detail=f"{failed.size} new firms in the same slots")
     life.employed[lost] = False
     life.firm[lost] = -1
     life.tenure[lost] = 0.0
@@ -512,6 +525,10 @@ def life_tick(civ: Civilization, life: Life, rng, dt_days: float = 1.0,
     found = idle & (u_find < find_p)
     found_idx = np.flatnonzero(found)        # for fabric re-homing (0.0d)
     if found.any():
+        from earth1 import eventwire as _ew2
+        if _ew2.enabled():
+            _ew2.emit("job_found", -1, found_idx,
+                      int(civ.country[found_idx[0]]))
         life.employed[found] = True
         idx = found_idx
         for ci in np.unique(civ.country[idx]):

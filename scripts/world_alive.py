@@ -326,6 +326,13 @@ def main():
     while not _stop:
         t0 = time.time()
         st = live_one_day(w, rng, **STEP)
+        try:
+            from earth1 import eventwire as _ew
+            if _ew.enabled():
+                _ew.drain({"day": float(w.day), "epoch": "3-lab",
+                           "source": "world_alive"})
+        except Exception:
+            pass
         day = w.day
 
         line = {"day": day,

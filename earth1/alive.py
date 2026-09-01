@@ -486,6 +486,13 @@ def live_one_day(w: World, rng, *,
             _ep |= entered
             if _ep_init:
                 entered = set()                # establish state only
+            if entered and rule.name == "collective_surge":
+                from earth1 import eventwire as _ew
+                if _ew.enabled():
+                    for _rn, _loc in list(entered)[:6]:
+                        _ew.emit("protest_onset", float(w.day), None,
+                                 int(_loc) // 1000, int(_loc),
+                                 detail="a crowd crosses the threshold")
             for hidx in np.flatnonzero(hot):
                 if (rule.name, int(uloc[hidx])) not in entered:
                     hot[hidx] = False          # hot→hot: no event

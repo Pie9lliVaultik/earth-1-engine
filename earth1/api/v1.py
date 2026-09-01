@@ -279,6 +279,21 @@ def world_history(fidelity: str = "20k",
                 "the live chronicle window only; PENDING_RECORDER_STORE"})
 
 
+@router.get("/world/events")
+def world_events(since_day: float = None, n: int = 200,
+                 authorization: Optional[str] = Header(None)):
+    key = _auth(authorization)
+    _qlog("world_events", {"since": since_day, "n": n}, key)
+    from earth1 import eventwire
+    evs = eventwire.tail(n=min(int(n), 1000), since_day=since_day)
+    return _envelope("20k", {
+        "events": evs, "count": len(evs),
+        "wire": ("open" if evs or eventwire.enabled() else
+                 "closed — the serving world does not publish its event "
+                 "stream; the lab epoch opens it with EARTH1_EVENT_WIRE"),
+        "chain_head": (evs[-1]["_hash"][:16] if evs else "GENESIS")})
+
+
 @router.get("/health")
 def health():
     tiers = {}
