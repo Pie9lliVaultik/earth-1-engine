@@ -1,0 +1,2695 @@
+{
+ "n_countries": 178,
+ "normalization": {
+  "cn_anchor": -1.203236,
+  "dmax_cn": 3.190072,
+  "dmax_us": 3.837942,
+  "ideal_minmax": [
+   -1.851106,
+   1.986836
+  ],
+  "us_anchor": 1.986836
+ },
+ "provenance": "external:unga-idealpoints",
+ "raw_sha256": "94417a946dfbced97af606dbdcc47bfa7b87af428a2ba08362c8dc1e25840838",
+ "retrieved": "2026-09-01",
+ "source": "UNGA ideal points (Bailey-Strezhnev-Voeten), Harvard Dataverse doi:10.7910/DVN/LEJUQZ, IdealpointsJuly2025.tab",
+ "vars": {
+  "geopol_cn": {
+   "AD": {
+    "cells": {},
+    "marginal": 0.6094,
+    "source_note": "idealpointall=0.741 year=2023"
+   },
+   "AE": {
+    "cells": {},
+    "marginal": 0.2113,
+    "source_note": "idealpointall=-0.529 year=2023"
+   },
+   "AF": {
+    "cells": {},
+    "marginal": 0.2682,
+    "source_note": "idealpointall=-0.348 year=2023"
+   },
+   "AL": {
+    "cells": {},
+    "marginal": 0.7448,
+    "source_note": "idealpointall=1.173 year=2023"
+   },
+   "AM": {
+    "cells": {},
+    "marginal": 0.3609,
+    "source_note": "idealpointall=-0.052 year=2023"
+   },
+   "AO": {
+    "cells": {},
+    "marginal": 0.2926,
+    "source_note": "idealpointall=-0.270 year=2023"
+   },
+   "AR": {
+    "cells": {},
+    "marginal": 0.371,
+    "source_note": "idealpointall=-0.020 year=2023"
+   },
+   "AT": {
+    "cells": {},
+    "marginal": 0.6167,
+    "source_note": "idealpointall=0.764 year=2023"
+   },
+   "AU": {
+    "cells": {},
+    "marginal": 0.6996,
+    "source_note": "idealpointall=1.029 year=2023"
+   },
+   "AZ": {
+    "cells": {},
+    "marginal": 0.1888,
+    "source_note": "idealpointall=-0.601 year=2023"
+   },
+   "BB": {
+    "cells": {},
+    "marginal": 0.339,
+    "source_note": "idealpointall=-0.122 year=2023"
+   },
+   "BD": {
+    "cells": {},
+    "marginal": 0.214,
+    "source_note": "idealpointall=-0.521 year=2023"
+   },
+   "BE": {
+    "cells": {},
+    "marginal": 0.7427,
+    "source_note": "idealpointall=1.166 year=2023"
+   },
+   "BF": {
+    "cells": {},
+    "marginal": 0.2259,
+    "source_note": "idealpointall=-0.483 year=2023"
+   },
+   "BG": {
+    "cells": {},
+    "marginal": 0.7568,
+    "source_note": "idealpointall=1.211 year=2023"
+   },
+   "BH": {
+    "cells": {},
+    "marginal": 0.1866,
+    "source_note": "idealpointall=-0.608 year=2023"
+   },
+   "BI": {
+    "cells": {},
+    "marginal": 0.1046,
+    "source_note": "idealpointall=-0.869 year=2023"
+   },
+   "BJ": {
+    "cells": {},
+    "marginal": 0.3003,
+    "source_note": "idealpointall=-0.245 year=2023"
+   },
+   "BN": {
+    "cells": {},
+    "marginal": 0.21,
+    "source_note": "idealpointall=-0.533 year=2023"
+   },
+   "BO": {
+    "cells": {},
+    "marginal": 0.1376,
+    "source_note": "idealpointall=-0.764 year=2023"
+   },
+   "BR": {
+    "cells": {},
+    "marginal": 0.2877,
+    "source_note": "idealpointall=-0.286 year=2023"
+   },
+   "BS": {
+    "cells": {},
+    "marginal": 0.3533,
+    "source_note": "idealpointall=-0.076 year=2023"
+   },
+   "BT": {
+    "cells": {},
+    "marginal": 0.2474,
+    "source_note": "idealpointall=-0.414 year=2023"
+   },
+   "BW": {
+    "cells": {},
+    "marginal": 0.3066,
+    "source_note": "idealpointall=-0.225 year=2023"
+   },
+   "BY": {
+    "cells": {},
+    "marginal": 0.0127,
+    "source_note": "idealpointall=-1.244 year=2023"
+   },
+   "BZ": {
+    "cells": {},
+    "marginal": 0.33,
+    "source_note": "idealpointall=-0.151 year=2023"
+   },
+   "CA": {
+    "cells": {},
+    "marginal": 0.7379,
+    "source_note": "idealpointall=1.151 year=2023"
+   },
+   "CF": {
+    "cells": {},
+    "marginal": 0.2006,
+    "source_note": "idealpointall=-0.563 year=2023"
+   },
+   "CH": {
+    "cells": {},
+    "marginal": 0.5727,
+    "source_note": "idealpointall=0.624 year=2023"
+   },
+   "CL": {
+    "cells": {},
+    "marginal": 0.4007,
+    "source_note": "idealpointall=0.075 year=2023"
+   },
+   "CM": {
+    "cells": {},
+    "marginal": 0.2871,
+    "source_note": "idealpointall=-0.287 year=2023"
+   },
+   "CN": {
+    "cells": {},
+    "marginal": 0.0,
+    "source_note": "idealpointall=-1.203 year=2023"
+   },
+   "CO": {
+    "cells": {},
+    "marginal": 0.3699,
+    "source_note": "idealpointall=-0.023 year=2023"
+   },
+   "CR": {
+    "cells": {},
+    "marginal": 0.3778,
+    "source_note": "idealpointall=0.002 year=2023"
+   },
+   "CU": {
+    "cells": {},
+    "marginal": 0.0608,
+    "source_note": "idealpointall=-1.397 year=2023"
+   },
+   "CV": {
+    "cells": {},
+    "marginal": 0.3708,
+    "source_note": "idealpointall=-0.020 year=2023"
+   },
+   "CY": {
+    "cells": {},
+    "marginal": 0.6083,
+    "source_note": "idealpointall=0.737 year=2023"
+   },
+   "CZ": {
+    "cells": {},
+    "marginal": 0.8052,
+    "source_note": "idealpointall=1.365 year=2023"
+   },
+   "DE": {
+    "cells": {},
+    "marginal": 0.7486,
+    "source_note": "idealpointall=1.185 year=2023"
+   },
+   "DJ": {
+    "cells": {},
+    "marginal": 0.1865,
+    "source_note": "idealpointall=-0.608 year=2023"
+   },
+   "DK": {
+    "cells": {},
+    "marginal": 0.7508,
+    "source_note": "idealpointall=1.192 year=2023"
+   },
+   "DM": {
+    "cells": {},
+    "marginal": 0.3311,
+    "source_note": "idealpointall=-0.147 year=2023"
+   },
+   "DO": {
+    "cells": {},
+    "marginal": 0.3851,
+    "source_note": "idealpointall=0.025 year=2023"
+   },
+   "DZ": {
+    "cells": {},
+    "marginal": 0.1414,
+    "source_note": "idealpointall=-0.752 year=2023"
+   },
+   "EC": {
+    "cells": {},
+    "marginal": 0.3885,
+    "source_note": "idealpointall=0.036 year=2023"
+   },
+   "EE": {
+    "cells": {},
+    "marginal": 0.7772,
+    "source_note": "idealpointall=1.276 year=2023"
+   },
+   "EG": {
+    "cells": {},
+    "marginal": 0.1231,
+    "source_note": "idealpointall=-0.811 year=2023"
+   },
+   "ER": {
+    "cells": {},
+    "marginal": 0.0877,
+    "source_note": "idealpointall=-0.923 year=2023"
+   },
+   "ES": {
+    "cells": {},
+    "marginal": 0.7218,
+    "source_note": "idealpointall=1.099 year=2023"
+   },
+   "ET": {
+    "cells": {},
+    "marginal": 0.2226,
+    "source_note": "idealpointall=-0.493 year=2023"
+   },
+   "FI": {
+    "cells": {},
+    "marginal": 0.723,
+    "source_note": "idealpointall=1.103 year=2023"
+   },
+   "FJ": {
+    "cells": {},
+    "marginal": 0.5115,
+    "source_note": "idealpointall=0.428 year=2023"
+   },
+   "FR": {
+    "cells": {},
+    "marginal": 0.8443,
+    "source_note": "idealpointall=1.490 year=2023"
+   },
+   "GA": {
+    "cells": {},
+    "marginal": 0.234,
+    "source_note": "idealpointall=-0.457 year=2023"
+   },
+   "GB": {
+    "cells": {},
+    "marginal": 0.8969,
+    "source_note": "idealpointall=1.658 year=2023"
+   },
+   "GD": {
+    "cells": {},
+    "marginal": 0.3054,
+    "source_note": "idealpointall=-0.229 year=2023"
+   },
+   "GE": {
+    "cells": {},
+    "marginal": 0.6188,
+    "source_note": "idealpointall=0.771 year=2023"
+   },
+   "GH": {
+    "cells": {},
+    "marginal": 0.2592,
+    "source_note": "idealpointall=-0.376 year=2023"
+   },
+   "GM": {
+    "cells": {},
+    "marginal": 0.2666,
+    "source_note": "idealpointall=-0.353 year=2023"
+   },
+   "GN": {
+    "cells": {},
+    "marginal": 0.228,
+    "source_note": "idealpointall=-0.476 year=2023"
+   },
+   "GQ": {
+    "cells": {},
+    "marginal": 0.1572,
+    "source_note": "idealpointall=-0.702 year=2023"
+   },
+   "GR": {
+    "cells": {},
+    "marginal": 0.7171,
+    "source_note": "idealpointall=1.084 year=2023"
+   },
+   "GT": {
+    "cells": {},
+    "marginal": 0.4169,
+    "source_note": "idealpointall=0.127 year=2023"
+   },
+   "GW": {
+    "cells": {},
+    "marginal": 0.213,
+    "source_note": "idealpointall=-0.524 year=2023"
+   },
+   "HN": {
+    "cells": {},
+    "marginal": 0.3212,
+    "source_note": "idealpointall=-0.179 year=2023"
+   },
+   "HR": {
+    "cells": {},
+    "marginal": 0.7825,
+    "source_note": "idealpointall=1.293 year=2023"
+   },
+   "HT": {
+    "cells": {},
+    "marginal": 0.341,
+    "source_note": "idealpointall=-0.115 year=2023"
+   },
+   "HU": {
+    "cells": {},
+    "marginal": 0.7929,
+    "source_note": "idealpointall=1.326 year=2023"
+   },
+   "ID": {
+    "cells": {},
+    "marginal": 0.1838,
+    "source_note": "idealpointall=-0.617 year=2023"
+   },
+   "IE": {
+    "cells": {},
+    "marginal": 0.5876,
+    "source_note": "idealpointall=0.671 year=2023"
+   },
+   "IL": {
+    "cells": {},
+    "marginal": 0.7223,
+    "source_note": "idealpointall=1.101 year=2023"
+   },
+   "IN": {
+    "cells": {},
+    "marginal": 0.1988,
+    "source_note": "idealpointall=-0.569 year=2023"
+   },
+   "IQ": {
+    "cells": {},
+    "marginal": 0.178,
+    "source_note": "idealpointall=-0.635 year=2023"
+   },
+   "IR": {
+    "cells": {},
+    "marginal": 0.1065,
+    "source_note": "idealpointall=-1.543 year=2023"
+   },
+   "IS": {
+    "cells": {},
+    "marginal": 0.6925,
+    "source_note": "idealpointall=1.006 year=2023"
+   },
+   "IT": {
+    "cells": {},
+    "marginal": 0.7673,
+    "source_note": "idealpointall=1.244 year=2023"
+   },
+   "JM": {
+    "cells": {},
+    "marginal": 0.3524,
+    "source_note": "idealpointall=-0.079 year=2023"
+   },
+   "JO": {
+    "cells": {},
+    "marginal": 0.1746,
+    "source_note": "idealpointall=-0.646 year=2023"
+   },
+   "JP": {
+    "cells": {},
+    "marginal": 0.6222,
+    "source_note": "idealpointall=0.782 year=2023"
+   },
+   "KE": {
+    "cells": {},
+    "marginal": 0.2342,
+    "source_note": "idealpointall=-0.456 year=2023"
+   },
+   "KG": {
+    "cells": {},
+    "marginal": 0.1466,
+    "source_note": "idealpointall=-0.736 year=2023"
+   },
+   "KH": {
+    "cells": {},
+    "marginal": 0.2532,
+    "source_note": "idealpointall=-0.395 year=2023"
+   },
+   "KI": {
+    "cells": {},
+    "marginal": 0.3721,
+    "source_note": "idealpointall=-0.016 year=2023"
+   },
+   "KM": {
+    "cells": {},
+    "marginal": 0.243,
+    "source_note": "idealpointall=-0.428 year=2023"
+   },
+   "KP": {
+    "cells": {},
+    "marginal": 0.0409,
+    "source_note": "idealpointall=-1.334 year=2023"
+   },
+   "KR": {
+    "cells": {},
+    "marginal": 0.6614,
+    "source_note": "idealpointall=0.907 year=2023"
+   },
+   "KW": {
+    "cells": {},
+    "marginal": 0.2619,
+    "source_note": "idealpointall=-0.368 year=2023"
+   },
+   "KZ": {
+    "cells": {},
+    "marginal": 0.206,
+    "source_note": "idealpointall=-0.546 year=2023"
+   },
+   "LA": {
+    "cells": {},
+    "marginal": 0.1595,
+    "source_note": "idealpointall=-0.694 year=2023"
+   },
+   "LB": {
+    "cells": {},
+    "marginal": 0.1375,
+    "source_note": "idealpointall=-0.765 year=2023"
+   },
+   "LI": {
+    "cells": {},
+    "marginal": 0.5848,
+    "source_note": "idealpointall=0.662 year=2023"
+   },
+   "LK": {
+    "cells": {},
+    "marginal": 0.1254,
+    "source_note": "idealpointall=-0.803 year=2023"
+   },
+   "LR": {
+    "cells": {},
+    "marginal": 0.5471,
+    "source_note": "idealpointall=0.542 year=2023"
+   },
+   "LS": {
+    "cells": {},
+    "marginal": 0.2836,
+    "source_note": "idealpointall=-0.298 year=2023"
+   },
+   "LT": {
+    "cells": {},
+    "marginal": 0.7936,
+    "source_note": "idealpointall=1.328 year=2023"
+   },
+   "LU": {
+    "cells": {},
+    "marginal": 0.7428,
+    "source_note": "idealpointall=1.166 year=2023"
+   },
+   "LV": {
+    "cells": {},
+    "marginal": 0.7615,
+    "source_note": "idealpointall=1.226 year=2023"
+   },
+   "LY": {
+    "cells": {},
+    "marginal": 0.1842,
+    "source_note": "idealpointall=-0.616 year=2023"
+   },
+   "MA": {
+    "cells": {},
+    "marginal": 0.2587,
+    "source_note": "idealpointall=-0.378 year=2023"
+   },
+   "MC": {
+    "cells": {},
+    "marginal": 0.7536,
+    "source_note": "idealpointall=1.201 year=2023"
+   },
+   "MD": {
+    "cells": {},
+    "marginal": 0.6307,
+    "source_note": "idealpointall=0.809 year=2023"
+   },
+   "ME": {
+    "cells": {},
+    "marginal": 0.7356,
+    "source_note": "idealpointall=1.143 year=2023"
+   },
+   "MG": {
+    "cells": {},
+    "marginal": 0.2741,
+    "source_note": "idealpointall=-0.329 year=2023"
+   },
+   "MH": {
+    "cells": {},
+    "marginal": 0.5925,
+    "source_note": "idealpointall=0.687 year=2023"
+   },
+   "MK": {
+    "cells": {},
+    "marginal": 0.6979,
+    "source_note": "idealpointall=1.023 year=2023"
+   },
+   "ML": {
+    "cells": {},
+    "marginal": 0.0162,
+    "source_note": "idealpointall=-1.151 year=2023"
+   },
+   "MM": {
+    "cells": {},
+    "marginal": 0.3124,
+    "source_note": "idealpointall=-0.207 year=2023"
+   },
+   "MN": {
+    "cells": {},
+    "marginal": 0.2494,
+    "source_note": "idealpointall=-0.408 year=2023"
+   },
+   "MR": {
+    "cells": {},
+    "marginal": 0.1732,
+    "source_note": "idealpointall=-0.651 year=2023"
+   },
+   "MT": {
+    "cells": {},
+    "marginal": 0.6149,
+    "source_note": "idealpointall=0.758 year=2023"
+   },
+   "MU": {
+    "cells": {},
+    "marginal": 0.2892,
+    "source_note": "idealpointall=-0.281 year=2023"
+   },
+   "MV": {
+    "cells": {},
+    "marginal": 0.319,
+    "source_note": "idealpointall=-0.186 year=2023"
+   },
+   "MW": {
+    "cells": {},
+    "marginal": 0.3805,
+    "source_note": "idealpointall=0.010 year=2023"
+   },
+   "MX": {
+    "cells": {},
+    "marginal": 0.3468,
+    "source_note": "idealpointall=-0.097 year=2023"
+   },
+   "MY": {
+    "cells": {},
+    "marginal": 0.2277,
+    "source_note": "idealpointall=-0.477 year=2023"
+   },
+   "MZ": {
+    "cells": {},
+    "marginal": 0.2082,
+    "source_note": "idealpointall=-0.539 year=2023"
+   },
+   "NA": {
+    "cells": {},
+    "marginal": 0.2239,
+    "source_note": "idealpointall=-0.489 year=2023"
+   },
+   "NE": {
+    "cells": {},
+    "marginal": 0.1657,
+    "source_note": "idealpointall=-0.675 year=2023"
+   },
+   "NG": {
+    "cells": {},
+    "marginal": 0.2043,
+    "source_note": "idealpointall=-0.551 year=2023"
+   },
+   "NI": {
+    "cells": {},
+    "marginal": 0.1125,
+    "source_note": "idealpointall=-1.562 year=2023"
+   },
+   "NL": {
+    "cells": {},
+    "marginal": 0.7188,
+    "source_note": "idealpointall=1.090 year=2023"
+   },
+   "NO": {
+    "cells": {},
+    "marginal": 0.6607,
+    "source_note": "idealpointall=0.904 year=2023"
+   },
+   "NP": {
+    "cells": {},
+    "marginal": 0.2314,
+    "source_note": "idealpointall=-0.465 year=2023"
+   },
+   "NR": {
+    "cells": {},
+    "marginal": 0.4451,
+    "source_note": "idealpointall=0.217 year=2023"
+   },
+   "NZ": {
+    "cells": {},
+    "marginal": 0.5827,
+    "source_note": "idealpointall=0.656 year=2023"
+   },
+   "OM": {
+    "cells": {},
+    "marginal": 0.1639,
+    "source_note": "idealpointall=-0.680 year=2023"
+   },
+   "PA": {
+    "cells": {},
+    "marginal": 0.3896,
+    "source_note": "idealpointall=0.040 year=2023"
+   },
+   "PE": {
+    "cells": {},
+    "marginal": 0.3567,
+    "source_note": "idealpointall=-0.065 year=2023"
+   },
+   "PG": {
+    "cells": {},
+    "marginal": 0.4553,
+    "source_note": "idealpointall=0.249 year=2023"
+   },
+   "PH": {
+    "cells": {},
+    "marginal": 0.2729,
+    "source_note": "idealpointall=-0.333 year=2023"
+   },
+   "PK": {
+    "cells": {},
+    "marginal": 0.1997,
+    "source_note": "idealpointall=-0.566 year=2023"
+   },
+   "PL": {
+    "cells": {},
+    "marginal": 0.7727,
+    "source_note": "idealpointall=1.262 year=2023"
+   },
+   "PT": {
+    "cells": {},
+    "marginal": 0.7204,
+    "source_note": "idealpointall=1.095 year=2023"
+   },
+   "PW": {
+    "cells": {},
+    "marginal": 0.5371,
+    "source_note": "idealpointall=0.510 year=2023"
+   },
+   "PY": {
+    "cells": {},
+    "marginal": 0.3721,
+    "source_note": "idealpointall=-0.016 year=2023"
+   },
+   "QA": {
+    "cells": {},
+    "marginal": 0.2741,
+    "source_note": "idealpointall=-0.329 year=2023"
+   },
+   "RO": {
+    "cells": {},
+    "marginal": 0.7742,
+    "source_note": "idealpointall=1.266 year=2023"
+   },
+   "RU": {
+    "cells": {},
+    "marginal": 0.0217,
+    "source_note": "idealpointall=-1.272 year=2023"
+   },
+   "RW": {
+    "cells": {},
+    "marginal": 0.2764,
+    "source_note": "idealpointall=-0.322 year=2023"
+   },
+   "SA": {
+    "cells": {},
+    "marginal": 0.1829,
+    "source_note": "idealpointall=-0.620 year=2023"
+   },
+   "SB": {
+    "cells": {},
+    "marginal": 0.308,
+    "source_note": "idealpointall=-0.221 year=2023"
+   },
+   "SC": {
+    "cells": {},
+    "marginal": 0.3585,
+    "source_note": "idealpointall=-0.060 year=2023"
+   },
+   "SD": {
+    "cells": {},
+    "marginal": 0.0914,
+    "source_note": "idealpointall=-0.912 year=2023"
+   },
+   "SE": {
+    "cells": {},
+    "marginal": 0.7447,
+    "source_note": "idealpointall=1.172 year=2023"
+   },
+   "SG": {
+    "cells": {},
+    "marginal": 0.3373,
+    "source_note": "idealpointall=-0.127 year=2023"
+   },
+   "SI": {
+    "cells": {},
+    "marginal": 0.7344,
+    "source_note": "idealpointall=1.139 year=2023"
+   },
+   "SK": {
+    "cells": {},
+    "marginal": 0.7781,
+    "source_note": "idealpointall=1.279 year=2023"
+   },
+   "SL": {
+    "cells": {},
+    "marginal": 0.3454,
+    "source_note": "idealpointall=-0.101 year=2023"
+   },
+   "SM": {
+    "cells": {},
+    "marginal": 0.5986,
+    "source_note": "idealpointall=0.706 year=2023"
+   },
+   "SN": {
+    "cells": {},
+    "marginal": 0.2343,
+    "source_note": "idealpointall=-0.456 year=2023"
+   },
+   "SO": {
+    "cells": {},
+    "marginal": 0.1786,
+    "source_note": "idealpointall=-0.634 year=2023"
+   },
+   "SR": {
+    "cells": {},
+    "marginal": 0.3138,
+    "source_note": "idealpointall=-0.202 year=2023"
+   },
+   "SV": {
+    "cells": {},
+    "marginal": 0.3237,
+    "source_note": "idealpointall=-0.170 year=2023"
+   },
+   "SY": {
+    "cells": {},
+    "marginal": 0.1974,
+    "source_note": "idealpointall=-1.833 year=2023"
+   },
+   "SZ": {
+    "cells": {},
+    "marginal": 0.2876,
+    "source_note": "idealpointall=-0.286 year=2023"
+   },
+   "TD": {
+    "cells": {},
+    "marginal": 0.2867,
+    "source_note": "idealpointall=-0.289 year=2023"
+   },
+   "TG": {
+    "cells": {},
+    "marginal": 0.1885,
+    "source_note": "idealpointall=-0.602 year=2023"
+   },
+   "TH": {
+    "cells": {},
+    "marginal": 0.2633,
+    "source_note": "idealpointall=-0.363 year=2023"
+   },
+   "TJ": {
+    "cells": {},
+    "marginal": 0.1621,
+    "source_note": "idealpointall=-0.686 year=2023"
+   },
+   "TM": {
+    "cells": {},
+    "marginal": 0.2031,
+    "source_note": "idealpointall=-0.555 year=2023"
+   },
+   "TN": {
+    "cells": {},
+    "marginal": 0.1954,
+    "source_note": "idealpointall=-0.580 year=2023"
+   },
+   "TO": {
+    "cells": {},
+    "marginal": 0.397,
+    "source_note": "idealpointall=0.063 year=2023"
+   },
+   "TR": {
+    "cells": {},
+    "marginal": 0.5192,
+    "source_note": "idealpointall=0.453 year=2023"
+   },
+   "TV": {
+    "cells": {},
+    "marginal": 0.4198,
+    "source_note": "idealpointall=0.136 year=2023"
+   },
+   "TZ": {
+    "cells": {},
+    "marginal": 0.2934,
+    "source_note": "idealpointall=-0.267 year=2023"
+   },
+   "UA": {
+    "cells": {},
+    "marginal": 0.7976,
+    "source_note": "idealpointall=1.341 year=2023"
+   },
+   "UG": {
+    "cells": {},
+    "marginal": 0.2059,
+    "source_note": "idealpointall=-0.546 year=2023"
+   },
+   "US": {
+    "cells": {},
+    "marginal": 1.0,
+    "source_note": "idealpointall=1.987 year=2023"
+   },
+   "UY": {
+    "cells": {},
+    "marginal": 0.3891,
+    "source_note": "idealpointall=0.038 year=2023"
+   },
+   "UZ": {
+    "cells": {},
+    "marginal": 0.1839,
+    "source_note": "idealpointall=-0.617 year=2023"
+   },
+   "VE": {
+    "cells": {},
+    "marginal": 0.2031,
+    "source_note": "idealpointall=-1.851 year=2021"
+   },
+   "VN": {
+    "cells": {},
+    "marginal": 0.2034,
+    "source_note": "idealpointall=-0.554 year=2023"
+   },
+   "VU": {
+    "cells": {},
+    "marginal": 0.3727,
+    "source_note": "idealpointall=-0.014 year=2023"
+   },
+   "WS": {
+    "cells": {},
+    "marginal": 0.4364,
+    "source_note": "idealpointall=0.189 year=2023"
+   },
+   "YE": {
+    "cells": {},
+    "marginal": 0.1986,
+    "source_note": "idealpointall=-0.570 year=2023"
+   },
+   "ZA": {
+    "cells": {},
+    "marginal": 0.2238,
+    "source_note": "idealpointall=-0.489 year=2023"
+   },
+   "ZM": {
+    "cells": {},
+    "marginal": 0.3402,
+    "source_note": "idealpointall=-0.118 year=2023"
+   },
+   "ZW": {
+    "cells": {},
+    "marginal": 0.0693,
+    "source_note": "idealpointall=-0.982 year=2023"
+   }
+  },
+  "geopol_ideal": {
+   "AD": {
+    "cells": {},
+    "marginal": 0.6753,
+    "source_note": "idealpointall=0.741 year=2023"
+   },
+   "AE": {
+    "cells": {},
+    "marginal": 0.3444,
+    "source_note": "idealpointall=-0.529 year=2023"
+   },
+   "AF": {
+    "cells": {},
+    "marginal": 0.3917,
+    "source_note": "idealpointall=-0.348 year=2023"
+   },
+   "AL": {
+    "cells": {},
+    "marginal": 0.7879,
+    "source_note": "idealpointall=1.173 year=2023"
+   },
+   "AM": {
+    "cells": {},
+    "marginal": 0.4688,
+    "source_note": "idealpointall=-0.052 year=2023"
+   },
+   "AO": {
+    "cells": {},
+    "marginal": 0.412,
+    "source_note": "idealpointall=-0.270 year=2023"
+   },
+   "AR": {
+    "cells": {},
+    "marginal": 0.4772,
+    "source_note": "idealpointall=-0.020 year=2023"
+   },
+   "AT": {
+    "cells": {},
+    "marginal": 0.6814,
+    "source_note": "idealpointall=0.764 year=2023"
+   },
+   "AU": {
+    "cells": {},
+    "marginal": 0.7503,
+    "source_note": "idealpointall=1.029 year=2023"
+   },
+   "AZ": {
+    "cells": {},
+    "marginal": 0.3257,
+    "source_note": "idealpointall=-0.601 year=2023"
+   },
+   "BB": {
+    "cells": {},
+    "marginal": 0.4506,
+    "source_note": "idealpointall=-0.122 year=2023"
+   },
+   "BD": {
+    "cells": {},
+    "marginal": 0.3467,
+    "source_note": "idealpointall=-0.521 year=2023"
+   },
+   "BE": {
+    "cells": {},
+    "marginal": 0.7862,
+    "source_note": "idealpointall=1.166 year=2023"
+   },
+   "BF": {
+    "cells": {},
+    "marginal": 0.3566,
+    "source_note": "idealpointall=-0.483 year=2023"
+   },
+   "BG": {
+    "cells": {},
+    "marginal": 0.7978,
+    "source_note": "idealpointall=1.211 year=2023"
+   },
+   "BH": {
+    "cells": {},
+    "marginal": 0.3239,
+    "source_note": "idealpointall=-0.608 year=2023"
+   },
+   "BI": {
+    "cells": {},
+    "marginal": 0.2558,
+    "source_note": "idealpointall=-0.869 year=2023"
+   },
+   "BJ": {
+    "cells": {},
+    "marginal": 0.4184,
+    "source_note": "idealpointall=-0.245 year=2023"
+   },
+   "BN": {
+    "cells": {},
+    "marginal": 0.3434,
+    "source_note": "idealpointall=-0.533 year=2023"
+   },
+   "BO": {
+    "cells": {},
+    "marginal": 0.2831,
+    "source_note": "idealpointall=-0.764 year=2023"
+   },
+   "BR": {
+    "cells": {},
+    "marginal": 0.4079,
+    "source_note": "idealpointall=-0.286 year=2023"
+   },
+   "BS": {
+    "cells": {},
+    "marginal": 0.4624,
+    "source_note": "idealpointall=-0.076 year=2023"
+   },
+   "BT": {
+    "cells": {},
+    "marginal": 0.3744,
+    "source_note": "idealpointall=-0.414 year=2023"
+   },
+   "BW": {
+    "cells": {},
+    "marginal": 0.4237,
+    "source_note": "idealpointall=-0.225 year=2023"
+   },
+   "BY": {
+    "cells": {},
+    "marginal": 0.1583,
+    "source_note": "idealpointall=-1.244 year=2023"
+   },
+   "BZ": {
+    "cells": {},
+    "marginal": 0.4431,
+    "source_note": "idealpointall=-0.151 year=2023"
+   },
+   "CA": {
+    "cells": {},
+    "marginal": 0.7822,
+    "source_note": "idealpointall=1.151 year=2023"
+   },
+   "CF": {
+    "cells": {},
+    "marginal": 0.3355,
+    "source_note": "idealpointall=-0.563 year=2023"
+   },
+   "CH": {
+    "cells": {},
+    "marginal": 0.6449,
+    "source_note": "idealpointall=0.624 year=2023"
+   },
+   "CL": {
+    "cells": {},
+    "marginal": 0.5019,
+    "source_note": "idealpointall=0.075 year=2023"
+   },
+   "CM": {
+    "cells": {},
+    "marginal": 0.4074,
+    "source_note": "idealpointall=-0.287 year=2023"
+   },
+   "CN": {
+    "cells": {},
+    "marginal": 0.1688,
+    "source_note": "idealpointall=-1.203 year=2023"
+   },
+   "CO": {
+    "cells": {},
+    "marginal": 0.4762,
+    "source_note": "idealpointall=-0.023 year=2023"
+   },
+   "CR": {
+    "cells": {},
+    "marginal": 0.4829,
+    "source_note": "idealpointall=0.002 year=2023"
+   },
+   "CU": {
+    "cells": {},
+    "marginal": 0.1182,
+    "source_note": "idealpointall=-1.397 year=2023"
+   },
+   "CV": {
+    "cells": {},
+    "marginal": 0.477,
+    "source_note": "idealpointall=-0.020 year=2023"
+   },
+   "CY": {
+    "cells": {},
+    "marginal": 0.6745,
+    "source_note": "idealpointall=0.737 year=2023"
+   },
+   "CZ": {
+    "cells": {},
+    "marginal": 0.8381,
+    "source_note": "idealpointall=1.365 year=2023"
+   },
+   "DE": {
+    "cells": {},
+    "marginal": 0.791,
+    "source_note": "idealpointall=1.185 year=2023"
+   },
+   "DJ": {
+    "cells": {},
+    "marginal": 0.3239,
+    "source_note": "idealpointall=-0.608 year=2023"
+   },
+   "DK": {
+    "cells": {},
+    "marginal": 0.7929,
+    "source_note": "idealpointall=1.192 year=2023"
+   },
+   "DM": {
+    "cells": {},
+    "marginal": 0.444,
+    "source_note": "idealpointall=-0.147 year=2023"
+   },
+   "DO": {
+    "cells": {},
+    "marginal": 0.4889,
+    "source_note": "idealpointall=0.025 year=2023"
+   },
+   "DZ": {
+    "cells": {},
+    "marginal": 0.2864,
+    "source_note": "idealpointall=-0.752 year=2023"
+   },
+   "EC": {
+    "cells": {},
+    "marginal": 0.4917,
+    "source_note": "idealpointall=0.036 year=2023"
+   },
+   "EE": {
+    "cells": {},
+    "marginal": 0.8148,
+    "source_note": "idealpointall=1.276 year=2023"
+   },
+   "EG": {
+    "cells": {},
+    "marginal": 0.2711,
+    "source_note": "idealpointall=-0.811 year=2023"
+   },
+   "ER": {
+    "cells": {},
+    "marginal": 0.2417,
+    "source_note": "idealpointall=-0.923 year=2023"
+   },
+   "ES": {
+    "cells": {},
+    "marginal": 0.7688,
+    "source_note": "idealpointall=1.099 year=2023"
+   },
+   "ET": {
+    "cells": {},
+    "marginal": 0.3538,
+    "source_note": "idealpointall=-0.493 year=2023"
+   },
+   "FI": {
+    "cells": {},
+    "marginal": 0.7698,
+    "source_note": "idealpointall=1.103 year=2023"
+   },
+   "FJ": {
+    "cells": {},
+    "marginal": 0.5939,
+    "source_note": "idealpointall=0.428 year=2023"
+   },
+   "FR": {
+    "cells": {},
+    "marginal": 0.8705,
+    "source_note": "idealpointall=1.490 year=2023"
+   },
+   "GA": {
+    "cells": {},
+    "marginal": 0.3633,
+    "source_note": "idealpointall=-0.457 year=2023"
+   },
+   "GB": {
+    "cells": {},
+    "marginal": 0.9143,
+    "source_note": "idealpointall=1.658 year=2023"
+   },
+   "GD": {
+    "cells": {},
+    "marginal": 0.4226,
+    "source_note": "idealpointall=-0.229 year=2023"
+   },
+   "GE": {
+    "cells": {},
+    "marginal": 0.6831,
+    "source_note": "idealpointall=0.771 year=2023"
+   },
+   "GH": {
+    "cells": {},
+    "marginal": 0.3843,
+    "source_note": "idealpointall=-0.376 year=2023"
+   },
+   "GM": {
+    "cells": {},
+    "marginal": 0.3904,
+    "source_note": "idealpointall=-0.353 year=2023"
+   },
+   "GN": {
+    "cells": {},
+    "marginal": 0.3584,
+    "source_note": "idealpointall=-0.476 year=2023"
+   },
+   "GQ": {
+    "cells": {},
+    "marginal": 0.2994,
+    "source_note": "idealpointall=-0.702 year=2023"
+   },
+   "GR": {
+    "cells": {},
+    "marginal": 0.7649,
+    "source_note": "idealpointall=1.084 year=2023"
+   },
+   "GT": {
+    "cells": {},
+    "marginal": 0.5154,
+    "source_note": "idealpointall=0.127 year=2023"
+   },
+   "GW": {
+    "cells": {},
+    "marginal": 0.3458,
+    "source_note": "idealpointall=-0.524 year=2023"
+   },
+   "HN": {
+    "cells": {},
+    "marginal": 0.4358,
+    "source_note": "idealpointall=-0.179 year=2023"
+   },
+   "HR": {
+    "cells": {},
+    "marginal": 0.8192,
+    "source_note": "idealpointall=1.293 year=2023"
+   },
+   "HT": {
+    "cells": {},
+    "marginal": 0.4523,
+    "source_note": "idealpointall=-0.115 year=2023"
+   },
+   "HU": {
+    "cells": {},
+    "marginal": 0.8279,
+    "source_note": "idealpointall=1.326 year=2023"
+   },
+   "ID": {
+    "cells": {},
+    "marginal": 0.3216,
+    "source_note": "idealpointall=-0.617 year=2023"
+   },
+   "IE": {
+    "cells": {},
+    "marginal": 0.6572,
+    "source_note": "idealpointall=0.671 year=2023"
+   },
+   "IL": {
+    "cells": {},
+    "marginal": 0.7692,
+    "source_note": "idealpointall=1.101 year=2023"
+   },
+   "IN": {
+    "cells": {},
+    "marginal": 0.334,
+    "source_note": "idealpointall=-0.569 year=2023"
+   },
+   "IQ": {
+    "cells": {},
+    "marginal": 0.3168,
+    "source_note": "idealpointall=-0.635 year=2023"
+   },
+   "IR": {
+    "cells": {},
+    "marginal": 0.0803,
+    "source_note": "idealpointall=-1.543 year=2023"
+   },
+   "IS": {
+    "cells": {},
+    "marginal": 0.7444,
+    "source_note": "idealpointall=1.006 year=2023"
+   },
+   "IT": {
+    "cells": {},
+    "marginal": 0.8066,
+    "source_note": "idealpointall=1.244 year=2023"
+   },
+   "JM": {
+    "cells": {},
+    "marginal": 0.4617,
+    "source_note": "idealpointall=-0.079 year=2023"
+   },
+   "JO": {
+    "cells": {},
+    "marginal": 0.314,
+    "source_note": "idealpointall=-0.646 year=2023"
+   },
+   "JP": {
+    "cells": {},
+    "marginal": 0.686,
+    "source_note": "idealpointall=0.782 year=2023"
+   },
+   "KE": {
+    "cells": {},
+    "marginal": 0.3635,
+    "source_note": "idealpointall=-0.456 year=2023"
+   },
+   "KG": {
+    "cells": {},
+    "marginal": 0.2907,
+    "source_note": "idealpointall=-0.736 year=2023"
+   },
+   "KH": {
+    "cells": {},
+    "marginal": 0.3793,
+    "source_note": "idealpointall=-0.395 year=2023"
+   },
+   "KI": {
+    "cells": {},
+    "marginal": 0.4781,
+    "source_note": "idealpointall=-0.016 year=2023"
+   },
+   "KM": {
+    "cells": {},
+    "marginal": 0.3708,
+    "source_note": "idealpointall=-0.428 year=2023"
+   },
+   "KP": {
+    "cells": {},
+    "marginal": 0.1348,
+    "source_note": "idealpointall=-1.334 year=2023"
+   },
+   "KR": {
+    "cells": {},
+    "marginal": 0.7186,
+    "source_note": "idealpointall=0.907 year=2023"
+   },
+   "KW": {
+    "cells": {},
+    "marginal": 0.3865,
+    "source_note": "idealpointall=-0.368 year=2023"
+   },
+   "KZ": {
+    "cells": {},
+    "marginal": 0.34,
+    "source_note": "idealpointall=-0.546 year=2023"
+   },
+   "LA": {
+    "cells": {},
+    "marginal": 0.3014,
+    "source_note": "idealpointall=-0.694 year=2023"
+   },
+   "LB": {
+    "cells": {},
+    "marginal": 0.2831,
+    "source_note": "idealpointall=-0.765 year=2023"
+   },
+   "LI": {
+    "cells": {},
+    "marginal": 0.6549,
+    "source_note": "idealpointall=0.662 year=2023"
+   },
+   "LK": {
+    "cells": {},
+    "marginal": 0.273,
+    "source_note": "idealpointall=-0.803 year=2023"
+   },
+   "LR": {
+    "cells": {},
+    "marginal": 0.6235,
+    "source_note": "idealpointall=0.542 year=2023"
+   },
+   "LS": {
+    "cells": {},
+    "marginal": 0.4045,
+    "source_note": "idealpointall=-0.298 year=2023"
+   },
+   "LT": {
+    "cells": {},
+    "marginal": 0.8284,
+    "source_note": "idealpointall=1.328 year=2023"
+   },
+   "LU": {
+    "cells": {},
+    "marginal": 0.7862,
+    "source_note": "idealpointall=1.166 year=2023"
+   },
+   "LV": {
+    "cells": {},
+    "marginal": 0.8018,
+    "source_note": "idealpointall=1.226 year=2023"
+   },
+   "LY": {
+    "cells": {},
+    "marginal": 0.3219,
+    "source_note": "idealpointall=-0.616 year=2023"
+   },
+   "MA": {
+    "cells": {},
+    "marginal": 0.3838,
+    "source_note": "idealpointall=-0.378 year=2023"
+   },
+   "MC": {
+    "cells": {},
+    "marginal": 0.7952,
+    "source_note": "idealpointall=1.201 year=2023"
+   },
+   "MD": {
+    "cells": {},
+    "marginal": 0.693,
+    "source_note": "idealpointall=0.809 year=2023"
+   },
+   "ME": {
+    "cells": {},
+    "marginal": 0.7803,
+    "source_note": "idealpointall=1.143 year=2023"
+   },
+   "MG": {
+    "cells": {},
+    "marginal": 0.3967,
+    "source_note": "idealpointall=-0.329 year=2023"
+   },
+   "MH": {
+    "cells": {},
+    "marginal": 0.6613,
+    "source_note": "idealpointall=0.687 year=2023"
+   },
+   "MK": {
+    "cells": {},
+    "marginal": 0.7489,
+    "source_note": "idealpointall=1.023 year=2023"
+   },
+   "ML": {
+    "cells": {},
+    "marginal": 0.1823,
+    "source_note": "idealpointall=-1.151 year=2023"
+   },
+   "MM": {
+    "cells": {},
+    "marginal": 0.4284,
+    "source_note": "idealpointall=-0.207 year=2023"
+   },
+   "MN": {
+    "cells": {},
+    "marginal": 0.3761,
+    "source_note": "idealpointall=-0.408 year=2023"
+   },
+   "MR": {
+    "cells": {},
+    "marginal": 0.3128,
+    "source_note": "idealpointall=-0.651 year=2023"
+   },
+   "MT": {
+    "cells": {},
+    "marginal": 0.6799,
+    "source_note": "idealpointall=0.758 year=2023"
+   },
+   "MU": {
+    "cells": {},
+    "marginal": 0.4092,
+    "source_note": "idealpointall=-0.281 year=2023"
+   },
+   "MV": {
+    "cells": {},
+    "marginal": 0.434,
+    "source_note": "idealpointall=-0.186 year=2023"
+   },
+   "MW": {
+    "cells": {},
+    "marginal": 0.4851,
+    "source_note": "idealpointall=0.010 year=2023"
+   },
+   "MX": {
+    "cells": {},
+    "marginal": 0.4571,
+    "source_note": "idealpointall=-0.097 year=2023"
+   },
+   "MY": {
+    "cells": {},
+    "marginal": 0.358,
+    "source_note": "idealpointall=-0.477 year=2023"
+   },
+   "MZ": {
+    "cells": {},
+    "marginal": 0.3419,
+    "source_note": "idealpointall=-0.539 year=2023"
+   },
+   "NA": {
+    "cells": {},
+    "marginal": 0.3549,
+    "source_note": "idealpointall=-0.489 year=2023"
+   },
+   "NE": {
+    "cells": {},
+    "marginal": 0.3065,
+    "source_note": "idealpointall=-0.675 year=2023"
+   },
+   "NG": {
+    "cells": {},
+    "marginal": 0.3386,
+    "source_note": "idealpointall=-0.551 year=2023"
+   },
+   "NI": {
+    "cells": {},
+    "marginal": 0.0753,
+    "source_note": "idealpointall=-1.562 year=2023"
+   },
+   "NL": {
+    "cells": {},
+    "marginal": 0.7663,
+    "source_note": "idealpointall=1.090 year=2023"
+   },
+   "NO": {
+    "cells": {},
+    "marginal": 0.7179,
+    "source_note": "idealpointall=0.904 year=2023"
+   },
+   "NP": {
+    "cells": {},
+    "marginal": 0.3611,
+    "source_note": "idealpointall=-0.465 year=2023"
+   },
+   "NR": {
+    "cells": {},
+    "marginal": 0.5388,
+    "source_note": "idealpointall=0.217 year=2023"
+   },
+   "NZ": {
+    "cells": {},
+    "marginal": 0.6531,
+    "source_note": "idealpointall=0.656 year=2023"
+   },
+   "OM": {
+    "cells": {},
+    "marginal": 0.305,
+    "source_note": "idealpointall=-0.680 year=2023"
+   },
+   "PA": {
+    "cells": {},
+    "marginal": 0.4927,
+    "source_note": "idealpointall=0.040 year=2023"
+   },
+   "PE": {
+    "cells": {},
+    "marginal": 0.4653,
+    "source_note": "idealpointall=-0.065 year=2023"
+   },
+   "PG": {
+    "cells": {},
+    "marginal": 0.5473,
+    "source_note": "idealpointall=0.249 year=2023"
+   },
+   "PH": {
+    "cells": {},
+    "marginal": 0.3956,
+    "source_note": "idealpointall=-0.333 year=2023"
+   },
+   "PK": {
+    "cells": {},
+    "marginal": 0.3348,
+    "source_note": "idealpointall=-0.566 year=2023"
+   },
+   "PL": {
+    "cells": {},
+    "marginal": 0.8111,
+    "source_note": "idealpointall=1.262 year=2023"
+   },
+   "PT": {
+    "cells": {},
+    "marginal": 0.7676,
+    "source_note": "idealpointall=1.095 year=2023"
+   },
+   "PW": {
+    "cells": {},
+    "marginal": 0.6153,
+    "source_note": "idealpointall=0.510 year=2023"
+   },
+   "PY": {
+    "cells": {},
+    "marginal": 0.4781,
+    "source_note": "idealpointall=-0.016 year=2023"
+   },
+   "QA": {
+    "cells": {},
+    "marginal": 0.3966,
+    "source_note": "idealpointall=-0.329 year=2023"
+   },
+   "RO": {
+    "cells": {},
+    "marginal": 0.8123,
+    "source_note": "idealpointall=1.266 year=2023"
+   },
+   "RU": {
+    "cells": {},
+    "marginal": 0.1508,
+    "source_note": "idealpointall=-1.272 year=2023"
+   },
+   "RW": {
+    "cells": {},
+    "marginal": 0.3985,
+    "source_note": "idealpointall=-0.322 year=2023"
+   },
+   "SA": {
+    "cells": {},
+    "marginal": 0.3208,
+    "source_note": "idealpointall=-0.620 year=2023"
+   },
+   "SB": {
+    "cells": {},
+    "marginal": 0.4248,
+    "source_note": "idealpointall=-0.221 year=2023"
+   },
+   "SC": {
+    "cells": {},
+    "marginal": 0.4668,
+    "source_note": "idealpointall=-0.060 year=2023"
+   },
+   "SD": {
+    "cells": {},
+    "marginal": 0.2448,
+    "source_note": "idealpointall=-0.912 year=2023"
+   },
+   "SE": {
+    "cells": {},
+    "marginal": 0.7878,
+    "source_note": "idealpointall=1.172 year=2023"
+   },
+   "SG": {
+    "cells": {},
+    "marginal": 0.4492,
+    "source_note": "idealpointall=-0.127 year=2023"
+   },
+   "SI": {
+    "cells": {},
+    "marginal": 0.7792,
+    "source_note": "idealpointall=1.139 year=2023"
+   },
+   "SK": {
+    "cells": {},
+    "marginal": 0.8155,
+    "source_note": "idealpointall=1.279 year=2023"
+   },
+   "SL": {
+    "cells": {},
+    "marginal": 0.4559,
+    "source_note": "idealpointall=-0.101 year=2023"
+   },
+   "SM": {
+    "cells": {},
+    "marginal": 0.6663,
+    "source_note": "idealpointall=0.706 year=2023"
+   },
+   "SN": {
+    "cells": {},
+    "marginal": 0.3636,
+    "source_note": "idealpointall=-0.456 year=2023"
+   },
+   "SO": {
+    "cells": {},
+    "marginal": 0.3172,
+    "source_note": "idealpointall=-0.634 year=2023"
+   },
+   "SR": {
+    "cells": {},
+    "marginal": 0.4297,
+    "source_note": "idealpointall=-0.202 year=2023"
+   },
+   "SV": {
+    "cells": {},
+    "marginal": 0.4379,
+    "source_note": "idealpointall=-0.170 year=2023"
+   },
+   "SY": {
+    "cells": {},
+    "marginal": 0.0047,
+    "source_note": "idealpointall=-1.833 year=2023"
+   },
+   "SZ": {
+    "cells": {},
+    "marginal": 0.4078,
+    "source_note": "idealpointall=-0.286 year=2023"
+   },
+   "TD": {
+    "cells": {},
+    "marginal": 0.4071,
+    "source_note": "idealpointall=-0.289 year=2023"
+   },
+   "TG": {
+    "cells": {},
+    "marginal": 0.3255,
+    "source_note": "idealpointall=-0.602 year=2023"
+   },
+   "TH": {
+    "cells": {},
+    "marginal": 0.3877,
+    "source_note": "idealpointall=-0.363 year=2023"
+   },
+   "TJ": {
+    "cells": {},
+    "marginal": 0.3035,
+    "source_note": "idealpointall=-0.686 year=2023"
+   },
+   "TM": {
+    "cells": {},
+    "marginal": 0.3376,
+    "source_note": "idealpointall=-0.555 year=2023"
+   },
+   "TN": {
+    "cells": {},
+    "marginal": 0.3313,
+    "source_note": "idealpointall=-0.580 year=2023"
+   },
+   "TO": {
+    "cells": {},
+    "marginal": 0.4988,
+    "source_note": "idealpointall=0.063 year=2023"
+   },
+   "TR": {
+    "cells": {},
+    "marginal": 0.6003,
+    "source_note": "idealpointall=0.453 year=2023"
+   },
+   "TV": {
+    "cells": {},
+    "marginal": 0.5178,
+    "source_note": "idealpointall=0.136 year=2023"
+   },
+   "TZ": {
+    "cells": {},
+    "marginal": 0.4126,
+    "source_note": "idealpointall=-0.267 year=2023"
+   },
+   "UA": {
+    "cells": {},
+    "marginal": 0.8317,
+    "source_note": "idealpointall=1.341 year=2023"
+   },
+   "UG": {
+    "cells": {},
+    "marginal": 0.34,
+    "source_note": "idealpointall=-0.546 year=2023"
+   },
+   "US": {
+    "cells": {},
+    "marginal": 1.0,
+    "source_note": "idealpointall=1.987 year=2023"
+   },
+   "UY": {
+    "cells": {},
+    "marginal": 0.4922,
+    "source_note": "idealpointall=0.038 year=2023"
+   },
+   "UZ": {
+    "cells": {},
+    "marginal": 0.3217,
+    "source_note": "idealpointall=-0.617 year=2023"
+   },
+   "VE": {
+    "cells": {},
+    "marginal": 0.0,
+    "source_note": "idealpointall=-1.851 year=2021"
+   },
+   "VN": {
+    "cells": {},
+    "marginal": 0.3378,
+    "source_note": "idealpointall=-0.554 year=2023"
+   },
+   "VU": {
+    "cells": {},
+    "marginal": 0.4786,
+    "source_note": "idealpointall=-0.014 year=2023"
+   },
+   "WS": {
+    "cells": {},
+    "marginal": 0.5315,
+    "source_note": "idealpointall=0.189 year=2023"
+   },
+   "YE": {
+    "cells": {},
+    "marginal": 0.3339,
+    "source_note": "idealpointall=-0.570 year=2023"
+   },
+   "ZA": {
+    "cells": {},
+    "marginal": 0.3548,
+    "source_note": "idealpointall=-0.489 year=2023"
+   },
+   "ZM": {
+    "cells": {},
+    "marginal": 0.4516,
+    "source_note": "idealpointall=-0.118 year=2023"
+   },
+   "ZW": {
+    "cells": {},
+    "marginal": 0.2264,
+    "source_note": "idealpointall=-0.982 year=2023"
+   }
+  },
+  "geopol_us": {
+   "AD": {
+    "cells": {},
+    "marginal": 0.3247,
+    "source_note": "idealpointall=0.741 year=2023"
+   },
+   "AE": {
+    "cells": {},
+    "marginal": 0.6556,
+    "source_note": "idealpointall=-0.529 year=2023"
+   },
+   "AF": {
+    "cells": {},
+    "marginal": 0.6083,
+    "source_note": "idealpointall=-0.348 year=2023"
+   },
+   "AL": {
+    "cells": {},
+    "marginal": 0.2121,
+    "source_note": "idealpointall=1.173 year=2023"
+   },
+   "AM": {
+    "cells": {},
+    "marginal": 0.5312,
+    "source_note": "idealpointall=-0.052 year=2023"
+   },
+   "AO": {
+    "cells": {},
+    "marginal": 0.588,
+    "source_note": "idealpointall=-0.270 year=2023"
+   },
+   "AR": {
+    "cells": {},
+    "marginal": 0.5228,
+    "source_note": "idealpointall=-0.020 year=2023"
+   },
+   "AT": {
+    "cells": {},
+    "marginal": 0.3186,
+    "source_note": "idealpointall=0.764 year=2023"
+   },
+   "AU": {
+    "cells": {},
+    "marginal": 0.2497,
+    "source_note": "idealpointall=1.029 year=2023"
+   },
+   "AZ": {
+    "cells": {},
+    "marginal": 0.6743,
+    "source_note": "idealpointall=-0.601 year=2023"
+   },
+   "BB": {
+    "cells": {},
+    "marginal": 0.5494,
+    "source_note": "idealpointall=-0.122 year=2023"
+   },
+   "BD": {
+    "cells": {},
+    "marginal": 0.6533,
+    "source_note": "idealpointall=-0.521 year=2023"
+   },
+   "BE": {
+    "cells": {},
+    "marginal": 0.2138,
+    "source_note": "idealpointall=1.166 year=2023"
+   },
+   "BF": {
+    "cells": {},
+    "marginal": 0.6434,
+    "source_note": "idealpointall=-0.483 year=2023"
+   },
+   "BG": {
+    "cells": {},
+    "marginal": 0.2022,
+    "source_note": "idealpointall=1.211 year=2023"
+   },
+   "BH": {
+    "cells": {},
+    "marginal": 0.6761,
+    "source_note": "idealpointall=-0.608 year=2023"
+   },
+   "BI": {
+    "cells": {},
+    "marginal": 0.7442,
+    "source_note": "idealpointall=-0.869 year=2023"
+   },
+   "BJ": {
+    "cells": {},
+    "marginal": 0.5816,
+    "source_note": "idealpointall=-0.245 year=2023"
+   },
+   "BN": {
+    "cells": {},
+    "marginal": 0.6566,
+    "source_note": "idealpointall=-0.533 year=2023"
+   },
+   "BO": {
+    "cells": {},
+    "marginal": 0.7169,
+    "source_note": "idealpointall=-0.764 year=2023"
+   },
+   "BR": {
+    "cells": {},
+    "marginal": 0.5921,
+    "source_note": "idealpointall=-0.286 year=2023"
+   },
+   "BS": {
+    "cells": {},
+    "marginal": 0.5376,
+    "source_note": "idealpointall=-0.076 year=2023"
+   },
+   "BT": {
+    "cells": {},
+    "marginal": 0.6256,
+    "source_note": "idealpointall=-0.414 year=2023"
+   },
+   "BW": {
+    "cells": {},
+    "marginal": 0.5763,
+    "source_note": "idealpointall=-0.225 year=2023"
+   },
+   "BY": {
+    "cells": {},
+    "marginal": 0.8417,
+    "source_note": "idealpointall=-1.244 year=2023"
+   },
+   "BZ": {
+    "cells": {},
+    "marginal": 0.5569,
+    "source_note": "idealpointall=-0.151 year=2023"
+   },
+   "CA": {
+    "cells": {},
+    "marginal": 0.2178,
+    "source_note": "idealpointall=1.151 year=2023"
+   },
+   "CF": {
+    "cells": {},
+    "marginal": 0.6645,
+    "source_note": "idealpointall=-0.563 year=2023"
+   },
+   "CH": {
+    "cells": {},
+    "marginal": 0.3551,
+    "source_note": "idealpointall=0.624 year=2023"
+   },
+   "CL": {
+    "cells": {},
+    "marginal": 0.4981,
+    "source_note": "idealpointall=0.075 year=2023"
+   },
+   "CM": {
+    "cells": {},
+    "marginal": 0.5926,
+    "source_note": "idealpointall=-0.287 year=2023"
+   },
+   "CN": {
+    "cells": {},
+    "marginal": 0.8312,
+    "source_note": "idealpointall=-1.203 year=2023"
+   },
+   "CO": {
+    "cells": {},
+    "marginal": 0.5238,
+    "source_note": "idealpointall=-0.023 year=2023"
+   },
+   "CR": {
+    "cells": {},
+    "marginal": 0.5171,
+    "source_note": "idealpointall=0.002 year=2023"
+   },
+   "CU": {
+    "cells": {},
+    "marginal": 0.8818,
+    "source_note": "idealpointall=-1.397 year=2023"
+   },
+   "CV": {
+    "cells": {},
+    "marginal": 0.523,
+    "source_note": "idealpointall=-0.020 year=2023"
+   },
+   "CY": {
+    "cells": {},
+    "marginal": 0.3255,
+    "source_note": "idealpointall=0.737 year=2023"
+   },
+   "CZ": {
+    "cells": {},
+    "marginal": 0.1619,
+    "source_note": "idealpointall=1.365 year=2023"
+   },
+   "DE": {
+    "cells": {},
+    "marginal": 0.209,
+    "source_note": "idealpointall=1.185 year=2023"
+   },
+   "DJ": {
+    "cells": {},
+    "marginal": 0.6761,
+    "source_note": "idealpointall=-0.608 year=2023"
+   },
+   "DK": {
+    "cells": {},
+    "marginal": 0.2071,
+    "source_note": "idealpointall=1.192 year=2023"
+   },
+   "DM": {
+    "cells": {},
+    "marginal": 0.556,
+    "source_note": "idealpointall=-0.147 year=2023"
+   },
+   "DO": {
+    "cells": {},
+    "marginal": 0.5111,
+    "source_note": "idealpointall=0.025 year=2023"
+   },
+   "DZ": {
+    "cells": {},
+    "marginal": 0.7136,
+    "source_note": "idealpointall=-0.752 year=2023"
+   },
+   "EC": {
+    "cells": {},
+    "marginal": 0.5083,
+    "source_note": "idealpointall=0.036 year=2023"
+   },
+   "EE": {
+    "cells": {},
+    "marginal": 0.1852,
+    "source_note": "idealpointall=1.276 year=2023"
+   },
+   "EG": {
+    "cells": {},
+    "marginal": 0.7289,
+    "source_note": "idealpointall=-0.811 year=2023"
+   },
+   "ER": {
+    "cells": {},
+    "marginal": 0.7583,
+    "source_note": "idealpointall=-0.923 year=2023"
+   },
+   "ES": {
+    "cells": {},
+    "marginal": 0.2312,
+    "source_note": "idealpointall=1.099 year=2023"
+   },
+   "ET": {
+    "cells": {},
+    "marginal": 0.6462,
+    "source_note": "idealpointall=-0.493 year=2023"
+   },
+   "FI": {
+    "cells": {},
+    "marginal": 0.2302,
+    "source_note": "idealpointall=1.103 year=2023"
+   },
+   "FJ": {
+    "cells": {},
+    "marginal": 0.4061,
+    "source_note": "idealpointall=0.428 year=2023"
+   },
+   "FR": {
+    "cells": {},
+    "marginal": 0.1295,
+    "source_note": "idealpointall=1.490 year=2023"
+   },
+   "GA": {
+    "cells": {},
+    "marginal": 0.6367,
+    "source_note": "idealpointall=-0.457 year=2023"
+   },
+   "GB": {
+    "cells": {},
+    "marginal": 0.0857,
+    "source_note": "idealpointall=1.658 year=2023"
+   },
+   "GD": {
+    "cells": {},
+    "marginal": 0.5774,
+    "source_note": "idealpointall=-0.229 year=2023"
+   },
+   "GE": {
+    "cells": {},
+    "marginal": 0.3169,
+    "source_note": "idealpointall=0.771 year=2023"
+   },
+   "GH": {
+    "cells": {},
+    "marginal": 0.6157,
+    "source_note": "idealpointall=-0.376 year=2023"
+   },
+   "GM": {
+    "cells": {},
+    "marginal": 0.6096,
+    "source_note": "idealpointall=-0.353 year=2023"
+   },
+   "GN": {
+    "cells": {},
+    "marginal": 0.6416,
+    "source_note": "idealpointall=-0.476 year=2023"
+   },
+   "GQ": {
+    "cells": {},
+    "marginal": 0.7006,
+    "source_note": "idealpointall=-0.702 year=2023"
+   },
+   "GR": {
+    "cells": {},
+    "marginal": 0.2351,
+    "source_note": "idealpointall=1.084 year=2023"
+   },
+   "GT": {
+    "cells": {},
+    "marginal": 0.4846,
+    "source_note": "idealpointall=0.127 year=2023"
+   },
+   "GW": {
+    "cells": {},
+    "marginal": 0.6542,
+    "source_note": "idealpointall=-0.524 year=2023"
+   },
+   "HN": {
+    "cells": {},
+    "marginal": 0.5642,
+    "source_note": "idealpointall=-0.179 year=2023"
+   },
+   "HR": {
+    "cells": {},
+    "marginal": 0.1808,
+    "source_note": "idealpointall=1.293 year=2023"
+   },
+   "HT": {
+    "cells": {},
+    "marginal": 0.5477,
+    "source_note": "idealpointall=-0.115 year=2023"
+   },
+   "HU": {
+    "cells": {},
+    "marginal": 0.1721,
+    "source_note": "idealpointall=1.326 year=2023"
+   },
+   "ID": {
+    "cells": {},
+    "marginal": 0.6784,
+    "source_note": "idealpointall=-0.617 year=2023"
+   },
+   "IE": {
+    "cells": {},
+    "marginal": 0.3428,
+    "source_note": "idealpointall=0.671 year=2023"
+   },
+   "IL": {
+    "cells": {},
+    "marginal": 0.2308,
+    "source_note": "idealpointall=1.101 year=2023"
+   },
+   "IN": {
+    "cells": {},
+    "marginal": 0.666,
+    "source_note": "idealpointall=-0.569 year=2023"
+   },
+   "IQ": {
+    "cells": {},
+    "marginal": 0.6832,
+    "source_note": "idealpointall=-0.635 year=2023"
+   },
+   "IR": {
+    "cells": {},
+    "marginal": 0.9197,
+    "source_note": "idealpointall=-1.543 year=2023"
+   },
+   "IS": {
+    "cells": {},
+    "marginal": 0.2556,
+    "source_note": "idealpointall=1.006 year=2023"
+   },
+   "IT": {
+    "cells": {},
+    "marginal": 0.1934,
+    "source_note": "idealpointall=1.244 year=2023"
+   },
+   "JM": {
+    "cells": {},
+    "marginal": 0.5383,
+    "source_note": "idealpointall=-0.079 year=2023"
+   },
+   "JO": {
+    "cells": {},
+    "marginal": 0.686,
+    "source_note": "idealpointall=-0.646 year=2023"
+   },
+   "JP": {
+    "cells": {},
+    "marginal": 0.314,
+    "source_note": "idealpointall=0.782 year=2023"
+   },
+   "KE": {
+    "cells": {},
+    "marginal": 0.6365,
+    "source_note": "idealpointall=-0.456 year=2023"
+   },
+   "KG": {
+    "cells": {},
+    "marginal": 0.7093,
+    "source_note": "idealpointall=-0.736 year=2023"
+   },
+   "KH": {
+    "cells": {},
+    "marginal": 0.6207,
+    "source_note": "idealpointall=-0.395 year=2023"
+   },
+   "KI": {
+    "cells": {},
+    "marginal": 0.5219,
+    "source_note": "idealpointall=-0.016 year=2023"
+   },
+   "KM": {
+    "cells": {},
+    "marginal": 0.6292,
+    "source_note": "idealpointall=-0.428 year=2023"
+   },
+   "KP": {
+    "cells": {},
+    "marginal": 0.8652,
+    "source_note": "idealpointall=-1.334 year=2023"
+   },
+   "KR": {
+    "cells": {},
+    "marginal": 0.2814,
+    "source_note": "idealpointall=0.907 year=2023"
+   },
+   "KW": {
+    "cells": {},
+    "marginal": 0.6135,
+    "source_note": "idealpointall=-0.368 year=2023"
+   },
+   "KZ": {
+    "cells": {},
+    "marginal": 0.66,
+    "source_note": "idealpointall=-0.546 year=2023"
+   },
+   "LA": {
+    "cells": {},
+    "marginal": 0.6986,
+    "source_note": "idealpointall=-0.694 year=2023"
+   },
+   "LB": {
+    "cells": {},
+    "marginal": 0.7169,
+    "source_note": "idealpointall=-0.765 year=2023"
+   },
+   "LI": {
+    "cells": {},
+    "marginal": 0.3451,
+    "source_note": "idealpointall=0.662 year=2023"
+   },
+   "LK": {
+    "cells": {},
+    "marginal": 0.727,
+    "source_note": "idealpointall=-0.803 year=2023"
+   },
+   "LR": {
+    "cells": {},
+    "marginal": 0.3765,
+    "source_note": "idealpointall=0.542 year=2023"
+   },
+   "LS": {
+    "cells": {},
+    "marginal": 0.5955,
+    "source_note": "idealpointall=-0.298 year=2023"
+   },
+   "LT": {
+    "cells": {},
+    "marginal": 0.1716,
+    "source_note": "idealpointall=1.328 year=2023"
+   },
+   "LU": {
+    "cells": {},
+    "marginal": 0.2138,
+    "source_note": "idealpointall=1.166 year=2023"
+   },
+   "LV": {
+    "cells": {},
+    "marginal": 0.1982,
+    "source_note": "idealpointall=1.226 year=2023"
+   },
+   "LY": {
+    "cells": {},
+    "marginal": 0.6781,
+    "source_note": "idealpointall=-0.616 year=2023"
+   },
+   "MA": {
+    "cells": {},
+    "marginal": 0.6162,
+    "source_note": "idealpointall=-0.378 year=2023"
+   },
+   "MC": {
+    "cells": {},
+    "marginal": 0.2048,
+    "source_note": "idealpointall=1.201 year=2023"
+   },
+   "MD": {
+    "cells": {},
+    "marginal": 0.307,
+    "source_note": "idealpointall=0.809 year=2023"
+   },
+   "ME": {
+    "cells": {},
+    "marginal": 0.2197,
+    "source_note": "idealpointall=1.143 year=2023"
+   },
+   "MG": {
+    "cells": {},
+    "marginal": 0.6033,
+    "source_note": "idealpointall=-0.329 year=2023"
+   },
+   "MH": {
+    "cells": {},
+    "marginal": 0.3387,
+    "source_note": "idealpointall=0.687 year=2023"
+   },
+   "MK": {
+    "cells": {},
+    "marginal": 0.2511,
+    "source_note": "idealpointall=1.023 year=2023"
+   },
+   "ML": {
+    "cells": {},
+    "marginal": 0.8177,
+    "source_note": "idealpointall=-1.151 year=2023"
+   },
+   "MM": {
+    "cells": {},
+    "marginal": 0.5716,
+    "source_note": "idealpointall=-0.207 year=2023"
+   },
+   "MN": {
+    "cells": {},
+    "marginal": 0.6239,
+    "source_note": "idealpointall=-0.408 year=2023"
+   },
+   "MR": {
+    "cells": {},
+    "marginal": 0.6872,
+    "source_note": "idealpointall=-0.651 year=2023"
+   },
+   "MT": {
+    "cells": {},
+    "marginal": 0.3201,
+    "source_note": "idealpointall=0.758 year=2023"
+   },
+   "MU": {
+    "cells": {},
+    "marginal": 0.5908,
+    "source_note": "idealpointall=-0.281 year=2023"
+   },
+   "MV": {
+    "cells": {},
+    "marginal": 0.566,
+    "source_note": "idealpointall=-0.186 year=2023"
+   },
+   "MW": {
+    "cells": {},
+    "marginal": 0.5149,
+    "source_note": "idealpointall=0.010 year=2023"
+   },
+   "MX": {
+    "cells": {},
+    "marginal": 0.5429,
+    "source_note": "idealpointall=-0.097 year=2023"
+   },
+   "MY": {
+    "cells": {},
+    "marginal": 0.642,
+    "source_note": "idealpointall=-0.477 year=2023"
+   },
+   "MZ": {
+    "cells": {},
+    "marginal": 0.6581,
+    "source_note": "idealpointall=-0.539 year=2023"
+   },
+   "NA": {
+    "cells": {},
+    "marginal": 0.6451,
+    "source_note": "idealpointall=-0.489 year=2023"
+   },
+   "NE": {
+    "cells": {},
+    "marginal": 0.6935,
+    "source_note": "idealpointall=-0.675 year=2023"
+   },
+   "NG": {
+    "cells": {},
+    "marginal": 0.6614,
+    "source_note": "idealpointall=-0.551 year=2023"
+   },
+   "NI": {
+    "cells": {},
+    "marginal": 0.9247,
+    "source_note": "idealpointall=-1.562 year=2023"
+   },
+   "NL": {
+    "cells": {},
+    "marginal": 0.2337,
+    "source_note": "idealpointall=1.090 year=2023"
+   },
+   "NO": {
+    "cells": {},
+    "marginal": 0.2821,
+    "source_note": "idealpointall=0.904 year=2023"
+   },
+   "NP": {
+    "cells": {},
+    "marginal": 0.6389,
+    "source_note": "idealpointall=-0.465 year=2023"
+   },
+   "NR": {
+    "cells": {},
+    "marginal": 0.4612,
+    "source_note": "idealpointall=0.217 year=2023"
+   },
+   "NZ": {
+    "cells": {},
+    "marginal": 0.3469,
+    "source_note": "idealpointall=0.656 year=2023"
+   },
+   "OM": {
+    "cells": {},
+    "marginal": 0.695,
+    "source_note": "idealpointall=-0.680 year=2023"
+   },
+   "PA": {
+    "cells": {},
+    "marginal": 0.5073,
+    "source_note": "idealpointall=0.040 year=2023"
+   },
+   "PE": {
+    "cells": {},
+    "marginal": 0.5347,
+    "source_note": "idealpointall=-0.065 year=2023"
+   },
+   "PG": {
+    "cells": {},
+    "marginal": 0.4527,
+    "source_note": "idealpointall=0.249 year=2023"
+   },
+   "PH": {
+    "cells": {},
+    "marginal": 0.6044,
+    "source_note": "idealpointall=-0.333 year=2023"
+   },
+   "PK": {
+    "cells": {},
+    "marginal": 0.6652,
+    "source_note": "idealpointall=-0.566 year=2023"
+   },
+   "PL": {
+    "cells": {},
+    "marginal": 0.1889,
+    "source_note": "idealpointall=1.262 year=2023"
+   },
+   "PT": {
+    "cells": {},
+    "marginal": 0.2324,
+    "source_note": "idealpointall=1.095 year=2023"
+   },
+   "PW": {
+    "cells": {},
+    "marginal": 0.3847,
+    "source_note": "idealpointall=0.510 year=2023"
+   },
+   "PY": {
+    "cells": {},
+    "marginal": 0.5219,
+    "source_note": "idealpointall=-0.016 year=2023"
+   },
+   "QA": {
+    "cells": {},
+    "marginal": 0.6034,
+    "source_note": "idealpointall=-0.329 year=2023"
+   },
+   "RO": {
+    "cells": {},
+    "marginal": 0.1877,
+    "source_note": "idealpointall=1.266 year=2023"
+   },
+   "RU": {
+    "cells": {},
+    "marginal": 0.8492,
+    "source_note": "idealpointall=-1.272 year=2023"
+   },
+   "RW": {
+    "cells": {},
+    "marginal": 0.6015,
+    "source_note": "idealpointall=-0.322 year=2023"
+   },
+   "SA": {
+    "cells": {},
+    "marginal": 0.6792,
+    "source_note": "idealpointall=-0.620 year=2023"
+   },
+   "SB": {
+    "cells": {},
+    "marginal": 0.5752,
+    "source_note": "idealpointall=-0.221 year=2023"
+   },
+   "SC": {
+    "cells": {},
+    "marginal": 0.5332,
+    "source_note": "idealpointall=-0.060 year=2023"
+   },
+   "SD": {
+    "cells": {},
+    "marginal": 0.7552,
+    "source_note": "idealpointall=-0.912 year=2023"
+   },
+   "SE": {
+    "cells": {},
+    "marginal": 0.2122,
+    "source_note": "idealpointall=1.172 year=2023"
+   },
+   "SG": {
+    "cells": {},
+    "marginal": 0.5508,
+    "source_note": "idealpointall=-0.127 year=2023"
+   },
+   "SI": {
+    "cells": {},
+    "marginal": 0.2208,
+    "source_note": "idealpointall=1.139 year=2023"
+   },
+   "SK": {
+    "cells": {},
+    "marginal": 0.1845,
+    "source_note": "idealpointall=1.279 year=2023"
+   },
+   "SL": {
+    "cells": {},
+    "marginal": 0.5441,
+    "source_note": "idealpointall=-0.101 year=2023"
+   },
+   "SM": {
+    "cells": {},
+    "marginal": 0.3337,
+    "source_note": "idealpointall=0.706 year=2023"
+   },
+   "SN": {
+    "cells": {},
+    "marginal": 0.6364,
+    "source_note": "idealpointall=-0.456 year=2023"
+   },
+   "SO": {
+    "cells": {},
+    "marginal": 0.6828,
+    "source_note": "idealpointall=-0.634 year=2023"
+   },
+   "SR": {
+    "cells": {},
+    "marginal": 0.5703,
+    "source_note": "idealpointall=-0.202 year=2023"
+   },
+   "SV": {
+    "cells": {},
+    "marginal": 0.5621,
+    "source_note": "idealpointall=-0.170 year=2023"
+   },
+   "SY": {
+    "cells": {},
+    "marginal": 0.9953,
+    "source_note": "idealpointall=-1.833 year=2023"
+   },
+   "SZ": {
+    "cells": {},
+    "marginal": 0.5922,
+    "source_note": "idealpointall=-0.286 year=2023"
+   },
+   "TD": {
+    "cells": {},
+    "marginal": 0.5929,
+    "source_note": "idealpointall=-0.289 year=2023"
+   },
+   "TG": {
+    "cells": {},
+    "marginal": 0.6745,
+    "source_note": "idealpointall=-0.602 year=2023"
+   },
+   "TH": {
+    "cells": {},
+    "marginal": 0.6123,
+    "source_note": "idealpointall=-0.363 year=2023"
+   },
+   "TJ": {
+    "cells": {},
+    "marginal": 0.6965,
+    "source_note": "idealpointall=-0.686 year=2023"
+   },
+   "TM": {
+    "cells": {},
+    "marginal": 0.6624,
+    "source_note": "idealpointall=-0.555 year=2023"
+   },
+   "TN": {
+    "cells": {},
+    "marginal": 0.6687,
+    "source_note": "idealpointall=-0.580 year=2023"
+   },
+   "TO": {
+    "cells": {},
+    "marginal": 0.5012,
+    "source_note": "idealpointall=0.063 year=2023"
+   },
+   "TR": {
+    "cells": {},
+    "marginal": 0.3997,
+    "source_note": "idealpointall=0.453 year=2023"
+   },
+   "TV": {
+    "cells": {},
+    "marginal": 0.4822,
+    "source_note": "idealpointall=0.136 year=2023"
+   },
+   "TZ": {
+    "cells": {},
+    "marginal": 0.5874,
+    "source_note": "idealpointall=-0.267 year=2023"
+   },
+   "UA": {
+    "cells": {},
+    "marginal": 0.1683,
+    "source_note": "idealpointall=1.341 year=2023"
+   },
+   "UG": {
+    "cells": {},
+    "marginal": 0.66,
+    "source_note": "idealpointall=-0.546 year=2023"
+   },
+   "US": {
+    "cells": {},
+    "marginal": 0.0,
+    "source_note": "idealpointall=1.987 year=2023"
+   },
+   "UY": {
+    "cells": {},
+    "marginal": 0.5078,
+    "source_note": "idealpointall=0.038 year=2023"
+   },
+   "UZ": {
+    "cells": {},
+    "marginal": 0.6783,
+    "source_note": "idealpointall=-0.617 year=2023"
+   },
+   "VE": {
+    "cells": {},
+    "marginal": 1.0,
+    "source_note": "idealpointall=-1.851 year=2021"
+   },
+   "VN": {
+    "cells": {},
+    "marginal": 0.6622,
+    "source_note": "idealpointall=-0.554 year=2023"
+   },
+   "VU": {
+    "cells": {},
+    "marginal": 0.5214,
+    "source_note": "idealpointall=-0.014 year=2023"
+   },
+   "WS": {
+    "cells": {},
+    "marginal": 0.4685,
+    "source_note": "idealpointall=0.189 year=2023"
+   },
+   "YE": {
+    "cells": {},
+    "marginal": 0.6661,
+    "source_note": "idealpointall=-0.570 year=2023"
+   },
+   "ZA": {
+    "cells": {},
+    "marginal": 0.6452,
+    "source_note": "idealpointall=-0.489 year=2023"
+   },
+   "ZM": {
+    "cells": {},
+    "marginal": 0.5484,
+    "source_note": "idealpointall=-0.118 year=2023"
+   },
+   "ZW": {
+    "cells": {},
+    "marginal": 0.7736,
+    "source_note": "idealpointall=-0.982 year=2023"
+   }
+  }
+ }
+}
