@@ -127,5 +127,9 @@
    "path": "/opt/earth1-data/benchmark_a/wvs7.duckdb",
    "role": "TRAIN"
   }
+ },
+ "food2010_outcome_estate": {
+  "note": "SEALED 2026-09-02: 2010-11 food-spike outcome estate (FAO SOFI PoU 2010->2011 by country; WFP/FEWS 2011). Values unfetched at sealing; fetch once, post-freeze, per FOOD2010_SEALED_PREREG.md",
+  "role": "HOLDOUT"
  }
 }
