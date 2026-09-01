@@ -32,3 +32,22 @@ GEOGRAPHY and MAGNITUDE, never timing.
 - **M3 top movers:** count of model top-5 countries appearing in the real top-5.
   The founder's prior: Egypt, Lebanon, Syria led in reality.
 Model outputs are committed BEFORE any outcome fetch; scoring is one pass, no reruns.
+
+## DOSE VERIFICATION (added 2026-09-02, AFTER model output was frozen — verification, not tuning)
+Founder-supplied FAO figures: FPI March 2022 = 159.3 (+12.6% m/m, later revised
+159.7/+13.2%), highest since 1990; +33.6% y/y; Cereal Price Index +17.1% m/m.
+Live FAO page fetched and hashed from prime as the source
+(`/opt/earth1-data/fao_fpi_page.html`, sha256 b343af07a49eceb96d50…, cites the
+March 2022 peak; the underlying CSV remains on the retry queue).
+**Dose framing (stated, per founder):** the registered 20% sits between the headline
+m/m jump (+13%) and the cereals m/m jump (+17%), well under y/y (+34%). Cereals is
+the channel that hit MENA bread prices, so the spec is conservative for Egypt.
+
+## RESULT-HEADER CAVEATS (registered)
+- M2/M3 are scored tonight on the FORCE-SHIFT ranking, not hunger ranking — they test
+  "did Fear/Economics move most in Egypt, Lebanon, Syria," not "did hunger rise most
+  there." `hungry_by_country` in snapshot() is v1.1 item #1 — it is exactly the field
+  the +326M headline needs at country level.
+- M1 anchors to fetch (one pass, post-freeze): country-level "acutely food insecure"
+  changes from the 2022 Global Report on Food Crises + WFP Egypt/Lebanon/Syria
+  country briefs, Q2 2022.
