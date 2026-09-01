@@ -359,7 +359,8 @@ def ask(q: dict, base_world, seed: int, horizon_days: int = 60) -> dict:
                         "branch_hashes": v.branch_hashes})
     else:
         spec = dict(q)
-        spec.setdefault("outcomes", ["YES", "NO"])
+        if not spec.get("outcomes"):
+            spec["outcomes"] = ["YES", "NO"]
         cls = spec.get("class") or "provisional_forecast"
         spec["class"] = _ensure_class(cls, q.get("text", ""))
         v = answer(spec, base_world, seed, horizon_days)
