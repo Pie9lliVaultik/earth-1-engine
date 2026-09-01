@@ -210,6 +210,26 @@ def _p_didhappen(q, m, qid):
                         "source": url, "retrieved": _now()}
     except Exception:
         pass
+    snap = "/opt/earth1-data/resolved_dev_2026-09-01.json"
+    if os.path.exists(snap):
+        d = json.load(open(snap))
+        toks = set(re.findall(r"[a-z]{3,}", q.lower())) - STOPWORDS
+        best = None
+        for mid, r in d.get("rows", {}).items():
+            mt = set(re.findall(r"[a-z]{3,}", r["question"].lower()))
+            sc = len(toks & mt) / max(len(toks | mt), 1)
+            if sc > 0.3 and (best is None or sc > best[0]):
+                best = (sc, r)
+        if best:
+            r = best[1]
+            yes = r["resolution"] == 1
+            return {"tier": "FACT", "p": 0.999 if yes else 0.001,
+                    "answer": (f"{'Yes' if yes else 'No'} — the resolved "
+                               f"market \"{r['question']}\" settled "
+                               f"{'YES' if yes else 'NO'} "
+                               f"(closed {r['close']})."),
+                    "source": f"resolved-market snapshot {snap} "
+                              f"({r['source']})", "retrieved": _now()}
     return None
 
 
@@ -256,12 +276,12 @@ def _p_quake(q, m, qid):
 PREMISE_RULES = [
     (re.compile(r"\b(asteroid|meteor|near.?earth object)\b.*\b(today|"
                 r"tonight|tomorrow)\b", re.I), _p_asteroid),
-    (re.compile(r"\b(gold|bitcoin|btc|euro|eur)\b.{0,40}\b(below|under|"
-                r"above|over|hit|reach|drop below|fall below)\b.{0,10}"
-                r"\$?([\d,.]+)", re.I), _p_price),
-    (re.compile(r"is (?:the )?([A-Z][\wÀ-ſ]+(?: [A-Z]"
-                r"[\wÀ-ſ]+)?) still (?:the )?([\w ]*?(?:president|"
-                r"prime minister|pm\b|chancellor|king|pope)[\w ]*)"),
+    (re.compile(r"\b(gold|bitcoin|btc|euro|eur)\b.{0,40}?\b(below|under|"
+                r"above|over|hit|reach|drop below|fall below)\b[^\d$]{0,10}?"
+                r"\$?((?:\d[\d,]*\.?\d*|0?\.\d+))", re.I), _p_price),
+    (re.compile(r"[Ii]s (?:the )?([A-Z][\wÀ-ſ]+(?: [A-Z]"
+                r"[\wÀ-ſ]+)?) still (?:the )?((?i:[\w ]*?(?:president|"
+                r"prime minister|pm\b|chancellor|king|pope))[\w ]*)"),
      _p_officeholder),
     (re.compile(r"\b(did|has)\b.{3,80}\b(cut|raise|hike|win|won|pass|"
                 r"happen|resign)\b", re.I), _p_didhappen),
@@ -271,14 +291,18 @@ PREMISE_RULES = [
                 r"quake)", re.I), _p_quake),
 ]
 
+STOPWORDS = set("who wins win the will a an is are do does of in on at to by for this that it be with and or".split())
+
+
 RETIRED_EXO_CLASSES = {"sports_final", "corporate_earnings"}
 
 
 def _market_odds(text, qid):
     try:
+        toks_q = [t for t in re.findall(r"[A-Za-z]{3,}", text.lower())
+                  if t not in STOPWORDS][:5]
         url = ("https://gamma-api.polymarket.com/public-search?q="
-               + urllib.request.quote(" ".join(re.findall(
-                   r"[A-Za-z]{3,}", text)[:5]))
+               + urllib.request.quote(" ".join(toks_q))
                + "&limit_per_type=10&events_status=active")
         raw = _get(url)
         d = json.loads(raw)
@@ -293,8 +317,8 @@ def _market_odds(text, qid):
                 prices = mk.get("outcomePrices")
                 if isinstance(prices, str):
                     prices = json.loads(prices)
-                if score >= 0.3 and prices and (best is None
-                                                or score > best[0]):
+                if score >= 0.22 and prices and (best is None
+                                                 or score > best[0]):
                     best = (score, mk.get("question"), float(prices[0]))
         if best:
             return {"p": best[2], "book": best[1], "source": url,
