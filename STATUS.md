@@ -1,6 +1,20 @@
 # EARTH-1 LIVE STATUS
 _Chat updates mirrored here. Newest first. Timestamps UTC._
 
+## 2026-09-01 — FREEZE-0.9 TAGGED (freeze-with-named-regression, B5)
+c-SHOCK closed: distress-layoff channel ADOPTED (G-inv bitwise; covid
++1.050 vs fetched +0.999; first real macro responses — covid jobs
+t=+2.2 ≈29M people). B-DEV direction 40% recorded FAILED with the
+coin-flip decomposition (prior 60% was |t|<1 noise) and five named
+regressions (hope miscoupling t=+2.1 wrong sign; epidemic deaths
+absent; unrest chain; gfc migration sign t=−5.1; scoped-event
+resolution). Freeze config = candidate 0.9 + flag; baseline worlds
+bitwise-identical so all green boards carry over. Opinion campaign
+(B2) continues on frozen config: per-item map published (676 items;
+losses pinned to missing religiosity + geopolitics inputs; B2-c1
+external-religiosity cycle in progress). Next per B5: 4M pilot sizing
+→ Epoch 4 plan → STOP before holdout (founder-witnessed spend).
+
 ## 2026-08-31 ~21:00 — c-SHOCK diagnosed to root + fix calibrated; A-FULL-1 running
 The B-DEV "regression" dissolved under measurement: macro shock
 transmission was ~zero in ALL physics (covid: −24±671 jobs on 200k;
