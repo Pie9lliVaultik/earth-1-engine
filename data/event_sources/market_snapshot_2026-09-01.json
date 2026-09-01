@@ -1,0 +1,1069 @@
+{
+ "deadline": "2026-11-15",
+ "fetched_at": "2026-09-01T06:42:58Z",
+ "markets": {
+  "poly:1130012": {
+   "class": "election",
+   "id": "poly:1130012",
+   "liquidity": 483280.8925,
+   "p_yes": 0.705,
+   "question": "Will United Russia (ER) gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1130013": {
+   "class": "election",
+   "id": "poly:1130013",
+   "liquidity": 202311.8109,
+   "p_yes": 0.0125,
+   "question": "Will the Communist Party of the Russian Federation (KPRF) gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1130014": {
+   "class": "election",
+   "id": "poly:1130014",
+   "liquidity": 462086.29117,
+   "p_yes": 0.0015,
+   "question": "Will A Just Russia \u2013 For Truth (SRZP) gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1130015": {
+   "class": "election",
+   "id": "poly:1130015",
+   "liquidity": 160755.02673,
+   "p_yes": 0.043,
+   "question": "Will the Liberal Democratic Party of Russia (LDPR) gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1130016": {
+   "class": "election",
+   "id": "poly:1130016",
+   "liquidity": 255154.07295,
+   "p_yes": 0.2365,
+   "question": "Will New People (NL) gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1130017": {
+   "class": "election",
+   "id": "poly:1130017",
+   "liquidity": 219077.74309,
+   "p_yes": 0.0015,
+   "question": "Will Rodina gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1130018": {
+   "class": "election",
+   "id": "poly:1130018",
+   "liquidity": 457577.56067,
+   "p_yes": 0.0005,
+   "question": "Will Civic Platform (GP) gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1130020": {
+   "class": "election",
+   "id": "poly:1130020",
+   "liquidity": 220373.72104,
+   "p_yes": 0.003,
+   "question": "Will Yabloko gain the most seats in the next Russian parliamentary election?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:1365853": {
+   "class": "election",
+   "id": "poly:1365853",
+   "liquidity": 81239.63654,
+   "p_yes": 0.0015,
+   "question": "Will Tarcisio de Freitas finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365854": {
+   "class": "election",
+   "id": "poly:1365854",
+   "liquidity": 87840.13684,
+   "p_yes": 0.0885,
+   "question": "Will Luiz In\u00e1cio Lula da Silva finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365855": {
+   "class": "election",
+   "id": "poly:1365855",
+   "liquidity": 90912.1865,
+   "p_yes": 0.0015,
+   "question": "Will Jair Bolsonaro finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365856": {
+   "class": "election",
+   "id": "poly:1365856",
+   "liquidity": 140459.81255,
+   "p_yes": 0.0015,
+   "question": "Will Fernando Haddad finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365857": {
+   "class": "election",
+   "id": "poly:1365857",
+   "liquidity": 119132.68908,
+   "p_yes": 0.0015,
+   "question": "Will Michelle Bolsonaro finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365858": {
+   "class": "election",
+   "id": "poly:1365858",
+   "liquidity": 101873.05679,
+   "p_yes": 0.0015,
+   "question": "Will Eduardo Bolsonaro finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365859": {
+   "class": "election",
+   "id": "poly:1365859",
+   "liquidity": 114797.05364,
+   "p_yes": 0.0015,
+   "question": "Will Carlos Roberto Massa J\u00fanior finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365860": {
+   "class": "election",
+   "id": "poly:1365860",
+   "liquidity": 109374.2403,
+   "p_yes": 0.0045,
+   "question": "Will Renan Santos finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365861": {
+   "class": "election",
+   "id": "poly:1365861",
+   "liquidity": 63723.9345,
+   "p_yes": 0.875,
+   "question": "Will Fl\u00e1vio Bolsonaro finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365862": {
+   "class": "election",
+   "id": "poly:1365862",
+   "liquidity": 121951.12785,
+   "p_yes": 0.0015,
+   "question": "Will Ronaldo Caiado finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365863": {
+   "class": "election",
+   "id": "poly:1365863",
+   "liquidity": 126937.93122,
+   "p_yes": 0.0015,
+   "question": "Will Romeu Zema finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365864": {
+   "class": "election",
+   "id": "poly:1365864",
+   "liquidity": 121673.28323,
+   "p_yes": 0.0015,
+   "question": "Will Camilo Santana finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365865": {
+   "class": "election",
+   "id": "poly:1365865",
+   "liquidity": 104245.92003,
+   "p_yes": 0.0015,
+   "question": "Will Geraldo Alckmin finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365866": {
+   "class": "election",
+   "id": "poly:1365866",
+   "liquidity": 109856.28114,
+   "p_yes": 0.0015,
+   "question": "Will Aldo Rebelo finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365867": {
+   "class": "election",
+   "id": "poly:1365867",
+   "liquidity": 113900.75992,
+   "p_yes": 0.0015,
+   "question": "Will Eduardo Leite finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365868": {
+   "class": "election",
+   "id": "poly:1365868",
+   "liquidity": 47392.10817,
+   "p_yes": 0.0005,
+   "question": "Will Tereza Cristina finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365869": {
+   "class": "election",
+   "id": "poly:1365869",
+   "liquidity": 56260.815,
+   "p_yes": 0.0005,
+   "question": "Will Helder Barbalho finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365870": {
+   "class": "election",
+   "id": "poly:1365870",
+   "liquidity": 93598.07607,
+   "p_yes": 0.0105,
+   "question": "Will Augusto Cury finish in second place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365887": {
+   "class": "election",
+   "id": "poly:1365887",
+   "liquidity": 31985.68684,
+   "p_yes": 0.0005,
+   "question": "Will Tarcisio de Freitas finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365888": {
+   "class": "election",
+   "id": "poly:1365888",
+   "liquidity": 51766.75413,
+   "p_yes": 0.0015,
+   "question": "Will Luiz In\u00e1cio Lula da Silva finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365889": {
+   "class": "election",
+   "id": "poly:1365889",
+   "liquidity": 27754.44225,
+   "p_yes": 0.0005,
+   "question": "Will Jair Bolsonaro finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365890": {
+   "class": "election",
+   "id": "poly:1365890",
+   "liquidity": 33155.71246,
+   "p_yes": 0.0005,
+   "question": "Will Fernando Haddad finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365891": {
+   "class": "election",
+   "id": "poly:1365891",
+   "liquidity": 23000.14071,
+   "p_yes": 0.0005,
+   "question": "Will Michelle Bolsonaro finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365892": {
+   "class": "election",
+   "id": "poly:1365892",
+   "liquidity": 31240.18999,
+   "p_yes": 0.0005,
+   "question": "Will Eduardo Bolsonaro finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365893": {
+   "class": "election",
+   "id": "poly:1365893",
+   "liquidity": 25128.83097,
+   "p_yes": 0.0005,
+   "question": "Will Carlos Roberto Massa J\u00fanior finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365894": {
+   "class": "election",
+   "id": "poly:1365894",
+   "liquidity": 39993.0478,
+   "p_yes": 0.165,
+   "question": "Will Renan Santos finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365895": {
+   "class": "election",
+   "id": "poly:1365895",
+   "liquidity": 51519.64679,
+   "p_yes": 0.012,
+   "question": "Will Fl\u00e1vio Bolsonaro finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365896": {
+   "class": "election",
+   "id": "poly:1365896",
+   "liquidity": 24159.1802,
+   "p_yes": 0.295,
+   "question": "Will Ronaldo Caiado finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365897": {
+   "class": "election",
+   "id": "poly:1365897",
+   "liquidity": 34892.61367,
+   "p_yes": 0.0065,
+   "question": "Will Romeu Zema finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365898": {
+   "class": "election",
+   "id": "poly:1365898",
+   "liquidity": 30835.21952,
+   "p_yes": 0.0005,
+   "question": "Will Camilo Santana finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365899": {
+   "class": "election",
+   "id": "poly:1365899",
+   "liquidity": 25234.50977,
+   "p_yes": 0.0005,
+   "question": "Will Geraldo Alckmin finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365900": {
+   "class": "election",
+   "id": "poly:1365900",
+   "liquidity": 29943.10266,
+   "p_yes": 0.0005,
+   "question": "Will Aldo Rebelo finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365901": {
+   "class": "election",
+   "id": "poly:1365901",
+   "liquidity": 31697.55834,
+   "p_yes": 0.0005,
+   "question": "Will Eduardo Leite finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365902": {
+   "class": "election",
+   "id": "poly:1365902",
+   "liquidity": 29662.15166,
+   "p_yes": 0.0005,
+   "question": "Will Tereza Cristina finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365903": {
+   "class": "election",
+   "id": "poly:1365903",
+   "liquidity": 23564.59404,
+   "p_yes": 0.0005,
+   "question": "Will Helder Barbalho finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365904": {
+   "class": "election",
+   "id": "poly:1365904",
+   "liquidity": 48218.05574,
+   "p_yes": 0.5405,
+   "question": "Will Augusto Cury finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1365905": {
+   "class": "election",
+   "id": "poly:1365905",
+   "liquidity": 48155.90424,
+   "p_yes": 0.002,
+   "question": "Will Pablo Mar\u00e7al finish in third place in the first round of the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:1439549": {
+   "class": "rate_decision",
+   "id": "poly:1439549",
+   "liquidity": 181741.25056,
+   "p_yes": 0.0075,
+   "question": "Fed rate cut by September 2026 meeting?",
+   "resolution_date": "2026-10-08",
+   "source": "polymarket"
+  },
+  "poly:1439550": {
+   "class": "rate_decision",
+   "id": "poly:1439550",
+   "liquidity": 124689.60859,
+   "p_yes": 0.0395,
+   "question": "Fed rate cut by October 2026 meeting?",
+   "resolution_date": "2026-11-08",
+   "source": "polymarket"
+  },
+  "poly:2118801": {
+   "class": "rate_decision",
+   "id": "poly:2118801",
+   "liquidity": 7614.8439,
+   "p_yes": 0.44,
+   "question": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Jun\u2013Jul\u2013Sep)?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2118802": {
+   "class": "rate_decision",
+   "id": "poly:2118802",
+   "liquidity": 32457.69651,
+   "p_yes": 0.0065,
+   "question": "Will the Fed Pause\u2013Pause\u2013Cut in the next three decisions (Jun\u2013Jul\u2013Sep)?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2118805": {
+   "class": "rate_decision",
+   "id": "poly:2118805",
+   "liquidity": 14178.5904,
+   "p_yes": 0.56,
+   "question": "Will the Fed decide differently in the next three decisions (Jun\u2013Jul\u2013Sep)?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2243896": {
+   "class": "conflict",
+   "id": "poly:2243896",
+   "liquidity": 83530.2419,
+   "p_yes": 0.075,
+   "question": "Russia x Ukraine ceasefire agreement by October 31, 2026?",
+   "resolution_date": "2026-11-01",
+   "source": "polymarket"
+  },
+  "poly:2252242": {
+   "class": "rate_decision",
+   "id": "poly:2252242",
+   "liquidity": 1892018.5387,
+   "p_yes": 0.0025,
+   "question": "Will the Fed decrease interest rates by 50+ bps after the September 2026 meeting?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2252243": {
+   "class": "rate_decision",
+   "id": "poly:2252243",
+   "liquidity": 942629.02278,
+   "p_yes": 0.0055,
+   "question": "Will the Fed decrease interest rates by 25 bps after the September 2026 meeting?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2252244": {
+   "class": "rate_decision",
+   "id": "poly:2252244",
+   "liquidity": 795273.3156,
+   "p_yes": 0.425,
+   "question": "Will there be no change in Fed interest rates after the September 2026 meeting?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2252245": {
+   "class": "rate_decision",
+   "id": "poly:2252245",
+   "liquidity": 730131.3826,
+   "p_yes": 0.555,
+   "question": "Will the Fed increase interest rates by 25 bps after the September 2026 meeting?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2252246": {
+   "class": "rate_decision",
+   "id": "poly:2252246",
+   "liquidity": 838252.90219,
+   "p_yes": 0.0075,
+   "question": "Will the Fed increase interest rates by 50+ bps after the September 2026 meeting?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:2264327": {
+   "class": "conflict",
+   "id": "poly:2264327",
+   "liquidity": 129863.79,
+   "p_yes": 0.065,
+   "question": "Russia x Ukraine ceasefire by October 31, 2026?",
+   "resolution_date": "2026-10-31",
+   "source": "polymarket"
+  },
+  "poly:2587794": {
+   "class": "rate_decision",
+   "id": "poly:2587794",
+   "liquidity": 9378.75635,
+   "p_yes": 0.0005,
+   "question": "Will the ECB announce a 50+ bps decrease at the September 2026 meeting?",
+   "resolution_date": "2026-09-10",
+   "source": "polymarket"
+  },
+  "poly:2587795": {
+   "class": "rate_decision",
+   "id": "poly:2587795",
+   "liquidity": 6087.32844,
+   "p_yes": 0.0005,
+   "question": "Will the ECB announce a 25 bps decrease at the September 2026 meeting?",
+   "resolution_date": "2026-09-10",
+   "source": "polymarket"
+  },
+  "poly:2587796": {
+   "class": "rate_decision",
+   "id": "poly:2587796",
+   "liquidity": 6027.23019,
+   "p_yes": 0.0135,
+   "question": "Will the ECB announce no change at the September 2026 meeting?",
+   "resolution_date": "2026-09-10",
+   "source": "polymarket"
+  },
+  "poly:2587797": {
+   "class": "rate_decision",
+   "id": "poly:2587797",
+   "liquidity": 17551.27512,
+   "p_yes": 0.9855,
+   "question": "Will the ECB announce a 25 bps increase at the September 2026 meeting?",
+   "resolution_date": "2026-09-10",
+   "source": "polymarket"
+  },
+  "poly:2587798": {
+   "class": "rate_decision",
+   "id": "poly:2587798",
+   "liquidity": 8071.0352,
+   "p_yes": 0.0025,
+   "question": "Will the ECB announce a 50+ bps increase at the September 2026 meeting?",
+   "resolution_date": "2026-09-10",
+   "source": "polymarket"
+  },
+  "poly:2589810": {
+   "class": "rate_decision",
+   "id": "poly:2589810",
+   "liquidity": 132224.72451,
+   "p_yes": 0.0095,
+   "question": "Will the Fed decrease interest rates by 50+ bps after the October 2026 meeting?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589811": {
+   "class": "rate_decision",
+   "id": "poly:2589811",
+   "liquidity": 142793.06444,
+   "p_yes": 0.034,
+   "question": "Will the Fed decrease interest rates by 25 bps after the October 2026 meeting?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589812": {
+   "class": "rate_decision",
+   "id": "poly:2589812",
+   "liquidity": 424642.3067,
+   "p_yes": 0.705,
+   "question": "Will there be no change in Fed interest rates after the October 2026 meeting?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589813": {
+   "class": "rate_decision",
+   "id": "poly:2589813",
+   "liquidity": 487016.3429,
+   "p_yes": 0.265,
+   "question": "Will the Fed increase interest rates by 25 bps after the October 2026 meeting?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589814": {
+   "class": "rate_decision",
+   "id": "poly:2589814",
+   "liquidity": 106955.0458,
+   "p_yes": 0.0075,
+   "question": "Will the Fed increase interest rates by 50+ bps after the October 2026 meeting?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589833": {
+   "class": "rate_decision",
+   "id": "poly:2589833",
+   "liquidity": 11660.7259,
+   "p_yes": 0.355,
+   "question": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Jul\u2013Sep\u2013Oct)?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589834": {
+   "class": "rate_decision",
+   "id": "poly:2589834",
+   "liquidity": 30684.47707,
+   "p_yes": 0.0125,
+   "question": "Will the Fed Pause\u2013Pause\u2013Cut in the next three decisions (Jul\u2013Sep\u2013Oct)?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589835": {
+   "class": "rate_decision",
+   "id": "poly:2589835",
+   "liquidity": 37212.99367,
+   "p_yes": 0.0065,
+   "question": "Will the Fed Pause\u2013Cut\u2013Pause in the next three decisions (Jul\u2013Sep\u2013Oct)?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589836": {
+   "class": "rate_decision",
+   "id": "poly:2589836",
+   "liquidity": 34958.7426,
+   "p_yes": 0.0005,
+   "question": "Will the Fed Pause\u2013Cut\u2013Cut in the next three decisions (Jul\u2013Sep\u2013Oct)?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2589837": {
+   "class": "rate_decision",
+   "id": "poly:2589837",
+   "liquidity": 11888.6627,
+   "p_yes": 0.645,
+   "question": "Will the Fed decide differently in the next three decisions (Jul\u2013Sep\u2013Oct)?",
+   "resolution_date": "2026-10-28",
+   "source": "polymarket"
+  },
+  "poly:2661519": {
+   "class": "rate_decision",
+   "id": "poly:2661519",
+   "liquidity": 7602.79072,
+   "p_yes": 0.9725,
+   "question": "No change in Bank of England\u2019s interest rates after September 2026 meeting?",
+   "resolution_date": "2026-09-17",
+   "source": "polymarket"
+  },
+  "poly:2661521": {
+   "class": "rate_decision",
+   "id": "poly:2661521",
+   "liquidity": 5776.63056,
+   "p_yes": 0.0005,
+   "question": "Bank of England increases interest rates by 50+ bps after September 2026 meeting?",
+   "resolution_date": "2026-09-17",
+   "source": "polymarket"
+  },
+  "poly:2915397": {
+   "class": "referendum",
+   "id": "poly:2915397",
+   "liquidity": 7475.32391,
+   "p_yes": 0.052,
+   "question": "Will the Safeguarding Swiss neutrality (neutrality initiative) initiative be approved in Switzerland\u2019s September 27, 2026 popular vote?",
+   "resolution_date": "2026-09-27",
+   "source": "polymarket"
+  },
+  "poly:2915398": {
+   "class": "referendum",
+   "id": "poly:2915398",
+   "liquidity": 18410.46858,
+   "p_yes": 0.03,
+   "question": "Will the For safe food \u2013 through strengthening sustainable domestic production, increasing plant-based foods and ensuring clean drinking water (food initiative) initiative be approved in Switzerland\u2019s September 27, 2026 popular vote?",
+   "resolution_date": "2026-09-27",
+   "source": "polymarket"
+  },
+  "poly:3081965": {
+   "class": "rate_decision",
+   "id": "poly:3081965",
+   "liquidity": 7307.2527,
+   "p_yes": 0.895,
+   "question": "Will the ECB announce no change at the October 2026 meeting?",
+   "resolution_date": "2026-10-29",
+   "source": "polymarket"
+  },
+  "poly:3212172": {
+   "class": "rate_decision",
+   "id": "poly:3212172",
+   "liquidity": 9633.13612,
+   "p_yes": 0.0005,
+   "question": "Reserve Bank of Australia decreases interest rates by 50+ bps at the September 2026 meeting?",
+   "resolution_date": "2026-09-29",
+   "source": "polymarket"
+  },
+  "poly:3212173": {
+   "class": "rate_decision",
+   "id": "poly:3212173",
+   "liquidity": 6649.45821,
+   "p_yes": 0.0005,
+   "question": "Reserve Bank of Australia decreases interest rates by 25 bps at the September 2026 meeting?",
+   "resolution_date": "2026-09-29",
+   "source": "polymarket"
+  },
+  "poly:3247825": {
+   "class": "rate_decision",
+   "id": "poly:3247825",
+   "liquidity": 8149.4215,
+   "p_yes": 0.81,
+   "question": "No change in Bank of England\u2019s interest rates after November 2026 meeting?",
+   "resolution_date": "2026-11-05",
+   "source": "polymarket"
+  },
+  "poly:3251600": {
+   "class": "rate_decision",
+   "id": "poly:3251600",
+   "liquidity": 5592.57274,
+   "p_yes": 0.0005,
+   "question": "Bank of Japan decreases interest rates by 50+ bps after the October 2026 meeting?",
+   "resolution_date": "2026-10-30",
+   "source": "polymarket"
+  },
+  "poly:3251604": {
+   "class": "rate_decision",
+   "id": "poly:3251604",
+   "liquidity": 6573.67583,
+   "p_yes": 0.0225,
+   "question": "Bank of Japan increases interest rates by 50+ bps after the October 2026 meeting?",
+   "resolution_date": "2026-10-30",
+   "source": "polymarket"
+  },
+  "poly:3399458": {
+   "class": "conflict",
+   "id": "poly:3399458",
+   "liquidity": 27520.4788,
+   "p_yes": 0.865,
+   "question": "Israel x Iran ceasefire continues through September 30?",
+   "resolution_date": "2026-09-30",
+   "source": "polymarket"
+  },
+  "poly:3399459": {
+   "class": "conflict",
+   "id": "poly:3399459",
+   "liquidity": 49000.8114,
+   "p_yes": 0.755,
+   "question": "Israel x Iran ceasefire continues through October 31?",
+   "resolution_date": "2026-10-31",
+   "source": "polymarket"
+  },
+  "poly:3499787": {
+   "class": "rate_decision",
+   "id": "poly:3499787",
+   "liquidity": 6689.81597,
+   "p_yes": 0.0005,
+   "question": "Reserve Bank of Australia decreases interest rates by 50+ bps at the November 2026 meeting?",
+   "resolution_date": "2026-11-03",
+   "source": "polymarket"
+  },
+  "poly:3499788": {
+   "class": "rate_decision",
+   "id": "poly:3499788",
+   "liquidity": 6467.7061,
+   "p_yes": 0.0025,
+   "question": "Reserve Bank of Australia decreases interest rates by 25 bps at the November 2026 meeting?",
+   "resolution_date": "2026-11-03",
+   "source": "polymarket"
+  },
+  "poly:3515993": {
+   "class": "election",
+   "id": "poly:3515993",
+   "liquidity": 6410.6263,
+   "p_yes": 0.625,
+   "question": "Will Democrats sweep the Michigan Senate and Governor elections?",
+   "resolution_date": "2026-11-03",
+   "source": "polymarket"
+  },
+  "poly:3900265": {
+   "class": "policy",
+   "id": "poly:3900265",
+   "liquidity": 13122.8671,
+   "p_yes": 0.095,
+   "question": "US-Canada diplomatic agreement to lower tariffs by September 30?",
+   "resolution_date": "2026-10-01",
+   "source": "polymarket"
+  },
+  "poly:3940906": {
+   "class": "rate_decision",
+   "id": "poly:3940906",
+   "liquidity": 7255.071,
+   "p_yes": 0.135,
+   "question": "Will no one dissent the September Fed decision?",
+   "resolution_date": "2026-09-16",
+   "source": "polymarket"
+  },
+  "poly:601818": {
+   "class": "election",
+   "id": "poly:601818",
+   "liquidity": 658427.028,
+   "p_yes": 0.0005,
+   "question": "Will Tarcisio de Freitas win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601819": {
+   "class": "election",
+   "id": "poly:601819",
+   "liquidity": 399690.4646,
+   "p_yes": 0.555,
+   "question": "Will Luiz In\u00e1cio Lula da Silva win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601820": {
+   "class": "election",
+   "id": "poly:601820",
+   "liquidity": 452545.36929,
+   "p_yes": 0.0015,
+   "question": "Will Jair Bolsonaro win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601821": {
+   "class": "election",
+   "id": "poly:601821",
+   "liquidity": 312309.25474,
+   "p_yes": 0.0005,
+   "question": "Will Fernando Haddad win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601822": {
+   "class": "election",
+   "id": "poly:601822",
+   "liquidity": 567398.84932,
+   "p_yes": 0.0005,
+   "question": "Will Michelle Bolsonaro win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601823": {
+   "class": "election",
+   "id": "poly:601823",
+   "liquidity": 1775671.55469,
+   "p_yes": 0.0005,
+   "question": "Will Eduardo Bolsonaro win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601824": {
+   "class": "election",
+   "id": "poly:601824",
+   "liquidity": 1946896.71073,
+   "p_yes": 0.0005,
+   "question": "Will Carlos Roberto Massa J\u00fanior win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601825": {
+   "class": "election",
+   "id": "poly:601825",
+   "liquidity": 394523.15688,
+   "p_yes": 0.0195,
+   "question": "Will Renan Santos win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601826": {
+   "class": "election",
+   "id": "poly:601826",
+   "liquidity": 260695.70774,
+   "p_yes": 0.3905,
+   "question": "Will Fl\u00e1vio Bolsonaro win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601827": {
+   "class": "election",
+   "id": "poly:601827",
+   "liquidity": 943768.10378,
+   "p_yes": 0.0025,
+   "question": "Will Ronaldo Caiado win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601828": {
+   "class": "election",
+   "id": "poly:601828",
+   "liquidity": 978047.55726,
+   "p_yes": 0.0015,
+   "question": "Will Romeu Zema win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601829": {
+   "class": "election",
+   "id": "poly:601829",
+   "liquidity": 405893.4865,
+   "p_yes": 0.0005,
+   "question": "Will Camilo Santana win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601830": {
+   "class": "election",
+   "id": "poly:601830",
+   "liquidity": 127520.57014,
+   "p_yes": 0.0005,
+   "question": "Will Geraldo Alckmin win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601831": {
+   "class": "election",
+   "id": "poly:601831",
+   "liquidity": 1967080.97371,
+   "p_yes": 0.0005,
+   "question": "Will Eduardo Leite win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601832": {
+   "class": "election",
+   "id": "poly:601832",
+   "liquidity": 1982929.55133,
+   "p_yes": 0.0005,
+   "question": "Will Aldo Rebelo win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601833": {
+   "class": "election",
+   "id": "poly:601833",
+   "liquidity": 753098.79494,
+   "p_yes": 0.0005,
+   "question": "Will Tereza Cristina win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601834": {
+   "class": "election",
+   "id": "poly:601834",
+   "liquidity": 884245.43986,
+   "p_yes": 0.0005,
+   "question": "Will Helder Barbalho win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601835": {
+   "class": "election",
+   "id": "poly:601835",
+   "liquidity": 290662.33285,
+   "p_yes": 0.0015,
+   "question": "Will Pablo Mar\u00e7al win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:601836": {
+   "class": "election",
+   "id": "poly:601836",
+   "liquidity": 435723.93219,
+   "p_yes": 0.0225,
+   "question": "Will Augusto Cury win the 2026 Brazilian presidential election?",
+   "resolution_date": "2026-10-04",
+   "source": "polymarket"
+  },
+  "poly:648383": {
+   "class": "election",
+   "id": "poly:648383",
+   "liquidity": 33760.3577,
+   "p_yes": 0.3,
+   "question": "Billionaire one-time wealth tax passes in California election 2026?",
+   "resolution_date": "2026-11-03",
+   "source": "polymarket"
+  },
+  "poly:811719": {
+   "class": "election",
+   "id": "poly:811719",
+   "liquidity": 81846.03515,
+   "p_yes": 0.9915,
+   "question": "Will the Swedish Social Democratic Party (S) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811720": {
+   "class": "election",
+   "id": "poly:811720",
+   "liquidity": 68452.95815,
+   "p_yes": 0.008,
+   "question": "Will the Sweden Democrats (SD) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811721": {
+   "class": "election",
+   "id": "poly:811721",
+   "liquidity": 33207.30061,
+   "p_yes": 0.0025,
+   "question": "Will the Moderate Party (M) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811722": {
+   "class": "election",
+   "id": "poly:811722",
+   "liquidity": 27774.9985,
+   "p_yes": 0.0005,
+   "question": "Will the Centre Party (C) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811723": {
+   "class": "election",
+   "id": "poly:811723",
+   "liquidity": 32980.67728,
+   "p_yes": 0.0005,
+   "question": "Will the Left Party (V) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811724": {
+   "class": "election",
+   "id": "poly:811724",
+   "liquidity": 42222.35113,
+   "p_yes": 0.0005,
+   "question": "Will the Christian Democrats (KD) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811725": {
+   "class": "election",
+   "id": "poly:811725",
+   "liquidity": 37557.46854,
+   "p_yes": 0.0005,
+   "question": "Will the Green Party (MP) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811726": {
+   "class": "election",
+   "id": "poly:811726",
+   "liquidity": 32619.73868,
+   "p_yes": 0.0005,
+   "question": "Will the Liberals (L) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  },
+  "poly:811727": {
+   "class": "election",
+   "id": "poly:811727",
+   "liquidity": 42194.11132,
+   "p_yes": 0.0005,
+   "question": "Will the Citizens' Coalition (MED) win the most seats in the 2026 Swedish parliamentary election?",
+   "resolution_date": "2026-09-13",
+   "source": "polymarket"
+  }
+ },
+ "ua": "browser (VNF port)"
+}
