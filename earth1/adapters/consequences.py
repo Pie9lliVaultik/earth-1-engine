@@ -61,10 +61,12 @@ def _run_pair(scenario, base_world, seed, horizon, fork_day=90):
         rng = np.random.default_rng(977 * 41 + seed)
         apply(w, sc, rng)
         t0 = float(w.day)
-        snaps, onsets = {}, 0
+        snaps, onsets, hot_days = {}, 0, 0
         seen = set()
         for d in range(1, horizon + 1):
             live_one_day(w, rng)
+            ep = getattr(w.chronicle, "cascade_episode_active", None) or set()
+            hot_days += sum(1 for k in ep if k[0] == "collective_surge")
             for r in (getattr(w.chronicle, "cascade_residues", None) or []):
                 key = (r["rule"], float(r["day"]), int(r["loc"]))
                 if key not in seen and r["day"] >= t0:
@@ -78,19 +80,20 @@ def _run_pair(scenario, base_world, seed, horizon, fork_day=90):
                 snaps[d]["_forces_by_c"] = _forces_by_country(w)
                 snaps[d]["_protest_risk"] = float(protest_risk(w).sum())
                 snaps[d]["_onsets_event"] = onsets
+                snaps[d]["_hot_locality_days"] = hot_days
             if arm == "scn" and d == fork_day:
                 fork_state = copy.deepcopy(w)
         out[arm] = {"snaps": snaps, "hash": world_hash(w)[:16]}
     return out, fork_state
 
 
-def _forces_by_country(w):
+def _forces_by_country(w, min_agents=200):
     from earth1.genesis import GENESIS_COUNTRY_CODES
     alive = w.health.alive
     out = {}
     for ci, iso in enumerate(GENESIS_COUNTRY_CODES):
         m = alive & (w.civ.country == ci)
-        if m.sum() >= 30:
+        if m.sum() >= min_agents:
             out[iso] = w.civ.forces[m].mean(0)
     return out
 
@@ -104,6 +107,9 @@ def _line(name, deltas, unit, tier_hint, pop_scale=None):
     mean = float(a.mean())
     sem = (float(a.std(ddof=1) / max(len(a) - 1, 1) ** 0.5)
            if len(a) > 1 else float("inf"))
+    if mean == 0.0 and sem == 0.0:
+        return {"observable": name, "unit": unit, "tier": "ABSTAIN",
+                "delta": None, "note": "no effect (identically zero)"}
     if not np.isfinite(sem):
         sem = abs(mean)
     if name in KNOWN_DEFECT:
@@ -124,11 +130,18 @@ def _line(name, deltas, unit, tier_hint, pop_scale=None):
     return row
 
 
+MIN_SEEDS = int(os.environ.get("EARTH1_CQ_MIN_SEEDS", "8"))
+
+
 def consequence_report(spec: dict, base_world, seeds, horizon=180,
                        class_calibrated=False) -> dict:
     """spec: {question_id, class, country?, scenario: Scenario}. Runs
     len(seeds) CRN pairs serially. For parallel workers use _run_pair
     per (scenario, seed) then build_from_runs."""
+    assert len(seeds) >= MIN_SEEDS, (
+        f"HARD RULE (founder 2026-09-01): no consequence report below "
+        f"{MIN_SEEDS} seeds — at n=2 the sem is a guess and the floor "
+        f"passes false-live lines. Got {len(seeds)}.")
     runs, fork_states = [], []
     for s in seeds:
         pair, fs = _run_pair(spec["scenario"], base_world, s, horizon)
@@ -201,9 +214,16 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
     order3 = []
     order3.append(_line("protest_risk_sum", deltas("_protest_risk", 90),
                         "hot localities", tier_hint))
-    order3.append(_line("collective_surge_onsets_event",
-                        deltas("_onsets_event", 180), "onset events",
-                        tier_hint))
+    order3.append(_line("unrest_intensity_hot_locality_days",
+                        deltas("_hot_locality_days", 180),
+                        "hot-locality-days", tier_hint))
+    _oe = _line("collective_surge_onsets_event",
+                deltas("_onsets_event", 180), "onset events", tier_hint)
+    _oe["tier"] = "KNOWN-DEFECT"
+    _oe["note"] = ("entry-count semantics: sustained-hot worlds under-"
+                   "count cold-to-hot transitions (c-SHOCK VOID); use "
+                   "unrest_intensity_hot_locality_days")
+    order3.append(_oe)
     _legdays = [max([d for d in sorted(r["scn"]["snaps"]) if d <= 90],
                     default=None) for r in runs]
     order3.append(_line("legitimacy_mean",

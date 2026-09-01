@@ -174,7 +174,8 @@ def consequences(body: dict, authorization: Optional[str] = Header(None)):
     key = _auth(authorization)
     _qlog("consequences", body, key)
     fidelity = body.get("fidelity", "20k")
-    seeds = list(range(11, 11 + int(body.get("seeds", 2))))
+    n_seeds = max(8, min(32, int(body.get("seeds", 8))))
+    seeds = list(range(11, 11 + n_seeds))
     horizon = int(body.get("horizon_days", 60))
     from earth1.branch import Scenario
     sc = body.get("scenario", {})
