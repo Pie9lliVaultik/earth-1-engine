@@ -233,7 +233,61 @@ candidate + `EARTH1_DISTRESS_LAYOFFS=on EARTH1_LAYOFF_GAIN=0.0028`; gfc recorded
 as-is. If covid misses beyond 2·sem, one more linear correction is allowed (the
 channel is measured-linear), then freeze regardless and let the battery judge.
 
+## RETEST — full B-DEV battery, candidate + DISTRESS_LAYOFFS=on GAIN=0.0028
+
+Confirm-2 first: covid at 0.0028 = **+1.050pp ± 0.185 sem vs target +0.999 — GAIN
+FROZEN**; gfc +0.279 (just under band, exactly the prereg'd FAILED-STRUCTURAL
+expectation; sign right, OECD-scope-limited).
+
+**Battery: direction 40% (covid 50, gfc 67, arab 0) — GATE FAILED (<80%).**
+Magnitude improved 5.61 → 4.94 log10-err (still failing). Placebo clean.
+Proportionality order correct. Coverage 46.7%.
+
+**Coin-flip decomposition (t-stats on paired effects, 5 reps — the honest instrument):**
+
+| | covid jobs | covid pov | covid displ | gfc jobs | gfc pov | gfc hope | arab (all) |
+|---|---|---|---|---|---|---|---|
+| no-flag (the "60%" run) | t=+0.2 | +2.1 | +6.3 | +0.8 | +0.9 | +0.4 | all \|t\|<1 |
+| flag (this run) | **t=+2.2** | +1.3 | **+3.1** | +0.7 | −0.5 | **+2.1 (wrong sign)** | \|t\|≤1.2 |
+
+The prior 60% was made of \|t\|<1 coin flips; the 40% is not comparable as a
+regression. What the flag run actually shows: (1) **first-ever significant jobs
+response** (covid +967 agents ≈ 29M people — within one order of the registered
+2.55e8 FTE); (2) two responses now measurably WRONG-SIGNED rather than absent —
+hope RISES under gfc (t=+2.1) and gfc-area migration FALLS (t=−5.1); (3) scoped
+events (gfc OECD, arab MENA) remain under-resolved at 5 reps (\|t\|<1.2).
+
+## VERDICT — freeze-with-named-regression (B5 branch 2)
+
+The distress-layoff channel is **ADOPTED into the freeze config**
+(`EARTH1_DISTRESS_LAYOFFS=on EARTH1_LAYOFF_GAIN=0.0028`): all its own gates passed
+(G-inv bitwise; covid dead-on the fetched anchor; baseline anchors/floors/A-table
+untouched by construction), it produced the engine's first real macro responses, and
+it improved the magnitude gate. The B-DEV direction gate is recorded **FAILED at
+40%**, with the named causes, each a distinct future mechanism cycle:
+
+1. **Hope miscoupling** — hope rises under real economic stress (gfc t=+2.1, wrong
+   sign). Mechanism cycle: hope/DESIRE response to material shock.
+2. **Epidemic deaths channel absent** — covid excess deaths ≈ 0 vs real millions
+   (deliberate exclusion, now the binding deaths miss).
+3. **Unrest consequence chain** — arab govs/displacement \|t\|≤1.2; legitimacy and
+   migration under-respond to regional unrest (see DIAGNOSE: dep-response +
+   protest-readout gates).
+4. **Migration sign under economic crisis** — gfc displacement t=−5.1 (migration
+   FALLS; direction of the real GFC migration response disputed but the registered
+   expectation says rise).
+5. **Scoped-event resolution** — OECD/MENA-scoped shocks drown at 5 reps; more reps
+   or variance-reduction needed for the gate to even be measurable there.
+
+Instrument note (recorded, not an excuse): the direction gate scores sign-of-mean
+without a significance floor, so at near-zero response scales it scores noise; the
+t-table above is the truthful reading. A significance-aware direction gate is a
+registered v1.1 instrument change.
+
 ## STATUS
+
+**CYCLE CLOSED** — named change adopted; freeze-with-named-regression fired;
+tag freeze-0.9 on candidate 0.9 + distress channel. Prior history below.
 
 ITERATING — detector v3; 200k re-confirmation at GAIN=0.0028 in flight;
 next: full B-DEV battery retest at candidate+flag (direction gate ≥80% per the freeze

@@ -60,3 +60,21 @@ Operator recommendation: A. The regression is honestly named, its
 diagnosis is mechanism-class (no calibration fix exists to be tempted
 by), the living baseline + learning demonstrations are complete, and
 holdout-once is what actually judges the candidate.
+
+---
+
+## FREEZE EXECUTED 2026-09-01 — freeze-with-named-regression (B5 branch 2)
+
+Founder ruling was Option B (one mechanism cycle first). c-SHOCK ran end-to-end:
+counting-instrument defects found and VOIDed (retro dose-suppression), root cause
+measured (macro shock transmission ~zero in all physics; the old 60% direction was
+|t|<1 coin flips), the distress-layoff channel implemented (two detector designs
+killed by their own G-inv gate; final form bitwise-clean), calibrated on the fetched
+WB 2019→2020 anchor (+1.050 vs +0.999 at 200k), adopted. B-DEV direction 40% <80% →
+this branch. **Freeze config = candidate 0.9 + EARTH1_DISTRESS_LAYOFFS=on
+EARTH1_LAYOFF_GAIN=0.0028** (baseline worlds bitwise-identical to candidate 0.9 —
+every green board in this package carries over unchanged). Named regressions (5) in
+ops/alive/cycles/cshock.md VERDICT. Opinion level: A-FULL table + per-item map +
+extended-estate replication stand as the registered MISS the B2 campaign continues
+against on this frozen config. Tag: freeze-0.9. Next per B5: 4M pilot sizing → Epoch
+4 birth plan → STOP before any holdout read (founder-witnessed session).
