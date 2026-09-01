@@ -69,3 +69,35 @@ And it was all predicted before the judge was opened."
 ## Grounding source-notes (fix queue, pre-public-API): officeholder facts resolve
 against the official government site (not Wikipedia summary); gold resolves against
 a bullion feed (not the PAXG proxy); FOMC-calendar fetcher closes g7.
+
+## SCORED — 2026-09-02, one pass, judge fetched AFTER model freeze
+Judge: GRFC AFI database (HDX, open; sha 44de722610a435d1cd37), IPC Phase-3+
+population by country, 48 countries assessed in both 2021 and 2022.
+
+- **M1 FAIL — 8.5×** (model +326M vs GRFC +38.5M; 191M→230M). The founder's prior
+  leaned fail ("could squeak vs WFP +63M, fail vs FAO +30M") — GRFC's +38.5M sits
+  between and the model overshoots 8.5×. Frame caveat both ways: GRFC covers only
+  48 crisis-assessed countries; the model counts world-wide hunger crossings.
+- **M2 FAIL — ρ = −0.137** (p=0.37, n=44). No geographic correlation. As predicted:
+  poverty geography emerged, not food-exposure geography.
+- **M3: 1/5 overlap** (Somalia). Real top movers: **UA, ET, NG, PK, SO** — the 2022
+  hunger surge was war- and drought-driven with price as amplifier; a price-only
+  dose cannot produce Ukraine or Ethiopia. Founder's EG/LB/SY trio also missed in
+  GRFC terms — **Egypt's real delta is 0.0: the bread subsidy absorbed the shock,
+  exactly the damper the prior named.** (LB real +1.25M vs model rank 177.)
+
+## NAMED CYCLES (each one change, each XI.A.2)
+1. **Damper channels** — substitution, subsidies, stock drawdown. Calibration
+   target handed to us by reality: Egypt's ZERO. The transfer function that turns a
+   20% price shock into a 5–10% hunger shock, not a 100% one.
+2. **Cereal import-dependence input** — FAO/WB CIDR, provenance-gated, family-scoped
+   to the food injector (the same recipe as religiosity/geopol).
+3. **Compound-event composition** — 2022 was war + drought + price; the scenario
+   spec needs composability (the registered doses can already stack; the injector
+   should ground them together).
+4. **hungry_by_country** in snapshot() (v1.1 item 1, unchanged).
+
+## VERDICT (founder's template, met)
+A large, real, signed response to a real shock; the magnitude overshoot names the
+dampers; the geography miss names the input; the subsidy damper is confirmed by
+Egypt's zero. All of it stated before the judge was opened.
