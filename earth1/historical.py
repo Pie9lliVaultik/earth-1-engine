@@ -85,12 +85,23 @@ def gdelt_day_aggregates(T: date, warm_days: int = 90):
     out = {}
     missing = []
     skipped_post_T = 0
-    for m in need_months:
+    def _month_sources(m):
         zp = os.path.join(GDELT_DIR, f"gdelt_{m}.zip")
-        if not os.path.exists(zp):
+        if os.path.exists(zp):
+            return [zp]
+        # GDELT 1.0 switched to daily files 2013-04; accept any daily
+        # zips we hold for this month (gdelt_YYYYMMDD.zip)
+        import glob as _g
+        return sorted(_g.glob(os.path.join(GDELT_DIR, f"gdelt_{m}??.zip")))
+
+    for m in need_months:
+        srcs = _month_sources(m)
+        if not srcs:
             missing.append(m)
             continue
-        with zipfile.ZipFile(zp) as z:
+        zp = srcs  # noqa - loop below
+        for zp in srcs:
+          with zipfile.ZipFile(zp) as z:
             name = z.namelist()[0]
             with z.open(name) as f:
                 for raw in io.TextIOWrapper(f, errors="replace"):
@@ -103,8 +114,8 @@ def gdelt_day_aggregates(T: date, warm_days: int = 90):
                     except (ValueError, IndexError):
                         continue
                     if d > T:
-                        skipped_post_T += 1     # present in archive,
-                        continue                # never consumed
+                        skipped_post_T += 1
+                        continue
                     if (T - d).days > warm_days:
                         continue
                     try:
