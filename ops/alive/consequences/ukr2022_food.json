@@ -1,0 +1,293 @@
+{
+ "order0": {
+  "question_id": "ukr2022_food",
+  "class": "protest",
+  "scenario_id": "ukr2022_food",
+  "forces": {
+   "fear": 0.1,
+   "economics": -0.1
+  },
+  "geography": "global",
+  "ledger_cutoff_day": 60.0,
+  "branch_hashes": [
+   "8145c1126d9983eb",
+   "b54f7755a08d3aa7",
+   "4611b01d5568a77b",
+   "a6c76f9baafe1e23",
+   "138ecdaaf497522a",
+   "0197246f701342ee",
+   "ed04ef45b37ee564",
+   "9af28d35be739c02",
+   "74b16fb44059694a",
+   "978aef99967b2769",
+   "b7649059118d6920",
+   "ecca01225a9f1f95",
+   "4c437ded425b18b1",
+   "124bb9ecaa070321",
+   "df41857f4265c714",
+   "dc9643cba3a1d15c"
+  ],
+  "seeds": [
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36
+  ],
+  "pop": 200000
+ },
+ "headline": [
+  "hungry: +8040.53 agents (\u00b199.3049, UNCALIBRATED)",
+  "destitute: +8038.95 agents (\u00b1102.45, UNCALIBRATED)",
+  "unrest_intensity_hot_locality_days: +2537.06 hot-locality-days (\u00b1122.675, UNCALIBRATED)",
+  "evicted: +861.165 agents (\u00b17.26671, UNCALIBRATED)",
+  "protest_risk_sum: +149.875 hot localities (\u00b13.80862, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.01295,
+    "sem": 0.0003,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.0014,
+    "sem": 3e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.01384,
+    "sem": 1e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.00085,
+    "sem": 0.00034,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.0,
+    "sem": 0.0,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -2e-05,
+    "sem": 1e-05,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "GN",
+    "force_shift": 0.0279
+   },
+   {
+    "country": "MM",
+    "force_shift": 0.0269
+   },
+   {
+    "country": "RO",
+    "force_shift": 0.0269
+   },
+   {
+    "country": "SO",
+    "force_shift": 0.0261
+   },
+   {
+    "country": "SL",
+    "force_shift": 0.0255
+   },
+   {
+    "country": "CM",
+    "force_shift": 0.0255
+   },
+   {
+    "country": "JO",
+    "force_shift": 0.0254
+   },
+   {
+    "country": "UZ",
+    "force_shift": 0.0249
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 8038.94727,
+   "sem": 102.45039,
+   "real_world_approx": "~+325.6M people"
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 8040.52985,
+   "sem": 99.30492,
+   "real_world_approx": "~+325.6M people"
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 861.16476,
+   "sem": 7.26671,
+   "real_world_approx": "~+34.9M people"
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 23.15352,
+   "sem": 5.4705,
+   "real_world_approx": "~+0.9M people"
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 82.58291,
+   "sem": 14.56484,
+   "real_world_approx": "~+3.3M people"
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -5.74726,
+   "sem": 0.62396
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "KNOWN-DEFECT",
+   "note": "migration sign under economic shocks (t=-5.1)",
+   "delta": 8.99665,
+   "sem": 1.93425,
+   "real_world_approx": "~+0.4M people"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": -0.02007,
+   "sem": 0.00336
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 149.875,
+   "sem": 3.80862
+  },
+  {
+   "observable": "unrest_intensity_hot_locality_days",
+   "unit": "hot-locality-days",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 2537.0625,
+   "sem": 122.67538
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "KNOWN-DEFECT",
+   "note": "entry-count semantics: sustained-hot worlds under-count cold-to-hot transitions (c-SHOCK VOID); use unrest_intensity_hot_locality_days",
+   "delta": -17.875,
+   "sem": 4.27382
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.00881,
+   "sem": 6e-05
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.00172,
+   "sem": 0.00018
+  }
+ ],
+ "order4": [],
+ "tier_counts": {
+  "UNCALIBRATED": 16,
+  "ABSTAIN": 3,
+  "KNOWN-DEFECT": 3
+ },
+ "m2_m3_basis": "order1 per-country force-shift ranking; hungry_by_country field owed in snapshot() v1.1"
+}

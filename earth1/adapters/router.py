@@ -317,7 +317,7 @@ def _market_odds(text, qid):
                 prices = mk.get("outcomePrices")
                 if isinstance(prices, str):
                     prices = json.loads(prices)
-                if score >= 0.22 and prices and (best is None
+                if score >= 0.45 and prices and (best is None
                                                  or score > best[0]):
                     best = (score, mk.get("question"), float(prices[0]))
         if best:
