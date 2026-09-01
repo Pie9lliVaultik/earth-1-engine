@@ -1,0 +1,116 @@
+{
+ "judge": {
+  "window": "2010-12-17..2011-03-16",
+  "source": "GDELT 1.0 EventRootCode=14 by country",
+  "archive_shas": {
+   "201012": "e3f40cc51a340ef6",
+   "201101": "3486c2a2fa8fa4d2",
+   "201102": "3d884ff467aa6466",
+   "201103": "05deca2dbb591087"
+  },
+  "total_protest_events": 111317,
+  "real_top10": [
+   [
+    "US",
+    19514
+   ],
+   [
+    "EG",
+    15319
+   ],
+   [
+    "TN",
+    6706
+   ],
+   [
+    "LY",
+    5081
+   ],
+   [
+    "YE",
+    4808
+   ],
+   [
+    "IN",
+    3773
+   ],
+   [
+    "IR",
+    3245
+   ],
+   [
+    "IL",
+    2934
+   ],
+   [
+    "BH",
+    2441
+   ],
+   [
+    "PK",
+    2417
+   ]
+  ]
+ },
+ "model_top10_fear_basis": [
+  [
+   "YE",
+   0.0848681274381556
+  ],
+  [
+   "JO",
+   0.07425426655366671
+  ],
+  [
+   "MA",
+   0.07362886743673819
+  ],
+  [
+   "TN",
+   0.07121470664847127
+  ],
+  [
+   "SY",
+   0.07093566681546948
+  ],
+  [
+   "DZ",
+   0.06741072739038394
+  ],
+  [
+   "SA",
+   0.06318808357533193
+  ],
+  [
+   "LY",
+   0.06169527769115048
+  ],
+  [
+   "BH",
+   0.0579016943930862
+  ],
+  [
+   "EG",
+   0.056758656884573704
+  ]
+ ],
+ "scores": {
+  "fear_by_country": {
+   "spearman_global": 0.069,
+   "p_global": 0.3519,
+   "n_global": 185,
+   "spearman_mena": 0.303,
+   "p_mena": 0.2541,
+   "n_mena": 16
+  },
+  "hungry_by_country": {
+   "spearman_global": 0.168,
+   "p_global": 0.0223,
+   "n_global": 185,
+   "spearman_mena": 0.372,
+   "p_mena": 0.1556,
+   "n_mena": 16
+  }
+ },
+ "regime_note": "regime outcomes (TN 2011-01-14, EG 2011-02-11, LY, YE) are public record; model regime chain was PRIOR-flagged weak (legitimacy response |t|<1.2) and is scored qualitative-only in the battery row"
+}
