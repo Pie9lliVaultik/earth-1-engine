@@ -197,5 +197,6 @@
   "violation => event VOID"
  ],
  "fidelity_ruling_2026-09-02": "Chronicle ruling (d): fidelity-tier the battery. FLAGSHIP 200k x 16: svb_2023, gfc_2008, covid_2020, trump_2016 (post injector v2). ALL OTHERS 20k x 16, fidelity stamped in every payload; any 20k event with a significant result is PROMOTED to 200k for confirmation (calibration-ladder rule). Option (a) ulp-drift REJECTED (breaks the Block-0 claim); option (b) chronicle consolidation = FIRST v1.1 mechanism cycle (physics closed at freeze-0.9), gated on anchor board + learning gates.",
- "judge_normalization": "From event 3 onward: GDELT judges normalized by country total event volume, RAW table reported beside normalized \u2014 forward-only, never retroactive."
+ "judge_normalization": "From event 3 onward: GDELT judges normalized by country total event volume, RAW table reported beside normalized \u2014 forward-only, never retroactive.",
+ "promotion_rule_2026-09-02": "General form (founder): promotion to 200k on SIGNIFICANCE or on POWER-ABSTENTION where the question targets a single country; only physics abstentions (branch ~ control at full fidelity) stand as answers. Promoted: truss_2022, sri_lanka_2022 (the latter doubly \u2014 compound-dose rehearsal)."
 }
