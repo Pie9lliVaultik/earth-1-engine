@@ -85,8 +85,12 @@ def select_population(world, predicate: dict, overlay: dict = None):
                if c in GENESIS_COUNTRY_CODES]
         m &= np.isin(civ.country, idx)
     if predicate.get("age"):
+        # predicate speaks YEARS; civ.age is normalized (1.0 ~ a full
+        # lifespan, ~87.6yr). Conversion is explicit, never guessed by
+        # callers.
         lo, hi = predicate["age"]
-        m &= (civ.age >= lo) & (civ.age <= hi)
+        scale = float(os.environ.get("EARTH1_AGE_SCALE_YEARS", "87.6"))
+        m &= (civ.age >= lo / scale) & (civ.age <= hi / scale)
     if predicate.get("min_income_pctile") is not None and m.any():
         thr = np.percentile(world.life.wage[m],
                             predicate["min_income_pctile"])
