@@ -279,6 +279,36 @@ def world_history(fidelity: str = "20k",
                 "the live chronicle window only; PENDING_RECORDER_STORE"})
 
 
+@router.post("/models")
+def create_model_ep(body: dict, authorization: Optional[str] = Header(None)):
+    key = _auth(authorization)
+    _qlog("model_create", body, key)
+    from earth1 import models as em
+    meta = em.create_model(body["model_id"], owner=key,
+                           description=body.get("description", ""))
+    if body.get("context"):
+        meta = em.attach_context(body["model_id"], _world("20k"),
+                                 body["context"])
+    if body.get("population"):
+        meta["population_def"] = body["population"]
+        em._save(meta)
+    return _envelope("20k", {"model": meta})
+
+
+@router.post("/models/{model_id}/scenario")
+def model_scenario_ep(model_id: str, body: dict,
+                      authorization: Optional[str] = Header(None)):
+    key = _auth(authorization)
+    _qlog("model_scenario", {"model": model_id, **body}, key)
+    from earth1 import models as em
+    import copy
+    out = em.run_scenario(model_id, _world(body.get("fidelity", "20k")),
+                          body, seeds=tuple(range(1, 1 + int(
+                              body.get("seeds", 3)))),
+                          horizon_days=int(body.get("horizon_days", 30)))
+    return _envelope(body.get("fidelity", "20k"), {"result": out})
+
+
 @router.get("/world/events")
 def world_events(since_day: float = None, n: int = 200,
                  authorization: Optional[str] = Header(None)):
