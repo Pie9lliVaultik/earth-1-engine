@@ -1,0 +1,319 @@
+{
+ "order0": {
+  "question_id": "hist:sri_lanka_2022",
+  "class": "protest",
+  "scenario_id": "hist:sri_lanka_2022",
+  "forces": {
+   "fear": 0.25,
+   "economics": -0.35,
+   "collective": 0.25
+  },
+  "geography": [
+   "LK"
+  ],
+  "ledger_cutoff_day": 90.0,
+  "branch_hashes": [
+   "cfb26c40695d0022",
+   "9dbb3b5ee8c54940",
+   "c9534a479f7bf542",
+   "e14d959aecd5a015",
+   "acc620fe0c22e951",
+   "ad34d2a41453fe30",
+   "0387b6ab25f84cc3",
+   "61e7ce1fbef7d6fb",
+   "efdddf621c155144",
+   "eba381ed8756ec39",
+   "ccfb05ddc6c0fba2",
+   "3fe9f596889441fc",
+   "7d40020cc076dd3a",
+   "9a3ad962da9c5538",
+   "4f9eecec5a3b0513",
+   "1af477feb5e0124a"
+  ],
+  "seeds": [
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60,
+   61,
+   62,
+   63,
+   64,
+   65,
+   66
+  ],
+  "pop": 20000
+ },
+ "headline": [
+  "unemployed: -116.912 agents (\u00b142.9256, UNCALIBRATED)",
+  "memory_imprint_experience: -0.00065 force units at day 180 (\u00b10.00023, UNCALIBRATED)",
+  "force_economics: -0.00022 force units (\u00b11e-05, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00022,
+    "sem": 1e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "IN",
+    "force_shift": 0.0092
+   },
+   {
+    "country": "CN",
+    "force_shift": 0.0091
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -116.91158,
+   "sem": 42.92557,
+   "real_world_approx": "~-47.3M people"
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "KNOWN-DEFECT",
+   "note": "migration sign under economic shocks (t=-5.1)",
+   "delta": 1.55262,
+   "sem": 0.91541,
+   "real_world_approx": "~+0.6M people"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": -0.0048,
+   "sem": 0.00427
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "unrest_intensity_hot_locality_days",
+   "unit": "hot-locality-days",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "KNOWN-DEFECT",
+   "note": "entry-count semantics: sustained-hot worlds under-count cold-to-hot transitions (c-SHOCK VOID); use unrest_intensity_hot_locality_days",
+   "delta": -13.0625,
+   "sem": 4.53869
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.00065,
+   "sem": 0.00023
+  }
+ ],
+ "order2_geography": {
+  "basis": "hungry_by_country",
+  "top": [
+   {
+    "country": "LK",
+    "delta_people": 1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "CH",
+    "delta_people": 0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "TM",
+    "delta_people": 0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "MN",
+    "delta_people": -0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "BH",
+    "delta_people": 0.0,
+    "sem": 0.0
+   }
+  ]
+ },
+ "order4": [],
+ "tier_counts": {
+  "ABSTAIN": 16,
+  "UNCALIBRATED": 3,
+  "KNOWN-DEFECT": 3
+ },
+ "vintage_report": {
+  "T": "2022-03-31",
+  "resolved": {
+   "unga_ideal_points": {
+    "countries": 197,
+    "capped_at": 2022
+   },
+   "wb_unemployment": {
+    "year": 2022,
+    "value": 5.23462796913747,
+    "sha": "fe7ea9012b9995f4"
+   },
+   "gdelt_warm": {
+    "day_country_rows": 17316,
+    "months_missing": []
+   }
+  },
+  "vintage_mismatch": [
+   "c2plus_tables (WVS-7 joint structure)",
+   "income_calibration (2021 PPP joint-MSM)",
+   "gompertz mortality (current fit)",
+   "religiosity_factbook (current snapshot)",
+   "wb poverty/CDR/LE anchors (latest fetch)"
+  ],
+  "fidelity": "20k",
+  "base_world_hash": "7ad8cef871487318"
+ },
+ "forecast": {
+  "question": "government fall within 120d",
+  "p_model": null,
+  "abstain": true,
+  "abstain_reason": "all branch deltas below class noise floor 0.02498 (branch = control)",
+  "distances": {
+   "YES": 0.023233599098594293,
+   "NO": 0.01928456312796255
+  }
+ }
+}

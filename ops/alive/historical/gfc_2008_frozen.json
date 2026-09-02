@@ -1,0 +1,408 @@
+{
+ "order0": {
+  "question_id": "hist:gfc_2008",
+  "class": "market_cascade",
+  "scenario_id": "gfc_2008",
+  "forces": {
+   "fear": 0.35,
+   "economics": -0.4
+  },
+  "geography": [
+   "US",
+   "GB",
+   "DE",
+   "FR",
+   "IT",
+   "ES",
+   "JP",
+   "KR",
+   "CA",
+   "AU",
+   "NL",
+   "SE",
+   "PL",
+   "MX",
+   "TR"
+  ],
+  "ledger_cutoff_day": 90.0,
+  "branch_hashes": [
+   "1883b58d97a38807",
+   "3ac87d32da8ab261",
+   "276168665fd138b1",
+   "5f2810d16539ca1a",
+   "0b76000f7683c492",
+   "e33f6793cc5ae5b8",
+   "2817963a498af907",
+   "531c8fab470c016c",
+   "b6ed09f085371ac7",
+   "78dec1e4b28939a1",
+   "1a38d68297554bf5",
+   "eb9872448e95bf57",
+   "4be4bb182dd718a2",
+   "3d940ead19079b50",
+   "faefe9c6c2d2c186",
+   "153d9bd1b59a4e3f"
+  ],
+  "seeds": [
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60,
+   61,
+   62,
+   63,
+   64,
+   65,
+   66
+  ],
+  "pop": 200000
+ },
+ "headline": [
+  "unrest_intensity_hot_locality_days: +3953.06 hot-locality-days (\u00b1438.449, UNCALIBRATED)",
+  "unemployed: +449.464 agents (\u00b1203.454, UNCALIBRATED)",
+  "hungry: +95.1915 agents (\u00b120.7346, UNCALIBRATED)",
+  "evicted: +32.8103 agents (\u00b14.0141, UNCALIBRATED)",
+  "protest_risk_sum: +4.25 hot localities (\u00b11.08115, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.00502,
+    "sem": 0.00033,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00025,
+    "sem": 9e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00601,
+    "sem": 1e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00104,
+    "sem": 0.00049,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "DE",
+    "force_shift": 0.0651
+   },
+   {
+    "country": "AU",
+    "force_shift": 0.0642
+   },
+   {
+    "country": "SE",
+    "force_shift": 0.0639
+   },
+   {
+    "country": "NL",
+    "force_shift": 0.0635
+   },
+   {
+    "country": "IT",
+    "force_shift": 0.0632
+   },
+   {
+    "country": "PL",
+    "force_shift": 0.0626
+   },
+   {
+    "country": "CA",
+    "force_shift": 0.0622
+   },
+   {
+    "country": "KR",
+    "force_shift": 0.0621
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 449.46372,
+   "sem": 203.4545,
+   "real_world_approx": "~+18.2M people"
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 95.19151,
+   "sem": 20.73459,
+   "real_world_approx": "~+3.9M people"
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 32.81032,
+   "sem": 4.0141,
+   "real_world_approx": "~+1.3M people"
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "KNOWN-DEFECT",
+   "note": "migration sign under economic shocks (t=-5.1)",
+   "delta": -4.86996,
+   "sem": 1.79893,
+   "real_world_approx": "~-0.2M people"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": -0.00126,
+   "sem": 0.00376
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 4.25,
+   "sem": 1.08115
+  },
+  {
+   "observable": "unrest_intensity_hot_locality_days",
+   "unit": "hot-locality-days",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 3953.0625,
+   "sem": 438.44859
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "KNOWN-DEFECT",
+   "note": "entry-count semantics: sustained-hot worlds under-count cold-to-hot transitions (c-SHOCK VOID); use unrest_intensity_hot_locality_days",
+   "delta": -107.375,
+   "sem": 10.91905
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.00166,
+   "sem": 7e-05
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.00173,
+   "sem": 0.00018
+  }
+ ],
+ "order2_geography": {
+  "basis": "hungry_by_country",
+  "top": [
+   {
+    "country": "US",
+    "delta_people": 19.0,
+    "sem": 2.0
+   },
+   {
+    "country": "MX",
+    "delta_people": 14.0,
+    "sem": 1.0
+   },
+   {
+    "country": "TR",
+    "delta_people": 10.0,
+    "sem": 1.0
+   },
+   {
+    "country": "GB",
+    "delta_people": 9.0,
+    "sem": 1.0
+   },
+   {
+    "country": "JP",
+    "delta_people": 7.0,
+    "sem": 1.0
+   },
+   {
+    "country": "ES",
+    "delta_people": 7.0,
+    "sem": 0.0
+   },
+   {
+    "country": "DE",
+    "delta_people": 6.0,
+    "sem": 1.0
+   },
+   {
+    "country": "KR",
+    "delta_people": 5.0,
+    "sem": 1.0
+   },
+   {
+    "country": "IT",
+    "delta_people": 4.0,
+    "sem": 1.0
+   },
+   {
+    "country": "FR",
+    "delta_people": 3.0,
+    "sem": 0.0
+   },
+   {
+    "country": "CA",
+    "delta_people": 3.0,
+    "sem": 1.0
+   },
+   {
+    "country": "PL",
+    "delta_people": 1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "UZ",
+    "delta_people": 1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "SA",
+    "delta_people": -1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "AU",
+    "delta_people": 1.0,
+    "sem": 0.0
+   }
+  ]
+ },
+ "order4": [],
+ "tier_counts": {
+  "UNCALIBRATED": 11,
+  "ABSTAIN": 8,
+  "KNOWN-DEFECT": 3
+ },
+ "vintage_report": {
+  "T": "2008-09-14",
+  "resolved": {
+   "unga_ideal_points": {
+    "countries": 196,
+    "capped_at": 2008
+   },
+   "wb_unemployment": {
+    "year": 2008,
+    "value": 5.82419029603435,
+    "sha": "fe7ea9012b9995f4"
+   },
+   "gdelt_warm": {
+    "day_country_rows": 15623,
+    "months_missing": []
+   }
+  },
+  "vintage_mismatch": [
+   "c2plus_tables (WVS-7 joint structure)",
+   "income_calibration (2021 PPP joint-MSM)",
+   "gompertz mortality (current fit)",
+   "religiosity_factbook (current snapshot)",
+   "wb poverty/CDR/LE anchors (latest fetch)"
+  ],
+  "fidelity": "200k",
+  "base_world_hash": "eb9c25ee149d3568"
+ }
+}

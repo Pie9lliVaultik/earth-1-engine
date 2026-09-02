@@ -1,0 +1,286 @@
+{
+ "order0": {
+  "question_id": "hist:jan6_2021",
+  "class": "protest",
+  "scenario_id": "hist:jan6_2021",
+  "forces": {
+   "identity": 0.35,
+   "collective": 0.3,
+   "fear": 0.2
+  },
+  "geography": [
+   "US"
+  ],
+  "ledger_cutoff_day": 90.0,
+  "branch_hashes": [
+   "2dd5b0d17108eba0",
+   "94f079531915907e",
+   "8677d95f69151e5e",
+   "a43b9510d44bfda3",
+   "095e85e97a37ed84",
+   "5b94abbc557f950c",
+   "0c8e1a57bd61807e",
+   "610bfbb236cba1f8",
+   "ff3c1b286ec8721c",
+   "2c29589e931bffff",
+   "83a1c65f7bfca745",
+   "dfa2aebbf025b13b",
+   "e780e9e9cc7d3f91",
+   "ab9ff193f763ca49",
+   "2669f005aee6ab3d",
+   "d2e1f27b63f1abd9"
+  ],
+  "seeds": [
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60,
+   61,
+   62,
+   63,
+   64,
+   65,
+   66
+  ],
+  "pop": 20000
+ },
+ "headline": [
+  "unrest_intensity_hot_locality_days: +7.8125 hot-locality-days (\u00b11.2969, UNCALIBRATED)",
+  "force_identity: +0.00032 force units (\u00b10, UNCALIBRATED)",
+  "force_collective: +0.00027 force units (\u00b10, UNCALIBRATED)",
+  "force_fear: +0.00018 force units (\u00b10, UNCALIBRATED)",
+  "median_buffer: +0.0001 days of savings (\u00b14e-05, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.00018,
+    "sem": 0.0,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.0,
+    "sem": 0.0,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.00027,
+    "sem": 0.0,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": 0.00032,
+    "sem": 0.0,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "CN",
+    "force_shift": 0.0
+   },
+   {
+    "country": "IN",
+    "force_shift": 0.0
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 0.0001,
+   "sem": 4e-05
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": 0.0,
+   "sem": 0.0
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "unrest_intensity_hot_locality_days",
+   "unit": "hot-locality-days",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": 7.8125,
+   "sem": 1.2969
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "KNOWN-DEFECT",
+   "note": "entry-count semantics: sustained-hot worlds under-count cold-to-hot transitions (c-SHOCK VOID); use unrest_intensity_hot_locality_days",
+   "delta": null
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -2e-05,
+   "sem": 0.0
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "UNCALIBRATED",
+   "note": null,
+   "delta": -0.0,
+   "sem": 0.0
+  }
+ ],
+ "order2_geography": {
+  "basis": "hungry_by_country",
+  "top": []
+ },
+ "order4": [],
+ "tier_counts": {
+  "UNCALIBRATED": 8,
+  "ABSTAIN": 12,
+  "KNOWN-DEFECT": 2
+ },
+ "vintage_report": {
+  "T": "2021-01-05",
+  "resolved": {
+   "unga_ideal_points": {
+    "countries": 197,
+    "capped_at": 2021
+   },
+   "wb_unemployment": {
+    "year": 2021,
+    "value": 6.04556088000376,
+    "sha": "fe7ea9012b9995f4"
+   },
+   "gdelt_warm": {
+    "day_country_rows": 17149,
+    "months_missing": []
+   }
+  },
+  "vintage_mismatch": [
+   "c2plus_tables (WVS-7 joint structure)",
+   "income_calibration (2021 PPP joint-MSM)",
+   "gompertz mortality (current fit)",
+   "religiosity_factbook (current snapshot)",
+   "wb poverty/CDR/LE anchors (latest fetch)"
+  ],
+  "fidelity": "20k",
+  "base_world_hash": "1d63fb01d380e3f9"
+ }
+}

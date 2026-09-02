@@ -1,0 +1,286 @@
+{
+ "order0": {
+  "question_id": "hist:truss_2022",
+  "class": "policy",
+  "scenario_id": "hist:truss_2022",
+  "forces": {
+   "economics": -0.25,
+   "fear": 0.2
+  },
+  "geography": [
+   "GB"
+  ],
+  "ledger_cutoff_day": 90.0,
+  "branch_hashes": [
+   "67896bcd628f9ea6",
+   "80632f378f8485b7",
+   "2ee3a42e2a1b6653",
+   "00c9e5fb6ef6938f",
+   "cebec6607365c1ca",
+   "798a1ba97960d77e",
+   "9fd1114686142740",
+   "15a2041455232450",
+   "5f5728998d847819",
+   "fc66d596087a4eb4",
+   "b46ce37b14982610",
+   "6cced3eb0db1b17e",
+   "a919537618767157",
+   "d2b29c99a20cef2b",
+   "ee6f4f6347a7ab69",
+   "0428733271da29fd"
+  ],
+  "seeds": [
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60,
+   61,
+   62,
+   63,
+   64,
+   65,
+   66
+  ],
+  "pop": 20000
+ },
+ "headline": [
+  "force_economics: -0.00014 force units (\u00b11e-05, UNCALIBRATED)"
+ ],
+ "order1": {
+  "forces_global": [
+   {
+    "observable": "force_fear",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_desire",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_economics",
+    "unit": "force units",
+    "tier": "UNCALIBRATED",
+    "note": null,
+    "delta": -0.00014,
+    "sem": 1e-05,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_collective",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "perishable"
+   },
+   {
+    "observable": "force_identity",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_culture",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_experience",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   },
+   {
+    "observable": "force_temperament",
+    "unit": "force units",
+    "tier": "ABSTAIN",
+    "note": "no measurable effect",
+    "delta": null,
+    "perishability": "structural"
+   }
+  ],
+  "top_country_movers": [
+   {
+    "country": "IN",
+    "force_shift": 0.0081
+   },
+   {
+    "country": "CN",
+    "force_shift": 0.0064
+   }
+  ]
+ },
+ "order2": [
+  {
+   "observable": "unemployed",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "destitute",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "delta": null,
+   "note": "no effect (identically zero)"
+  },
+  {
+   "observable": "hungry",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "evicted",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "homeless",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "dead",
+   "unit": "agents",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "median_buffer",
+   "unit": "days of savings",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "migrants",
+   "unit": "agents",
+   "tier": "KNOWN-DEFECT",
+   "note": "migration sign under economic shocks (t=-5.1)",
+   "delta": 0.08873,
+   "sem": 0.5073,
+   "real_world_approx": "~+0.0M people"
+  },
+  {
+   "observable": "mean_hope",
+   "unit": "hope units",
+   "tier": "KNOWN-DEFECT",
+   "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
+   "delta": 0.00731,
+   "sem": 0.00355
+  }
+ ],
+ "order3": [
+  {
+   "observable": "protest_risk_sum",
+   "unit": "hot localities",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "unrest_intensity_hot_locality_days",
+   "unit": "hot-locality-days",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "collective_surge_onsets_event",
+   "unit": "onset events",
+   "tier": "KNOWN-DEFECT",
+   "note": "entry-count semantics: sustained-hot worlds under-count cold-to-hot transitions (c-SHOCK VOID); use unrest_intensity_hot_locality_days",
+   "delta": null
+  },
+  {
+   "observable": "legitimacy_mean",
+   "unit": "legitimacy units",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  },
+  {
+   "observable": "memory_imprint_experience",
+   "unit": "force units at day 180",
+   "tier": "ABSTAIN",
+   "note": "no measurable effect",
+   "delta": null
+  }
+ ],
+ "order2_geography": {
+  "basis": "hungry_by_country",
+  "top": []
+ },
+ "order4": [],
+ "tier_counts": {
+  "ABSTAIN": 18,
+  "UNCALIBRATED": 1,
+  "KNOWN-DEFECT": 3
+ },
+ "vintage_report": {
+  "T": "2022-09-22",
+  "resolved": {
+   "unga_ideal_points": {
+    "countries": 197,
+    "capped_at": 2022
+   },
+   "wb_unemployment": {
+    "year": 2022,
+    "value": 5.23462796913747,
+    "sha": "fe7ea9012b9995f4"
+   },
+   "gdelt_warm": {
+    "day_country_rows": 17354,
+    "months_missing": []
+   }
+  },
+  "vintage_mismatch": [
+   "c2plus_tables (WVS-7 joint structure)",
+   "income_calibration (2021 PPP joint-MSM)",
+   "gompertz mortality (current fit)",
+   "religiosity_factbook (current snapshot)",
+   "wb poverty/CDR/LE anchors (latest fetch)"
+  ],
+  "fidelity": "20k",
+  "base_world_hash": "193044ac636a7c26"
+ },
+ "forecast": {
+  "question": "PM resignation within 60d",
+  "p_model": null,
+  "abstain": true,
+  "abstain_reason": "all branch deltas below class noise floor 0.02498 (branch = control)",
+  "distances": {
+   "YES": 0.021691283219414725,
+   "NO": 0.01491343249566419
+  }
+ }
+}
