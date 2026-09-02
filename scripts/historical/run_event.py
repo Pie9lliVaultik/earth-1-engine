@@ -32,7 +32,7 @@ EVENTS = {
         "scenario": "registry:covid_2020", "forecast": None},
     "truss_2022": {
         "T": "2022-09-22", "horizon": 60, "warm": 90, "class": "policy",
-        "pop": 20000,
+        "pop": 200000,
         "scenario": {"forces": {"economics": -0.25, "fear": 0.2},
                      "countries": ["GB"], "firm_damage": 0.05,
                      "trade_shock": 0.05, "persists_days": 60},
@@ -40,7 +40,7 @@ EVENTS = {
                      "outcomes": ["YES", "NO"], "country": "GB"}},
     "sri_lanka_2022": {
         "T": "2022-03-31", "horizon": 120, "warm": 90, "class": "protest",
-        "pop": 20000,
+        "pop": 200000,
         "scenario": {"forces": {"fear": 0.25, "economics": -0.35,
                                 "collective": 0.25},
                      "countries": ["LK"], "firm_damage": 0.15,
