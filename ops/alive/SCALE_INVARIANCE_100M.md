@@ -58,6 +58,33 @@ A calibration that held only at its own sampling frame would have shown here.
   at scale requires 180 days at 100M ≈ 46 hours of ticking. Cheap to schedule, not
   yet run.
 
+## Mortality at scale — closed, with the correct observer (2026-09-02)
+Re-measured with `earth1.deathwatch` (person_id turnover). Same 5 days, same seed:
+
+| population | deaths captured | engine reported | capture | CDR/yr | mean age at death |
+|---|---|---|---|---|---|
+| 200,000 | 4 | 4 | **100%** | 0.00146 | 41.4 |
+| 1,000,000 | 34 | 34 | **100%** | 0.00248 | 53.5 |
+| 4,000,000 | 131 | 131 | **100%** | 0.00239 | 51.3 |
+
+Capture is exact at every scale. CDR agrees between 1M and 4M within 4% (n=34 vs
+n=131); the 200k row rests on **four deaths** and is pure Poisson noise — which is
+itself the point below. Day-5 mean age at death (~51) sits below the equilibrated
+69.0 for the same reason the poverty numbers do: the world has not settled. Nothing
+here is scale-dependent.
+
+## WHAT SCALE ACTUALLY BUYS: rare events, measured fast
+The freeze board's mortality census needed **200k × 180 days = 36M agent-days** to
+collect **717 deaths**. A 100M world collects roughly **10,000 deaths in 5 days**
+(500M agent-days) — **14× the sample in 1/36th of the world-time.**
+
+This is the concrete product argument for population, and it generalises past
+mortality: the Vaultik model scenario selected **71 agents** from a 20k world, which
+is a shrug; the same predicate at 100M selects ~355,000, which is a measurement.
+Scale substitutes for world-time on anything rare — deaths, cascades, tail events,
+narrow commercial segments. That, not the headline number, is why 8.3B is worth
+building.
+
 ## The 8.3B arithmetic, now grounded in measurement
 - 981 B/agent × 8.3e9 = **8.1 TB** today.
 - Levers: float64→float32 across state and graph weights (~2×); graph quantization or
