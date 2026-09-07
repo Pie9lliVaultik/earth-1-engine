@@ -1,0 +1,472 @@
+<title>A Civilization Without a Language Model</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300&display=swap">
+<style>
+/* dark-first: :root carries the primary (dark) palette; light is the swap */
+:root{
+  --bg:#0B1014; --panel:#131B21; --panel2:#0F171C; --line:#22303A;
+  --ink:#E4EAE8; --ink-dim:#94A6AE; --ink-faint:#647A85;
+  --brass:#C89446; --brass-soft:#8A6428;
+  --ok:#4A9E7A; --miss:#C2664A;
+  --ok-bg:#12251E; --miss-bg:#26150F;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F1F4F4; --panel:#FFFFFF; --panel2:#E8EDED; --line:#CDD8DA;
+    --ink:#111A1F; --ink-dim:#4E626C; --ink-faint:#7B8E97;
+    --brass:#8A6115; --brass-soft:#C89446;
+    --ok:#1E6E4E; --miss:#9B3D22;
+    --ok-bg:#E2F0E9; --miss-bg:#F7E7E0;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F1F4F4; --panel:#FFFFFF; --panel2:#E8EDED; --line:#CDD8DA;
+  --ink:#111A1F; --ink-dim:#4E626C; --ink-faint:#7B8E97;
+  --brass:#8A6115; --brass-soft:#C89446;
+  --ok:#1E6E4E; --miss:#9B3D22;
+  --ok-bg:#E2F0E9; --miss-bg:#F7E7E0;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:Newsreader,Georgia,serif; font-size:18px; line-height:1.62;
+  font-weight:300; margin:0; padding:0;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px; margin:0 auto; padding:0 24px 96px}
+.col{max-width:64ch}
+
+/* ── eyebrow / labels ─────────────────────────────── */
+.lab{
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint);
+  font-weight:500;
+}
+
+/* ── hero ─────────────────────────────────────────── */
+header{padding:76px 0 44px; border-bottom:1px solid var(--line)}
+h1{
+  font-family:Newsreader,Georgia,serif; font-weight:300; font-style:italic;
+  font-size:clamp(34px,5.6vw,60px); line-height:1.08; letter-spacing:-.015em;
+  margin:18px 0 0; text-wrap:balance; max-width:17ch;
+}
+h1 em{font-style:normal; font-weight:500; color:var(--brass)}
+.dek{color:var(--ink-dim); max-width:56ch; margin:22px 0 0; font-size:19px}
+
+/* ── the readout: hero instrument ─────────────────── */
+.readout{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:1px; background:var(--line); border:1px solid var(--line);
+  margin:44px 0 0;
+}
+.cell{background:var(--panel); padding:20px 22px 18px}
+.cell .lab{display:block; margin-bottom:11px}
+.big{
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-variant-numeric:tabular-nums; font-weight:500;
+  font-size:clamp(24px,3.1vw,32px); line-height:1; letter-spacing:-.02em;
+  color:var(--brass);
+}
+.big.plain{color:var(--ink)}
+.sub{
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px;
+  color:var(--ink-faint); margin-top:9px; line-height:1.5;
+}
+
+/* ── sections ─────────────────────────────────────── */
+section{padding:64px 0 0}
+h2{
+  font-family:Newsreader,Georgia,serif; font-weight:400;
+  font-size:clamp(25px,3.2vw,33px); line-height:1.2; letter-spacing:-.012em;
+  margin:16px 0 0; text-wrap:balance; max-width:24ch;
+}
+p{margin:20px 0 0}
+p.lead{font-size:20px; color:var(--ink)}
+strong{font-weight:500; color:var(--ink)}
+code,.mono{
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:.86em;
+  font-variant-numeric:tabular-nums;
+}
+code{color:var(--brass); background:none}
+.src{color:var(--ink-faint); font-size:12.5px}
+
+/* ── distance rows: the evidence ──────────────────── */
+.dist{margin:34px 0 0; border-top:1px solid var(--line)}
+.row{
+  display:grid; grid-template-columns:1fr auto auto auto;
+  gap:16px; align-items:baseline;
+  padding:15px 0 14px; border-bottom:1px solid var(--line);
+}
+.row .what{font-size:16.5px; color:var(--ink); line-height:1.35}
+.row .what small{display:block; color:var(--ink-faint); font-size:12.5px;
+  font-family:'IBM Plex Mono',ui-monospace,monospace; margin-top:4px}
+.num{
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-variant-numeric:tabular-nums; font-size:16px; font-weight:500;
+  text-align:right; min-width:5.2em;
+}
+.num.real{color:var(--ink-dim); font-weight:400}
+.gap{
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12.5px;
+  font-weight:500; text-align:right; min-width:8.6em;
+  padding:3px 9px; border-radius:2px; white-space:nowrap;
+}
+.gap.ok{color:var(--ok); background:var(--ok-bg)}
+.gap.miss{color:var(--miss); background:var(--miss-bg)}
+.tablekey{display:grid; grid-template-columns:1fr auto auto auto; gap:16px;
+  padding:0 0 9px}
+.tablekey span{text-align:right}
+.tablekey span:first-child{text-align:left}
+
+/* ── the ledger of absences ───────────────────────── */
+.absences{
+  margin:32px 0 0; display:grid; gap:1px;
+  background:var(--line); border:1px solid var(--line);
+}
+.absence{
+  background:var(--panel); padding:16px 20px;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);
+  gap:18px; align-items:baseline;
+}
+.absence b{
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:13px;
+  font-weight:500; color:var(--miss); letter-spacing:.01em;
+}
+.absence span{font-size:15.5px; color:var(--ink-dim); line-height:1.45}
+
+/* ── pull quote / thesis ──────────────────────────── */
+.thesis{
+  margin:52px 0 0; padding:30px 34px;
+  border-left:2px solid var(--brass); background:var(--panel2);
+}
+.thesis p{
+  margin:0; font-size:22px; line-height:1.45; font-style:italic;
+  font-weight:300; color:var(--ink); max-width:44ch;
+}
+.thesis p + p{margin-top:16px}
+
+/* ── comparison: two architectures ────────────────── */
+.versus{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr));
+  gap:1px; background:var(--line); border:1px solid var(--line);
+  margin:34px 0 0;
+}
+.arch{background:var(--panel); padding:24px 24px 26px}
+.arch h3{
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px;
+  letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+  margin:0 0 18px; color:var(--ink-faint);
+}
+.arch.ours h3{color:var(--brass)}
+.arch dl{margin:0; display:grid; gap:14px}
+.arch dt{
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint);
+}
+.arch dd{
+  margin:5px 0 0; font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:15px; font-variant-numeric:tabular-nums; color:var(--ink);
+  line-height:1.4;
+}
+.arch.ours dd{color:var(--brass)}
+.arch dd em{font-style:normal; color:var(--ink-faint); font-size:12.5px;
+  font-family:Newsreader,Georgia,serif; display:block; margin-top:3px}
+
+/* ── boundary note ────────────────────────────────── */
+.boundary{
+  margin:56px 0 0; padding:26px 30px; border:1px solid var(--line);
+  background:var(--panel2);
+}
+.boundary .lab{color:var(--miss)}
+.boundary p{max-width:60ch; font-size:17px}
+
+footer{
+  margin:76px 0 0; padding:26px 0 0; border-top:1px solid var(--line);
+  color:var(--ink-faint); font-size:13.5px;
+}
+footer .mono{color:var(--ink-faint)}
+
+a{color:var(--brass); text-underline-offset:3px}
+a:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--brass); outline-offset:3px;
+}
+
+@media (prefers-reduced-motion:no-preference){
+  .fade{animation:rise .7s cubic-bezier(.2,.7,.3,1) both}
+  .fade:nth-child(2){animation-delay:.06s}
+  .fade:nth-child(3){animation-delay:.12s}
+  .fade:nth-child(4){animation-delay:.18s}
+  @keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+}
+@media (max-width:620px){
+  .row{grid-template-columns:1fr auto; row-gap:6px}
+  .row .gap{grid-column:2}
+  .row .num.real{display:none}
+  .tablekey{display:none}
+  .absence{grid-template-columns:1fr}
+}
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="lab">Earthling Labs · Earth-1 · position paper · 2 September 2026</span>
+  <h1>A civilization that runs on <em>arithmetic</em>, not language models.</h1>
+  <p class="dek">Four million people, living one world-day every sixty seconds, on a single
+  48-core machine. No model is prompted. No agent is asked what it thinks. Every number below
+  came out of physics over arrays — which is precisely why the numbers can be trusted at all.</p>
+
+  <div class="readout">
+    <div class="cell fade">
+      <span class="lab">World clock</span>
+      <div class="big">16,800</div>
+      <div class="sub">days lived · 3,049,998 alive<br>46 years of continuous world time</div>
+    </div>
+    <div class="cell fade">
+      <span class="lab">Determinism</span>
+      <div class="big">6 / 6</div>
+      <div class="sub">three independent paths → one identical<br>world hash <code>49bb7d1d</code></div>
+    </div>
+    <div class="cell fade">
+      <span class="lab">Agreement with humans</span>
+      <div class="big">83.5%</div>
+      <div class="sub">majority match across 21,776<br>never-seen question × country cells</div>
+    </div>
+    <div class="cell fade">
+      <span class="lab">Language models in the loop</span>
+      <div class="big plain">0</div>
+      <div class="sub">forces are arithmetic · agents are arrays<br>the runtime never calls a model</div>
+    </div>
+  </div>
+</header>
+
+<section class="col">
+  <span class="lab">The claim</span>
+  <h2>The absence is the achievement.</h2>
+  <p class="lead">Every other synthetic-population system answers a question by prompting a
+  language model once per persona. That approach inherits the model's opinions, costs a fortune
+  at scale, and — the part that actually matters — <strong>cannot be held to account</strong>.
+  You cannot freeze a prompted answer, hash it, seal it, and score it six months later, because
+  it will not reproduce.</p>
+  <p>Earth-1 took the harder road. The population is a data structure. The eight forces are
+  arithmetic over that structure. A question is answered by branching the world, running real
+  days, and measuring what changed against a control that got the same dice. There is nothing
+  in the loop to ask, and nothing to be persuaded by.</p>
+</section>
+
+<div class="thesis">
+  <p>We are not claiming Earth-1 guesses survey answers better than a frontier model.</p>
+  <p>We are claiming it is the only system of its kind that can be <strong>wrong on the
+  record</strong> — and that it is already right about the things hardest to fake.</p>
+</div>
+
+<section>
+  <div class="col">
+    <span class="lab">Evidence · levels</span>
+    <h2>It reproduces the material shape of humanity from first principles.</h2>
+    <p>These are the anchors the engine was calibrated to reach, verified at a 200,000-agent
+    true census. Hits and misses are shown at identical visual weight, because the honesty of
+    that equality is the instrument's whole design.</p>
+  </div>
+
+  <div class="dist">
+    <div class="tablekey lab"><span>Measure</span><span>Earth-1</span><span>Reality</span><span>Distance</span></div>
+
+    <div class="row">
+      <div class="what">Poverty headcount, $8.30/day
+        <small>SI.POV.UMIC · 2021 PPP · World Bank</small></div>
+      <div class="num">45.9%</div><div class="num real">46.1%</div>
+      <div class="gap ok">0.2 pp</div>
+    </div>
+    <div class="row">
+      <div class="what">Mean age at death
+        <small>200k true census · n = 717 deaths</small></div>
+      <div class="num">69.0</div><div class="num real">69.0</div>
+      <div class="gap ok">band centre</div>
+    </div>
+    <div class="row">
+      <div class="what">Crude death rate, per year
+        <small>SP.DYN.CDRT.IN</small></div>
+      <div class="num">0.0073</div><div class="num real">0.0076</div>
+      <div class="gap ok">4% low</div>
+    </div>
+    <div class="row">
+      <div class="what">Median income, $/day
+        <small>PIP world median</small></div>
+      <div class="num">9.61</div><div class="num real">9.27</div>
+      <div class="gap ok">+3.7%</div>
+    </div>
+    <div class="row">
+      <div class="what">65+ share of adults</div>
+      <div class="num">14.1%</div><div class="num real">13.6%</div>
+      <div class="gap ok">0.5 pp</div>
+    </div>
+    <div class="row">
+      <div class="what">Extreme poverty, $3.00/day
+        <small>named miss · household floors</small></div>
+      <div class="num">16.8%</div><div class="num real">10.4%</div>
+      <div class="gap miss">1.6× over</div>
+    </div>
+    <div class="row">
+      <div class="what">Unemployment
+        <small>named miss · no insurance operator</small></div>
+      <div class="num">9.7%</div><div class="num real">4.8%</div>
+      <div class="gap miss">2× over</div>
+    </div>
+  </div>
+  <p class="col src" style="margin-top:16px">Source: <span class="mono">ops/alive/FREEZE_PACKAGE_0_9.md</span>,
+  gate board at 200k true census · anchors fetched from the World Bank API and hashed.</p>
+</section>
+
+<section>
+  <div class="col">
+    <span class="lab">Evidence · the sealed past</span>
+    <h2>It predicted real protest geography from a world that stopped reading the news in 2010.</h2>
+    <p>Earth-1 was born at 16 December 2010 and warmed on ninety days of the actual GDELT news
+    archive, with a mechanical assert refusing any item dated later. Its output was frozen and
+    committed. <em>Only then</em> was the judge fetched: real protest events, by country, across
+    the ninety days that followed.</p>
+  </div>
+
+  <div class="dist">
+    <div class="tablekey lab"><span>Retrodiction</span><span>Earth-1</span><span></span><span>Result</span></div>
+    <div class="row">
+      <div class="what">Arab Spring protest geography — material stress
+        <small>Spearman ρ vs real onsets, 185 countries</small></div>
+      <div class="num">+0.168</div><div class="num real"></div>
+      <div class="gap ok">p = 0.022</div>
+    </div>
+    <div class="row">
+      <div class="what">Same, via the fear channel
+        <small>the intuitive answer — and the weaker one</small></div>
+      <div class="num">+0.069</div><div class="num real"></div>
+      <div class="gap miss">not significant</div>
+    </div>
+    <div class="row">
+      <div class="what">Global financial crisis — unemployment response
+        <small>frozen forecast, judged post-freeze</small></div>
+      <div class="num">0.64×</div><div class="num real"></div>
+      <div class="gap ok">within 2×</div>
+    </div>
+    <div class="row">
+      <div class="what">COVID — unemployment response
+        <small>direction t ≈ 18</small></div>
+      <div class="num">3.5×</div><div class="num real"></div>
+      <div class="gap ok">within 5×</div>
+    </div>
+  </div>
+
+  <p class="col" style="margin-top:26px">The first row is the finding of the campaign, and it
+  arrived from four independent directions before anyone went looking for it: <strong>material
+  stress predicts where unrest happens better than fear does</strong>. A model built on prompted
+  personas could not have discovered this, because it would have asked a language model what
+  causes protests — and been told, correctly and uselessly, that people protest when they are
+  angry.</p>
+</section>
+
+<section>
+  <div class="col">
+    <span class="lab">Evidence · learning</span>
+    <h2>It learns from reality, and beats the control that knows everything but forgets.</h2>
+    <p>The strongest test in the Experience Loop is not against ignorance — it is against an
+    <em>informed non-learner</em>: a control handed the same observations every cycle, but with
+    no persistence between them. That control has all the information and none of the memory.</p>
+  </div>
+  <div class="readout">
+    <div class="cell">
+      <span class="lab">vs informed non-learner</span>
+      <div class="big">4.8×</div>
+      <div class="sub">late-window score · +1.51 log-CRPS<br>p = 3 × 10⁻⁵ · positive in 16 of 16 worlds</div>
+    </div>
+    <div class="cell">
+      <span class="lab">vs frozen model</span>
+      <div class="big">8.7×</div>
+      <div class="sub">the loop is doing work, not drifting</div>
+    </div>
+    <div class="cell">
+      <span class="lab">Replay</span>
+      <div class="big plain">bit-identical</div>
+      <div class="sub">the entire learning history re-runs<br>to the same bits from its ledger</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <span class="lab">The economics</span>
+    <h2>The cost comparison is not close, and it is not a detail.</h2>
+    <p>Scale is what separates a demo from a civilization. Below: the same world-day, priced
+    both ways. The prompted column assumes one small call per agent per day — 500 tokens in,
+    100 out — which is far cheaper than any real persona implementation.</p>
+  </div>
+
+  <div class="versus">
+    <div class="arch">
+      <h3>One prompt per agent per day</h3>
+      <dl>
+        <div><dt>Tokens per world-day</dt><dd>2,400,000,000</dd></div>
+        <div><dt>Cost per world-day</dt><dd>≈ $2,400 <em>at $1 per million — below frontier pricing</em></dd></div>
+        <div><dt>To replay this world's life</dt><dd>≈ $40,000,000 <em>40.3 trillion tokens across 16,800 days</em></dd></div>
+        <div><dt>Reproducible</dt><dd>no <em>temperature, model updates, silent deprecation</em></dd></div>
+      </dl>
+    </div>
+    <div class="arch ours">
+      <h3>Earth-1 · arithmetic</h3>
+      <dl>
+        <div><dt>Tokens per world-day</dt><dd>0</dd></div>
+        <div><dt>Cost per world-day</dt><dd>60 seconds <em>one AMD EPYC box, 48 cores</em></dd></div>
+        <div><dt>To replay this world's life</dt><dd>11.7 days <em>continuous, on that same single box</em></dd></div>
+        <div><dt>Reproducible</dt><dd>exactly <em>three paths, one hash, every time</em></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <span class="lab">The remaining distance</span>
+    <h2>It fails in six nameable ways — the rarest property a model can have.</h2>
+    <p>A model that is diffusely wrong is dead. A model whose every miss resolves to one absent,
+    buildable mechanism is a model with a roadmap. Every gap below was diagnosed from measurement,
+    not guessed, and four of the six already have their public data fetched and hashed on disk.</p>
+  </div>
+
+  <div class="absences">
+    <div class="absence"><b>no unemployment insurance</b>
+      <span>Unemployment runs 2× over. The operator is specified and unbuilt.</span></div>
+    <div class="absence"><b>no subsidies or substitution</b>
+      <span>The 2022 food shock overshot 8.5×. Reality supplied the calibration target: Egypt's
+      real change was <em>exactly zero</em> — the bread subsidy absorbed the entire shock.</span></div>
+    <div class="absence"><b>no interbank plumbing</b>
+      <span>Silicon Valley Bank was under-called at 0.302 against a resolved yes. The model put
+      the United States as top force mover at twice the runner-up: right about the fear, missing
+      the pipes.</span></div>
+    <div class="absence"><b>no bond or pension channel</b>
+      <span>The Truss gilt crisis is <em>invisible</em> — at full fidelity the shocked branch is
+      indistinguishable from control. A clean, publishable negative result.</span></div>
+    <div class="absence"><b>no religiosity input</b>
+      <span>Religion is the worst-scoring opinion family at 3.91 sampling errors. The external,
+      non-survey source is already parsed for 189 countries.</span></div>
+    <div class="absence"><b>no geopolitical alignment input</b>
+      <span>International-relations questions are the worst Pew family. UN voting ideal points
+      for 178 countries are fetched, hashed, and waiting to be wired.</span></div>
+  </div>
+</section>
+
+<div class="boundary">
+  <span class="lab">The line we do not cross</span>
+  <p>Earth-1 has never been benchmarked against a frontier language model, and never will be —
+  it is prohibited by our own governing document, written before any results existed. We do not
+  claim to be more accurate than a model at guessing what a survey said. We claim something that
+  no prompted system can claim back: <strong>every number here was frozen before its judge was
+  fetched, and can be re-derived, bit for bit, by anyone holding the seed.</strong></p>
+</div>
+
+<footer>
+  <span class="mono">Earth-1 · freeze-0.9 · 4,000,000 agents · determinism 6/6 · zero language
+  models in the runtime</span><br>
+  Every figure on this page resolves to a committed artifact in the engine repository. Misses are
+  printed at the same weight as hits by design.
+</footer>
+
+</div>
