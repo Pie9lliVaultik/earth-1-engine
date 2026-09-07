@@ -12,22 +12,22 @@
   ],
   "ledger_cutoff_day": 90.0,
   "branch_hashes": [
-   "67896bcd628f9ea6",
-   "80632f378f8485b7",
-   "2ee3a42e2a1b6653",
-   "00c9e5fb6ef6938f",
-   "cebec6607365c1ca",
-   "798a1ba97960d77e",
-   "9fd1114686142740",
-   "15a2041455232450",
-   "5f5728998d847819",
-   "fc66d596087a4eb4",
-   "b46ce37b14982610",
-   "6cced3eb0db1b17e",
-   "a919537618767157",
-   "d2b29c99a20cef2b",
-   "ee6f4f6347a7ab69",
-   "0428733271da29fd"
+   "be51d5575e1f5067",
+   "d0d46f113b287e13",
+   "45fb0c4dc976b3d9",
+   "bf96a7009282de6e",
+   "31fa2a2569e6ce29",
+   "ac9d5352b13a6515",
+   "458b59fbadd1e086",
+   "9e1b670622e63f23",
+   "4917c79745215ed9",
+   "c63d4c4d1b20ca28",
+   "073fe236e10fad4e",
+   "708c9625d496e24c",
+   "182e7cbae7110515",
+   "d9f99e3586aeb282",
+   "37c72d63b5bb8210",
+   "b27576b4c4bd9eb4"
   ],
   "seeds": [
    51,
@@ -47,10 +47,10 @@
    65,
    66
   ],
-  "pop": 20000
+  "pop": 200000
  },
  "headline": [
-  "force_economics: -0.00014 force units (\u00b11e-05, UNCALIBRATED)"
+  "force_economics: -0.00019 force units (\u00b11e-05, UNCALIBRATED)"
  ],
  "order1": {
   "forces_global": [
@@ -75,7 +75,7 @@
     "unit": "force units",
     "tier": "UNCALIBRATED",
     "note": null,
-    "delta": -0.00014,
+    "delta": -0.00019,
     "sem": 1e-05,
     "perishability": "perishable"
    },
@@ -122,12 +122,36 @@
   ],
   "top_country_movers": [
    {
-    "country": "IN",
-    "force_shift": 0.0081
+    "country": "GB",
+    "force_shift": 0.0368
    },
    {
-    "country": "CN",
-    "force_shift": 0.0064
+    "country": "ML",
+    "force_shift": 0.0279
+   },
+   {
+    "country": "SI",
+    "force_shift": 0.0269
+   },
+   {
+    "country": "GD",
+    "force_shift": 0.0186
+   },
+   {
+    "country": "AL",
+    "force_shift": 0.0185
+   },
+   {
+    "country": "LK",
+    "force_shift": 0.0182
+   },
+   {
+    "country": "ME",
+    "force_shift": 0.0179
+   },
+   {
+    "country": "ZW",
+    "force_shift": 0.0173
    }
   ]
  },
@@ -143,8 +167,8 @@
    "observable": "destitute",
    "unit": "agents",
    "tier": "ABSTAIN",
-   "delta": null,
-   "note": "no effect (identically zero)"
+   "note": "no measurable effect",
+   "delta": null
   },
   {
    "observable": "hungry",
@@ -186,8 +210,8 @@
    "unit": "agents",
    "tier": "KNOWN-DEFECT",
    "note": "migration sign under economic shocks (t=-5.1)",
-   "delta": 0.08873,
-   "sem": 0.5073,
+   "delta": 0.90489,
+   "sem": 0.77981,
    "real_world_approx": "~+0.0M people"
   },
   {
@@ -195,8 +219,8 @@
    "unit": "hope units",
    "tier": "KNOWN-DEFECT",
    "note": "hope miscoupling (B-DEV gfc t=+2.1 wrong sign)",
-   "delta": 0.00731,
-   "sem": 0.00355
+   "delta": 0.00284,
+   "sem": 0.00378
   }
  ],
  "order3": [
@@ -238,7 +262,83 @@
  ],
  "order2_geography": {
   "basis": "hungry_by_country",
-  "top": []
+  "top": [
+   {
+    "country": "GB",
+    "delta_people": 5.0,
+    "sem": 0.0
+   },
+   {
+    "country": "JP",
+    "delta_people": -1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "MZ",
+    "delta_people": -1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "CM",
+    "delta_people": 1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "SO",
+    "delta_people": 1.0,
+    "sem": 0.0
+   },
+   {
+    "country": "CA",
+    "delta_people": -0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "MA",
+    "delta_people": 0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "ML",
+    "delta_people": -0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "EC",
+    "delta_people": -0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "LA",
+    "delta_people": 0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "LY",
+    "delta_people": 0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "DK",
+    "delta_people": 0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "AM",
+    "delta_people": -0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "JM",
+    "delta_people": -0.0,
+    "sem": 0.0
+   },
+   {
+    "country": "SI",
+    "delta_people": 0.0,
+    "sem": 0.0
+   }
+  ]
  },
  "order4": [],
  "tier_counts": {
@@ -270,8 +370,8 @@
    "religiosity_factbook (current snapshot)",
    "wb poverty/CDR/LE anchors (latest fetch)"
   ],
-  "fidelity": "20k",
-  "base_world_hash": "193044ac636a7c26"
+  "fidelity": "200k",
+  "base_world_hash": "2e019178da21a2f7"
  },
  "forecast": {
   "question": "PM resignation within 60d",
@@ -279,8 +379,8 @@
   "abstain": true,
   "abstain_reason": "all branch deltas below class noise floor 0.02498 (branch = control)",
   "distances": {
-   "YES": 0.021691283219414725,
-   "NO": 0.01491343249566419
+   "YES": 0.02224343011460518,
+   "NO": 0.01523448281716329
   }
  }
 }
