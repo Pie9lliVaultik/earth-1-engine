@@ -42,11 +42,18 @@ because the physics is scale-free — the 200k → 100M step introduces no drift
 A calibration that held only at its own sampling frame would have shown here.
 
 ## What this run does NOT establish (named, not buried)
-- **Mortality at scale is unmeasured.** The runner counted deaths with a naive
-  `prev & ~alive` mask, which this campaign already documented as missing ~95% of
-  deaths through same-tick rebirth (the person_id-turnover fix exists and was not
-  used here). `mean_age_at_death` came back 0 with 0 scored. A known-defective
-  instrument was reintroduced; the mortality scale test is still open.
+- **Mortality at scale is unmeasured — the two mortality lines above are VOID.**
+  The runner counted deaths with a naive `prev & ~alive` mask, which this campaign
+  already documented as missing ~95% of deaths through same-tick rebirth.
+  `mean_age_at_death: 0` and `cdr_yr: 0.00185` are a broken counter, not results,
+  and must not be read as findings. **Measured cost of that defect (2026-09-02,
+  200k x 20d): engine reported 80 deaths; the naive mask captured 10 (12%); the
+  correct observer captured 80 (100%).** Fix is now permanent and not merely
+  remembered: `earth1/deathwatch.py` is the single correct observer (person_id
+  turnover + pre-tick ages), shipped with a Standing-Rule-2 test that passes only
+  if the naive method is measurably broken and DeathWatch is not. The poverty and
+  income results are untouched by this — they never consult the death counter, and
+  they were confirmed independently at three other scales.
 - **Equilibrated agreement at 100M is unmeasured.** Confirming the full green board
   at scale requires 180 days at 100M ≈ 46 hours of ticking. Cheap to schedule, not
   yet run.
