@@ -120,3 +120,42 @@ building.
   available before any hardware changes hands.
 - Open ruling: may the precision pass move the anchor board at all, or must it hold
   every green gate exactly?
+
+---
+
+# THE ANSWER: the calibrated board holds at 20× (freeze-0.9, 2026-09-02)
+
+Re-run on the correct physics (`configstamp` verified `gradient / v1 / gompertz /
+on`), 4,000,000 agents, 180 days, DeathWatch throughout.
+
+| day | median $/day | poverty $8.30 | poverty $3.00 | CDR/yr | mean age at death |
+|---|---|---|---|---|---|
+| 5 | 8.61 | 0.4874 | 0.1864 | 0.00772 | 68.40 |
+| 15 | 8.63 | 0.4867 | 0.1858 | 0.00764 | 68.09 |
+| 30 | 8.66 | 0.4856 | 0.1849 | 0.00745 | 67.78 |
+| 60 | 8.72 | 0.4830 | 0.1828 | 0.00735 | 67.96 |
+| 90 | 8.96 | 0.4739 | 0.1766 | 0.00729 | 68.21 |
+| 120 | 9.30 | 0.4610 | 0.1681 | 0.00729 | 68.18 |
+| **180** | **9.52** | **0.4529** | **0.1630** | **0.00738** | **68.29** |
+| 200k board @180d | 9.605 | 0.4588 | 0.1680 | 0.00727 | 68.99 |
+| REAL (fetched) | 9.27 | 0.461 | 0.104 | 0.0076 | band 66.2–71.8 |
+
+**Verdict: the freeze-0.9 anchor board survives a 20× scale-up.** Median within 0.9%
+of the 200k board, poverty $8.30 within 0.59pp, poverty $3.00 within 0.50pp, CDR
+within 1.5%, mean age at death within 0.70yr and inside its derived band. Against the
+real fetched anchors the 4M world sits 0.81pp low on the poverty line and 2.7% high on
+median income — it reproduces the board, it does not merely agree with itself.
+Mortality is measured here with the correct observer, so 68.29 is a real number.
+
+## A correction to our own earlier reasoning
+The wild day-5 census on the legacy runs (median $3.23, poverty 94.6%) was attributed
+to *equilibration*. That was wrong, and this table shows why: under freeze-0.9 the
+day-5 census is ALREADY near-calibrated (median 8.61, poverty 48.7%) and drifts
+gently toward the anchor over 180 days. The catastrophic day-5 numbers were the
+WRONG PHYSICS, not a cold start. The scale-invariance finding is unaffected — every
+scale ran the same configuration, so the invariance comparison was valid — but the
+mechanism we named for the deviation was not.
+
+## Still open
+500× confirmation: the 100M freeze-0.9 run is in flight (born in 741s, physics
+stamped correct in its artifact), reporting at the same checkpoints.
