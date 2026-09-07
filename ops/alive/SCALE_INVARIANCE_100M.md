@@ -1,5 +1,27 @@
 # THE 100-MILLION RUN — scale invariance measured (2026-09-02)
 
+> **CONFIG CORRECTION (2026-09-02, same day):** every run on this page was launched
+> WITHOUT the freeze-0.9 exports and therefore used engine DEFAULTS —
+> `hardship_mode=cliff`, `income_calibration=off`, `mortality_mode=legacy`,
+> `distress_layoffs=off`. That is the OLD physics, not the frozen candidate.
+>
+> **What survives:** every comparison here was internally consistent — all scales ran
+> the SAME configuration — so **scale invariance holds as measured**, and the memory
+> and timing results are config-independent (array shapes and tick structure do not
+> change with flags). The DeathWatch capture validation and the rare-events argument
+> are also config-independent.
+>
+> **What does NOT survive:** any claim that "the *calibrated* anchor board survives
+> scale-up." That question was never tested here, because the calibrated config was
+> never loaded. The day-180 4M figures produced on this config (median $3.58,
+> poverty $8.30 = 92.95%, CDR 0.0263, age-at-death 48.4) are the LEGACY equilibrium
+> and are comparable to nothing on any committed board.
+>
+> **Fix, structural:** `scripts/env/freeze09.env` is now the single source of the flag
+> set, and `earth1/configstamp.py` stamps the loaded physics into every artifact and
+> hard-refuses a non-freeze-0.9 run. The equilibrated test has been relaunched on the
+> correct physics; results land in `equilibrate_4M_f09.json` / `_100M_f09.json`.
+
 ## The record
 **100,000,000 Earthlings** born and lived — 25× the living world, and the largest
 Earth-1 population ever run. Birth 756.7s · 924.8s per world-day · peak RSS 324.5 GB
