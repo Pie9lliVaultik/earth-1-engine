@@ -1,3 +1,9 @@
+> **SUPERSEDED 2026-08-31 by A-FULL-1** (ops/alive/BENCHMARK_A_FULL_v1.md).
+> The numbers below (12.05 GOQA / 11.78 WVS) predate the feature-world
+> regeneration under the adopted income-calibration theta (commit 6402aa1);
+> current board: 12.01 / 11.84 on 468 unique GOQA items (one duplicated qid
+> in the concordance). Cite BENCHMARK_A_FULL_v1.md, not this file.
+
 # SCOREBOARD v1 — opinion on instruments Earth-1 never calibrated on
 2026-08-31 evening. 200k candidate flag set (mortality-board-green), 3 seeds,
 LOO-by-country per item. Baselines per BIBLE v4.2 R-A: MrsP = census-covariate

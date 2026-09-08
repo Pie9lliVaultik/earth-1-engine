@@ -63,11 +63,12 @@ def handle_webhook(payload: bytes, sig_header: str) -> dict:
     stripe = _get_stripe()
     webhook_secret = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
 
-    if webhook_secret:
-        event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
-    else:
-        import json
-        event = json.loads(payload)
+    if not webhook_secret:
+        # HARDENED 2026-09-08 (external review S03c): parsing an unsigned
+        # payload let a forged POST grant any tier. No secret -> refuse.
+        raise RuntimeError(
+            "STRIPE_WEBHOOK_SECRET is not set; refusing unsigned webhook")
+    event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
 
     event_type = event.get("type", "") if isinstance(event, dict) else event["type"]
 

@@ -51,3 +51,24 @@ their movement is the test that the fix did something.
 `earth1/cohorts.py` (the population frame) operates on the JOINT AXIS, not the
 boolean, and is therefore correct: axis index 0 = urban, as the tables define it.
 The `/models/:ref/population-frame` endpoint's urban and rural cohorts are right.
+
+## ADDENDUM 2026-09-08 — consumer inventory corrected upward (external review M01a)
+
+An independent code review of the release archive, verified against this tree,
+found the consumer inventory above UNDERCOUNTS. Physics consumers are at least
+FIVE, not two: (1) contagion density multiplier and (2) flourishing air channel
+(registered above), plus (3) rent — life.py:388 where(urban, x1.35, x0.8) feeds
+Life.rent -> arrears/evictions -> deprivation; (4) water-access infrastructure
+offset — flourishing.py:143 inside _water_access -> thirst physics; (5) commute
+factor — mobility.py:100 -> relationship/belonging decay. Additional readout/
+storage consumers: rebirth.py:487 (flights re-applied at rebirth), models.py:117
+(custom-model context), event_log.py:163,212 (event filters), api/readouts.py:70
+and :471 (profile label; 'cities' count actually counts rural localities),
+observe.py:51, db/store.py:404, loop.py:141.
+
+CONSEQUENCE FOR THE REGISTERED GATE: the closure gate above assumed the anchor
+board is inert to the fix "since neither contagion density nor air quality feeds
+them directly." Rent feeds deprivation, so that assumption no longer holds. The
+v1.1 fix cycle must treat the poverty anchors as POTENTIALLY MOVING and gate
+them explicitly, not assume them unchanged. Registration stands; fix remains
+deferred under freeze-0.9.

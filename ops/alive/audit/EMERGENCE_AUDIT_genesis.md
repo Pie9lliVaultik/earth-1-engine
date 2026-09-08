@@ -144,3 +144,15 @@ Ranked by how badly they would damage a paper.
 9. **`regions.py:9-11` — the coverage tiers** (30 countries × 5-12 regions; 70 × 3-5). Actual: 28 × 3-7, 72 × exactly 3, and all 94 Tier-3 countries carry empty force deltas. A paper reporting "sub-national resolution for 100 countries" would be overstating both breadth and depth.
 
 10. **`precision.py:178-182` — "so an f32 artifact can never masquerade as f64."** The guard works in the direction stated and fails in the direction that matters: the deliberately degraded `float16-control` executor reports itself as `"float32"`. Combined with `recoerce` never re-quantizing (`:101-104`), the "degraded control" is an f32 run with a quantized initial condition — which should be stated explicitly wherever that control is cited as a rejection demonstration.
+
+## CORRECTION 2026-09-08 (external review, verified by reproduction)
+
+Line 35 above claims EXPERIENCE "is civ.age, rewritten every tick" via
+generational.py:227. WRONG for the live path: generational_tick is never called
+by live_one_day (call sites are legacy/experiment only). The live tick calls
+advance_age, which explicitly excludes EXPERIENCE (generational.py:124-129).
+Reproduced: sentinel experience value survives advance_age; after one
+live_one_day, max|experience - age| = 0.1394 with 100% of agents differing.
+EXPERIENCE = age only at genesis (genesis.py:388) and for newborns
+(generational.py:50,73). Live EXPERIENCE is a real dynamical channel.
+The original line is retained above as-written per record policy.

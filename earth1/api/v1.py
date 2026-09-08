@@ -18,6 +18,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 import subprocess
 import threading
 import time
@@ -57,17 +58,42 @@ _TREE = _tree_hash()
 
 
 def _forbid_sealed(path: str):
-    """dataroles guard: raise on any HOLDOUT/PROSPECTIVE-role file."""
-    try:
-        roles = json.load(open(os.path.join(_ROOT, "data",
-                                            "data_roles.json")))
-    except Exception:
-        return
+    """dataroles guard: raise on any HOLDOUT/PROSPECTIVE-role file.
+
+    HARDENED 2026-09-08 (external review M08, verified). The prior guard
+    was inert three ways: it iterated the registry's top level while the
+    entries nest under 'entries'; it returned (allowed) when the registry
+    failed to load; and it substring-matched the file's basename against
+    the entry KEY when the real filename lives in each entry's 'path'.
+    Now: fail CLOSED on an unreadable/malformed registry, walk the
+    nested entries, and match on the recorded path (absolute or
+    repo-relative) and its basename, with the key kept as a fallback.
+    """
+    ap = os.path.abspath(path)
     base = os.path.basename(path)
-    for name, meta in (roles.items() if isinstance(roles, dict) else []):
-        role = (meta.get("role") if isinstance(meta, dict) else None)
-        if base in name and role in ("HOLDOUT", "PROSPECTIVE"):
-            raise HTTPException(403, f"sealed role {role}: {base}")
+    try:
+        reg = json.load(open(os.path.join(_ROOT, "data",
+                                          "data_roles.json")))
+        entries = reg.get("entries") if isinstance(reg, dict) else None
+        if not isinstance(entries, dict) or not entries:
+            raise ValueError("registry has no usable 'entries' block")
+    except Exception as e:  # noqa: BLE001 — unreadable registry refuses ALL
+        raise HTTPException(
+            503, f"data-role registry unreadable; refusing access: {e}")
+    for name, meta in entries.items():
+        if not isinstance(meta, dict):
+            continue
+        if meta.get("role") not in ("HOLDOUT", "PROSPECTIVE"):
+            continue
+        rp = str(meta.get("path") or "")
+        hit = False
+        if rp and rp != "PENDING_FETCH":
+            rap = (rp if os.path.isabs(rp)
+                   else os.path.abspath(os.path.join(_ROOT, rp)))
+            hit = (ap == rap or base == os.path.basename(rp))
+        if hit or base == name:
+            raise HTTPException(
+                403, f"sealed role {meta.get('role')}: {base}")
 
 
 def _auth(authorization: str | None):
@@ -171,7 +197,7 @@ def ask(body: dict, authorization: Optional[str] = Header(None)):
                 _jobs[jid] = {"status": "error", "error": repr(e)}
         threading.Thread(target=run, daemon=True).start()
         return _envelope(fidelity, {"job_id": jid, "status": "queued"})
-    from earth1.adapters import router as rt
+    from earth1.adapters import router as rt  # 20k synchronous path
     w = copy.deepcopy(_world(fidelity))
     payload = rt.answer_any(q, w, seed=int(hashlib.sha256(
         q["question_id"].encode()).hexdigest()[:8], 16) % 99991,
@@ -364,16 +390,46 @@ def population_frame_ep(ref: str, body: dict,
     return _envelope("20k", out)
 
 
+_MODEL_ID_RX = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")
+
+
+def _principal(key: str) -> str:
+    """Opaque owner id — never the raw bearer token (review S01c)."""
+    return hashlib.sha256(key.encode()).hexdigest()[:12]
+
+
+def _check_model_id(model_id: str):
+    """Reject ids that could traverse the model store (review S01b)."""
+    if not _MODEL_ID_RX.match(model_id or ""):
+        raise HTTPException(
+            422, "model_id must match [A-Za-z0-9][A-Za-z0-9_-]{0,63}")
+
+
+def _check_owner(model_id: str, key: str):
+    """Refuse cross-tenant model access (review S01a)."""
+    from earth1 import models as em
+    try:
+        meta = em.load_model(model_id)
+    except FileNotFoundError:
+        return None
+    if meta.get("owner") != _principal(key):
+        raise HTTPException(403, "model belongs to another key")
+    return meta
+
+
 @router.post("/models")
 def create_model_ep(body: dict, authorization: Optional[str] = Header(None)):
     key = _auth(authorization)
+    mid = body.get("model_id", "")
+    _check_model_id(mid)
     _qlog("model_create", body, key)
     from earth1 import models as em
-    meta = em.create_model(body["model_id"], owner=key,
+    if _check_owner(mid, key) is not None:
+        raise HTTPException(409, "model_id already exists")
+    meta = em.create_model(mid, owner=_principal(key),
                            description=body.get("description", ""))
     if body.get("context"):
-        meta = em.attach_context(body["model_id"], _world("20k"),
-                                 body["context"])
+        meta = em.attach_context(mid, _world("20k"), body["context"])
     if body.get("population"):
         meta["population_def"] = body["population"]
         em._save(meta)
@@ -384,14 +440,30 @@ def create_model_ep(body: dict, authorization: Optional[str] = Header(None)):
 def model_scenario_ep(model_id: str, body: dict,
                       authorization: Optional[str] = Header(None)):
     key = _auth(authorization)
+    _check_model_id(model_id)
     _qlog("model_scenario", {"model": model_id, **body}, key)
     from earth1 import models as em
-    import copy
+    if _check_owner(model_id, key) is None:
+        raise HTTPException(404, "unknown model")
     out = em.run_scenario(model_id, _world(body.get("fidelity", "20k")),
                           body, seeds=tuple(range(1, 1 + int(
                               body.get("seeds", 3)))),
                           horizon_days=int(body.get("horizon_days", 30)))
     return _envelope(body.get("fidelity", "20k"), {"result": out})
+
+
+@router.get("/jobs/{jid}")
+def job_status(jid: str, authorization: Optional[str] = Header(None)):
+    """Retrieve an async ask's status/result (review S02: the job id was
+    a dead end — no route served it). Jobs are process-local and do not
+    survive restart; the response says so on a miss."""
+    key = _auth(authorization)
+    _qlog("job_status", {"job": jid}, key)
+    j = _jobs.get(jid)
+    if j is None:
+        raise HTTPException(404, "unknown job id — jobs are process-local "
+                                 "and do not survive a restart")
+    return _envelope("200k", {"job_id": jid, **j})
 
 
 @router.get("/world/events")
