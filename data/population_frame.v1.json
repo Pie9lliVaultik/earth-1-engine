@@ -1,0 +1,124 @@
+{
+ "world_population": {
+  "value": 8140897523,
+  "year": 2024,
+  "series_id": "SP.POP.TOTL",
+  "country": "WLD",
+  "source": "https://api.worldbank.org/v2/country/WLD/indicator/SP.POP.TOTL",
+  "raw_sha256": "ec60e3e7b285857877ad3aace0255b4c7c0886db1779c3a20c03713c7daa1065",
+  "retrieved": "2026-09-08"
+ },
+ "joint_provenance": {
+  "note": "C2+ v2 joint tables: a country is survey_measured when WVS-7 microdata supplied its education and income margins; otherwise its margins are pooled from income-tier donors (tier_fallback). Age/sex/urban margins are census-derived for ALL countries either way.",
+  "survey_measured": [
+   "AD",
+   "AM",
+   "AR",
+   "AU",
+   "BD",
+   "BO",
+   "BR",
+   "CA",
+   "CL",
+   "CN",
+   "CO",
+   "CY",
+   "CZ",
+   "DE",
+   "EC",
+   "EG",
+   "ET",
+   "GB",
+   "GR",
+   "GT",
+   "HK",
+   "ID",
+   "IN",
+   "IQ",
+   "IR",
+   "JO",
+   "JP",
+   "KE",
+   "KG",
+   "KR",
+   "KZ",
+   "LB",
+   "LY",
+   "MA",
+   "MM",
+   "MN",
+   "MV",
+   "MX",
+   "MY",
+   "NG",
+   "NI",
+   "NL",
+   "NZ",
+   "PE",
+   "PH",
+   "PK",
+   "PR",
+   "RO",
+   "RS",
+   "RU",
+   "SG",
+   "SK",
+   "TH",
+   "TJ",
+   "TN",
+   "TR",
+   "UA",
+   "US",
+   "UY",
+   "UZ",
+   "VE",
+   "VN",
+   "ZW"
+  ],
+  "n_survey_measured": 63,
+  "n_tier_fallback": 131
+ },
+ "joint_axes": {
+  "order": [
+   "sex",
+   "age_band",
+   "education",
+   "income",
+   "urban"
+  ],
+  "shape": [
+   2,
+   6,
+   3,
+   3,
+   2
+  ],
+  "sex": {
+   "0": "male",
+   "1": "female"
+  },
+  "age_band": {
+   "0": "18-24",
+   "1": "25-34",
+   "2": "35-44",
+   "3": "45-54",
+   "4": "55-64",
+   "5": "65+"
+  },
+  "education": {
+   "0": "low",
+   "1": "middle",
+   "2": "high"
+  },
+  "income": {
+   "0": "low",
+   "1": "middle",
+   "2": "high"
+  },
+  "urban": {
+   "0": "urban",
+   "1": "rural"
+  },
+  "URBAN_AXIS_WARNING": "axis index 0 carries the URBAN mass, but the engine stores it as civ.urban==False (see DEFECT-URBAN-INVERSION). Frame code must read axis index, never the boolean."
+ }
+}

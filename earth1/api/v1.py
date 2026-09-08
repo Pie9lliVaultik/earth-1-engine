@@ -41,6 +41,7 @@ _jobs: dict = {}
 _cache: dict = {}
 _rate: dict = {}
 _qlock = threading.Lock()
+_qlog_dropped = 0        # audit-log write failures — surfaced by /health
 
 
 def _tree_hash():
@@ -95,16 +96,25 @@ def _qlog(kind, body, key):
            "body_sha256": hashlib.sha256(
                json.dumps(body, sort_keys=True, default=str).encode()
            ).hexdigest()}
+    global _qlog_dropped
     with _qlock:
-        prev = "GENESIS"
-        if os.path.exists(QLOG):
-            for line in open(QLOG):
-                prev = json.loads(line)["_hash"]
-        rec["_prev"] = prev
-        rec["_hash"] = hashlib.sha256(
-            json.dumps(rec, sort_keys=True).encode()).hexdigest()
-        with open(QLOG, "a") as f:
-            f.write(json.dumps(rec, sort_keys=True) + "\n")
+        try:
+            d = os.path.dirname(QLOG)
+            if d:
+                os.makedirs(d, exist_ok=True)
+            prev = "GENESIS"
+            if os.path.exists(QLOG):
+                for line in open(QLOG):
+                    prev = json.loads(line)["_hash"]
+            rec["_prev"] = prev
+            rec["_hash"] = hashlib.sha256(
+                json.dumps(rec, sort_keys=True).encode()).hexdigest()
+            with open(QLOG, "a") as f:
+                f.write(json.dumps(rec, sort_keys=True) + "\n")
+        except OSError:
+            # an unwritable audit log must never 500 a request, but it
+            # must never be silent either — /health reports the count
+            _qlog_dropped += 1
 
 
 def _world(fidelity):
@@ -279,6 +289,55 @@ def world_history(fidelity: str = "20k",
                 "the live chronicle window only; PENDING_RECORDER_STORE"})
 
 
+@router.get("/capabilities")
+def capabilities():
+    """Discovery handshake. The app gates features on these flags."""
+    from earth1 import cohorts
+    try:
+        F = cohorts.frame()
+        pf = True
+    except Exception:
+        F = {}
+        pf = False
+    return {"engine": "earth-1", "apiVersion": "v1",
+            "epoch": EPOCH, "freezeTag": FREEZE_TAG, "treeHash": _TREE,
+            "supports": {
+                "populationFrame": pf,
+                "ask": True, "consequences": True, "models": True,
+                "worldEvents": True, "worldState": True,
+                "forecastLookup": True,
+                "adm1": False, "householdFrame": False},
+            "populationFrame": ({
+                "jointShape": [2, 6, 3, 3, 2],
+                "jointAxes": ["sex", "age_band", "education", "income",
+                              "urban"],
+                "countries": 194,
+                "surveyMeasuredCountries":
+                    F.get("joint_provenance", {}).get("n_survey_measured"),
+                "worldPopulation":
+                    F.get("world_population", {}).get("value"),
+                "lexiconEntries": len(cohorts.LEXICON),
+                "llmInRuntimePath": False} if pf else None)}
+
+
+@router.post("/models/{ref}/population-frame")
+def population_frame_ep(ref: str, body: dict,
+                        authorization: Optional[str] = Header(None)):
+    """Owner-vocabulary cohorts -> census-weighted claim about humanity."""
+    key = _auth(authorization)
+    _qlog("population_frame", {"ref": ref, **body}, key)
+    from earth1 import cohorts
+    place = body.get("place") or {}
+    out = cohorts.population_frame(
+        cohorts=body.get("cohorts") or [],
+        country=place.get("country"),
+        tier_size=int(body.get("tierSize", 200000)))
+    if "error" in out:
+        raise HTTPException(400, out["error"])
+    out["modelRef"] = ref
+    return _envelope("20k", out)
+
+
 @router.post("/models")
 def create_model_ep(body: dict, authorization: Optional[str] = Header(None)):
     key = _auth(authorization)
@@ -341,5 +400,6 @@ def health():
             lhead = json.loads(line)["_hash"]
     return _envelope("20k", {"calibration_table": tiers,
                              "question_log_head": lhead[:16],
+                             "question_log_dropped": _qlog_dropped,
                              "fidelities": {k: os.path.exists(v)
                                             for k, v in _FIDELITY.items()}})
