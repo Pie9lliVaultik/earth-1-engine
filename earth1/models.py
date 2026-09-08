@@ -218,11 +218,18 @@ def run_scenario(model_id: str, world, scenario: dict, seeds=(1, 2, 3),
             "deprivation": (ends["scn"]["deprivation"]
                             - ends["null"]["deprivation"]),
             "wealth": ends["scn"]["wealth"] - ends["null"]["wealth"]})
+    def _sem(x):
+        # undefined from a single seed: std(ddof=1) of one delta is
+        # NaN, which is not JSON-serializable (the API layer would
+        # 500) — served as null instead.
+        if len(seeds) < 2:
+            return None
+        return round(float(np.std(x, ddof=1)
+                           / (len(seeds) - 1) ** 0.5), 5)
     fmat = np.stack([d["forces"] for d in deltas_by_seed])
     force_anatomy = {fk.name.lower(): {
         "delta": round(float(fmat[:, i].mean()), 5),
-        "sem": round(float(fmat[:, i].std(ddof=1)
-                           / max(len(seeds) - 1, 1) ** 0.5), 5)}
+        "sem": _sem(fmat[:, i])}
         for i, fk in enumerate(FORCE_KEYS)}
     who = {}
     civ = world.civ
@@ -238,9 +245,7 @@ def run_scenario(model_id: str, world, scenario: dict, seeds=(1, 2, 3),
            "outcomes": {k: {
                "delta": round(float(np.mean([d[k] for d in
                                              deltas_by_seed])), 5),
-               "sem": round(float(np.std([d[k] for d in deltas_by_seed],
-                                         ddof=1)
-                                  / max(len(seeds) - 1, 1) ** 0.5), 5)}
+               "sem": _sem([d[k] for d in deltas_by_seed])}
                for k in ("employed", "deprivation", "wealth")},
            "data_foundation": {a: meta["context_attrs"][a]
                                for a in meta["context_attrs"]},

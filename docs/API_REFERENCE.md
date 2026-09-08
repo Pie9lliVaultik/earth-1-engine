@@ -187,7 +187,9 @@ marked synthetic).
 Runs a scenario on the caller's model: `404` unknown, `403` another
 tenant's. Body: scenario fields + `fidelity`, `seeds` [1,16],
 `horizon_days` [1,365]. Response: `{result}` with the same
-consequence-line schema as 3.3.
+consequence-line schema as 3.3. With `seeds=1` every `sem` is `null`
+(a single-seed standard error is undefined); send `seeds>=2` for
+numeric sems.
 
 ### 3.13 `POST /v1/models/{ref}/population-frame`
 
@@ -248,18 +250,20 @@ by its daemon, never by API callers).
 
 ## 7. Known integration caveats (found while documenting — fixes queued)
 
-1. `POST /v1/models/{id}/scenario` 500s on `seeds=1` (single-seed SEM is
-   NaN); send `seeds>=2`.
-2. Unknown ISO-2 on `/countries/{iso2}/mortality`, `/needs`, and
+1. Unknown ISO-2 on `/countries/{iso2}/mortality`, `/needs`, and
    `/earthlings?country=` returns `500`, not `404` — validate country
    codes client-side against `/countries`.
-3. With app-wide auth enabled, `/billing/webhook` currently requires an
+2. With app-wide auth enabled, `/billing/webhook` currently requires an
    X-API-Key before signature verification (Stripe cannot send one) —
    webhook integration needs the exemption fix first.
-4. Usage metering records nothing yet (daily caps never trip;
+3. Usage metering records nothing yet (daily caps never trip;
    `/billing/usage` reports zero) and per-key rate limits are stored but
    unenforced — the effective limiter is per-IP + the v1 per-token RPM.
-5. `POST /branches` deep-clones the full serving world per branch
+4. `POST /branches` deep-clones the full serving world per branch
    (max 2 branches); budget memory accordingly.
-6. `POST /predictions/{id}/resolve` permits double-resolution; treat
+5. `POST /predictions/{id}/resolve` permits double-resolution; treat
    resolution as idempotent on the client.
+
+(Resolved 2026-09-08: `POST /v1/models/{id}/scenario` no longer 500s on
+`seeds=1` — `sem` is served as `null` for single-seed runs; see 3.12.
+Regression test: `tests/test_model_scenario_seeds.py`.)

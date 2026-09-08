@@ -2013,7 +2013,7 @@
      "epistemics": "outcomes are scoped-population deltas vs a CRN-paired null; tier is the model's own calibration state, earned from resolved outcomes only"
     }
    },
-   "note": "seeds clamp to 1..16 (default 3), horizon_days to 1..365 (default 30). SEND seeds>=2: seeds=1 currently 500s \u2014 the per-outcome sem is np.std(ddof=1) over the seed deltas (earth1/models.py:224,242), NaN for a single seed, and NaN fails FastAPI's JSON serialization"
+   "note": "seeds clamp to 1..16 (default 3), horizon_days to 1..365 (default 30). seeds=1 is valid but serves every sem as null \u2014 a single-seed standard error is undefined (earth1/models.py run_scenario); send seeds>=2 for numeric sems"
   },
   {
    "name": "population_frame",
