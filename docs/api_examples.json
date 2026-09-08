@@ -1,0 +1,2226 @@
+{
+ "meta": [
+  {
+   "name": "openapi_validation",
+   "method": "GET",
+   "path": "/openapi.json",
+   "request": null,
+   "status": 200,
+   "response": {
+    "mounted_app_title": "Earth-1 API",
+    "mounted_app_paths": 108,
+    "docs_openapi_json_parses": true,
+    "docs_openapi_json_parse_error": null,
+    "docs_openapi_json_paths": 108,
+    "path_count_matches": true,
+    "only_in_mounted_app": [],
+    "only_in_docs_file": []
+   },
+   "note": "validation summary, not the raw spec \u2014 fetch /openapi.json from the app for the full document"
+  }
+ ],
+ "system": [
+  {
+   "name": "health",
+   "method": "GET",
+   "path": "/health",
+   "request": null,
+   "status": 200,
+   "response": {
+    "status": "ok",
+    "world": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    }
+   },
+   "note": "exempt from every middleware layer (auth, budget, rate limit, pause switch)"
+  },
+  {
+   "name": "physics",
+   "method": "GET",
+   "path": "/physics",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+    "canonical_day": {
+     "beta": 2.0,
+     "residue": 0.02,
+     "critical_fraction": 0.12,
+     "relax": 0.045,
+     "layers": 2
+    },
+    "cascade_rules": [
+     {
+      "name": "identity_collapse",
+      "conditions": [
+       [
+        "fear",
+        ">",
+        0.7
+       ],
+       [
+        "collective",
+        ">",
+        0.6
+       ]
+      ],
+      "effects": {
+       "identity": -0.15
+      },
+      "cooldown_days": 30.0,
+      "decay_half_life": 60.0,
+      "semantics": "episode-entry"
+     },
+     {
+      "name": "panic_cascade",
+      "conditions": [
+       [
+        "economics",
+        "<",
+        0.3
+       ],
+       [
+        "fear",
+        ">",
+        0.5
+       ]
+      ],
+      "effects": {
+       "fear": 0.1,
+       "desire": -0.08
+      },
+      "cooldown_days": 14.0,
+      "decay_half_life": 45.0,
+      "semantics": "level+cooldown"
+     },
+     {
+      "name": "polarization_lock",
+      "conditions": [
+       [
+        "identity",
+        ">",
+        0.8
+       ],
+       [
+        "culture",
+        ">",
+        0.7
+       ]
+      ],
+      "effects": {
+       "collective": -0.12
+      },
+      "cooldown_days": 60.0,
+      "decay_half_life": 90.0,
+      "semantics": "level+cooldown"
+     },
+     "...truncated (5 items total)"
+    ],
+    "production_modules": [
+     "earth1/__init__.py",
+     "earth1/alive.py",
+     "earth1/answer_living.py",
+     "...truncated (39 items total)"
+    ],
+    "step_order": [
+     "govern",
+     "policy_and_war",
+     "advance_age",
+     "...truncated (23 items total)"
+    ]
+   }
+  },
+  {
+   "name": "epoch_current",
+   "method": "GET",
+   "path": "/epochs/current",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "epoch": {
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "seed": 42,
+     "physics_version": "synthetic-capture"
+    },
+    "policy": "ops/alive/EPOCH_POLICY.md"
+   }
+  },
+  {
+   "name": "snapshot_current",
+   "method": "GET",
+   "path": "/snapshots/current",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    }
+   }
+  }
+ ],
+ "world": [
+  {
+   "name": "world_summary",
+   "method": "GET",
+   "path": "/world",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "unemployment": 0.08817,
+    "deprived": 0.05859,
+    "homeless": 0.0,
+    "mean_hope": 0.5652,
+    "mean_knowledge": 0.5592,
+    "countries_at_war": 0
+   }
+  }
+ ],
+ "geography": [
+  {
+   "name": "countries_list",
+   "method": "GET",
+   "path": "/countries",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "countries": [
+     {
+      "iso2": "IN",
+      "continent": "Asia",
+      "population_alive": 0
+     },
+     {
+      "iso2": "CN",
+      "continent": "Asia",
+      "population_alive": 2
+     },
+     {
+      "iso2": "US",
+      "continent": "North America",
+      "population_alive": 11
+     },
+     "...truncated (194 items total)"
+    ]
+   }
+  },
+  {
+   "name": "country_detail",
+   "method": "GET",
+   "path": "/countries/US",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "iso2": "US",
+    "name": "United States",
+    "continent": "North America",
+    "population_alive": 11,
+    "deceased_slots": 0,
+    "regions": [
+     {
+      "index": 0,
+      "code": "US-NE",
+      "name": "Northeast",
+      "population_share": 0.17,
+      "economic_type": "services",
+      "geographic_type": "coastal"
+     },
+     {
+      "index": 1,
+      "code": "US-SE",
+      "name": "Southeast",
+      "population_share": 0.2,
+      "economic_type": "mixed",
+      "geographic_type": "coastal"
+     },
+     {
+      "index": 2,
+      "code": "US-MW",
+      "name": "Midwest",
+      "population_share": 0.2,
+      "economic_type": "mixed",
+      "geographic_type": "plains"
+     },
+     "...truncated (6 items total)"
+    ],
+    "localities": [
+     2002,
+     2003,
+     2004,
+     "...truncated (7 items total)"
+    ],
+    "government": {
+     "tax": 0.4681060897961732,
+     "welfare": 0.5784638313740679,
+     "policing": 0.39796170300458306,
+     "legitimacy": 0.5826337523815476,
+     "at_war_with": null,
+     "war_days": 0.0,
+     "unrest": 0.5018635023031491,
+     "deprivation_norm": 0.29429920690001604
+    },
+    "climate": {
+     "baseline_temp": 3.2443661666278105,
+     "anomaly": -8.60458259333751,
+     "soil": 0.8760000000000001,
+     "farm_share": 0.01,
+     "storm_days": 0.0,
+     "comfort": 3.2443661666278105
+    },
+    "forces_mean": {
+     "fear": 0.64372,
+     "desire": 0.70234,
+     "economics": 0.68766,
+     "collective": 0.45191,
+     "identity": 0.64277,
+     "culture": 0.64181,
+     "experience": 0.35218,
+     "temperament": 0.51368
+    },
+    "unemployment": 0.0,
+    "deprived": 0.09090909090909091,
+    "homeless": 0.0,
+    "hope": 0.5941297566322629,
+    "mean_knowledge": 0.8199939288244633,
+    "wealth_gini": 0.6623568410544896,
+    "mortality": {
+     "iso2": "US",
+     "deceased_slots_now": 0,
+     "by_cause_now": {},
+     "deaths_recorded_by_cause": {},
+     "deaths_recorded": 0
+    }
+   }
+  },
+  {
+   "name": "locality_detail",
+   "method": "GET",
+   "path": "/localities/2002",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "id": 2002,
+    "name": "Southeast \u2014 rural",
+    "country": "US",
+    "continent": "North America",
+    "region": {
+     "index": 1,
+     "code": "US-SE",
+     "name": "Southeast"
+    },
+    "urban": false,
+    "is_city": false,
+    "city_name": null,
+    "population_alive": 1,
+    "population_deceased_slots": 0,
+    "forces_mean": {
+     "fear": 0.65197,
+     "desire": 0.71523,
+     "economics": 0.72113,
+     "collective": 0.46105,
+     "identity": 0.68893,
+     "culture": 0.67707,
+     "experience": 0.36807,
+     "temperament": 0.49326
+    },
+    "unemployment": 0.0,
+    "deprived": 0.0,
+    "hope": 0.5947055200588454,
+    "episodes_open": [],
+    "active_cascade_residues": 0
+   }
+  }
+ ],
+ "earthlings": [
+  {
+   "name": "earthlings_list",
+   "method": "GET",
+   "path": "/earthlings",
+   "request": {
+    "query": {
+     "limit": 3,
+     "offset": 100
+    }
+   },
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "total": 1980,
+    "offset": 100,
+    "limit": 3,
+    "earthlings": [
+     {
+      "person_id": 120,
+      "slot": 120,
+      "country": "MX",
+      "age_years": 60.4,
+      "alive": true
+     },
+     {
+      "person_id": 121,
+      "slot": 121,
+      "country": "JP",
+      "age_years": 38.7,
+      "alive": true
+     },
+     {
+      "person_id": 122,
+      "slot": 122,
+      "country": "JP",
+      "age_years": 28.9,
+      "alive": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "earthling_detail",
+   "method": "GET",
+   "path": "/earthlings/120",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "person_id": 120,
+     "slot": 120,
+     "alive": true,
+     "status": "alive",
+     "cause_of_death": null,
+     "parent_id": -1,
+     "generation": "genesis",
+     "first_recorded_day": null,
+     "last_recorded_day": null,
+     "slot_previous_occupant_person_id": null
+    },
+    "demographics": {
+     "country": "MX",
+     "continent": "North America",
+     "region": {
+      "index": 1,
+      "code": "MX-NOR",
+      "name": "Northern Mexico"
+     },
+     "locality": {
+      "id": 10002,
+      "name": "Northern Mexico \u2014 rural"
+     },
+     "urban": false,
+     "age_years": 60.4,
+     "education": "high",
+     "income_tier": "mid"
+    },
+    "traits": {
+     "openness": 0.6784,
+     "empathy": 0.6302,
+     "risk_appetite": 0.0,
+     "doubt": 0.5928,
+     "desire_intensity": 0.2265,
+     "conscientiousness": 0.9139,
+     "agreeableness": 0.3839,
+     "extraversion": 0.3407,
+     "neuroticism": 0.5657,
+     "power_distance": 0.8487,
+     "individualism": 0.2169,
+     "uncertainty_avoidance": 0.8076,
+     "long_term_orientation": 0.2129,
+     "culture_offset": 0.188,
+     "economic_field": 0.6875
+    },
+    "forces": {
+     "stored": {
+      "fear": 0.79442,
+      "desire": 0.53035,
+      "economics": 0.61263,
+      "collective": 0.62751,
+      "identity": 0.36748,
+      "culture": 0.79318,
+      "experience": 0.40852,
+      "temperament": 0.39901
+     },
+     "effective": {
+      "fear": 0.79442,
+      "desire": 0.53035,
+      "economics": 0.61263,
+      "collective": 0.62751,
+      "identity": 0.36748,
+      "culture": 0.79318,
+      "experience": 0.40852,
+      "temperament": 0.39901
+     },
+     "cascade_overlay_by_rule": {},
+     "memory_press_today": {
+      "fear": 0.01977,
+      "desire": 0.0,
+      "economics": 0.0,
+      "collective": 0.0,
+      "identity": 0.0,
+      "culture": 0.0,
+      "experience": 0.0,
+      "temperament": 0.0
+     },
+     "conviction": 0.59432,
+     "susceptibility": {
+      "fear": 0.98071,
+      "desire": 0.92828,
+      "economics": 0.92828,
+      "collective": 0.92828,
+      "identity": 0.88458,
+      "culture": 0.89332,
+      "experience": 0.92828,
+      "temperament": 0.92828
+     },
+     "locality": 10002
+    },
+    "work": {
+     "occupation": "technical",
+     "employed": false,
+     "in_labour_force": false,
+     "firm_id": null,
+     "tenure_days": 0.0,
+     "job_losses": 0,
+     "money": {
+      "wage_daily": 0.8359901627419066,
+      "wealth_days_of_cost": -1.1549808868400508,
+      "daily_cost": 1.0,
+      "deprivation": 0.3730073779435701,
+      "durables": 0.45320676122377185,
+      "policy_net": 0.4309513124130938
+     }
+    },
+    "health": {
+     "alive": true,
+     "condition": null,
+     "diagnosed_day": -1.0,
+     "in_treatment": false,
+     "declining": 0.0,
+     "falls": 0,
+     "lifetime_illnesses": 0,
+     "cause_of_death": null,
+     "mental": 0.9059,
+     "physical": 0.9146,
+     "addiction": 0.0
+    },
+    "needs": {
+     "hunger": 0.0,
+     "thirst": 0.0,
+     "air": 0.05923670003597739,
+     "deprivation": 0.3730073779435701,
+     "hope": 0.6306029827847771,
+     "meaning": 0.5895751364644575,
+     "belonging": 0.6377851860983006,
+     "satisfaction": 0.802110574012376,
+     "curiosity": 0.5948282499754362,
+     "country_food_system": {
+      "farm_share": 0.1747793828709438,
+      "soil": 0.8035682264225315,
+      "temperature_anomaly": -1.7392131060148834,
+      "storm_days": 1.0
+     }
+    },
+    "housing": {
+     "owns_home": true,
+     "rent": 0.11039984769959128,
+     "arrears": 0.0,
+     "evicted": false,
+     "homeless": false,
+     "days_homeless": 0
+    },
+    "social": {
+     "household_id": 43,
+     "partner_id": null,
+     "tie_counts": {
+      "household": 2,
+      "colleagues": 0,
+      "neighbours": 1,
+      "friends": 1,
+      "weak": 0,
+      "diaspora": 0,
+      "media": 0
+     },
+     "relationship_quality": 0.8371,
+     "unmet_social_need": 0.0,
+     "political_engagement": 0.1337
+    },
+    "knowledge": {
+     "stock": 0.8976,
+     "status": 0.4374,
+     "connected": true,
+     "works_made": 0,
+     "discoveries": 0
+    },
+    "class": {
+     "criminal": false,
+     "crimes_committed": 0,
+     "migrated": false
+    },
+    "presence": {
+     "locality": 60,
+     "density": 0.1,
+     "gathering": 1,
+     "owns_car": false,
+     "flights_per_year": 0.11796105392769504,
+     "commute_minutes": 49.22705862013315,
+     "trips_taken": 0
+    },
+    "last_life_event": {
+     "event": "nothing",
+     "day": -1.0,
+     "lifetime_events": 0
+    }
+   }
+  },
+  {
+   "name": "earthling_forces",
+   "method": "GET",
+   "path": "/earthlings/120/forces",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "person_id": 120,
+    "stored": {
+     "fear": 0.79442,
+     "desire": 0.53035,
+     "economics": 0.61263,
+     "collective": 0.62751,
+     "identity": 0.36748,
+     "culture": 0.79318,
+     "experience": 0.40852,
+     "temperament": 0.39901
+    },
+    "effective": {
+     "fear": 0.79442,
+     "desire": 0.53035,
+     "economics": 0.61263,
+     "collective": 0.62751,
+     "identity": 0.36748,
+     "culture": 0.79318,
+     "experience": 0.40852,
+     "temperament": 0.39901
+    },
+    "cascade_overlay_by_rule": {},
+    "memory_press_today": {
+     "fear": 0.01977,
+     "desire": 0.0,
+     "economics": 0.0,
+     "collective": 0.0,
+     "identity": 0.0,
+     "culture": 0.0,
+     "experience": 0.0,
+     "temperament": 0.0
+    },
+    "conviction": 0.59432,
+    "susceptibility": {
+     "fear": 0.98071,
+     "desire": 0.92828,
+     "economics": 0.92828,
+     "collective": 0.92828,
+     "identity": 0.88458,
+     "culture": 0.89332,
+     "experience": 0.92828,
+     "temperament": 0.92828
+    },
+    "locality": 10002
+   }
+  },
+  {
+   "name": "earthling_needs",
+   "method": "GET",
+   "path": "/earthlings/120/needs",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "person_id": 120,
+    "hunger": 0.0,
+    "thirst": 0.0,
+    "air": 0.05923670003597739,
+    "deprivation": 0.3730073779435701,
+    "hope": 0.6306029827847771,
+    "meaning": 0.5895751364644575,
+    "belonging": 0.6377851860983006,
+    "satisfaction": 0.802110574012376,
+    "curiosity": 0.5948282499754362,
+    "country_food_system": {
+     "farm_share": 0.1747793828709438,
+     "soil": 0.8035682264225315,
+     "temperature_anomaly": -1.7392131060148834,
+     "storm_days": 1.0
+    }
+   }
+  },
+  {
+   "name": "earthling_history",
+   "method": "GET",
+   "path": "/earthlings/120/history",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "coverage": {
+     "history_available": true,
+     "history_available_from_day": 0,
+     "last_recorded_day": 12,
+     "force_sampling_interval_days": 30,
+     "force_samples_are_continuous": false,
+     "locality_and_country_series_daily": true,
+     "person_events": "daily state-diff detection from history_available_from_day onward",
+     "complete_event_history": true,
+     "backfilled": false,
+     "retention": "append-only, unbounded",
+     "note": "days before history_available_from_day are UNRECORDED, not uneventful"
+    },
+    "person_id": 120,
+    "events": []
+   }
+  }
+ ],
+ "memories_cascades": [
+  {
+   "name": "memories_list",
+   "method": "GET",
+   "path": "/memories",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "standing": [
+     {
+      "id": "m-demo",
+      "label": "synthetic demo shock",
+      "day": 0.0,
+      "origin": "world",
+      "salience": 0.9885140203528966,
+      "half_life_days": 720.0,
+      "rehearsals": 0,
+      "force_signature": {
+       "fear": 1.0,
+       "desire": 0.0,
+       "economics": 0.0,
+       "collective": 0.0,
+       "identity": 0.0,
+       "culture": 0.0,
+       "experience": 0.0,
+       "temperament": 0.0
+      },
+      "scope_n": 351
+     }
+    ],
+    "forgotten_total": 0,
+    "total_ever": 1
+   }
+  },
+  {
+   "name": "cascades_list",
+   "method": "GET",
+   "path": "/cascades",
+   "request": null,
+   "status": 200,
+   "response": {
+    "identity": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "active_residues": [
+     {
+      "firing_index": 0,
+      "rule": "identity_collapse",
+      "locality": 124000,
+      "locality_name": "Kuwait \u2014 rural",
+      "day": 2,
+      "half_life_days": 60.0,
+      "effects": {
+       "fear": 0.0,
+       "desire": 0.0,
+       "economics": 0.0,
+       "collective": 0.0,
+       "identity": -0.15,
+       "culture": 0.0,
+       "experience": 0.0,
+       "temperament": 0.0
+      },
+      "current_level": {
+       "fear": 0.0,
+       "desire": 0.0,
+       "economics": 0.0,
+       "collective": 0.0,
+       "identity": -0.13363,
+       "culture": 0.0,
+       "experience": 0.0,
+       "temperament": 0.0
+      }
+     }
+    ],
+    "firings_recorded_all_time": 1,
+    "episodes_open": []
+   },
+   "note": "active_residues is empty here: at the 2,000-agent capture size locality populations sit below the pop>=10 cascade gate (tests/conftest.py caveat), so cascades never fire"
+  }
+ ],
+ "branches": [
+  {
+   "name": "branch_create",
+   "method": "POST",
+   "path": "/branches",
+   "request": {
+    "body": {
+     "scenario": {
+      "id": "demo-fear",
+      "label": "synthetic fear dose",
+      "forces": {
+       "fear": 0.2
+      },
+      "persists_days": 5
+     },
+     "seed": 5
+    }
+   },
+   "status": 200,
+   "response": {
+    "id": "1b3d1640-635a-42c9-b3bb-9c293fcd51b8",
+    "created_at": "2026-09-08T15:46:02Z",
+    "scenario": {
+     "id": "demo-fear",
+     "label": "synthetic fear dose",
+     "forces": {
+      "fear": 0.2
+     },
+     "countries": null,
+     "firm_damage": 0.0,
+     "trade_shock": 0.0,
+     "persists_days": 5
+    },
+    "seed": 5,
+    "parent": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "branched_at_day": 12,
+    "day": 12,
+    "days_advanced": 0,
+    "alive": 1980,
+    "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+    "history": "in-memory (per branch)"
+   }
+  },
+  {
+   "name": "branch_advance",
+   "method": "POST",
+   "path": "/branches/1b3d1640-635a-42c9-b3bb-9c293fcd51b8/advance",
+   "request": {
+    "query": {
+     "days": 2
+    }
+   },
+   "status": 200,
+   "response": {
+    "id": "1b3d1640-635a-42c9-b3bb-9c293fcd51b8",
+    "created_at": "2026-09-08T15:46:02Z",
+    "scenario": {
+     "id": "demo-fear",
+     "label": "synthetic fear dose",
+     "forces": {
+      "fear": 0.2
+     },
+     "countries": null,
+     "firm_damage": 0.0,
+     "trade_shock": 0.0,
+     "persists_days": 5
+    },
+    "seed": 5,
+    "parent": {
+     "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+     "epoch": 9,
+     "world_uuid": "83cf6b8e-3dd6-4a0d-b25c-c949820aed8e",
+     "world_day": 12,
+     "alive": 1980,
+     "population": 2000,
+     "schema_version": 1,
+     "snapshot_sha256": "405d849a5892d0bdda94a150012d5fc13b51ba2cf6220a78ccee76bd1a564b6b",
+     "checksum": "verified",
+     "source": "/var/folders/k_/wf6j7n4d0jx7v3yzrfwly5lh0000gn/T/earth1_api_capture_47j_lgii/alive/world.pkl"
+    },
+    "branched_at_day": 12,
+    "day": 14,
+    "days_advanced": 2,
+    "alive": 1981,
+    "physics_version": "0.8-candidate-v4.1/posthumous-invariant-rc",
+    "history": "in-memory (per branch)"
+   }
+  },
+  {
+   "name": "branch_compare",
+   "method": "GET",
+   "path": "/branches/1b3d1640-635a-42c9-b3bb-9c293fcd51b8/compare",
+   "request": null,
+   "status": 200,
+   "response": {
+    "branch": "1b3d1640-635a-42c9-b3bb-9c293fcd51b8",
+    "control": "live",
+    "branch_day": 14,
+    "control_day": 12,
+    "comparable_persons": 1980,
+    "delta_forces_mean": {
+     "fear": 0.013533,
+     "desire": 0.006843,
+     "economics": 0.000783,
+     "collective": 0.00109,
+     "identity": -0.002338,
+     "culture": 0.005018,
+     "experience": 0.001756,
+     "temperament": -0.000109
+    },
+    "delta_forces_abs_mean": {
+     "fear": 0.013882,
+     "desire": 0.008568,
+     "economics": 0.007833,
+     "collective": 0.006279,
+     "identity": 0.00766,
+     "culture": 0.00544,
+     "experience": 0.008887,
+     "temperament": 0.004235
+    },
+    "frac_persons_moved_gt_0.01": 0.9181818181818182,
+    "delta_unemployment": -0.0020202020202020193,
+    "delta_wealth_gini": 0.01585456806150387,
+    "per_country": [
+     {
+      "iso2": "KM",
+      "n": 10,
+      "delta_forces": {
+       "fear": 0.04073,
+       "desire": 0.00341,
+       "economics": 0.00056,
+       "collective": -0.00169,
+       "identity": -0.00501,
+       "culture": 0.0057,
+       "experience": 0.00158,
+       "temperament": 0.00114
+      },
+      "delta_unemployment": 0.0
+     },
+     {
+      "iso2": "LK",
+      "n": 11,
+      "delta_forces": {
+       "fear": 0.00894,
+       "desire": 0.00348,
+       "economics": -0.00266,
+       "collective": 0.03162,
+       "identity": 0.03494,
+       "culture": 0.00542,
+       "experience": 0.00226,
+       "temperament": 4e-05
+      },
+      "delta_unemployment": 0.0
+     },
+     {
+      "iso2": "PK",
+      "n": 11,
+      "delta_forces": {
+       "fear": 0.03294,
+       "desire": 0.00629,
+       "economics": -0.00116,
+       "collective": -0.00391,
+       "identity": -0.00434,
+       "culture": 0.00602,
+       "experience": 0.00064,
+       "temperament": -0.00184
+      },
+      "delta_unemployment": 0.0
+     },
+     "...truncated (50 items total)"
+    ],
+    "most_moved_persons": [
+     {
+      "person_id": 951,
+      "max_abs_delta": 0.08321517014793972
+     },
+     {
+      "person_id": 1662,
+      "max_abs_delta": 0.07935174797339006
+     },
+     {
+      "person_id": 655,
+      "max_abs_delta": 0.07118175338822463
+     },
+     "...truncated (50 items total)"
+    ]
+   }
+  },
+  {
+   "name": "branch_delete",
+   "method": "DELETE",
+   "path": "/branches/1b3d1640-635a-42c9-b3bb-9c293fcd51b8",
+   "request": null,
+   "status": 200,
+   "response": {
+    "deleted": "1b3d1640-635a-42c9-b3bb-9c293fcd51b8"
+   }
+  }
+ ],
+ "predictions": [
+  {
+   "name": "predictions_status",
+   "method": "GET",
+   "path": "/predictions/status",
+   "request": null,
+   "status": 200,
+   "response": {
+    "enabled": false
+   }
+  },
+  {
+   "name": "predictions_list_no_db",
+   "method": "GET",
+   "path": "/predictions/list",
+   "request": null,
+   "status": 503,
+   "response": {
+    "detail": "Database not configured. Set DATABASE_URL to enable persistence."
+   },
+   "note": "503 BY DESIGN without DATABASE_URL \u2014 every /predictions route except /status requires the database (earth1/api/routes/predictions.py:66)"
+  }
+ ],
+ "app_auth_middleware": [
+  {
+   "name": "missing_x_api_key",
+   "method": "GET",
+   "path": "/world",
+   "request": null,
+   "status": 401,
+   "response": {
+    "error": "missing_api_key",
+    "message": "X-API-Key header required"
+   },
+   "note": "EARTH1_AUTH_REQUIRED=1 turns the app-wide X-API-Key middleware on for every path except /health"
+  },
+  {
+   "name": "x_api_key_without_db",
+   "method": "GET",
+   "path": "/world",
+   "request": {
+    "headers": {
+     "X-API-Key": "demo"
+    }
+   },
+   "status": 503,
+   "response": {
+    "error": "auth_unavailable",
+    "message": "Auth requires database"
+   },
+   "note": "the X-API-Key layer verifies keys against the database; with EARTH1_AUTH_REQUIRED=1 and no DATABASE_URL it fails closed"
+  }
+ ],
+ "v1": [
+  {
+   "name": "capabilities",
+   "method": "GET",
+   "path": "/v1/capabilities",
+   "request": null,
+   "status": 200,
+   "response": {
+    "engine": "earth-1",
+    "apiVersion": "v1",
+    "epoch": "3-lab",
+    "freezeTag": "freeze-0.9",
+    "treeHash": "8710f74",
+    "supports": {
+     "populationFrame": true,
+     "ask": true,
+     "consequences": true,
+     "models": true,
+     "worldEvents": true,
+     "worldState": true,
+     "forecastLookup": true,
+     "adm1": false,
+     "householdFrame": false
+    },
+    "populationFrame": {
+     "jointShape": [
+      2,
+      6,
+      3,
+      "...truncated (5 items total)"
+     ],
+     "jointAxes": [
+      "sex",
+      "age_band",
+      "education",
+      "...truncated (5 items total)"
+     ],
+     "countries": 194,
+     "surveyMeasuredCountries": 63,
+     "worldPopulation": 8140897523,
+     "lexiconEntries": 69,
+     "llmInRuntimePath": false
+    }
+   },
+   "note": "discovery handshake \u2014 no auth required on this route"
+  },
+  {
+   "name": "health",
+   "method": "GET",
+   "path": "/v1/health",
+   "request": null,
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": null,
+    "calibration_table": {
+     "conflict": "UNCALIBRATED",
+     "corporate_earnings": "UNCALIBRATED",
+     "election": "UNCALIBRATED",
+     "market_cascade": "UNCALIBRATED",
+     "papal_succession": "UNCALIBRATED",
+     "policy": "UNCALIBRATED",
+     "protest": "UNCALIBRATED",
+     "provisional_conditional": "UNCALIBRATED",
+     "rate_decision": "UNCALIBRATED",
+     "referendum": "UNCALIBRATED",
+     "sports_final": "UNCALIBRATED"
+    },
+    "question_log_head": "GENESIS",
+    "question_log_dropped": 0,
+    "physics_stamp": "ok",
+    "physics_stamp_mismatch": null,
+    "fidelities": {
+     "20k": true,
+     "200k": true
+    }
+   },
+   "note": "no auth required on this route"
+  },
+  {
+   "name": "world_state",
+   "method": "GET",
+   "path": "/v1/world/state",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "query": {
+     "fidelity": "20k"
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "countries": [],
+    "note_adm1": "engine has no adm1 geography yet \u2014 registered limitation"
+   }
+  },
+  {
+   "name": "world_hash",
+   "method": "GET",
+   "path": "/v1/world/hash",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "query": {
+     "fidelity": "20k"
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "world_hash": "f5a8d79b92f049d8204907f4bc4fe195c295e4fa892eac3467b8bdf9d1a7b96b",
+    "day": 12.0,
+    "config_stamp": {
+     "env": {
+      "EARTH1_HARDSHIP_MODE": "gradient",
+      "EARTH1_INCOME_CALIBRATION": "v1",
+      "EARTH1_SUBSTRATE_FLAG": "c2plus_v1",
+      "EARTH1_C2PLUS_TABLES": "c2plus_tables_v2.json",
+      "EARTH1_MORTALITY_MODE": "gompertz",
+      "EARTH1_GM_OTHER_SHARE": "0.21407724082954704",
+      "EARTH1_WANT_MODE": "rr",
+      "EARTH1_WANT_RR": "4.933765606879083",
+      "EARTH1_WEATHER_SCALE": "0.020333010074315046",
+      "EARTH1_DISTRESS_LAYOFFS": "on",
+      "EARTH1_LAYOFF_GAIN": "0.0028"
+     },
+     "env_source": "freeze09.env",
+     "loaded": {
+      "hardship_mode": "gradient",
+      "income_calibration": "v1",
+      "mortality_mode": "gompertz",
+      "distress_layoffs": "on",
+      "layoff_gain": "0.0028",
+      "gm_other_share": "0.21407724082954704"
+     },
+     "loaded_mismatch": null,
+     "is_freeze_09": true,
+     "mismatch": null,
+     "warning": null
+    },
+    "note": "digest of the entire world state at the served snapshot \u2014 every component, not just the population; identical (seed, day, config) must reproduce it exactly"
+   }
+  },
+  {
+   "name": "world_history",
+   "method": "GET",
+   "path": "/v1/world/history",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "query": {
+     "fidelity": "20k"
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "cascade_episodes_active": [
+     {
+      "rule": "identity_collapse",
+      "day": 2.0,
+      "loc": 124000
+     }
+    ],
+    "note": "date-range history requires the recorder store (hash-chained manifest, ops/alive backups) \u2014 v1 serves the live chronicle window only; PENDING_RECORDER_STORE"
+   }
+  },
+  {
+   "name": "world_events",
+   "method": "GET",
+   "path": "/v1/world/events",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "query": {
+     "n": 5
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "events": [
+     {
+      "_hash": "f0e7e37d6c71e0486517e2e1341627a529705e6622fdd22f1636d8384c5a601d",
+      "_prev": "12e67a1803facda6529c4b72fe461d9913d4a0b80ce19f85ec20517b5e9d2f68",
+      "agents": [
+       799,
+       850,
+       1016
+      ],
+      "country": 73,
+      "day": 9.0,
+      "detail": "",
+      "epoch": "synthetic-capture",
+      "kind": "job_lost",
+      "loc": -1,
+      "source": "capture_examples"
+     },
+     {
+      "_hash": "3e0aba1fb67cbaef13fdf5dc0f778dac13d925d724f8beda78b568efd62c0143",
+      "_prev": "f0e7e37d6c71e0486517e2e1341627a529705e6622fdd22f1636d8384c5a601d",
+      "agents": [
+       512,
+       995,
+       1220
+      ],
+      "country": 46,
+      "day": 9.0,
+      "detail": "",
+      "epoch": "synthetic-capture",
+      "kind": "job_found",
+      "loc": -1,
+      "source": "capture_examples"
+     },
+     {
+      "_hash": "a6c6929bcc7f0b86bda2c8ea6bc598a57c56aebc1568697b58b8ad876fb178ab",
+      "_prev": "3e0aba1fb67cbaef13fdf5dc0f778dac13d925d724f8beda78b568efd62c0143",
+      "agents": [
+       182
+      ],
+      "country": 16,
+      "day": 10.0,
+      "detail": "",
+      "epoch": "synthetic-capture",
+      "kind": "job_found",
+      "loc": -1,
+      "source": "capture_examples"
+     },
+     "...truncated (5 items total)"
+    ],
+    "count": 5,
+    "wire": "open",
+    "chain_head": "cc28cd1ae4dffbb0"
+   }
+  },
+  {
+   "name": "ask_opinion_door",
+   "method": "POST",
+   "path": "/v1/ask",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "fidelity": "20k",
+     "question_id": "api:demo-opinion-q1",
+     "text": "Do people trust their national institutions?"
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "result": {
+     "question": "Do people trust their national institutions?",
+     "question_id": "api:demo-opinion-q1",
+     "door": "opinion",
+     "ambiguous_form": false,
+     "ledger_cutoff_day": 12.0,
+     "p_market_display_only": null,
+     "force_signature": {
+      "fear": 0.6474,
+      "desire": 0.6428,
+      "economics": 0.614,
+      "collective": 0.6486,
+      "identity": 0.3846,
+      "culture": 0.5938,
+      "experience": 0.3782,
+      "temperament": 0.4951
+     },
+     "stance_share": null,
+     "grounding_rung": null,
+     "coverage": {
+      "agents": 1980,
+      "scope": "global"
+     },
+     "class": "opinion",
+     "calibration_tier": "UNCALIBRATED",
+     "scope": "belief_causal",
+     "resolved_at": "simulation",
+     "answer": "The population's force profile on this attitude is attached; no grounded stance axis exists yet for a share. (tier UNCALIBRATED)"
+    }
+   },
+   "note": "attitude phrasing routes to the OPINION door: a direct force readout, no branch simulation; stance_share is null without the ground ladder (EARTH1_GROUND_LADDER unset)"
+  },
+  {
+   "name": "ask_forecast_door_scored",
+   "method": "POST",
+   "path": "/v1/ask",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "fidelity": "20k",
+     "question_id": "api:demo-protest-q1",
+     "text": "Will protests intensify nationwide this month?",
+     "class": "protest",
+     "outcomes": [
+      "YES",
+      "NO"
+     ],
+     "horizon_days": 10
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "result": {
+     "question": "Will protests intensify nationwide this month?",
+     "question_id": "api:demo-protest-q1",
+     "door": "forecast",
+     "ambiguous_form": false,
+     "ledger_cutoff_day": 12.0,
+     "p_market_display_only": null,
+     "class": "protest",
+     "calibration_tier": "UNCALIBRATED",
+     "p_model": 0.3773086760026261,
+     "p_by_outcome": {
+      "YES": 0.3773086760026261,
+      "NO": 0.6226913239973739
+     },
+     "abstain_reason": null,
+     "force_signature": {
+      "YES": {
+       "fear": 0.02645,
+       "desire": 5e-05,
+       "economics": -0.02269,
+       "collective": -0.00048,
+       "identity": -0.00033,
+       "culture": -0.00051,
+       "experience": 0.0001,
+       "temperament": 0.00034
+      },
+      "NO": {
+       "fear": -0.01954,
+       "desire": 8e-05,
+       "economics": 0.00798,
+       "collective": -0.00048,
+       "identity": -0.00033,
+       "culture": -0.00051,
+       "experience": 0.00012,
+       "temperament": 0.00034
+      }
+     },
+     "conviction_index": 0.5444878812858749,
+     "branch_hashes": {
+      "NULL": "103cce1cc8d05fd9",
+      "YES": "11314bff9d46faf9",
+      "NO": "e960ac1c08151275"
+     },
+     "distances": {
+      "YES": 0.034859421937160115,
+      "NO": 0.02112244354537088
+     },
+     "noise_floor": 0.02498,
+     "semantics": "branch_consistency",
+     "semantics_note": "normalized branch-displacement ratio; not a calibrated event probability (see SEMANTICS_BINARY_READOUT.md)",
+     "scope": "belief_causal",
+     "resolved_at": "simulation",
+     "answer": "Earth-1 simulates p=0.38 (tier UNCALIBRATED; strongest force channel: fear)."
+    }
+   },
+   "note": "'will \u2026' routes to the FORECAST door: real branch runs vs null. horizon_days is clamped to 1..365 (default 45 on the 20k sync path). p_model is a normalized branch-displacement ratio (semantics: branch_consistency), not a calibrated event probability. Captured against the tiny synthetic world, so the numbers are shape-only"
+  },
+  {
+   "name": "ask_forecast_door_abstain",
+   "method": "POST",
+   "path": "/v1/ask",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "fidelity": "20k",
+     "question_id": "api:demo-protest-q1b",
+     "text": "Will protests intensify nationwide this month?",
+     "class": "protest",
+     "outcomes": [
+      "YES",
+      "NO"
+     ],
+     "country": "US",
+     "horizon_days": 2
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "result": {
+     "question": "Will protests intensify nationwide this month?",
+     "question_id": "api:demo-protest-q1b",
+     "door": "forecast",
+     "ambiguous_form": false,
+     "ledger_cutoff_day": 12.0,
+     "p_market_display_only": null,
+     "class": "protest",
+     "calibration_tier": "ABSTAIN",
+     "p_model": null,
+     "p_by_outcome": null,
+     "abstain_reason": "all branch deltas below class noise floor 0.02498 (branch = control)",
+     "force_signature": {
+      "YES": {
+       "fear": 0.00728,
+       "desire": -0.0,
+       "economics": -0.00561,
+       "collective": 0.0,
+       "identity": 0.0,
+       "culture": 0.0,
+       "experience": -0.0,
+       "temperament": 0.0
+      },
+      "NO": {
+       "fear": -0.00364,
+       "desire": 0.0,
+       "economics": 0.00187,
+       "collective": 0.0,
+       "identity": 0.0,
+       "culture": -0.0,
+       "experience": 0.0,
+       "temperament": 0.0
+      }
+     },
+     "conviction_index": 0.999998508892791,
+     "branch_hashes": {
+      "NULL": "d2618503c266bbcc",
+      "YES": "de37178b815601bd",
+      "NO": "96b1f8b97a36263b"
+     },
+     "distances": {
+      "YES": 0.009188666023227562,
+      "NO": 0.004091046583986098
+     },
+     "noise_floor": 0.02498,
+     "semantics": "branch_consistency",
+     "semantics_note": "normalized branch-displacement ratio; not a calibrated event probability (see SEMANTICS_BINARY_READOUT.md)",
+     "scope": "belief_causal",
+     "resolved_at": "simulation",
+     "answer": "The simulation abstains (all branch deltas below class noise floor 0.02498 (branch = control)); no grounded fact answers it either \u2014 the abstention reason is the answer."
+    }
+   },
+   "note": "ABSTAIN is a first-class outcome: when every branch delta sits below the class noise floor, p_model is null and abstain_reason says so \u2014 the surface never serves a number from an abstained line. country scopes both the dose and the readout to that ISO2"
+  },
+  {
+   "name": "forecast_lookup",
+   "method": "GET",
+   "path": "/v1/forecast/api:demo-protest-q1",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "forecast": {
+     "question": "Will protests intensify nationwide this month?",
+     "class": "protest",
+     "p_model": 0.62,
+     "abstain": false,
+     "abstain_reason": null,
+     "market_first_seen_display_only": 0.55,
+     "resolution_date": null,
+     "resolution": null,
+     "status": "open",
+     "tag": "synthetic-example",
+     "line_sha256": "5c7c8a4ea8bf5ffc40351a2ab7b1846933e3639c50a5eed6606deb74fa8f8566"
+    }
+   },
+   "note": "served from a SYNTHETIC prospective register built for this capture; /v1/ask does NOT register a forecast \u2014 only registered ids resolve here, others 404"
+  },
+  {
+   "name": "job_status_unknown",
+   "method": "GET",
+   "path": "/v1/jobs/deadbeef0000",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    }
+   },
+   "status": 404,
+   "response": {
+    "detail": "unknown job id \u2014 jobs are process-local, evicted EARTH1_JOB_TTL seconds after finishing, and do not survive a restart"
+   },
+   "note": "jobs exist only for fidelity=200k asks; they are process-local, TTL-evicted (EARTH1_JOB_TTL, default 3600s after finishing) and do not survive a restart"
+  },
+  {
+   "name": "consequences",
+   "method": "POST",
+   "path": "/v1/consequences",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "fidelity": "20k",
+     "scenario": {
+      "id": "demo-shock",
+      "label": "synthetic fear shock",
+      "forces": {
+       "fear": 0.15
+      },
+      "persists_days": 5
+     },
+     "seeds": 8,
+     "horizon_days": 1
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "cached": false,
+    "cache_key": "f5ed00b4a04cc93fcb7c2a1b",
+    "report": {
+     "order0": {
+      "question_id": "demo-shock",
+      "class": null,
+      "scenario_id": "demo-shock",
+      "forces": {
+       "fear": 0.15
+      },
+      "geography": "global",
+      "ledger_cutoff_day": 12.0,
+      "branch_hashes": [
+       "72edc613f4d05fd6",
+       "70a5ca12532eb6b7",
+       "0199ba7e76e35a79",
+       "...truncated (8 items total)"
+      ],
+      "seeds": [
+       11,
+       12,
+       13,
+       "...truncated (8 items total)"
+      ],
+      "pop": 2000
+     },
+     "headline": [
+      "protest_risk_sum: +3 hot localities at day 1 (\u00b10, UNCALIBRATED)",
+      "force_fear: +0.00265 force units at day 1 (\u00b10, UNCALIBRATED)"
+     ],
+     "order1": {
+      "forces_global": [
+       {
+        "observable": "force_fear",
+        "unit": "force units at day 1",
+        "tier": "UNCALIBRATED",
+        "note": null,
+        "requested_day": 7,
+        "measured_day": 1,
+        "delta": 0.00265,
+        "sem": 0.0,
+        "perishability": "perishable"
+       },
+       {
+        "observable": "force_desire",
+        "unit": "force units at day 1",
+        "tier": "ABSTAIN",
+        "delta": null,
+        "note": "no effect (identically zero)",
+        "requested_day": 7,
+        "measured_day": 1,
+        "perishability": "perishable"
+       },
+       {
+        "observable": "force_economics",
+        "unit": "force units at day 1",
+        "tier": "ABSTAIN",
+        "delta": null,
+        "note": "no effect (identically zero)",
+        "requested_day": 7,
+        "measured_day": 1,
+        "perishability": "perishable"
+       },
+       "...truncated (8 items total)"
+      ],
+      "top_country_movers": []
+     },
+     "order2": [
+      {
+       "observable": "unemployed",
+       "unit": "agents at day 1",
+       "tier": "ABSTAIN",
+       "delta": null,
+       "note": "no effect (identically zero)",
+       "requested_day": 90,
+       "measured_day": 1
+      },
+      {
+       "observable": "destitute",
+       "unit": "agents at day 1",
+       "tier": "ABSTAIN",
+       "delta": null,
+       "note": "no effect (identically zero)",
+       "requested_day": 90,
+       "measured_day": 1
+      },
+      {
+       "observable": "hungry",
+       "unit": "agents at day 1",
+       "tier": "ABSTAIN",
+       "delta": null,
+       "note": "no effect (identically zero)",
+       "requested_day": 90,
+       "measured_day": 1
+      },
+      "...truncated (10 items total)"
+     ],
+     "order3": [
+      {
+       "observable": "protest_risk_sum",
+       "unit": "hot localities at day 1",
+       "tier": "UNCALIBRATED",
+       "note": null,
+       "requested_day": 90,
+       "measured_day": 1,
+       "delta": 3.0,
+       "sem": 0.0
+      },
+      {
+       "observable": "unrest_intensity_hot_locality_days",
+       "unit": "hot-locality-days at day 1",
+       "tier": "ABSTAIN",
+       "delta": null,
+       "note": "no effect (identically zero)",
+       "requested_day": 180,
+       "measured_day": 1
+      },
+      {
+       "observable": "collective_surge_onsets_event",
+       "unit": "onset events at day 1",
+       "tier": "KNOWN-DEFECT",
+       "delta": null,
+       "note": "entry-count semantics: sustained-hot worlds under-count cold-to-hot transitions (c-SHOCK VOID); use unrest_intensity_hot_locality_days",
+       "requested_day": 180,
+       "measured_day": 1
+      },
+      "...truncated (5 items total)"
+     ],
+     "order2_geography": {
+      "basis": "hungry_by_country",
+      "unit": "people",
+      "requested_day": 90,
+      "measured_day": 1,
+      "top": []
+     },
+     "order4": [],
+     "tier_counts": {
+      "UNCALIBRATED": 2,
+      "ABSTAIN": 20,
+      "KNOWN-DEFECT": 1
+     }
+    }
+   },
+   "note": "seeds clamp to 8..16 (default 8), horizon_days to 1..365 (default 60); horizon=1 keeps the capture cheap \u2014 real reports run longer horizons. top_country_movers is empty here because per-country rows need >=200 agents"
+  },
+  {
+   "name": "model_create",
+   "method": "POST",
+   "path": "/v1/models",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "model_id": "demo-model-1",
+     "description": "synthetic example model",
+     "context": {
+      "loyalty": {
+       "base": 0.6,
+       "modulators": {
+        "income": 0.2
+       },
+       "synthetic": true
+      }
+     },
+     "population": {}
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "model": {
+     "model_id": "demo-model-1",
+     "owner": "ccf9fda3d105",
+     "description": "synthetic example model",
+     "version": 2,
+     "context_attrs": {
+      "loyalty": {
+       "source": "synthetic_grounding_v1",
+       "synthetic": true,
+       "provenance": "model-owner supplied spec; DERIVED from core attributes; no external data",
+       "base": 0.6
+      }
+     },
+     "population_def": null,
+     "calibration_tier": "UNCALIBRATED",
+     "resolved_outcomes": 0
+    }
+   },
+   "note": "owner is the sha256-derived principal of the bearer key, never the raw token; an empty population predicate selects every living agent"
+  },
+  {
+   "name": "model_scenario",
+   "method": "POST",
+   "path": "/v1/models/demo-model-1/scenario",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "fidelity": "20k",
+     "id": "demo-price-cut",
+     "label": "synthetic price cut",
+     "forces": {
+      "desire": 0.2
+     },
+     "seeds": 2,
+     "horizon_days": 2
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "result": {
+     "model_id": "demo-model-1",
+     "model_version": 2,
+     "calibration_tier": "UNCALIBRATED",
+     "population": 1980,
+     "population_by_country": {},
+     "force_anatomy": {
+      "fear": {
+       "delta": -0.00035,
+       "sem": 0.00056
+      },
+      "desire": {
+       "delta": 0.00755,
+       "sem": 0.0
+      },
+      "economics": {
+       "delta": 1e-05,
+       "sem": 1e-05
+      },
+      "collective": {
+       "delta": 0.00019,
+       "sem": 0.001
+      },
+      "identity": {
+       "delta": 0.00022,
+       "sem": 0.00134
+      },
+      "culture": {
+       "delta": 0.0,
+       "sem": 0.0
+      },
+      "experience": {
+       "delta": -2e-05,
+       "sem": 5e-05
+      },
+      "temperament": {
+       "delta": 1e-05,
+       "sem": 1e-05
+      }
+     },
+     "outcomes": {
+      "employed": {
+       "delta": 0.00051,
+       "sem": 0.00071
+      },
+      "deprivation": {
+       "delta": -0.00017,
+       "sem": 0.00013
+      },
+      "wealth": {
+       "delta": -0.00174,
+       "sem": 0.00055
+      }
+     },
+     "data_foundation": {
+      "loyalty": {
+       "source": "synthetic_grounding_v1",
+       "synthetic": true,
+       "provenance": "model-owner supplied spec; DERIVED from core attributes; no external data",
+       "base": 0.6
+      }
+     },
+     "epistemics": "outcomes are scoped-population deltas vs a CRN-paired null; tier is the model's own calibration state, earned from resolved outcomes only"
+    }
+   },
+   "note": "seeds clamp to 1..16 (default 3), horizon_days to 1..365 (default 30). SEND seeds>=2: seeds=1 currently 500s \u2014 the per-outcome sem is np.std(ddof=1) over the seed deltas (earth1/models.py:224,242), NaN for a single seed, and NaN fails FastAPI's JSON serialization"
+  },
+  {
+   "name": "population_frame",
+   "method": "POST",
+   "path": "/v1/models/demo-model-1/population-frame",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "cohorts": [
+      {
+       "id": "c1",
+       "name": "budget-conscious students"
+      },
+      {
+       "id": "c2",
+       "name": "affluent urban professionals"
+      }
+     ],
+     "tierSize": 200000
+    }
+   },
+   "status": 200,
+   "response": {
+    "epoch": "3-lab",
+    "freeze_tag": "freeze-0.9",
+    "tree_hash": "8710f74",
+    "fidelity": "20k",
+    "ledger_cutoff_day": 12.0,
+    "allocation": [
+     {
+      "cohortId": "c1",
+      "weight": 0.018277,
+      "provenance": "survey_measured",
+      "surveyMeasuredShare": 0.785,
+      "peopleRepresented": 148801311,
+      "agentsAtTier": 3655,
+      "cellsMatched": 8,
+      "cellsTotal": 216,
+      "constraints": {
+       "income": [
+        0
+       ],
+       "age_band": [
+        0
+       ],
+       "education": [
+        1,
+        2
+       ]
+      },
+      "matchedVocabulary": [
+       "budget",
+       "budget-conscious",
+       "students"
+      ],
+      "contradictoryAxes": null,
+      "unmatched": false,
+      "note": null
+     },
+     {
+      "cohortId": "c2",
+      "weight": 0.232519,
+      "provenance": "survey_measured",
+      "surveyMeasuredShare": 0.8169,
+      "peopleRepresented": 1893067283,
+      "agentsAtTier": 46504,
+      "cellsMatched": 36,
+      "cellsTotal": 216,
+      "constraints": {
+       "income": [
+        2
+       ],
+       "urban": [
+        0
+       ]
+      },
+      "matchedVocabulary": [
+       "affluent",
+       "urban"
+      ],
+      "contradictoryAxes": null,
+      "unmatched": false,
+      "note": null
+     }
+    ],
+    "peoplePerAgent": 40707.9,
+    "effectiveN": 200000,
+    "scopePopulation": 8141575546,
+    "scope": {
+     "country": null,
+     "countries": 194,
+     "surveyMeasuredCountries": 63
+    },
+    "limitations": [
+     "no_adm1",
+     "no_household_frame",
+     "no_ethnicity_or_religion_in_joint",
+     "...truncated (5 items total)"
+    ],
+    "frameProvenance": {
+     "worldPopulation": {
+      "value": 8140897523,
+      "year": 2024,
+      "series_id": "SP.POP.TOTL",
+      "country": "WLD",
+      "source": "https://api.worldbank.org/v2/country/WLD/indicator/SP.POP.TOTL",
+      "raw_sha256": "ec60e3e7b285857877ad3aace0255b4c7c0886db1779c3a20c03713c7daa1065",
+      "retrieved": "2026-09-08"
+     },
+     "jointAxes": [
+      "sex",
+      "age_band",
+      "education",
+      "...truncated (5 items total)"
+     ],
+     "jointShape": [
+      2,
+      6,
+      3,
+      "...truncated (5 items total)"
+     ],
+     "lexiconEntries": 69,
+     "method": "census-weighted mass of C2+ joint cells matching a registered deterministic vocabulary; no LLM in the runtime path"
+    },
+    "modelRef": "demo-model-1"
+   },
+   "note": "deterministic registered lexicon over the census-weighted C2+ joint; no LLM in the runtime path"
+  }
+ ],
+ "v1_auth": [
+  {
+   "name": "bearer_missing_401",
+   "method": "GET",
+   "path": "/v1/world/events",
+   "request": null,
+   "status": 401,
+   "response": {
+    "detail": "bearer token required"
+   },
+   "note": "keys configured (EARTH1_API_KEYS) + no Authorization header"
+  },
+  {
+   "name": "bearer_unknown_403",
+   "method": "GET",
+   "path": "/v1/world/events",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer wrong-key"
+    }
+   },
+   "status": 403,
+   "response": {
+    "detail": "unknown key"
+   }
+  },
+  {
+   "name": "empty_allowlist_503_fail_closed",
+   "method": "GET",
+   "path": "/v1/world/events",
+   "request": null,
+   "status": 503,
+   "response": {
+    "detail": "no API keys configured (set EARTH1_API_KEYS; EARTH1_DEV_OPEN=1 explicitly enables anonymous dev access)"
+   },
+   "note": "an EMPTY allowlist fails CLOSED (503) unless EARTH1_DEV_OPEN=1 explicitly enables anonymous dev access (earth1/api/v1.py:_auth, review S03a)"
+  },
+  {
+   "name": "model_id_traversal_422",
+   "method": "POST",
+   "path": "/v1/models",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-A"
+    },
+    "body": {
+     "model_id": "../escape",
+     "description": "bad id"
+    }
+   },
+   "status": 422,
+   "response": {
+    "detail": "model_id must match [A-Za-z0-9][A-Za-z0-9_-]{0,63}"
+   },
+   "note": "model ids must match [A-Za-z0-9][A-Za-z0-9_-]{0,63} (earth1/api/v1.py:_check_model_id, review S01b)"
+  },
+  {
+   "name": "cross_tenant_403",
+   "method": "POST",
+   "path": "/v1/models/demo-model-1/scenario",
+   "request": {
+    "headers": {
+     "Authorization": "Bearer demo-key-B"
+    },
+    "body": {
+     "fidelity": "20k",
+     "forces": {
+      "desire": 0.1
+     }
+    }
+   },
+   "status": 403,
+   "response": {
+    "detail": "model belongs to another key"
+   },
+   "note": "demo-model-1 was created by demo-key-A; a different valid key gets 403 (earth1/api/v1.py:_check_owner, review S01a)"
+  }
+ ]
+}
