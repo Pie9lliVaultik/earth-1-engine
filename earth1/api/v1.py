@@ -17,6 +17,7 @@ from typing import Optional
 import copy
 import hashlib
 import json
+import logging
 import os
 import re
 import subprocess
@@ -29,7 +30,7 @@ from fastapi import APIRouter, Header, HTTPException
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 router = APIRouter(prefix="/v1", tags=["v1"])
 
-FREEZE_TAG = "freeze-0.9"
+_FROZEN_TAG = "freeze-0.9"   # the label only THIS process's stamp may earn
 EPOCH = os.environ.get("EARTH1_EPOCH", "3-lab")
 QLOG = os.environ.get("EARTH1_QUESTION_LOG",
                       "/opt/earth1-data/api_question_log.jsonl")
@@ -55,6 +56,49 @@ def _tree_hash():
 
 
 _TREE = _tree_hash()
+_stamp_state: Optional[dict] = None   # cached startup-style stamp check
+
+
+def _check_stamp(force: bool = False) -> dict:
+    """Startup-style physics-stamp check (review M02c, verified).
+
+    The prior surface HARDCODED "freeze-0.9" and never consulted the
+    config stamp, so an unfrozen process (engine defaults) served the
+    frozen label. Now the served tag derives from configstamp.stamp():
+    frozen -> 'freeze-0.9', else 'unfrozen-dev:<mismatch-count>'. The
+    check runs once — at the first _world() load or first envelope,
+    whichever comes first — logs the mismatch, and /health reports
+    'degraded'. Defensive on purpose: stamp() is imported lazily so the
+    configstamp cluster's changes are picked up, and any stamp failure
+    degrades the label rather than crashing the serving path.
+    """
+    global _stamp_state
+    if _stamp_state is not None and not force:
+        return _stamp_state
+    try:
+        from earth1.configstamp import stamp   # lazy: see docstring
+        s = stamp()
+        mism = s.get("mismatch") or {}
+        frozen = bool(s.get("is_freeze_09"))
+        _stamp_state = {"frozen": frozen,
+                        "tag": (_FROZEN_TAG if frozen
+                                else f"unfrozen-dev:{len(mism)}"),
+                        "mismatch": sorted(mism)}
+    except Exception as e:  # noqa: BLE001 — degraded beats crashed
+        _stamp_state = {"frozen": False, "tag": "unfrozen-dev:stamp-error",
+                        "mismatch": [f"stamp() failed: {e!r}"]}
+    if not _stamp_state["frozen"]:
+        logging.getLogger("earth1.api.v1").warning(
+            "physics stamp mismatch — serving DEGRADED as %s "
+            "(mismatch: %s); numbers from this process are not "
+            "comparable to any committed board",
+            _stamp_state["tag"], _stamp_state["mismatch"])
+    return _stamp_state
+
+
+def _freeze_tag() -> str:
+    """The served freeze label — derived, never hardcoded (review M02c)."""
+    return _check_stamp()["tag"]
 
 
 def _forbid_sealed(path: str):
@@ -99,7 +143,14 @@ def _forbid_sealed(path: str):
 def _auth(authorization: str | None):
     keys = [k for k in os.environ.get("EARTH1_API_KEYS", "").split(",") if k]
     if not keys:
-        return "anonymous-dev"
+        # review S03a: an empty allowlist fails CLOSED — anonymous
+        # access must be an explicit dev choice, never the default.
+        if os.environ.get("EARTH1_DEV_OPEN") == "1":
+            return "anonymous-dev"
+        raise HTTPException(
+            503, "no API keys configured (set EARTH1_API_KEYS; "
+                 "EARTH1_DEV_OPEN=1 explicitly enables anonymous dev "
+                 "access)")
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(401, "bearer token required")
     tok = authorization[7:]
@@ -143,11 +194,60 @@ def _qlog(kind, body, key):
             _qlog_dropped += 1
 
 
+# --- async-path bounds (review S02 hardening) --------------------------
+_jobs_lock = threading.Lock()
+_jobs_running = 0        # counting semaphore; capacity read per-request
+
+
+def _job_acquire():
+    """Bound concurrent async jobs (review S02 hardening): counting
+    semaphore with capacity EARTH1_MAX_JOBS (default 2); full -> 429."""
+    global _jobs_running
+    cap = int(os.environ.get("EARTH1_MAX_JOBS", "2"))
+    with _jobs_lock:
+        if _jobs_running >= cap:
+            raise HTTPException(
+                429, f"job queue full ({cap} concurrent jobs); retry "
+                     f"after a job finishes")
+        _jobs_running += 1
+
+
+def _job_release():
+    global _jobs_running
+    with _jobs_lock:
+        _jobs_running = max(0, _jobs_running - 1)
+
+
+def _evict_stale_jobs():
+    """TTL-evict finished jobs on access (review S02 hardening): the
+    _jobs dict grew without bound. TTL is EARTH1_JOB_TTL (default 3600s),
+    measured from the job's finish time."""
+    ttl = float(os.environ.get("EARTH1_JOB_TTL", "3600"))
+    now = time.time()
+    with _jobs_lock:
+        for jid in [j for j, v in _jobs.items()
+                    if v.get("finished_at") is not None
+                    and now - v["finished_at"] > ttl]:
+            del _jobs[jid]
+
+
+def _clamp_int(v, default, lo, hi):
+    """Bound request-supplied integers (review S02 hardening): horizons
+    and seed counts size the branch runs, so an unbounded body value is
+    an unbounded compute request."""
+    try:
+        n = int(default if v is None else v)
+    except (TypeError, ValueError):
+        raise HTTPException(422, "expected an integer") from None
+    return max(lo, min(hi, n))
+
+
 def _world(fidelity):
     if fidelity not in _FIDELITY:
         raise HTTPException(400, f"fidelity must be one of "
                             f"{sorted(_FIDELITY)}")
     if fidelity not in _worlds:
+        _check_stamp()   # review M02c: startup-style gate at first load
         from earth1 import persistence
         p = _FIDELITY[fidelity]
         _forbid_sealed(p)
@@ -160,7 +260,7 @@ def _world(fidelity):
 
 def _envelope(fidelity, extra=None):
     w = _worlds.get(fidelity)
-    return {"epoch": EPOCH, "freeze_tag": FREEZE_TAG, "tree_hash": _TREE,
+    return {"epoch": EPOCH, "freeze_tag": _freeze_tag(), "tree_hash": _TREE,
             "fidelity": fidelity,
             "ledger_cutoff_day": (float(w.day) if w is not None else None),
             **(extra or {})}
@@ -181,6 +281,11 @@ def ask(body: dict, authorization: Optional[str] = Header(None)):
          "outcomes": body.get("outcomes"), "country": body.get("country"),
          "p_market": body.get("p_market")}
     if fidelity == "200k":
+        _evict_stale_jobs()
+        # review S02 hardening: clamp BEFORE acquiring, so a 422 on a
+        # bad horizon can never leak the job slot it never used
+        horizon = _clamp_int(body.get("horizon_days"), 60, 1, 365)
+        _job_acquire()             # review S02 hardening: 429 when full
         jid = uuid.uuid4().hex[:12]
         _jobs[jid] = {"status": "queued"}
 
@@ -188,20 +293,25 @@ def ask(body: dict, authorization: Optional[str] = Header(None)):
             try:
                 from earth1.adapters import router as rt
                 w = copy.deepcopy(_world("200k"))
-                _jobs[jid] = {"status": "done",
-                              "payload": rt.answer_any(q, w, seed=int(hashlib.sha256(
-                                  q["question_id"].encode()
-                              ).hexdigest()[:8], 16) % 99991,
-                              horizon_days=60)}
+                payload = rt.answer_any(q, w, seed=int(hashlib.sha256(
+                    q["question_id"].encode()).hexdigest()[:8], 16) % 99991,
+                    horizon_days=horizon)
+                _jobs[jid] = {"status": "done", "payload": payload,
+                              "finished_at": time.time()}
             except Exception as e:
-                _jobs[jid] = {"status": "error", "error": repr(e)}
+                _jobs[jid] = {"status": "error", "error": repr(e),
+                              "finished_at": time.time()}
+            finally:
+                _job_release()
         threading.Thread(target=run, daemon=True).start()
         return _envelope(fidelity, {"job_id": jid, "status": "queued"})
     from earth1.adapters import router as rt  # 20k synchronous path
     w = copy.deepcopy(_world(fidelity))
     payload = rt.answer_any(q, w, seed=int(hashlib.sha256(
         q["question_id"].encode()).hexdigest()[:8], 16) % 99991,
-                            horizon_days=45)
+                            # review S02 hardening: clamp body horizon
+                            horizon_days=_clamp_int(
+                                body.get("horizon_days"), 45, 1, 365))
     return _envelope(fidelity, {"result": payload})
 
 
@@ -210,9 +320,10 @@ def consequences(body: dict, authorization: Optional[str] = Header(None)):
     key = _auth(authorization)
     _qlog("consequences", body, key)
     fidelity = body.get("fidelity", "20k")
-    n_seeds = max(8, min(32, int(body.get("seeds", 8))))
+    # review S02 hardening: seeds capped 32->16, horizon bounded <=365
+    n_seeds = _clamp_int(body.get("seeds"), 8, 8, 16)
     seeds = list(range(11, 11 + n_seeds))
-    horizon = int(body.get("horizon_days", 60))
+    horizon = _clamp_int(body.get("horizon_days"), 60, 1, 365)
     from earth1.branch import Scenario
     sc = body.get("scenario", {})
     scenario = Scenario(id=sc.get("id", f"api:{uuid.uuid4().hex[:8]}"),
@@ -352,7 +463,7 @@ def capabilities():
         F = {}
         pf = False
     return {"engine": "earth-1", "apiVersion": "v1",
-            "epoch": EPOCH, "freezeTag": FREEZE_TAG, "treeHash": _TREE,
+            "epoch": EPOCH, "freezeTag": _freeze_tag(), "treeHash": _TREE,
             "supports": {
                 "populationFrame": pf,
                 "ask": True, "consequences": True, "models": True,
@@ -445,10 +556,12 @@ def model_scenario_ep(model_id: str, body: dict,
     from earth1 import models as em
     if _check_owner(model_id, key) is None:
         raise HTTPException(404, "unknown model")
+    # review S02 hardening: clamp body-supplied seeds and horizon
     out = em.run_scenario(model_id, _world(body.get("fidelity", "20k")),
-                          body, seeds=tuple(range(1, 1 + int(
-                              body.get("seeds", 3)))),
-                          horizon_days=int(body.get("horizon_days", 30)))
+                          body, seeds=tuple(range(1, 1 + _clamp_int(
+                              body.get("seeds"), 3, 1, 16))),
+                          horizon_days=_clamp_int(
+                              body.get("horizon_days"), 30, 1, 365))
     return _envelope(body.get("fidelity", "20k"), {"result": out})
 
 
@@ -459,10 +572,12 @@ def job_status(jid: str, authorization: Optional[str] = Header(None)):
     survive restart; the response says so on a miss."""
     key = _auth(authorization)
     _qlog("job_status", {"job": jid}, key)
+    _evict_stale_jobs()   # review S02 hardening: TTL checked on access
     j = _jobs.get(jid)
     if j is None:
-        raise HTTPException(404, "unknown job id — jobs are process-local "
-                                 "and do not survive a restart")
+        raise HTTPException(404, "unknown job id — jobs are process-local, "
+                                 "evicted EARTH1_JOB_TTL seconds after "
+                                 "finishing, and do not survive a restart")
     return _envelope("200k", {"job_id": jid, **j})
 
 
@@ -485,19 +600,30 @@ def world_events(since_day: float = None, n: int = 200,
 def health():
     tiers = {}
     try:
-        d = json.load(open(os.path.join(_ROOT, "data",
-                                        "question_classes.json")))
-        for cls, tpl in d["classes"].items():
-            tiers[cls] = ("CALIBRATED" if tpl.get("temperature_fitted")
-                          else "UNCALIBRATED")
+        # review M07b cross-need: read through the adapter's classes()
+        # (registered + auto overlay) and key binary tiers on the marker
+        # the binary path actually consumes, not temperature_fitted.
+        from earth1.adapters import multiverse as mv
+        for cls, tpl in mv.classes().items():
+            n_out = len(tpl.get("outcomes") or []) or 2
+            if n_out <= 2:
+                tiers[cls] = ("CALIBRATED" if tpl.get("binary_calibrated")
+                              else "UNCALIBRATED")
+            else:
+                tiers[cls] = ("CALIBRATED" if tpl.get("temperature_fitted")
+                              else "UNCALIBRATED")
     except Exception:
         pass
     lhead = "GENESIS"
     if os.path.exists(QLOG):
         for line in open(QLOG):
             lhead = json.loads(line)["_hash"]
+    st = _check_stamp()   # review M02c: surface the stamp check's verdict
     return _envelope("20k", {"calibration_table": tiers,
                              "question_log_head": lhead[:16],
                              "question_log_dropped": _qlog_dropped,
+                             "physics_stamp": ("ok" if st["frozen"]
+                                               else "degraded"),
+                             "physics_stamp_mismatch": st["mismatch"] or None,
                              "fidelities": {k: os.path.exists(v)
                                             for k, v in _FIDELITY.items()}})

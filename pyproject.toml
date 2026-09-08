@@ -27,8 +27,18 @@ repro = ["numpy==2.0.2", "scipy==1.13.1"]
 
 [project.scripts]
 earth1-api = "earth1.api.main:run"
-earth1-benchmark = "earth1.benchmark:run_cli"
+# review M09: pointed at earth1.benchmark, a module that does not exist.
+# The harness lives in earth1.legacy_benchmark (import-gated behind
+# EARTH1_LEGACY_COMPARISON=1 by design; the official benchmark path is
+# earth1.benchmark_living, a library without a CLI).
+earth1-benchmark = "earth1.legacy_benchmark:run_cli"
 
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
+
+# review M09: with no package table, setuptools flat-layout
+# auto-discovery sees multiple top-level dirs (tests, ops, docs, ...)
+# and refuses to build. Discover only the earth1 package tree.
+[tool.setuptools.packages.find]
+include = ["earth1*"]

@@ -9,6 +9,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from earth1.api import readouts as R
 from earth1.api.deps import get_world, get_history
+from earth1.generational import _age_years  # review M01b: the ONE age scale
 
 router = APIRouter(tags=["civilization"])
 
@@ -229,7 +230,7 @@ def earthlings(country: Optional[str] = None, locality: Optional[int] = None, al
     if country: m &= (w.civ.country == R.country_codes().index(country.upper()))
     if locality is not None: m &= (R.locality_key(w.civ) == int(locality))
     if employed is not None: m &= (w.life.employed == employed)
-    age_y = 18 + w.civ.age * 82
+    age_y = _age_years(w.civ)  # review M01b: canonical 18 + 72a, was 18 + 82a
     if min_age is not None: m &= age_y >= min_age
     if max_age is not None: m &= age_y <= max_age
     idx = np.flatnonzero(m)[offset:offset + limit]
@@ -390,8 +391,9 @@ def household(hid: int):
     members = np.flatnonzero(w.fabric.household == int(hid))
     if members.size == 0:
         raise HTTPException(404, "no such household")
+    age_y = _age_years(w.civ)  # review M01b: canonical 18 + 72a, was 18 + 82a
     return {"identity": identity, "id": hid, "members": [{"person_id": int(w.civ.person_id[j]), "slot": int(j), "alive": bool(w.health.alive[j]),
-                                                          "age_years": round(18 + float(w.civ.age[j]) * 82, 1)} for j in members]}
+                                                          "age_years": round(float(age_y[j]), 1)} for j in members]}
 
 
 # ── memories / cascades ───────────────────────────────────────────

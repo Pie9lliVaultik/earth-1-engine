@@ -295,6 +295,14 @@ class Life:
     # household (adults of compatible age), dissolved by death (the
     # survivor is widowed), newborns enter single. No dynamics read it.
     partner: np.ndarray = None
+    # review M03a: acute per-FIRM shock distress (float per firm, like
+    # firm_health), written by branch.apply and decayed by the
+    # flag-gated distress-layoff channel in life_tick. Was attached
+    # dynamically, so two worlds differing only here hashed equal and
+    # then diverged. Declaration only — every reader/writer already
+    # getattr-guards on None/absent, and persistence._feed skips it in
+    # the frozen v1 hash (POST_V1_DECLARED); world_hash_full covers it.
+    firm_distress: np.ndarray = None
 
     @property
     def n_firms(self) -> int:

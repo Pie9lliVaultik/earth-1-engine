@@ -116,6 +116,12 @@ def snapshot(w) -> dict:
         if life.evicted is not None else 0.0,
         "migrants": float((cw * w.klass.migrated).sum()),
         "at_war": int((w.gov.at_war_with >= 0).sum()),
+        # review M06d: this is a STOCK — slots dead right now. Rebirth
+        # recycles a slot within the same tick, so deltas of this field
+        # capture ~4% of actual deaths. The consequence pair runner
+        # threads earth1.deathwatch.DeathWatch for the real flow
+        # (reported as deaths_cumulative); this stays under 'dead' so
+        # existing consumers keep working.
         "dead": float((cw * ~alive).sum()),
         "median_buffer": float(np.median(life.wealth[alive])) if alive.any() else 0.0,
         # weighted, like every other global read — an unweighted mean
@@ -207,6 +213,9 @@ def compare(baseline: dict, branch: dict, w_branch, days: int,
     protests = protest_risk(w_branch)
 
     extra_destitute = int(branch["destitute"] - baseline["destitute"])
+    # review M06d: 'dead' is a stock of slots, so this difference badly
+    # undercounts deaths — kept for schema compatibility; honest excess
+    # mortality needs a DeathWatch per arm (see adapters/consequences)
     extra_dead = int(branch["dead"] - baseline["dead"])
     extra_migrants = int(branch["migrants"] - baseline["migrants"])
     extra_homeless = int(branch["homeless"] - baseline["homeless"])

@@ -86,9 +86,36 @@ def handle_webhook(payload: bytes, sig_header: str) -> dict:
             "action": "subscription_change",
             "status": status,
             "subscription_id": sub_data.get("id", ""),
+            # review S03d: the owner identity rides along so the route can
+            # apply the downgrade (keys are stored keyed by owner email).
+            "customer_email": sub_data.get("customer_email", ""),
         }
 
     return {"action": "ignored", "event_type": event_type}
+
+
+# review S03d: subscription statuses that terminate paid service.
+_DOWNGRADE_STATUSES = frozenset({"canceled", "unpaid"})
+
+
+def apply_subscription_change(session, result: dict) -> bool:
+    """Apply a `subscription_change` webhook result: a canceled/unpaid
+    subscription drops the owner's key to the free tier (review S03d —
+    cancellation never downgraded before). Idempotent: a key already on
+    the free tier is simply re-set to it. Returns True when a key was
+    (re)placed on the free tier."""
+    if session is None or result.get("action") != "subscription_change":
+        return False
+    if result.get("status") not in _DOWNGRADE_STATUSES:
+        return False
+    email = result.get("customer_email", "")
+    if not email:
+        return False
+    from earth1.api.auth import APIKey
+    key = session.query(APIKey).filter_by(owner=email, active=True).first()
+    if key is None:
+        return False
+    return upgrade_api_key(session, key.id, "free")
 
 
 def upgrade_api_key(session, api_key_id: str, tier: str) -> bool:

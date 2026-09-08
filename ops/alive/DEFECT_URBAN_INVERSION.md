@@ -72,3 +72,12 @@ them directly." Rent feeds deprivation, so that assumption no longer holds. The
 v1.1 fix cycle must treat the poverty anchors as POTENTIALLY MOVING and gate
 them explicitly, not assume them unchanged. Registration stands; fix remains
 deferred under freeze-0.9.
+
+## ADDENDUM 2026-09-08b — prereg filed; line references drifted
+
+Pre-registration for the fix cycle: ops/alive/cycles/URBAN_FIX_PREREG.md
+(flag EARTH1_URBAN_AXIS_FIX prepared default-off, bit-identical when off).
+Line references in the addendum above drift at current HEAD after the
+apparatus cycle: api/readouts.py:70 -> :72 (+ :355), :471 -> :473,
+models.py:117 -> :128, answer_living.py:87-88 -> :90-91. The prereg's
+G-D table carries the current numbers.

@@ -38,8 +38,16 @@ _CLASSES = None
 def classes() -> dict:
     global _CLASSES
     if _CLASSES is None:
-        _CLASSES = json.load(open(os.path.join(
+        d = json.load(open(os.path.join(
             _ROOT, "data", "question_classes.json")))["classes"]
+        # review M07d: request-time auto-registrations live in an overlay
+        # file loaded after the registered one; the registered file is
+        # read-only at request time and wins on any name collision.
+        ap = os.path.join(_ROOT, "data", "question_classes_auto.json")
+        if os.path.exists(ap):
+            for k, v in json.load(open(ap)).get("classes", {}).items():
+                d.setdefault(k, v)
+        _CLASSES = d
     return _CLASSES
 
 
@@ -159,6 +167,9 @@ def answer(spec: dict, base_world, seed: int, horizon_days: int = 60,
                        f"noise floor {floor:.4g} (branch = control)",
                        p_by_outcome=None, **common)
     if len(keys) == 2:
+        # NOTE(review M07a, founder-gated): this direction-blind readout
+        # is the REGISTERED binary semantics; any change alters answer
+        # behaviour and awaits the founder ruling. Do not edit here.
         p_yes = dists["NO"] / max(dists["YES"] + dists["NO"], 1e-12)
         pbo = {outcomes[0]: p_yes, outcomes[1]: 1.0 - p_yes}
         p_model = p_yes
@@ -238,10 +249,16 @@ def route(text: str):
     return "opinion", True
 
 
-def _tier(cls_name: str, verdict_abstain: bool) -> str:
+def _tier(cls_name: str, verdict_abstain: bool, n_outcomes: int = 0) -> str:
     if verdict_abstain:
         return "ABSTAIN"
     tpl = classes().get(cls_name, {})
+    # review M07b: the binary readout never consumes the fitted softmax
+    # temperature, so temperature_fitted says nothing about a 2-outcome
+    # verdict; binary tiers key on the binary_calibrated marker instead
+    # (absent -> UNCALIBRATED until a binary calibration exists, M07a).
+    if n_outcomes == 2:
+        return "CALIBRATED" if tpl.get("binary_calibrated") else "UNCALIBRATED"
     return "CALIBRATED" if tpl.get("temperature_fitted") else "UNCALIBRATED"
 
 
@@ -257,17 +274,23 @@ def _ensure_class(cls_name: str, question_text: str) -> str:
     forces, hits = _extract_forces(question_text or "")
     yes = forces or {"desire": 0.1, "fear": 0.1}
     no = {k: -v for k, v in yes.items()}
-    p = os.path.join(_ROOT, "data", "question_classes.json")
-    d = json.load(open(p))
+    # review M07d: auto-registrations go to the OVERLAY file (created on
+    # demand); the registered question_classes.json is never written at
+    # request time and must stay byte-identical across any request.
+    ap = os.path.join(_ROOT, "data", "question_classes_auto.json")
+    d = (json.load(open(ap)) if os.path.exists(ap)
+         else {"classes": {}, "note": "request-time provisional classes "
+               "(review M07d overlay); never merged back into the "
+               "registered question_classes.json"})
     d["classes"][cls_name] = {
         "owner": "auto", "status": "provisional_auto",
         "xi_a2_report": None,
         "injector": {"scope": "global", "persists_days": 60,
                      "forces": {"YES": yes, "NO": no}},
-        "noise_floor": d["classes"]["market_cascade"]["noise_floor"],
+        "noise_floor": classes()["market_cascade"]["noise_floor"],
         "temperature": 1.0,
         "provisional_from_keywords": hits}
-    json.dump(d, open(p, "w"), indent=1, sort_keys=True)
+    json.dump(d, open(ap, "w"), indent=1, sort_keys=True)
     global _CLASSES
     _CLASSES = None
     return cls_name
@@ -304,19 +327,30 @@ def _opinion_door(q, base_world):
 
 def _conditional_door(q, base_world, seed, horizon_days):
     forks = q.get("outcomes") or ["intensifies", "resolves", "fades"]
-    keys = [f"O{i}" for i in range(len(forks))]
+    # review M07c: mirror answer()'s key rule — YES/NO for 2 forks,
+    # O{i} otherwise (the O0/O1 keys crashed every 2-fork conditional).
+    keys = (["YES", "NO"] if len(forks) == 2 else
+            [f"O{i}" for i in range(len(forks))])
     spec = dict(q)
     spec["outcomes"] = forks
     cls = spec.get("class") or "provisional_conditional"
     spec["class"] = _ensure_class(cls, q.get("text", ""))
-    tpl = classes()[spec["class"]]
+    reg = classes()
+    tpl_orig = reg[spec["class"]]
+    # review M07d: derive fork forces on a DEEP COPY — the cached
+    # template is swapped out only for this call and always restored.
+    tpl = copy.deepcopy(tpl_orig)
     if any(k not in tpl["injector"]["forces"] for k in keys):
         base_yes = tpl["injector"]["forces"]["YES"]
         scales = [1.0, -0.6, -0.2, 0.5][:len(keys)]
         tpl["injector"]["forces"].update(
             {k: {f: round(v * s, 3) for f, v in base_yes.items()}
              for k, s in zip(keys, scales)})
-    v = answer(spec, base_world, seed, horizon_days)
+    reg[spec["class"]] = tpl
+    try:
+        v = answer(spec, base_world, seed, horizon_days)
+    finally:
+        reg[spec["class"]] = tpl_orig   # review M07d: cache unmutated
     worlds = []
     if not v.abstain:
         for i, fk in enumerate(forks):
@@ -352,7 +386,9 @@ def ask(q: dict, base_world, seed: int, horizon_days: int = 60) -> dict:
         v = out["verdict"]
         payload.update({"forks": out["forks"], "epistemics": out["epistemics"],
                         "class": v.question_class,
-                        "calibration_tier": _tier(v.question_class, v.abstain),
+                        # review M07b: tier is outcome-count aware
+                        "calibration_tier": _tier(v.question_class, v.abstain,
+                                                  len(v.outcomes)),
                         "abstain_reason": v.abstain_reason,
                         "force_signature": v.force_signature,
                         "conviction_index": v.conviction_index,
@@ -365,7 +401,9 @@ def ask(q: dict, base_world, seed: int, horizon_days: int = 60) -> dict:
         spec["class"] = _ensure_class(cls, q.get("text", ""))
         v = answer(spec, base_world, seed, horizon_days)
         payload.update({"class": v.question_class,
-                        "calibration_tier": _tier(v.question_class, v.abstain),
+                        # review M07b: tier is outcome-count aware
+                        "calibration_tier": _tier(v.question_class, v.abstain,
+                                                  len(v.outcomes)),
                         "p_model": v.p_model, "p_by_outcome": v.p_by_outcome,
                         "abstain_reason": v.abstain_reason,
                         "force_signature": v.force_signature,

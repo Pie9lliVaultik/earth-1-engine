@@ -76,8 +76,11 @@ def readout(w, weights, *, question_id: str = "", text: str = "",
                     "n": int(m.sum())}
         out["by_country"] = res
     if cohorts:
+        from earth1.generational import _age_years
         life = w.life
-        yrs = w.civ.age[alive_idx] * 100.0
+        # review M01b: canonical engine scale (18 + 72a), was age*100;
+        # cohort BOUNDARIES stay in years, unchanged.
+        yrs = _age_years(w.civ)[alive_idx]
         groups = {
             "low income": w.civ.income[alive_idx] == 0,
             "middle income": w.civ.income[alive_idx] == 1,

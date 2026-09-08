@@ -194,6 +194,13 @@ def sample_partners(csr, rng):
     rowsum = row_hi - row_lo
     has = rowsum > 0
     r = row_lo + rng.random(n) * rowsum
+    # review M05c: a graph with no drawable tie has nothing to sample —
+    # every partner is absent. Placed AFTER the rng.random(n) draw so
+    # stream consumption is identical on every graph, and the non-empty
+    # path below is untouched (searchsorted indexing faults on a
+    # zero-nnz structure).
+    if not has.any():
+        return np.full(n, -1, dtype=indices.dtype), has
     pos = np.searchsorted(csum, r, side="right") - 1
     pos = np.clip(pos, indptr[:-1], np.maximum(indptr[1:] - 1,
                                                indptr[:-1]))

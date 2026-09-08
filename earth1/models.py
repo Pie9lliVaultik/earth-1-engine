@@ -85,12 +85,23 @@ def select_population(world, predicate: dict, overlay: dict = None):
                if c in GENESIS_COUNTRY_CODES]
         m &= np.isin(civ.country, idx)
     if predicate.get("age"):
-        # predicate speaks YEARS; civ.age is normalized (1.0 ~ a full
-        # lifespan, ~87.6yr). Conversion is explicit, never guessed by
-        # callers.
+        # predicate speaks YEARS; civ.age is normalized. Canonical
+        # conversion is the engine's (review M01b): years = 18 + 72a
+        # via generational._age_years — the same arithmetic the API
+        # age filters use, so boundary predicates (65+, under-30)
+        # select identical person sets across surfaces.
         lo, hi = predicate["age"]
-        scale = float(os.environ.get("EARTH1_AGE_SCALE_YEARS", "87.6"))
-        m &= (civ.age >= lo / scale) & (civ.age <= hi / scale)
+        scale = os.environ.get("EARTH1_AGE_SCALE_YEARS")
+        if scale is not None:
+            # legacy escape hatch (review M01b): an EXPLICITLY set env
+            # keeps the old linear map years = scale*a; the DEFAULT is
+            # the canonical engine scale, never 87.6.
+            m &= ((civ.age >= lo / float(scale))
+                  & (civ.age <= hi / float(scale)))
+        else:
+            from earth1.generational import _age_years
+            yrs = _age_years(civ)
+            m &= (yrs >= lo) & (yrs <= hi)
     if predicate.get("min_income_pctile") is not None and m.any():
         thr = np.percentile(world.life.wage[m],
                             predicate["min_income_pctile"])

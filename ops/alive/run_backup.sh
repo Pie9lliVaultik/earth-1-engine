@@ -17,6 +17,16 @@
 # Retention: one dated directory per run, newest N kept. Snapshots are
 # never overwritten in place, so a corrupt save cannot destroy the last
 # good copy by being copied on top of it.
+#
+# SCOPE (review S04): history.sqlite — the world's death/event/
+# consequence record — is staged with every snapshot (sqlite3 online
+# .backup when the CLI exists; plain copy plus -wal/-shm sidecars
+# otherwise). The uploaded model stores under $EARTH1_MODELS_DIR
+# (default /opt/earth1-data/models) are EXCLUDED on purpose: they are
+# user-registered artifacts outside data/alive/, reproducible from
+# their registration history, and not world state. A deployment that
+# keeps irreplaceable models there must back that directory up with
+# its own job.
 
 set -euo pipefail
 
@@ -70,12 +80,33 @@ STAGE="$ALIVE/.backup-stage"
 rm -rf "$STAGE"
 mkdir -p "$STAGE"
 cd "$ALIVE"
-for f in state.json world.pkl.sha256 journal.jsonl backup_log.jsonl; do
+# review M03c cross-need: world.pkl.meta.json carries both world hashes
+# + the graph digest — without it a restored checkpoint downgrades to
+# checksum='legacy' and loses graph verification.
+for f in state.json world.pkl.sha256 world.pkl.meta.json journal.jsonl backup_log.jsonl; do
     [ -f "$f" ] && cp -p "$f" "$STAGE/$f"
 done
 for f in world.pkl world.adj.npz adj.npz; do
     [ -f "$f" ] && { ln "$f" "$STAGE/$f" 2>/dev/null || cp -p "$f" "$STAGE/$f"; }
 done
+
+# review S04: the backup omitted history.sqlite entirely. A live SQLite
+# file is written by the daemon mid-tick, so a hardlink or plain copy of
+# just the .sqlite can catch a torn page; sqlite3's online .backup takes
+# the DB's own locks and stages a consistent copy without blocking the
+# single writer. Fallback when the CLI is absent: copy the DB *with* its
+# -wal/-shm sidecars — the trio together replays to a consistent state
+# on restore.
+if [ -f "$ALIVE/history.sqlite" ]; then
+    if command -v sqlite3 >/dev/null 2>&1; then
+        sqlite3 "$ALIVE/history.sqlite" ".backup '$STAGE/history.sqlite'" \
+          || die "sqlite3 .backup of history.sqlite failed"
+    else
+        for f in history.sqlite history.sqlite-wal history.sqlite-shm; do
+            [ -f "$ALIVE/$f" ] && cp -p "$ALIVE/$f" "$STAGE/$f"
+        done
+    fi
+fi
 
 MANIFEST="$(mktemp)"
 trap 'rm -f "$MANIFEST"; rm -rf "$STAGE"' EXIT

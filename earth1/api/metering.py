@@ -114,7 +114,16 @@ class BudgetMiddleware(BaseHTTPMiddleware):
                 status_code=503,
             )
 
-        if not check_budget(session, api_key.id, api_key.daily_cap):
+        # review auth-lifecycle: this session leaked on every path; the
+        # same defect was fixed in auth.py's middleware this cycle.
+        try:
+            over = not check_budget(session, api_key.id, api_key.daily_cap)
+        finally:
+            try:
+                session.close()
+            except Exception:  # noqa: BLE001 — close failure must not 500
+                pass
+        if over:
             return JSONResponse(
                 {"error": "daily_cap_exceeded",
                  "message": f"Daily cap of {api_key.daily_cap} requests exceeded"},

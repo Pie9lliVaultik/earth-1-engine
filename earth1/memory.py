@@ -60,6 +60,15 @@ class Chronicle:
     events: list = field(default_factory=list)
     forgotten: int = 0
     total_ever: int = 0
+    # review M05b (state-identity request): cascade residue state lived
+    # as an UNDECLARED instance attribute — invisible to dataclass
+    # walks. Declared with the None sentinel alive.py already treats as
+    # "uninitialized" (alive.py:512), so this is declaration only: no
+    # behavioural change. NOTE persistence.POST_V1_DECLARED must carry
+    # ("Chronicle", "cascade_residues") so the frozen v1 digest stays
+    # blind to the declaration; values are covered by world_hash_full
+    # through DYNAMIC_FIELDS.
+    cascade_residues: list | None = None
 
     def remember(self, m: Memory) -> None:
         # REHEARSAL: does this resemble something already remembered?
@@ -161,10 +170,17 @@ def _chronicle_spread_indexed(self, civ, rng, rate, active, deg):
     import numpy as _np
     adj = civ.adj.tocsr()
     csc = getattr(civ, "_adj_csc_cache", None)
-    if csc is None:
+    # review M05b: cache provenance. The CSC mirror is only valid for
+    # the exact adj object it was built from; graph mutation REBINDS
+    # civ.adj (rehome._recompose_adj), so object identity is the
+    # invalidation signal. Without it a stale mirror silently spread
+    # memories along last rebuild's edges. deepcopy preserves the
+    # aliasing (memo), so a copied world keeps a valid cache.
+    if csc is None or getattr(civ, "_adj_csc_src", None) is not civ.adj:
         csc = civ.adj.tocsc()
         try:
             civ._adj_csc_cache = csc
+            civ._adj_csc_src = civ.adj
         except Exception:
             pass
     moved = 0

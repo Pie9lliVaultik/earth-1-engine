@@ -49,6 +49,8 @@ index per tick, not per-agent scans.
 """
 from __future__ import annotations
 
+import os
+
 import numpy as np
 
 KEEP = "KEEP"
@@ -138,8 +140,32 @@ def _add_mutual(mat, rows, cols, weight, n):
         (np.full(r.size, weight, dtype=mat.dtype), (r, c)), shape=(n, n))
     out = (mat + delta).tocsr()
     # duplicate coordinates sum on addition; clamp to the tie weight so
-    # a re-added edge can never silently double
-    np.minimum(out.data, weight, out=out.data)
+    # a re-added edge can never silently double.
+    #
+    # review M05a — CONFIRMED LIVE, not latent as triaged: the
+    # whole-matrix np.minimum rewrites every edge heavier than `weight`,
+    # and such edges EXIST in production — genesis stacks duplicate ties
+    # to ~3.5 and plasticity_tick grows agreeing friends/weak ties past
+    # the nominal weight daily (plasticity.py refuses exactly this
+    # global clamp for that reason). Every migration day therefore
+    # mass-collapses the drifted weak matrix back to 0.15. The correct
+    # clamp touches ONLY the delta's coordinates — but repairing it
+    # CHANGES the frozen trajectory (2k c2plus day-10 world hash moves:
+    # a day-2 identity_collapse cascade disappears), so under freeze-0.9
+    # the repair is flag-gated DEFAULT OFF and belongs with the
+    # physics-gated tier (v1.1, alongside M01a). Non-plastic types
+    # (diaspora/neighbours/colleagues) are single-weight, where both
+    # forms are bitwise identical.
+    if os.environ.get("EARTH1_REHOME_LOCAL_CLAMP") == "1":
+        out.sum_duplicates()         # canonical: unique, sorted coords
+        for i, j in zip(r.tolist(), c.tolist()):
+            lo, hi = out.indptr[i], out.indptr[i + 1]
+            p = lo + np.searchsorted(out.indices[lo:hi], j)
+            if out.data[p] > weight:
+                out.data[p] = weight
+    else:
+        # frozen-0.9 behaviour, bit-for-bit
+        np.minimum(out.data, weight, out=out.data)
     return out
 
 

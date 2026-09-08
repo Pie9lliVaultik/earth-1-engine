@@ -53,6 +53,7 @@ def _run_pair(scenario, base_world, seed, horizon, fork_day=90):
     from earth1.alive import live_one_day
     from earth1.branch import apply, null_branch
     from earth1.consequences import protest_risk, snapshot
+    from earth1.deathwatch import DeathWatch
     from earth1.persistence import world_hash
     out = {}
     fork_state = None
@@ -60,11 +61,17 @@ def _run_pair(scenario, base_world, seed, horizon, fork_day=90):
         w = copy.deepcopy(base_world)
         rng = np.random.default_rng(977 * 41 + seed)
         apply(w, sc, rng)
+        # review M06d: the 'dead' stock misses same-tick rebirth
+        # (measured ~4% capture); a per-arm DeathWatch observes actual
+        # deaths on person_id turnover. Observe-only — no rng, no
+        # world mutation.
+        watch = DeathWatch(w)
         t0 = float(w.day)
         snaps, onsets, hot_days = {}, 0, 0
         seen = set()
         for d in range(1, horizon + 1):
             live_one_day(w, rng)
+            watch.observe(w)
             ep = getattr(w.chronicle, "cascade_episode_active", None) or set()
             hot_days += sum(1 for k in ep if k[0] == "collective_surge")
             for r in (getattr(w.chronicle, "cascade_residues", None) or []):
@@ -76,6 +83,9 @@ def _run_pair(scenario, base_world, seed, horizon, fork_day=90):
             if d in SNAPSHOT_DAYS or d == horizon:
                 s = snapshot(w)
                 snaps[d] = {k: v for k, v in s.items()}
+                # review M06d: cumulative captured deaths (agent count),
+                # the FLOW the 'dead' stock cannot see
+                snaps[d]["deaths_cumulative"] = float(watch.n)
                 snaps[d]["_forces"] = w.civ.forces[w.health.alive].mean(0)
                 snaps[d]["_forces_by_c"] = _forces_by_country(w)
                 snaps[d]["_protest_risk"] = float(protest_risk(w).sum())
@@ -98,18 +108,30 @@ def _forces_by_country(w, min_agents=200):
     return out
 
 
-def _line(name, deltas, unit, tier_hint, pop_scale=None):
+def _line(name, deltas, unit, tier_hint, pop_scale=None, day=None,
+          requested_day=None):
     """Aggregate one observable's paired deltas across seeds."""
+    # review M06b: the unit string names the day the number was actually
+    # measured at; a substituted horizon is flagged with
+    # requested_day/measured_day, never silently relabelled
+    base_unit = unit
+    if day is not None:
+        unit = f"{unit} at day {day}"
+    flags = ({"requested_day": requested_day, "measured_day": day}
+             if requested_day is not None and day != requested_day else {})
     a = np.array(deltas, dtype=float)
     if a.size == 0:
         return {"observable": name, "unit": unit, "tier": "ABSTAIN",
-                "delta": None, "note": "no snapshot data"}
+                "delta": None, "note": "no snapshot data", **flags}
     mean = float(a.mean())
-    sem = (float(a.std(ddof=1) / max(len(a) - 1, 1) ** 0.5)
+    # review M06c: SEM = std(ddof=1)/sqrt(n) — the old sqrt(n-1) divisor
+    # widened every +/- by sqrt(n/(n-1)) (~3.3% at n=8)
+    sem = (float(a.std(ddof=1) / len(a) ** 0.5)
            if len(a) > 1 else float("inf"))
     if mean == 0.0 and sem == 0.0:
         return {"observable": name, "unit": unit, "tier": "ABSTAIN",
-                "delta": None, "note": "no effect (identically zero)"}
+                "delta": None, "note": "no effect (identically zero)",
+                **flags}
     if not np.isfinite(sem):
         sem = abs(mean)
     if name in KNOWN_DEFECT:
@@ -119,10 +141,10 @@ def _line(name, deltas, unit, tier_hint, pop_scale=None):
     else:
         tier = tier_hint
     row = {"observable": name, "unit": unit, "tier": tier,
-           "note": KNOWN_DEFECT.get(name)}
+           "note": KNOWN_DEFECT.get(name), **flags}
     if tier != "ABSTAIN":
         row.update({"delta": round(mean, 5), "sem": round(sem, 5)})
-        if pop_scale and unit == "agents":
+        if pop_scale and base_unit == "agents":
             row["real_world_approx"] = f"~{mean * pop_scale / 1e6:+.1f}M people"
     else:
         row["delta"] = None
@@ -160,7 +182,10 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
     tier_hint = "CALIBRATED" if class_calibrated else "UNCALIBRATED"
 
     def deltas(key, day, sub=None):
-        out = []
+        # review M06b: returns (values, measured_day) — the day actually
+        # used — so every line is labelled with what was measured, not
+        # what was requested
+        out, used = [], []
         for r in runs:
             avail = sorted(r["scn"]["snaps"])
             use = day if day in r["scn"]["snaps"] else (
@@ -172,19 +197,21 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
             if a is None or b is None:
                 continue
             va, vb = a.get(key), b.get(key)
-            if sub is not None:
-                va, vb = va[sub], vb[sub]
             try:
+                if sub is not None:
+                    va, vb = va[sub], vb[sub]
                 out.append(float(va) - float(vb))
-            except (TypeError, ValueError):
+                used.append(use)
+            except (TypeError, ValueError, IndexError, KeyError):
                 continue
-        return out
+        return out, (max(used) if used else None)
 
     order1 = {"forces_global": [], "top_country_movers": []}
     for i, fk in enumerate(FORCE_KEYS):
         nm = fk.name.lower()
-        row = _line(f"force_{nm}", deltas("_forces", 7, i), "force units",
-                    tier_hint)
+        vs, md = deltas("_forces", 7, i)
+        row = _line(f"force_{nm}", vs, "force units", tier_hint,
+                    day=md, requested_day=7)
         row["perishability"] = PERISHABLE.get(nm, "structural")
         order1["forces_global"].append(row)
     movers = {}
@@ -199,26 +226,47 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
          for k, v in movers.items()), key=lambda r: -r["force_shift"])[:8]
 
     order2 = []
-    for key, unit, green in (("unemployed", "agents", True),
-                             ("destitute", "agents", True),
-                             ("hungry", "agents", True),
-                             ("evicted", "agents", False),
-                             ("homeless", "agents", False),
-                             ("dead", "agents", True),
-                             ("median_buffer", "days of savings", True),
-                             ("migrants", "agents", False),
-                             ("mean_hope", "hope units", False)):
+    # review M06d: 'dead' is a STOCK (slots dead at the snapshot; rebirth
+    # recycles them within the tick, measured ~4% capture) — kept under
+    # the honest name dead_slots_now; the FLOW of actual deaths is
+    # deaths_cumulative from the DeathWatch threaded through _run_pair.
+    for key, name, unit, green in (
+            ("unemployed", "unemployed", "agents", True),
+            ("destitute", "destitute", "agents", True),
+            ("hungry", "hungry", "agents", True),
+            ("evicted", "evicted", "agents", False),
+            ("homeless", "homeless", "agents", False),
+            ("dead", "dead_slots_now", "agents", True),
+            ("deaths_cumulative", "deaths_cumulative", "agents", False),
+            ("median_buffer", "median_buffer", "days of savings", True),
+            ("migrants", "migrants", "agents", False),
+            ("mean_hope", "mean_hope", "hope units", False)):
         th = tier_hint if green else "UNCALIBRATED"
-        order2.append(_line(key, deltas(key, 90), unit, th, pop_scale))
+        vs, md = deltas(key, 90)
+        row = _line(name, vs, unit, th, pop_scale, day=md,
+                    requested_day=90)
+        if name == "dead_slots_now":
+            row["kind"] = "stock"  # review M06d
+            stock_note = ("stock: dead slots at the snapshot, NOT "
+                          "cumulative deaths (rebirth recycles slots "
+                          "within the tick) — see deaths_cumulative")
+            row["note"] = (f"{row['note']}; {stock_note}"
+                           if row.get("note") else stock_note)
+        elif name == "deaths_cumulative":
+            row["kind"] = "flow"  # review M06d
+        order2.append(row)
 
     order3 = []
-    order3.append(_line("protest_risk_sum", deltas("_protest_risk", 90),
-                        "hot localities", tier_hint))
-    order3.append(_line("unrest_intensity_hot_locality_days",
-                        deltas("_hot_locality_days", 180),
-                        "hot-locality-days", tier_hint))
-    _oe = _line("collective_surge_onsets_event",
-                deltas("_onsets_event", 180), "onset events", tier_hint)
+    vs, md = deltas("_protest_risk", 90)
+    order3.append(_line("protest_risk_sum", vs, "hot localities",
+                        tier_hint, day=md, requested_day=90))
+    vs, md = deltas("_hot_locality_days", 180)
+    order3.append(_line("unrest_intensity_hot_locality_days", vs,
+                        "hot-locality-days", tier_hint, day=md,
+                        requested_day=180))
+    vs, md = deltas("_onsets_event", 180)
+    _oe = _line("collective_surge_onsets_event", vs, "onset events",
+                tier_hint, day=md, requested_day=180)
     _oe["tier"] = "KNOWN-DEFECT"
     _oe["note"] = ("entry-count semantics: sustained-hot worlds under-"
                    "count cold-to-hot transitions (c-SHOCK VOID); use "
@@ -230,12 +278,17 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
                         [float(np.mean(r["scn"]["snaps"][dd]["legitimacy"])
                                - np.mean(r["null"]["snaps"][dd]["legitimacy"]))
                          for r, dd in zip(runs, _legdays) if dd],
-                        "legitimacy units", tier_hint))
-    order3.append(_line("memory_imprint_experience",
-                        deltas("_forces", 180,
-                               [f.name.lower() for f in FORCE_KEYS]
-                               .index("experience")),
-                        "force units at day 180", "UNCALIBRATED"))
+                        "legitimacy units", tier_hint,
+                        day=max([d for d in _legdays if d], default=None),
+                        requested_day=90))
+    # review M06b: this line was hard-labelled 'force units at day 180'
+    # even when a shorter run substituted day 30 — the measured day is
+    # stamped now
+    vs, md = deltas("_forces", 180,
+                    [f.name.lower() for f in FORCE_KEYS]
+                    .index("experience"))
+    order3.append(_line("memory_imprint_experience", vs, "force units",
+                        "UNCALIBRATED", day=md, requested_day=180))
 
     order4 = []
     forks = SECOND_ORDER.get(spec.get("class"), SECOND_ORDER["_default"])
@@ -251,7 +304,8 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
                        [float(np.linalg.norm(
                            pair["scn"]["snaps"][7]["_forces"]
                            - pair["null"]["snaps"][7]["_forces"]))],
-                       "force units", "UNCALIBRATED")
+                       "force units", "UNCALIBRATED",
+                       day=7, requested_day=7)
             u45 = pair["scn"]["snaps"].get(45, {}).get("unemployed")
             n45 = pair["null"]["snaps"].get(45, {}).get("unemployed")
             order4.append({
@@ -267,9 +321,10 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
     # stamped so no reader mistakes it for hunger geography.
     geo_basis = None
     geo_rows = []
+    geo_measured = None
     from earth1.genesis import GENESIS_COUNTRY_CODES as _GCC
     for key in ("hungry_by_country", "destitute_by_country"):
-        per_c = {}
+        per_c, ppa_c, used_days = {}, {}, []
         for r in runs:
             avail = sorted(r["scn"]["snaps"])
             use = 90 if 90 in r["scn"]["snaps"] else (avail[-1] if avail
@@ -281,20 +336,34 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
             ppa = r["scn"]["snaps"][use].get("people_per_agent_by_country")
             if a is None or b is None or ppa is None:
                 continue
+            used_days.append(use)
             for ci in range(len(a)):
+                # review M06a: ppa is a census weight normalized to mean
+                # 1.0 (genesis.census_weights), so agents*ppa is still in
+                # weighted AGENTS — the same 8.1e9/base_pop constant the
+                # global lines use converts to real people
                 per_c.setdefault(ci, []).append(
-                    float((a[ci] - b[ci]) * ppa[ci]))
+                    float((a[ci] - b[ci]) * ppa[ci] * pop_scale))
+                ppa_c.setdefault(ci, []).append(float(ppa[ci] * pop_scale))
         if per_c:
             geo_basis = key
+            geo_measured = max(used_days) if used_days else None
             for ci, ds in per_c.items():
                 arr = np.array(ds)
                 m_ = float(arr.mean())
-                sem_ = (float(arr.std(ddof=1) / max(len(arr) - 1, 1) ** 0.5)
+                # review M06c: sqrt(n) divisor, matching _line
+                sem_ = (float(arr.std(ddof=1) / len(arr) ** 0.5)
                         if len(arr) > 1 else float("inf"))
                 if abs(m_) >= 2 * sem_ and m_ != 0.0:
-                    geo_rows.append({"country": _GCC[ci],
-                                     "delta_people": round(m_, 0),
-                                     "sem": round(sem_, 0)})
+                    geo_rows.append({
+                        "country": _GCC[ci],
+                        "delta_people": round(m_, 0),
+                        "sem": round(sem_, 0),
+                        # review M06a: real people one agent stands for
+                        # there — delta_people / people_per_agent
+                        # reconciles back to the agent delta
+                        "people_per_agent": round(
+                            float(np.mean(ppa_c[ci])), 1)})
             geo_rows.sort(key=lambda r_: -abs(r_["delta_people"]))
             break
 
@@ -320,8 +389,13 @@ def build_from_runs(spec, runs, fork_states, seeds, base_pop, base_day,
                        "seeds": list(seeds), "pop": base_pop},
             "headline": headline,
             "order1": order1, "order2": order2, "order3": order3,
+            # review M06a/M06b: delta_people is real PEOPLE now, and the
+            # day measured is stamped instead of assumed
             "order2_geography": {"basis": geo_basis or
                                  "force_shift (pre-F1 snapshots)",
+                                 "unit": "people",
+                                 "requested_day": 90,
+                                 "measured_day": geo_measured,
                                  "top": geo_rows[:15]},
             "order4": order4,
             "tier_counts": counts}

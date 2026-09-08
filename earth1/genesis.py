@@ -170,6 +170,13 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
             min_per_country: int = 500,
             substrate: str | None = None) -> Civilization:
     """Generate a civilization with 194 countries, regional identity, and enriched traits."""
+    if substrate is None:
+        # review M02d: the frozen configuration selects the candidate
+        # substrate by flag; the default call must honour it rather than
+        # silently birthing the incumbent (the daemon's empty-state path
+        # did exactly that). Flag unset/other -> incumbent, as before.
+        if os.environ.get("EARTH1_SUBSTRATE_FLAG") == "c2plus_v1":
+            substrate = "c2plus_v1"
     rng = make_rng(seed)
     nc = len(GENESIS_COUNTRIES)
 
@@ -226,6 +233,11 @@ def genesis(pop: int = 1_000_000, seed: int = 42,
     # downstream layers see an unchanged stream position. Uses its own
     # spawned rng. Adds a sex axis (civ.sex).
     _sex = None
+    # An unknown substrate is a caller error and must say so regardless
+    # of the calibration env — validate BEFORE the calibration guard
+    # (pre-existing ordering defect surfaced by the apparatus cycle).
+    if substrate is not None and substrate != "c2plus_v1":
+        raise ValueError(f"unknown substrate {substrate!r}")
     from earth1.life import INCOME_CALIBRATION as _IC, \
         INCOME_SUBSTRATE_TAG as _TAG
     if _IC != "off":

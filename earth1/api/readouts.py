@@ -12,6 +12,7 @@ from typing import Optional
 import numpy as np
 
 from earth1.types import Force
+from earth1.generational import _age_years  # review M01b: the ONE age scale
 from earth1.geography import (CONTINENT, CONTINENTS, city_name, continent_of,
                               country_codes, locality_key, locality_name,
                               region_profile, split_key)
@@ -67,7 +68,8 @@ def earthling(w, hist, slot: int) -> dict:
          "demographics": {"country": iso2, "continent": continent_of(iso2),
                           "region": {"index": int(civ.region[i]), "code": prof.code if prof else None, "name": prof.name if prof else None},
                           "locality": {"id": loc, "name": locality_name(loc)},
-                          "urban": bool(civ.urban[i]), "age_years": round(18 + float(civ.age[i]) * 82, 1),
+                          # review M01b: canonical engine scale (18 + 72a), was 18 + 82a
+                          "urban": bool(civ.urban[i]), "age_years": round(float(_age_years(civ)[i]), 1),
                           "education": ["low", "mid", "high"][int(civ.education[i])],
                           "income_tier": ["low", "mid", "high"][int(civ.income[i])]},
          "traits": {t: round(float(getattr(civ, t)[i]), 4) for t in

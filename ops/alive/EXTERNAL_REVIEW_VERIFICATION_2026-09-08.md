@@ -32,7 +32,7 @@ from SCOREBOARD_v1.md, superseded by A-FULL-1's 12.01/11.84).
 | M03b | rebirth keeps corpse's sex (field invisible to policy gate) | CONFIRMED | FREE | batch: declare + POLICY entry + slot-keyed draw |
 | M03c | checkpoints accept missing checksum / tampered sidecar ("verified") / wrong physics label | CONFIRMED | FREE | batch: three load-path guards |
 | M04 | public branch.run desynchronizes arms (treatment-only Memory consumes RNG); adapter path correct | ALREADY_REGISTERED in effect (published results used adapter) | FREE | batch: null-on-both-arms in run() or deprecate |
-| M05a | _add_mutual clamps whole matrix to new edge weight | CONFIRMED (latent in prod paths) | FREE | batch: clamp only the delta pattern |
+| M05a | _add_mutual clamps whole matrix to new edge weight | CONFIRMED — RECLASSIFIED: LIVE, not latent | **PHYSICS-GATED** | Implementation found the reviewer's 'latent' premise false: plasticity grows friends/weak weights past nominal daily and genesis stacks duplicates, so the clamp mass-collapses drifted weak ties to 0.15 EVERY migration day, partially undoing echo-chamber formation; the repair moves the frozen trajectory (bisect-proven). Fix shipped flag-gated EARTH1_REHOME_LOCAL_CLAMP=1 default-off; flipping it is a founder ruling alongside M01a |
 | M05b | indexed Chronicle CSC cache never invalidated | CONFIRMED (indexed path off by default) | FREE | batch: provenance-check the cache; keep disabled for V1 |
 | M05c | partner sampler IndexError on empty graph | CONFIRMED | FREE | batch: early return |
 | M06a | geography delta_people lacks the 8.1e9/N conversion the global line uses | CONFIRMED | FREE | batch: same scale or relabel |

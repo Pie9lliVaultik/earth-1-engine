@@ -61,30 +61,44 @@ async def webhook(request: Request, db=Depends(get_db)):
             key = db.query(APIKey).filter_by(owner=email, active=True).first()
             if key:
                 upgrade_api_key(db, key.id, tier)
+    elif result.get("action") == "subscription_change" and is_enabled():
+        # review S03d: canceled/unpaid subscriptions never downgraded —
+        # the paid tier survived cancellation forever.
+        from earth1.api.billing import apply_subscription_change
+        apply_subscription_change(db, result)
 
     return result
 
 
 @router.get("/usage")
-def usage(db=Depends(get_db)):
+def usage(request: Request, db=Depends(get_db)):
     if not is_enabled():
         raise HTTPException(503, "Database not configured")
 
     from earth1.api.metering import get_daily_usage
-    from earth1.api.auth import APIKey
+    from earth1.api.auth import authenticate
 
     if db is None:
         raise HTTPException(503, "Database not available")
 
-    keys = db.query(APIKey).filter_by(active=True).all()
-    results = []
-    for key in keys:
-        daily = get_daily_usage(db, key.id)
-        results.append({
-            "api_key_id": key.id,
-            "owner": key.owner,
-            "tier": key.tier,
-            "daily_cap": key.daily_cap,
-            "daily_usage": daily,
-        })
-    return results
+    # review S03b: this route returned EVERY key's usage (id, owner, tier,
+    # caps) to any anonymous caller. Resolve the caller the way the
+    # authenticated paths do — the middleware-attached key when
+    # EARTH1_AUTH_REQUIRED is on, else the X-API-Key header verified
+    # against the key store — and answer for that key alone.
+    record = getattr(request.state, "api_key", None)
+    if record is None:
+        raw_key = request.headers.get("X-API-Key", "")
+        if not raw_key:
+            raise HTTPException(401, "X-API-Key header required")
+        record = authenticate(db, raw_key)
+        if record is None:
+            raise HTTPException(403, "Invalid or inactive API key")
+
+    return {
+        "api_key_id": record.id,
+        "owner": record.owner,
+        "tier": record.tier,
+        "daily_cap": record.daily_cap,
+        "daily_usage": get_daily_usage(db, record.id),
+    }

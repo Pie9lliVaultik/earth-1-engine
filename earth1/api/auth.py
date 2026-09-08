@@ -90,7 +90,14 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
                 status_code=503,
             )
 
-        record = authenticate(session, api_key)
+        # review auth-lifecycle: this session leaked on every request
+        # (never closed on any path); close it as soon as the key row is
+        # loaded. The row's attributes stay readable after close.
+        try:
+            record = authenticate(session, api_key)
+        finally:
+            session.close()
+
         if record is None:
             return JSONResponse(
                 {"error": "invalid_api_key", "message": "Invalid or inactive API key"},

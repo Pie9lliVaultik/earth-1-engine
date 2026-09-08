@@ -109,8 +109,11 @@ class TestWebhook:
         sys.modules["stripe"] = mock_stripe
 
         try:
-            with patch.dict("os.environ", {"STRIPE_SECRET_KEY": "sk_test_123", "STRIPE_WEBHOOK_SECRET": ""}):
-                result = handle_webhook(payload, "")
+            # review S03c: unsigned parsing is refused by design now —
+            # test the signed path with a mocked signature verifier.
+            mock_stripe.Webhook.construct_event.return_value = event
+            with patch.dict("os.environ", {"STRIPE_SECRET_KEY": "sk_test_123", "STRIPE_WEBHOOK_SECRET": "whsec_test"}):
+                result = handle_webhook(payload, "sig_test")
         finally:
             if saved is None:
                 sys.modules.pop("stripe", None)
@@ -139,8 +142,11 @@ class TestWebhook:
         sys.modules["stripe"] = mock_stripe
 
         try:
-            with patch.dict("os.environ", {"STRIPE_SECRET_KEY": "sk_test_123", "STRIPE_WEBHOOK_SECRET": ""}):
-                result = handle_webhook(payload, "")
+            # review S03c: unsigned parsing is refused by design now —
+            # test the signed path with a mocked signature verifier.
+            mock_stripe.Webhook.construct_event.return_value = event
+            with patch.dict("os.environ", {"STRIPE_SECRET_KEY": "sk_test_123", "STRIPE_WEBHOOK_SECRET": "whsec_test"}):
+                result = handle_webhook(payload, "sig_test")
         finally:
             if saved is None:
                 sys.modules.pop("stripe", None)
@@ -160,8 +166,11 @@ class TestWebhook:
         sys.modules["stripe"] = mock_stripe
 
         try:
-            with patch.dict("os.environ", {"STRIPE_SECRET_KEY": "sk_test_123", "STRIPE_WEBHOOK_SECRET": ""}):
-                result = handle_webhook(payload, "")
+            # review S03c: unsigned parsing is refused by design now —
+            # test the signed path with a mocked signature verifier.
+            mock_stripe.Webhook.construct_event.return_value = event
+            with patch.dict("os.environ", {"STRIPE_SECRET_KEY": "sk_test_123", "STRIPE_WEBHOOK_SECRET": "whsec_test"}):
+                result = handle_webhook(payload, "sig_test")
         finally:
             if saved is None:
                 sys.modules.pop("stripe", None)

@@ -79,6 +79,46 @@ PERSISTENT_FIELDS = frozenset({
 TRANSIENT_FIELDS: Dict[str, str] = {}
 
 
+# review M03a: THE v1 HASH IS FROZEN. This is world_fields() as it stood
+# when the paper's hashes were recorded; world_hash() walks this list —
+# never the live dataclass — so a recorded v1 digest stays reproducible
+# forever, even as World grows fields. New fields extend world_hash_full
+# (below), never this tuple.
+WORLD_FIELDS_V1 = (
+    "civ", "life", "fabric", "health", "knowledge", "gov", "klass",
+    "chronicle", "feed", "climate", "flourishing", "presence",
+    "mobility", "day",
+)
+
+# review M03a: component fields DECLARED after the v1 freeze. The
+# recursive dataclass walk in _feed must keep producing the exact
+# digests recorded before the declarations existed, so these
+# (type_name, field) pairs are invisible to _feed; their VALUES are
+# covered by world_hash_full through DYNAMIC_FIELDS instead.
+POST_V1_DECLARED = frozenset({
+    ("Civilization", "sex"),
+    ("Life", "firm_distress"),
+    # declared in memory.py by the M05b fix, same cycle — the v1 walk
+    # must stay blind to the declaration or every recorded digest moves
+    ("Chronicle", "cascade_residues"),
+})
+
+# review M03a: dynamically-attached (or post-v1-declared) state the v1
+# hash is blind to. world_hash_full() covers each as name + _feed(value);
+# an absent attribute feeds an explicit sentinel so presence itself is
+# part of the digest. chronicle.cascade_residues stays dynamic because
+# Chronicle lives in memory.py (owned elsewhere) — the declaration
+# belongs there, this registry covers it meanwhile.
+DYNAMIC_FIELDS = (
+    ("civ", "sex"),                    # c2plus demographic axis
+    ("life", "firm_distress"),         # acute per-firm shock distress
+    ("life", "distress_layoffs"),      # its lifetime counter companion
+    ("chronicle", "cascade_residues"),  # surviving cascade residues
+)
+
+_ABSENT_SENTINEL = b"<absent:M03a>"
+
+
 def world_fields() -> Tuple[str, ...]:
     """Every field of the World dataclass, as the code defines it now."""
     from earth1.alive import World
@@ -163,6 +203,8 @@ def _feed(h: "hashlib._Hash", obj: Any, depth: int = 0) -> None:
     elif hasattr(obj, "__dataclass_fields__"):
         h.update(type(obj).__name__.encode())
         for name in sorted(obj.__dataclass_fields__):
+            if (type(obj).__name__, name) in POST_V1_DECLARED:
+                continue    # review M03a: declared after the v1 freeze
             h.update(name.encode())
             _feed(h, getattr(obj, name, None), depth + 1)
     else:
@@ -199,16 +241,46 @@ def fill_identity_fields(w) -> list:
 
 
 def world_hash(w) -> str:
-    """A digest of the entire world — every component, not just civ.
+    """The FROZEN v1 digest — every component, not just civ.
 
     The existing `living.pop_hash_full` covers `civ` and the graph only,
     which is why a world could lose its weather, its hunger and its
     crowds and still hash as unchanged.
+
+    review M03a: walks WORLD_FIELDS_V1, not the live dataclass, so the
+    hashes recorded in the paper stay reproducible. This digest is BLIND
+    to the DYNAMIC_FIELDS by design (it always was — the freeze makes
+    that blindness permanent instead of accidental); use
+    `world_hash_full` for complete state identity.
     """
     h = hashlib.sha256()
-    for name in world_fields():
+    for name in WORLD_FIELDS_V1:
         h.update(name.encode())
         _feed(h, getattr(w, name, None))
+    return h.hexdigest()
+
+
+def world_hash_full(w) -> str:
+    """Complete state identity: the v1 coverage plus DYNAMIC_FIELDS.
+
+    review M03a: two worlds that differ only in civ.sex,
+    life.firm_distress or chronicle.cascade_residues hashed equal under
+    world_hash and then DIVERGED on the next tick. This digest sees
+    them: each registry entry feeds its dotted name then its value; an
+    attribute that does not exist feeds a sentinel, so attaching one is
+    itself a state change.
+    """
+    h = hashlib.sha256()
+    for name in WORLD_FIELDS_V1:
+        h.update(name.encode())
+        _feed(h, getattr(w, name, None))
+    for comp, attr in DYNAMIC_FIELDS:
+        h.update(f"{comp}.{attr}".encode())
+        obj = getattr(w, comp, None)
+        if obj is None or not hasattr(obj, attr):
+            h.update(_ABSENT_SENTINEL)
+        else:
+            _feed(h, getattr(obj, attr))
     return h.hexdigest()
 
 
@@ -281,15 +353,37 @@ def save_world(w, path, rng: Optional[np.random.Generator] = None,
         pickle.dump(blob, f, protocol=pickle.HIGHEST_PROTOCOL)
     tmp.replace(path)                       # atomic: never a torn world
 
+    # review M03c: the identity sidecar. Records BOTH state hashes and a
+    # digest of the .adj.npz BYTES — before this, the graph travelled
+    # beside the pickle with no checksum at all, so a tampered or torn
+    # .adj.npz loaded as "verified". Written to its own file so the
+    # legacy `.sha256` keeps its exact one-line format (ops scripts and
+    # the save-completed convention depend on it).
+    digest = _sha256_stream(path)
+    adj_digest = _sha256_stream(path.with_suffix(".adj.npz"))
+    meta = {"schema_version": SCHEMA_VERSION,
+            "physics_version": blob["physics_version"],
+            "sha256": digest,
+            "adj_sha256": adj_digest,
+            "world_hash": world_hash(w),
+            "world_hash_full": world_hash_full(w),
+            "day": blob["day"], "n": blob["n"], "seed": blob["seed"],
+            "saved_at": blob["saved_at"]}
+    meta_tmp = path.with_suffix(path.suffix + ".meta.json.tmp")
+    meta_tmp.write_text(json.dumps(meta, indent=1) + "\n")
+    meta_tmp.replace(path.with_suffix(path.suffix + ".meta.json"))
+
     # checksum written AFTER the world, and last of all — its presence
     # is itself the signal that the save completed. A snapshot with no
     # sidecar is a snapshot that was interrupted.
-    digest = _sha256_stream(path)
     path.with_suffix(path.suffix + ".sha256").write_text(digest + "\n")
 
     return {"schema_version": SCHEMA_VERSION, "day": blob["day"],
             "n": blob["n"], "seed": blob["seed"],
             "saved_at": blob["saved_at"], "sha256": digest,
+            "adj_sha256": adj_digest,
+            "world_hash": meta["world_hash"],
+            "world_hash_full": meta["world_hash_full"],
             "rng_persisted": rng is not None}
 
 
@@ -359,7 +453,9 @@ class SnapshotError(RuntimeError):
 
 def load_world(path, *, allow_v0_migration: bool = False,
                verify_checksum: bool = True,
-               adj_path=None
+               adj_path=None,
+               allow_missing_checksum: bool = False,
+               allow_physics_mismatch: bool = False
                ) -> Tuple[Any, Optional[dict], Dict[str, Any]]:
     """Read a world, failing closed. Returns (world, rng_state, info).
 
@@ -372,6 +468,20 @@ def load_world(path, *, allow_v0_migration: bool = False,
     off by default precisely because those files silently lack
     presence/mobility/RNG; migrating one is a deliberate, once-only act
     at a controlled checkpoint, never an incidental load.
+
+    review M03c — three acceptance holes closed, all legacy-tolerant:
+      1. a v1 snapshot with NO `.sha256` sidecar refuses to load unless
+         `allow_missing_checksum=True` (a missing sidecar is the mark of
+         an interrupted save; v0 files never had one and are exempt —
+         `allow_v0_migration` is already the deliberate opt-in there);
+      2. when the `.meta.json` identity sidecar records an adj digest,
+         the `.adj.npz` bytes are verified against it and a mismatch
+         refuses; legacy checkpoints without a `.meta.json` still load,
+         reported as checksum='legacy' (the graph is UNVERIFIED there);
+      3. a physics label different from the running
+         `alive.PHYSICS_VERSION` refuses unless
+         `allow_physics_mismatch=True`; blobs old enough to carry no
+         label load as physics='unrecorded'.
     """
     from scipy import sparse
 
@@ -391,7 +501,8 @@ def load_world(path, *, allow_v0_migration: bool = False,
                 f"was written by an interrupted save")
         checksum_state = "verified"
     elif verify_checksum:
-        checksum_state = "missing"      # v0 files have none; v1 always do
+        checksum_state = "missing"      # v0 files have none; v1 refuse
+                                        # below unless explicitly allowed
 
     try:
         with open(path, "rb") as f:
@@ -405,6 +516,35 @@ def load_world(path, *, allow_v0_migration: bool = False,
     ap = Path(adj_path) if adj_path else path.with_suffix(".adj.npz")
     if not ap.exists():
         raise SnapshotError(f"snapshot at {path} has no graph ({ap})")
+
+    # review M03c(2): verify the graph bytes when the identity sidecar
+    # recorded them. The graph travels OUTSIDE the pickle the `.sha256`
+    # covers, so before this a tampered .adj.npz loaded as "verified".
+    # Legacy checkpoints have no .meta.json: they load, downgraded to
+    # checksum='legacy' so the caller can see the graph was unverified.
+    meta_path = path.with_suffix(path.suffix + ".meta.json")
+    if meta_path.exists():
+        try:
+            meta = json.loads(meta_path.read_text())
+        except (json.JSONDecodeError, OSError) as e:
+            raise SnapshotError(
+                f"identity sidecar {meta_path} is unreadable: {e} — "
+                f"refusing to load a snapshot whose recorded identity "
+                f"cannot be checked") from e
+        want_adj = meta.get("adj_sha256")
+        if want_adj is not None:
+            got_adj = _sha256_stream(ap)
+            if got_adj != want_adj:
+                raise SnapshotError(
+                    f"graph checksum mismatch at {ap}: expected "
+                    f"{want_adj[:16]}, got {got_adj[:16]} — the graph "
+                    f"was modified after the save, or belongs to a "
+                    f"different snapshot")
+        elif checksum_state == "verified":
+            checksum_state = "legacy"
+    elif checksum_state == "verified":
+        checksum_state = "legacy"       # pre-M03c save: graph unverified
+
     adj = sparse.load_npz(ap)
 
     version = d.get("schema_version")
@@ -450,6 +590,35 @@ def load_world(path, *, allow_v0_migration: bool = False,
             f"physics on resume. This snapshot is defective; restore "
             f"from a complete one, or re-migrate from the v0 origin.")
 
+    # review M03c(3): a snapshot from different physics must not resume
+    # silently under the frozen label — the world it contains was not
+    # produced by the code about to advance it. Old blobs that never
+    # recorded a label stay loadable, reported as 'unrecorded'.
+    from earth1.alive import PHYSICS_VERSION
+    saved_physics = d.get("physics_version")
+    if (saved_physics is not None and saved_physics != PHYSICS_VERSION
+            and not allow_physics_mismatch):
+        raise SnapshotError(
+            f"snapshot at {path} was saved under physics "
+            f"'{saved_physics}' but this process runs "
+            f"'{PHYSICS_VERSION}' — resuming it would silently mix "
+            f"physics. Pass allow_physics_mismatch=True to load it "
+            f"deliberately.")
+
+    # review M03c(1): the .sha256 sidecar is written last — its absence
+    # means the save never completed (or the sidecar was stripped), so a
+    # v1 snapshot without one is refused rather than trusted. Checked
+    # after the structural refusals so a defective snapshot is reported
+    # for what it is; `verify_checksum=False` keeps its standing meaning
+    # as the deliberate opt-out.
+    if (checksum_state in ("missing", "absent") and verify_checksum
+            and not allow_missing_checksum):
+        raise SnapshotError(
+            f"snapshot at {path} has no checksum sidecar "
+            f"({sidecar.name}) — the save may have been interrupted and "
+            f"the bytes cannot be verified. Pass "
+            f"allow_missing_checksum=True to load it anyway.")
+
     from earth1.alive import World
     w = World(**{k: v for k, v in fld.items() if k in PERSISTENT_FIELDS})
     w.civ.adj = adj
@@ -459,6 +628,8 @@ def load_world(path, *, allow_v0_migration: bool = False,
     return w, d.get("rng_state"), {"schema_version": version, "lost": [],
                                    "filled": filled,
                                    "saved_at": d.get("saved_at"),
+                                   "physics": (saved_physics
+                                               or "unrecorded"),
                                    "checksum": checksum_state}
 
 

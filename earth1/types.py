@@ -133,6 +133,14 @@ class Civilization:
     employed: 'np.ndarray | None' = None
     ideology: 'np.ndarray | None' = None
     social_class: 'np.ndarray | None' = None
+    # review M03a/b: C2+ demographic axis (int8, 0=male 1=female), set by
+    # genesis under substrate c2plus_v1; None elsewhere. Was attached
+    # dynamically, which made it invisible to state hashing, persistence
+    # discovery AND the rebirth completeness gate — a reborn slot kept
+    # the corpse's sex. Declaration only: no dynamics read it, and
+    # persistence._feed skips it in the frozen v1 hash (POST_V1_DECLARED);
+    # world_hash_full covers it.
+    sex: 'np.ndarray | None' = None
 
 
 @dataclass

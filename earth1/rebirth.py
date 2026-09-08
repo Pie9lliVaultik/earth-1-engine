@@ -51,6 +51,10 @@ POLICY = {
     ("civ", "country"): INHERIT_PARENT,
     ("civ", "region"): INHERIT_PARENT,
     ("civ", "urban"): INHERIT_PARENT,
+    ("civ", "sex"): INITIALIZE,                  # review M03b: was corpse
+                                                 # leftover — the field was
+                                                 # dynamic, invisible to
+                                                 # the completeness gate
     ("civ", "education"): INHERIT_PARENT,
     ("civ", "income"): INHERIT_PARENT,          # was corpse leftover
     ("civ", "age"): INITIALIZE,                  # 0.0 = adult entry at 18
@@ -185,7 +189,8 @@ POLICY = {
 }
 
 # fields excluded from discovery: per-firm arrays, scalars, aliases
-_NOT_PER_AGENT = {("life", "firm_health"), ("life", "firm_country")}
+_NOT_PER_AGENT = {("life", "firm_health"), ("life", "firm_country"),
+                  ("life", "firm_distress")}     # review M03a: per-firm
 
 
 def discover_per_agent_fields(w):
@@ -349,6 +354,19 @@ def apply_rebirth(w, slots, parents, rng, heritability=HERITABILITY):
                            + rng.normal(0, 0.08, slots.size), 0.0, 1.0)
     civ.age[slots] = 0.0
     civ.age_bucket[slots] = 0
+    # review M03b: the newborn's sex, INITIALIZE — never the corpse's
+    # leftover. Drawn 50/50 from a generator spawned off a slot-keyed
+    # seed so the MAIN rng stream is untouched: every draw on `rng`
+    # above and below stays in exactly the same order whether or not
+    # the civ carries a sex field (frozen-physics neutrality; nothing
+    # in the dynamics reads sex).
+    sex = getattr(civ, "sex", None)
+    if sex is not None:
+        ss = np.random.SeedSequence(
+            [0x5E11D, int(civ.seed) & 0xFFFFFFFF,
+             int(getattr(w, "day", 0))] + [int(s) for s in slots])
+        sex_rng = np.random.default_rng(ss)
+        sex[slots] = (sex_rng.random(slots.size) < 0.5).astype(sex.dtype)
     if getattr(civ, "person_id", None) is not None:
         civ.parent_id[slots] = civ.person_id[parents]
         civ.person_id[slots] = civ.person_counter + np.arange(

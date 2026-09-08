@@ -14,9 +14,10 @@ humans what they think about a possible future. It simulates the future
 AROUND them, lets them change inside it, and then asks.
 
 Every branch runs against a CONTROL: the same world, same seed, same
-dice, no scenario. Without it a number like "jobs lost" is
-uninterpretable, because a living world is always losing and creating
-jobs anyway.
+dice, carrying a matched NULL scenario instead of the real one (review
+M04 — see null_branch() for why an unbranched world is on different
+dice). Without it a number like "jobs lost" is uninterpretable, because
+a living world is always losing and creating jobs anyway.
 
 And every scenario is run SEVERAL TIMES with different dice. The world
 is chaotic — FSLE +0.13/day, measured — so one run is a sample. The
@@ -126,40 +127,57 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
 
     Returns consequences per scenario, each with the spread across
     repeats, so the output is a range rather than a false point.
-    """
-    base_snap = None
-    out = {}
 
-    # ── the control: the same world, untouched ───────────────────────
-    ctrl_reports = []
-    ctrl_paths = []          # the control's DAILY unemployment path
-    for r in range(repeats):
-        w = copy.deepcopy(world)
-        rng = np.random.default_rng(seed * 977 + r)
-        from earth1.genesis import census_weights
-        cw = census_weights(w.civ)
-        path = []
-        for _ in range(days):
-            live_one_day(w, rng)
-            lf_alive = w.life.in_lf & w.health.alive
-            path.append(float(cw[(~w.life.employed) & lf_alive].sum()))
-        ctrl_paths.append(path)
-        ctrl_reports.append(snapshot(w))
-        if progress:
-            progress(f"control {r + 1}/{repeats}")
-    # The averaged control is kept ONLY as a reporting reference. It is
-    # deliberately no longer used for differencing — see the paired
-    # comparison below, which is where the variance reduction lives.
-    base_snap = {}
-    for k, v in ctrl_reports[0].items():
-        if isinstance(v, np.ndarray):
-            base_snap[k] = np.mean([c[k] for c in ctrl_reports], axis=0)
-        elif isinstance(v, (int, float)) and v is not None:
-            base_snap[k] = float(np.mean([c[k] for c in ctrl_reports]))
-        else:
-            base_snap[k] = v
+    THE CONTROL IS A NULL BRANCH (review M04). Applying any scenario
+    inserts a chronicle Memory, and spread() consumes one rng.random(n)
+    per active memory — content-independent — so an UNBRANCHED control
+    runs on different dice than any treatment arm and the naive contrast
+    is dominated by rng-desync artifact (see null_branch()). The public
+    run() was the last caller violating that contract: the adapter path
+    already ran null-on-both-arms, which is why published results were
+    unaffected. Each control arm therefore receives a zero-impact null
+    scenario with the SAME persists_days as the treatment it is
+    differenced against (matched persists means both memories leave the
+    world on the same day, so draw counts stay aligned over any
+    horizon); scenarios sharing a persists_days share one control
+    ensemble.
+    """
+    from earth1.genesis import census_weights
+    from earth1.persistence import world_hash
+    out = {}
+    controls = {}       # persists_days -> (reports, daily paths, hashes)
+
+    def _controls_for(pd: float):
+        # ── the control: the same world, on the same dice ────────────
+        if pd in controls:
+            return controls[pd]
+        ctrl_reports = []
+        ctrl_paths = []      # the control's DAILY unemployment path
+        ctrl_hashes = []
+        for r in range(repeats):
+            w = copy.deepcopy(world)
+            rng = np.random.default_rng(seed * 977 + r)
+            # review M04: the matched null — a zero-impact Memory with
+            # the treatment's persists_days, so both arms consume
+            # identical rng (the adapter's null-on-both-arms pattern)
+            apply(w, null_branch(persists_days=pd), rng)
+            cw = census_weights(w.civ)
+            path = []
+            for _ in range(days):
+                live_one_day(w, rng)
+                lf_alive = w.life.in_lf & w.health.alive
+                path.append(float(cw[(~w.life.employed) & lf_alive].sum()))
+            ctrl_paths.append(path)
+            ctrl_reports.append(snapshot(w))
+            ctrl_hashes.append(world_hash(w))
+            if progress:
+                progress(f"control(persists={pd:g}) {r + 1}/{repeats}")
+        controls[pd] = (ctrl_reports, ctrl_paths, ctrl_hashes)
+        return controls[pd]
 
     for sc in scenarios:
+        ctrl_reports, ctrl_paths, ctrl_hashes = _controls_for(
+            sc.persists_days)
         reports = []
         peak_jobless = [0.0] * repeats
         max_jobless = [0.0] * repeats
@@ -175,9 +193,7 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
             # changes during a run — so compute them ONCE. Rebuilding a
             # 200K array every simulated day turned a 50-minute job into
             # a five-hour one for no information gain.
-            from earth1.genesis import census_weights
             cw = census_weights(w.civ)
-            base_j = ctrl_reports[r]["unemployed"]
             # DAY AGAINST DAY. The first version compared the branch on
             # day t against the control's value on the FINAL day — a
             # single endpoint. Since the control's unemployment drifts
@@ -218,6 +234,10 @@ def run(world, scenarios: list, days: int = 180, repeats: int = 3,
             # rather than a modelling one.
             rep["jobs_lost_cumulative"] = int(round(peak_jobless[r]))
             rep["jobs_lost_peak"] = int(round(max_jobless[r]))
+            # review M04: arm hashes make the pairing auditable — a null
+            # scenario must land bit-identical to its matched control
+            rep["world_hash_treatment"] = world_hash(w)
+            rep["world_hash_control"] = ctrl_hashes[r]
             reports.append(rep)
             if progress:
                 progress(f"{sc.id} {r + 1}/{repeats}")

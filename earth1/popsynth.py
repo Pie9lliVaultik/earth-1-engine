@@ -38,13 +38,21 @@ def draw_c2plus(country: np.ndarray, seed: int, iso2_list):
     inc = np.zeros(n, np.int32)
     urb = np.zeros(n, bool)
     shape = tuple(tab["shape"])
+    # review M01a — flag-gated, founder ruling pending (v1.1 cycle,
+    # ops/alive/cycles/URBAN_FIX_PREREG.md). The joint axis carries the
+    # URBAN mass at index 0 (build_tables.py: m_urb = [urban%, 1-urban%]),
+    # so u == 0 IS urban; the frozen-0.9 behaviour stores u.astype(bool),
+    # which inverts it (DEFECT_URBAN_INVERSION.md). Default 'off' keeps
+    # the frozen inversion bit-identical.
+    _fix = os.environ.get("EARTH1_URBAN_AXIS_FIX", "off") == "on"
     for ci in np.unique(country):
         m = country == ci
         t = np.asarray(tab["tables"][iso2_list[ci]], dtype=np.float64)
         flat = t.ravel()
         idx = rng.choice(flat.size, size=int(m.sum()), p=flat / flat.sum())
         s, b, e, i, u = np.unravel_index(idx, shape)
-        sex[m], band[m], edu[m], inc[m], urb[m] = s, b, e, i, u.astype(bool)
+        sex[m], band[m], edu[m], inc[m] = s, b, e, i
+        urb[m] = (u == 0) if _fix else u.astype(bool)
     lo = np.array([e[0] for e in BAND_EDGES])[band]
     hi = np.array([e[1] for e in BAND_EDGES])[band]
     age_raw = lo + rng.random(n) * (hi - lo)

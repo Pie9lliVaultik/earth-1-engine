@@ -29,9 +29,22 @@ TINY_SEED = 42
 
 @pytest.fixture(scope="session")
 def _tiny_template():
-    """One birth per session — birthing is the expensive part, not ticking."""
+    """One birth per session — birthing is the expensive part, not ticking.
+
+    PINNED SUBSTRATE (apparatus cycle 1): the M02d fix makes ambient
+    EARTH1_* exports steer birth, so a suite run from a freeze-sourced
+    shell births a different template than the flag-free run the suite's
+    guarantees were derived on. The template now selects its substrate
+    EXPLICITLY, consistent with the import-bound income calibration (the
+    genesis guard refuses a mismatched pair), so collection works from
+    any shell and the choice is visible here rather than ambient.
+    Freeze-configuration behaviour has its own tests
+    (test_review_configstamp.py), which spawn fresh processes on purpose.
+    """
     from earth1.alive import birth_world
-    return birth_world(TINY_POP, TINY_SEED)
+    from earth1.life import INCOME_CALIBRATION
+    sub = "c2plus_v1" if INCOME_CALIBRATION != "off" else None
+    return birth_world(TINY_POP, TINY_SEED, substrate=sub)
 
 
 @pytest.fixture
