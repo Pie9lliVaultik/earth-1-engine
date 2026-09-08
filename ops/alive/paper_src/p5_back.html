@@ -49,6 +49,7 @@
 <li><span class="rn">34.</span> Pew Research Center. <em>Global Attitudes Survey</em> series.</li>
 <li><span class="rn">35.</span> World Bank. <em>Poverty and Inequality Platform</em>; population indicator SP.POP.TOTL.</li>
 <li><span class="rn">36.</span> United Nations, Department of Economic and Social Affairs, Population Division. <em>World Population Prospects</em> (2024).</li>
+<li><span class="rn">37.</span> Durmus, E. <em>et al.</em> Towards measuring the representation of subjective global opinions in language models. <em>arXiv</em> 2306.16388 (2023).</li>
 </ol>
 
 <div class="newpage"></div>
@@ -57,14 +58,14 @@
 <p class="first">The tables below carry the per-estate, per-region and per-arm detail behind the headline figures in Section 2. Values are transcribed from the project's operational ledger. Where the ledger records a value as approximate, or as unavailable, that is reproduced rather than filled.</p>
 
 <figure class="tbl">
-<figcaption><span class="lbl">Extended Data Table 1</span> | <strong>Distance from human majorities, by estate.</strong> Frozen physics, 200,000 agents, three seeds, leave-one-country-out, named-entity abstention active with abstained cells excluded from both model and baselines. The pooled row is the ledger's own headline block and is not a recomputation of the estate rows. The <em>goqa_dev</em> estate carries no per-cell survey <em>n</em>, so noise-relative statistics do not exist for it.</figcaption>
+<figcaption><span class="lbl">Extended Data Table 1</span> | <strong>Distance from human majorities, by estate.</strong> Frozen physics, 200,000 agents, three seeds, leave-one-country-out, named-entity abstention active with abstained cells excluded from both model and baselines. The pooled row is the ledger's own headline block and is not a recomputation of the estate rows. The third estate is the Pew Global Attitudes frame as compiled in GlobalOpinionQA, recorded in the ledger as <em>goqa_dev</em> &mdash; an alias of the Pew development frame, with the same items and content hash; it carries no per-cell survey <em>n</em>, so noise-relative statistics do not exist for it.</figcaption>
 <table>
 <thead><tr><th>Estate</th><th class="num">Cells</th><th class="num">Majority agree</th><th class="num">Within noise</th><th class="num">Median &sigma;</th><th class="num">MAE (pp)</th><th class="num">Signed (pp)</th></tr></thead>
 <tbody>
 <tr><td>All estates pooled</td><td class="num">21,776</td><td class="num">83.5%</td><td class="num">14.2%</td><td class="num">3.78</td><td class="num">10.65</td><td class="num">&mdash;</td></tr>
-<tr><td>WVS held-out</td><td class="num">5,807</td><td class="num">84.6%</td><td class="num">13.8</td><td class="num">3.80</td><td class="num">10.84</td><td class="num">&minus;0.04</td></tr>
-<tr><td>WVS extended</td><td class="num">6,862</td><td class="num">83.7%</td><td class="num">14.6</td><td class="num">3.75</td><td class="num">10.32</td><td class="num">&minus;0.00</td></tr>
-<tr><td>GOQA development</td><td class="num">9,107</td><td class="num">82.7%</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">10.77</td><td class="num">+0.19</td></tr>
+<tr><td>World Values Survey, held-out</td><td class="num">5,807</td><td class="num">84.6%</td><td class="num">13.8</td><td class="num">3.80</td><td class="num">10.84</td><td class="num">&minus;0.04</td></tr>
+<tr><td>World Values Survey, extended</td><td class="num">6,862</td><td class="num">83.7%</td><td class="num">14.6</td><td class="num">3.75</td><td class="num">10.32</td><td class="num">&minus;0.00</td></tr>
+<tr><td>Pew Global Attitudes (GOQA), development</td><td class="num">9,107</td><td class="num">82.7%</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">10.77</td><td class="num">+0.19</td></tr>
 </tbody>
 </table>
 <p class="tnote">The within-noise fraction is computed over the 12,669 cells where survey sample size is known. Two committed artefacts disagree on the number of abstained cells for this run &mdash; the scoring record states 2,198 and its plain-language companion states approximately 500 &mdash; and the disagreement is carried on the record rather than reconciled, on the principle that a register which quietly harmonises its own sources has stopped being a register.</p>
