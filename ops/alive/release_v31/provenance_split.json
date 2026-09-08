@@ -1,0 +1,74 @@
+{
+  "source_cells_csv": "/Users/pietronovelli/Documents/GitHub/earth-1-engine/data/cycles/distance2026/cells.csv",
+  "source_frame_json": "/Users/pietronovelli/Documents/GitHub/earth-1-engine/data/population_frame.v1.json",
+  "eval_set": "non-abstained cells (abstained==0)",
+  "n_rows_total": 23974,
+  "n_cells_nonabstained": 21776,
+  "n_survey_measured_codes_in_frame": 63,
+  "n_tier_fallback_codes_in_frame": 131,
+  "singleton_region_fallbacks_to_naive": 660,
+  "baseline_note": "naive = LOO mean of human over same (estate,item); region_copy = LOO mean over same (estate,item,region), singleton region groups fall back to naive LOO; pools restricted to non-abstained cells",
+  "classes": {
+    "survey_measured": {
+      "n_cells": 19150,
+      "n_countries": 63,
+      "majority_agreement": 0.8342,
+      "n_cells_with_n_survey": 12669,
+      "within_noise_share_where_n_survey_known": 0.1423,
+      "median_noise_dist": 3.78,
+      "mae_pp_earth1": 10.733,
+      "mae_pp_naive": 11.943,
+      "mae_pp_region_copy": 9.96,
+      "earth1_minus_regioncopy_mae_gap_pp": 0.773,
+      "earth1_minus_naive_mae_gap_pp": -1.21,
+      "n_rows_incl_abstained": 20753,
+      "abstention_rate": 0.0772
+    },
+    "tier_fallback": {
+      "n_cells": 2626,
+      "n_countries": 22,
+      "majority_agreement": 0.8412,
+      "n_cells_with_n_survey": 0,
+      "within_noise_share_where_n_survey_known": null,
+      "median_noise_dist": null,
+      "mae_pp_earth1": 10.032,
+      "mae_pp_naive": 11.47,
+      "mae_pp_region_copy": 9.544,
+      "earth1_minus_regioncopy_mae_gap_pp": 0.488,
+      "earth1_minus_naive_mae_gap_pp": -1.438,
+      "n_rows_incl_abstained": 3221,
+      "abstention_rate": 0.1847
+    }
+  },
+  "estate_note": "all non-abstained tier_fallback cells belong to the goqa_dev estate; survey_measured spans wvs_heldout, wvs_extended and goqa_dev, so the estate-matched block compares like with like",
+  "estate_matched_goqa_dev": {
+    "survey_measured": {
+      "n_cells": 6481,
+      "n_countries": 43,
+      "majority_agreement": 0.8212,
+      "mae_pp_earth1": 11.074,
+      "mae_pp_naive": 11.965,
+      "mae_pp_region_copy": 10.37,
+      "earth1_minus_regioncopy_mae_gap_pp": 0.704,
+      "earth1_minus_naive_mae_gap_pp": -0.891
+    },
+    "tier_fallback": {
+      "n_cells": 2626,
+      "n_countries": 22,
+      "majority_agreement": 0.8412,
+      "mae_pp_earth1": 10.032,
+      "mae_pp_naive": 11.47,
+      "mae_pp_region_copy": 9.544,
+      "earth1_minus_regioncopy_mae_gap_pp": 0.488,
+      "earth1_minus_naive_mae_gap_pp": -1.438
+    }
+  },
+  "crosscheck": {
+    "recorded_columns_mean_over_nonabstained": {
+      "mrsp_mae_pp": 10.741,
+      "naive_mae_pp": 11.886,
+      "region_mae_pp": 9.91
+    },
+    "reconstructed_overall_earth1_mae_pp": 10.649
+  }
+}

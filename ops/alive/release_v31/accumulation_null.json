@@ -1,0 +1,241 @@
+{
+  "measured_claim": {
+    "genesis_p99_p50": 11.88,
+    "day120_p99_p50": 29.48,
+    "genesis_top1": 0.122,
+    "day120_top1": 0.194
+  },
+  "measured_claim_source": "ops/alive/PAPER_EARTH1_v1.md:168",
+  "run_record_source": "ops/alive/audit/EMERGENCE_AUDIT_collective.md:5",
+  "t_days": 120.0,
+  "candidates": [
+    {
+      "pop": 6000,
+      "seed": 42,
+      "genesis_wealth": {
+        "p99_p50": 12.13,
+        "top1_share": 0.110976,
+        "p99_p50_census_weighted": 13.8508,
+        "top1_share_census_weighted": 0.105728
+      },
+      "genesis_wage": {
+        "p99_p50": 17.3795,
+        "top1_share": 0.126285,
+        "p99_p50_census_weighted": 16.4261,
+        "top1_share_census_weighted": 0.111132
+      },
+      "match_rel_error_p99_p50_unweighted": 0.021,
+      "match_rel_error_p99_p50_weighted": 0.1659
+    },
+    {
+      "pop": 200000,
+      "seed": 424242,
+      "genesis_wealth": {
+        "p99_p50": 11.4592,
+        "top1_share": 0.118965,
+        "p99_p50_census_weighted": 11.3792,
+        "top1_share_census_weighted": 0.118317
+      },
+      "genesis_wage": {
+        "p99_p50": 17.6011,
+        "top1_share": 0.137063,
+        "p99_p50_census_weighted": 17.6623,
+        "top1_share_census_weighted": 0.1367
+      },
+      "match_rel_error_p99_p50_unweighted": 0.0354,
+      "match_rel_error_p99_p50_weighted": 0.0422
+    },
+    {
+      "pop": 20000,
+      "seed": 42,
+      "genesis_wealth": {
+        "p99_p50": 11.6313,
+        "top1_share": 0.124553,
+        "p99_p50_census_weighted": 11.8958,
+        "top1_share_census_weighted": 0.115561
+      },
+      "genesis_wage": {
+        "p99_p50": 17.9186,
+        "top1_share": 0.135772,
+        "p99_p50_census_weighted": 17.6261,
+        "top1_share_census_weighted": 0.140945
+      },
+      "match_rel_error_p99_p50_unweighted": 0.0209,
+      "match_rel_error_p99_p50_weighted": 0.0013
+    }
+  ],
+  "match": {
+    "pop": 20000,
+    "seed": 42,
+    "stat_mode": "weighted"
+  },
+  "null_family": [
+    {
+      "c": 0.0,
+      "p99_p50": 11.6313,
+      "top1_share": 0.124553,
+      "p99_p50_census_weighted": 11.8958,
+      "top1_share_census_weighted": 0.115561
+    },
+    {
+      "c": 0.05,
+      "p99_p50": 14.0369,
+      "top1_share": 0.124888,
+      "p99_p50_census_weighted": 13.4019,
+      "top1_share_census_weighted": 0.126536
+    },
+    {
+      "c": 0.1,
+      "p99_p50": 15.4054,
+      "top1_share": 0.128584,
+      "p99_p50_census_weighted": 14.8129,
+      "top1_share_census_weighted": 0.132579
+    },
+    {
+      "c": 0.25,
+      "p99_p50": 16.6672,
+      "top1_share": 0.13222,
+      "p99_p50_census_weighted": 16.4071,
+      "top1_share_census_weighted": 0.13584
+    },
+    {
+      "c": 0.5,
+      "p99_p50": 17.1634,
+      "top1_share": 0.13385,
+      "p99_p50_census_weighted": 16.7634,
+      "top1_share_census_weighted": 0.137597
+    },
+    {
+      "c": 1.0,
+      "p99_p50": 17.5214,
+      "top1_share": 0.134772,
+      "p99_p50_census_weighted": 17.2387,
+      "top1_share_census_weighted": 0.140546
+    },
+    {
+      "c": 2.0,
+      "p99_p50": 17.6864,
+      "top1_share": 0.135263,
+      "p99_p50_census_weighted": 17.4451,
+      "top1_share_census_weighted": 0.139259
+    },
+    {
+      "c": 5.0,
+      "p99_p50": 17.8247,
+      "top1_share": 0.135566,
+      "p99_p50_census_weighted": 17.5399,
+      "top1_share_census_weighted": 0.139621
+    },
+    {
+      "c": 20.0,
+      "p99_p50": 17.8998,
+      "top1_share": 0.13572,
+      "p99_p50_census_weighted": 17.6051,
+      "top1_share_census_weighted": 0.140897
+    },
+    {
+      "c": "inf (wage-only limit)",
+      "p99_p50": 17.9186,
+      "top1_share": 0.135772,
+      "p99_p50_census_weighted": 17.6261,
+      "top1_share_census_weighted": 0.140945
+    }
+  ],
+  "supplementary_surplus_variant": [
+    {
+      "c": 0.0,
+      "p99_p50": 11.6313,
+      "top1_share": 0.124553,
+      "p99_p50_census_weighted": 11.8958,
+      "top1_share_census_weighted": 0.115561
+    },
+    {
+      "c": 0.05,
+      "p99_p50": 16.9394,
+      "top1_share": 0.136319,
+      "p99_p50_census_weighted": 16.2332,
+      "top1_share_census_weighted": 0.13884
+    },
+    {
+      "c": 0.1,
+      "p99_p50": 19.7521,
+      "top1_share": 0.142864,
+      "p99_p50_census_weighted": 19.2981,
+      "top1_share_census_weighted": 0.148288
+    },
+    {
+      "c": 0.25,
+      "p99_p50": 22.5993,
+      "top1_share": 0.149061,
+      "p99_p50_census_weighted": 22.8252,
+      "top1_share_census_weighted": 0.154385
+    },
+    {
+      "c": 0.5,
+      "p99_p50": 23.8082,
+      "top1_share": 0.151778,
+      "p99_p50_census_weighted": 24.0128,
+      "top1_share_census_weighted": 0.157384
+    },
+    {
+      "c": 1.0,
+      "p99_p50": 24.6473,
+      "top1_share": 0.153303,
+      "p99_p50_census_weighted": 25.1291,
+      "top1_share_census_weighted": 0.161291
+    },
+    {
+      "c": 2.0,
+      "p99_p50": 25.0673,
+      "top1_share": 0.154111,
+      "p99_p50_census_weighted": 25.6339,
+      "top1_share_census_weighted": 0.160116
+    },
+    {
+      "c": 5.0,
+      "p99_p50": 25.3746,
+      "top1_share": 0.15461,
+      "p99_p50_census_weighted": 25.9284,
+      "top1_share_census_weighted": 0.160707
+    },
+    {
+      "c": 20.0,
+      "p99_p50": 25.5546,
+      "top1_share": 0.154863,
+      "p99_p50_census_weighted": 26.0997,
+      "top1_share_census_weighted": 0.162255
+    },
+    {
+      "c": "inf (surplus-only limit)",
+      "p99_p50": 25.6025,
+      "top1_share": 0.154948,
+      "p99_p50_census_weighted": 26.1521,
+      "top1_share_census_weighted": 0.162341
+    }
+  ],
+  "verdict_inputs": {
+    "null_p99_p50_min": 11.8958,
+    "null_p99_p50_max": 17.6261,
+    "null_top1_min": 0.115561,
+    "null_top1_max": 0.140945,
+    "measured_p99_p50": 29.48,
+    "measured_top1": 0.194,
+    "measured_p99_p50_inside_null_range": false,
+    "measured_top1_inside_null_range": false,
+    "nearest_null_by_p99_p50": {
+      "c": "inf (wage-only limit)",
+      "p99_p50": 17.9186,
+      "top1_share": 0.135772,
+      "p99_p50_census_weighted": 17.6261,
+      "top1_share_census_weighted": 0.140945
+    },
+    "nearest_null_by_top1": {
+      "c": "inf (wage-only limit)",
+      "p99_p50": 17.9186,
+      "top1_share": 0.135772,
+      "p99_p50_census_weighted": 17.6261,
+      "top1_share_census_weighted": 0.140945
+    }
+  },
+  "verdict": "OUTSIDE NULL (ABOVE): the measured day-120 concentration falls outside the entire constant-accumulation null family on both statistics; the claim survives this null."
+}

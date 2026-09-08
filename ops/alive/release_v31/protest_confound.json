@@ -1,0 +1,421 @@
+{
+  "provenance": {
+    "register": "ops/alive/RETRODICTION_v1.md lines 14-37 (transcribed verbatim into this script)",
+    "pooled_claim_under_audit": "null-arm Spearman 0.552, p=0.0052; positives 0.417 vs controls 0.031 (RETRODICTION_v1.md lines 40-44)",
+    "income_repo": "engine repo country table: earth1/census.py CENSUS_TARGETS[*]['income'] (the C2+ substrate pooling tier map); matches WB FY2020/21-era classification",
+    "income_fy2011": "World Bank income group, FY2011 classification, transcribed (2009 GNI p.c., Atlas). Boundary cases: EC at the LMIC/UMIC cut (kept LMIC per the FY2011 list); IQ LMIC; CL/UY/IR UMIC; KE/BD LIC.",
+    "seed": 20260908,
+    "n_mc_permutations": 10000
+  },
+  "register_table": [
+    {
+      "iso2": "IR",
+      "outcome": 1,
+      "p_scenario": 0.875,
+      "p_null": 1.0,
+      "income_repo": "LMIC",
+      "income_fy2011": "UMIC"
+    },
+    {
+      "iso2": "LK",
+      "outcome": 1,
+      "p_scenario": 0.125,
+      "p_null": 0.375,
+      "income_repo": "LMIC",
+      "income_fy2011": "LMIC"
+    },
+    {
+      "iso2": "KZ",
+      "outcome": 1,
+      "p_scenario": 0.125,
+      "p_null": 0.5,
+      "income_repo": "UMIC",
+      "income_fy2011": "UMIC"
+    },
+    {
+      "iso2": "CL",
+      "outcome": 1,
+      "p_scenario": 0.875,
+      "p_null": 0.75,
+      "income_repo": "HIC",
+      "income_fy2011": "UMIC"
+    },
+    {
+      "iso2": "CO",
+      "outcome": 1,
+      "p_scenario": 0.625,
+      "p_null": 0.875,
+      "income_repo": "UMIC",
+      "income_fy2011": "UMIC"
+    },
+    {
+      "iso2": "FR",
+      "outcome": 1,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "NG",
+      "outcome": 1,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "LMIC",
+      "income_fy2011": "LMIC"
+    },
+    {
+      "iso2": "KE",
+      "outcome": 1,
+      "p_scenario": 0.0,
+      "p_null": 0.375,
+      "income_repo": "LMIC",
+      "income_fy2011": "LIC"
+    },
+    {
+      "iso2": "BD",
+      "outcome": 1,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "LMIC",
+      "income_fy2011": "LIC"
+    },
+    {
+      "iso2": "PE",
+      "outcome": 1,
+      "p_scenario": 0.375,
+      "p_null": 0.875,
+      "income_repo": "UMIC",
+      "income_fy2011": "UMIC"
+    },
+    {
+      "iso2": "EC",
+      "outcome": 1,
+      "p_scenario": 0.0,
+      "p_null": 0.25,
+      "income_repo": "UMIC",
+      "income_fy2011": "LMIC"
+    },
+    {
+      "iso2": "IQ",
+      "outcome": 1,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "UMIC",
+      "income_fy2011": "LMIC"
+    },
+    {
+      "iso2": "CH",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "PT",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "UY",
+      "outcome": 0,
+      "p_scenario": 0.25,
+      "p_null": 0.125,
+      "income_repo": "HIC",
+      "income_fy2011": "UMIC"
+    },
+    {
+      "iso2": "JP",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.125,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "SG",
+      "outcome": 0,
+      "p_scenario": 0.125,
+      "p_null": 0.125,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "NO",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "DK",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "NZ",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "CA",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "AU",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "IE",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    },
+    {
+      "iso2": "FI",
+      "outcome": 0,
+      "p_scenario": 0.0,
+      "p_null": 0.0,
+      "income_repo": "HIC",
+      "income_fy2011": "HIC"
+    }
+  ],
+  "primary_repo_tiers_null_arm": {
+    "tag": "repo_tiers",
+    "arm": "null",
+    "income_ordinal_coding": {
+      "LIC": 1,
+      "LMIC": 2,
+      "UMIC": 3,
+      "HIC": 4
+    },
+    "pooled_unadjusted": {
+      "spearman_rho": 0.5519630535056066,
+      "p_asymptotic": 0.0051676559566443845
+    },
+    "M3_blunt": {
+      "spearman_p_onset_vs_income": {
+        "rho": -0.46398146773930843,
+        "p_asymptotic": 0.022379620486296263
+      },
+      "spearman_outcome_vs_income_confound": {
+        "rho": -0.8153649149910351,
+        "p_asymptotic": 1.2127764532076096e-06
+      }
+    },
+    "M1_partial_spearman": {
+      "rho_partial": 0.3385907730080823,
+      "p_perm_mc_one_sided": 0.18088191180881913,
+      "p_perm_mc_two_sided": 0.18088191180881913,
+      "n_mc": 10000,
+      "p_exact_one_sided": 0.17582417582417584,
+      "p_exact_two_sided": 0.17582417582417584,
+      "exact_group_size": 91
+    },
+    "M2_stratified": {
+      "per_stratum": {
+        "2": {
+          "n_pos": 5,
+          "n_ctl": 0,
+          "mean_pos": 0.35,
+          "mean_ctl": null,
+          "informative": false
+        },
+        "3": {
+          "n_pos": 5,
+          "n_ctl": 0,
+          "mean_pos": 0.5,
+          "mean_ctl": null,
+          "informative": false
+        },
+        "4": {
+          "n_pos": 2,
+          "n_ctl": 12,
+          "mean_pos": 0.375,
+          "mean_ctl": 0.03125,
+          "informative": true
+        }
+      },
+      "stratified_ranksum_obs": 49.5,
+      "p_exact_one_sided_ranksum": 0.17582417582417584,
+      "stratified_meandiff_obs": 0.34375,
+      "p_exact_one_sided_meandiff": 0.14285714285714285,
+      "exact_group_size": 91
+    },
+    "supp_within_positives_income_vs_score": {
+      "n": 12,
+      "rho": 0.0559641199349667,
+      "p_asymptotic": 0.8628493129296191
+    }
+  },
+  "robustness_fy2011_null_arm": {
+    "tag": "fy2011",
+    "arm": "null",
+    "income_ordinal_coding": {
+      "LIC": 1,
+      "LMIC": 2,
+      "UMIC": 3,
+      "HIC": 4
+    },
+    "pooled_unadjusted": {
+      "spearman_rho": 0.5519630535056066,
+      "p_asymptotic": 0.0051676559566443845
+    },
+    "M3_blunt": {
+      "spearman_p_onset_vs_income": {
+        "rho": -0.46333653738102243,
+        "p_asymptotic": 0.022591720425000017
+      },
+      "spearman_outcome_vs_income_confound": {
+        "rho": -0.8199122499151819,
+        "p_asymptotic": 9.428929293443372e-07
+      }
+    },
+    "M1_partial_spearman": {
+      "rho_partial": 0.3391634535109387,
+      "p_perm_mc_one_sided": 0.2782721727827217,
+      "p_perm_mc_two_sided": 0.2782721727827217,
+      "n_mc": 10000,
+      "p_exact_one_sided": 0.2777777777777778,
+      "p_exact_two_sided": 0.2777777777777778,
+      "exact_group_size": 72
+    },
+    "M2_stratified": {
+      "per_stratum": {
+        "1": {
+          "n_pos": 2,
+          "n_ctl": 0,
+          "mean_pos": 0.1875,
+          "mean_ctl": null,
+          "informative": false
+        },
+        "2": {
+          "n_pos": 4,
+          "n_ctl": 0,
+          "mean_pos": 0.15625,
+          "mean_ctl": null,
+          "informative": false
+        },
+        "3": {
+          "n_pos": 5,
+          "n_ctl": 1,
+          "mean_pos": 0.8,
+          "mean_ctl": 0.125,
+          "informative": true
+        },
+        "4": {
+          "n_pos": 1,
+          "n_ctl": 11,
+          "mean_pos": 0.0,
+          "mean_ctl": 0.022727272727272728,
+          "informative": true
+        }
+      },
+      "stratified_ranksum_obs": 38.5,
+      "p_exact_one_sided_ranksum": 0.3055555555555556,
+      "stratified_meandiff_obs": 0.6522727272727273,
+      "p_exact_one_sided_meandiff": 0.16666666666666666,
+      "exact_group_size": 72
+    },
+    "supp_within_positives_income_vs_score": {
+      "n": 12,
+      "rho": 0.4596538544938483,
+      "p_asymptotic": 0.13273496253229486
+    }
+  },
+  "secondary_repo_tiers_scenario_arm": {
+    "tag": "repo_tiers",
+    "arm": "scenario",
+    "income_ordinal_coding": {
+      "LIC": 1,
+      "LMIC": 2,
+      "UMIC": 3,
+      "HIC": 4
+    },
+    "pooled_unadjusted": {
+      "spearman_rho": 0.387897404328554,
+      "p_asymptotic": 0.06107462436509403
+    },
+    "M3_blunt": {
+      "spearman_p_onset_vs_income": {
+        "rho": -0.24892244813866246,
+        "p_asymptotic": 0.24081885523797172
+      },
+      "spearman_outcome_vs_income_confound": {
+        "rho": -0.8153649149910351,
+        "p_asymptotic": 1.2127764532076096e-06
+      }
+    },
+    "M1_partial_spearman": {
+      "rho_partial": 0.3298142142458731,
+      "p_perm_mc_one_sided": 0.15728427157284272,
+      "p_perm_mc_two_sided": 0.15728427157284272,
+      "n_mc": 10000,
+      "p_exact_one_sided": 0.15384615384615385,
+      "p_exact_two_sided": 0.15384615384615385,
+      "exact_group_size": 91
+    },
+    "M2_stratified": {
+      "per_stratum": {
+        "2": {
+          "n_pos": 5,
+          "n_ctl": 0,
+          "mean_pos": 0.2,
+          "mean_ctl": null,
+          "informative": false
+        },
+        "3": {
+          "n_pos": 5,
+          "n_ctl": 0,
+          "mean_pos": 0.225,
+          "mean_ctl": null,
+          "informative": false
+        },
+        "4": {
+          "n_pos": 2,
+          "n_ctl": 12,
+          "mean_pos": 0.4375,
+          "mean_ctl": 0.03125,
+          "informative": true
+        }
+      },
+      "stratified_ranksum_obs": 50.0,
+      "p_exact_one_sided_ranksum": 0.15384615384615385,
+      "stratified_meandiff_obs": 0.40625,
+      "p_exact_one_sided_meandiff": 0.14285714285714285,
+      "exact_group_size": 91
+    },
+    "supp_within_positives_income_vs_score": {
+      "n": 12,
+      "rho": 0.1781434918261855,
+      "p_asymptotic": 0.5796283597578757
+    }
+  },
+  "sanity_reproduction": {
+    "null_arm_pooled_spearman_recomputed": 0.5519630535056066,
+    "register_claims": 0.552,
+    "positives_mean_p_null": 0.4166666666666667,
+    "controls_mean_p_null": 0.03125
+  }
+}

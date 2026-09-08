@@ -1,0 +1,86 @@
+{
+  "source_csv": "/Users/pietronovelli/Documents/GitHub/earth-1-engine/data/cycles/distance2026/cells.csv",
+  "n_rows_total": 23974,
+  "cell_sets": {
+    "agreement_set": {
+      "definition": "abstained == 0 (all three estates)",
+      "n": 21776
+    },
+    "within_noise_set": {
+      "definition": "abstained == 0 AND within_noise defined (wvs_heldout + wvs_extended; goqa_dev has no survey-noise columns)",
+      "n": 12669
+    }
+  },
+  "rules_inferred": {
+    "majority_agreement": "(pred > 0.5) == (human > 0.5); reproduces recorded modal_agree",
+    "majority_rule_match_rate_all_cells": 1.0,
+    "within_noise": "|pred - human| in pp <= se95_pp; reproduces recorded within_noise",
+    "within_noise_rule_match_rate": 0.9995376435231563,
+    "within_noise_mismatches": "6 of 12,977, all at noise_dist == 1.0 exactly (boundary cells decided by unrounded se95)"
+  },
+  "earth1_headline_reproduction": {
+    "majority_agreement_recorded_column": 0.8350477590007348,
+    "majority_agreement_recomputed_rule": 0.8350477590007348,
+    "within_noise_recorded_column": 0.14231588917830926,
+    "within_noise_recomputed_rule": 0.14215802352198278
+  },
+  "baseline_reconstruction": {
+    "naive": {
+      "definition": "leave-one-country-out mean of `human` across countries within (estate, item)",
+      "validation_vs_recorded_naive_mae_pp": {
+        "n_items": 676,
+        "match_rate_within_rounding_0p0051pp": 0.9511834319526628,
+        "match_rate_within_0p01pp": 1.0,
+        "mean_abs_discrepancy_pp": 0.002491593662119,
+        "max_abs_discrepancy_pp": 0.006374269005847921
+      }
+    },
+    "region": {
+      "definition": "leave-one-country-out mean of `human` within (estate, item, region); singleton-region cells (n=1 country in region) fall back to the naive LOO grand mean",
+      "n_singleton_region_cells": 826,
+      "validation_vs_recorded_region_mae_pp": {
+        "n_items": 676,
+        "match_rate_within_rounding_0p0051pp": 0.9571005917159763,
+        "match_rate_within_0p01pp": 1.0,
+        "mean_abs_discrepancy_pp": 0.0024898169138771083,
+        "max_abs_discrepancy_pp": 0.008392857142855092
+      }
+    },
+    "mrsp": "NOT reconstructable from cells.csv: only the per-item mrsp_mae_pp aggregate is stored; no per-cell MrsP prediction or error exists in this file."
+  },
+  "table_rows": {
+    "earth1": {
+      "majority_agreement": 0.8350477590007348,
+      "within_noise_share": 0.14231588917830926
+    },
+    "naive_grand_mean_LOO": {
+      "majority_agreement": 0.8123622336517267,
+      "within_noise_share": 0.12613465940484647
+    },
+    "region_copy_LOO": {
+      "majority_agreement": 0.8434974283614989,
+      "within_noise_share": 0.15636593259136475
+    },
+    "mrsp": {
+      "majority_agreement": null,
+      "within_noise_share": null,
+      "reason": "predictions not in cells.csv (only item-level MAE aggregate)"
+    }
+  },
+  "pooled_mae_crosscheck": {
+    "earth1_model_pp": 10.648819801616458,
+    "naive_reconstructed_pp": 11.886317803839441,
+    "region_reconstructed_pp": 9.910218403271848,
+    "recorded_item_columns_cell_weighted_pp": {
+      "mrsp": 10.741261480529023,
+      "naive": 11.886164584864071,
+      "region": 9.910247520205733
+    },
+    "recorded_item_columns_unweighted_item_mean_pp": {
+      "mrsp": 11.152189349112424,
+      "naive": 11.969837278106507,
+      "region": 10.339792899408284
+    },
+    "note": "Pooled over cells (or items) of all three estates combined; NOT comparable 1:1 to per-frame lineage numbers (11.84/12.80/9.70) which are computed per-frame."
+  }
+}

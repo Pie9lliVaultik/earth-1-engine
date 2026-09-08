@@ -4,7 +4,7 @@
 
 <h2 class="sec"><span class="n">6</span>Author contributions</h2>
 
-<p class="first">The engine, population substrate, behavioural grammar, calibration ladder, evaluation harness and interfaces were designed and implemented at Earthling Labs. Founder rulings fixed the gates, the freeze discipline and the sealed-judge protocol before each run they govern, and the binding condition that the learning experiment include an informed non-learner arm was imposed at pre-registration. All measurements reported here were produced under the frozen physics configuration and recorded in the project's operational ledger.</p>
+<p class="first">P.N. conceived Earth-1, directed the research programme, fixed every gate and ruling before the run it governs, wrote the sealed priors, imposed the binding condition that the learning experiment include an informed non-learner arm, and approved the freeze and this manuscript. Engine implementation, the population substrate, the calibration ladder, the evaluation harness, the interfaces and the drafting of this paper were carried out by the Earthling Labs engineering effort under P.N.&rsquo;s direction. All measurements reported here were produced under the frozen physics configuration and recorded in the project's operational ledger.</p>
 
 <h2 class="sec"><span class="n">7</span>Competing interests</h2>
 
@@ -67,7 +67,7 @@
 <tr><td>GOQA development</td><td class="num">9,107</td><td class="num">82.7%</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">10.77</td><td class="num">+0.19</td></tr>
 </tbody>
 </table>
-<p class="tnote">The within-noise fraction is computed over the 12,669 cells where survey sample size is known. Two committed artefacts disagree on the number of abstained cells for this run; the disagreement is recorded rather than reconciled.</p>
+<p class="tnote">The within-noise fraction is computed over the 12,669 cells where survey sample size is known. Two committed artefacts disagree on the number of abstained cells for this run &mdash; the scoring record states 2,198 and its plain-language companion states approximately 500 &mdash; and the disagreement is carried on the record rather than reconciled, on the principle that a register which quietly harmonises its own sources has stopped being a register.</p>
 </figure>
 
 <figure class="tbl">
@@ -118,7 +118,7 @@
 </figure>
 
 <figure class="tbl">
-<figcaption><span class="lbl">Extended Data Table 5</span> | <strong>A hundred-million-agent world tracked against a four-million-agent control</strong> through equilibration. Poverty gap is the absolute difference in the $8.30/day headcount between the two runs at the same simulated day.</figcaption>
+<figcaption><span class="lbl">Extended Data Table 5</span> | <strong>A hundred-million-agent world tracked against a four-million-agent control</strong> through the settling window of the frozen configuration, whose day-5 census is already near-calibrated. Poverty gap is the absolute difference in the $8.30/day headcount between the two runs at the same simulated day.</figcaption>
 <table>
 <thead><tr><th>Simulated day</th><th class="num">5</th><th class="num">15</th><th class="num">30</th><th class="num">60</th></tr></thead>
 <tbody>
@@ -143,7 +143,7 @@
 <tr><td>Informed non-learner</td><td>final curve value</td><td class="num">not recorded</td><td class="num">not recorded</td></tr>
 </tbody>
 </table>
-<p class="tnote">The report file carries no per-cycle curve for the informed non-learner, because the stage scorer omitted that arm; its late-window level survives only in the operational ledger, and the two gates involving it were computed directly from the arm files by the same paired method.</p>
+<p class="tnote">The report file carries no per-cycle curve for the informed non-learner, because the stage scorer as first run omitted that arm; the two gates involving it were computed directly from the arm files by the same paired method. The registered scorer was extended to include the arm the same day, fifty minutes after this report was emitted, so the stored report predates the fix; fifteen of fifteen locally recomputable consistency checks on the stored report pass, and a full re-emission under the extended scorer awaits the archived arm files on the host that holds them.</p>
 </figure>
 
 <figure class="tbl">
@@ -166,7 +166,7 @@
 </figure>
 
 <figure class="tbl">
-<figcaption><span class="lbl">Extended Data Table 8</span> | <strong>Determinism and cross-implementation equivalence.</strong> Registered tolerance for the port-equivalence cases is bitwise zero. No physics was changed to obtain any of the recorded agreement.</figcaption>
+<figcaption><span class="lbl">Extended Data Table 8</span> | <strong>Determinism and re-implementation equivalence.</strong> Registered tolerance for the port-equivalence cases is bitwise zero; both implementations are Earthling Labs' own (a laboratory rewrite against the canonical engine), so these cases establish that the physics as specified pins the bits across code bases, with a third-party port the outstanding stronger test. No physics was changed to obtain any of the recorded agreement.</figcaption>
 <table>
 <thead><tr><th>Check</th><th>Configuration</th><th>Result</th></tr></thead>
 <tbody>
@@ -233,6 +233,41 @@
 <tr><td>Adult age structure</td><td>stable-population density under each country's own survival curve</td><td>not a parametric draw</td></tr>
 <tr><td>World population anchor</td><td class="num">8,140,897,523</td><td>public population series</td></tr>
 <tr><td>Not represented</td><td>subnational geography; household frame; ethnicity; religion</td><td>registered boundaries, Section 3.3</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 12</span> | <strong>The shock-free accumulation null for the wealth-concentration result.</strong> Computed analytically on the untouched genesis arrays of the identified genesis world: every agent keeps its job and accumulates at a constant rate proportional to its wage, for accumulation-rate multipliers spanning zero to the infinite-rate limit in which the wealth distribution becomes the wage distribution itself. Census-weighted statistics at day 120. The measured concentration exceeds every member of the family; the strongest shock-free competitor (saving proportional to income above subsistence, last row before the measurement) still falls 13% and 20% short. The genesis identification reproduces the recorded day-0 ratio to 0.13% and is inferential rather than documentary.</figcaption>
+<table>
+<thead><tr><th>Accumulation regime</th><th class="num">p99 / p50</th><th class="num">Top-1% share</th></tr></thead>
+<tbody>
+<tr><td>Genesis (no accumulation)</td><td class="num">11.90</td><td class="num">0.116</td></tr>
+<tr><td>Rate multiplier 0.05</td><td class="num">13.40</td><td class="num">0.127</td></tr>
+<tr><td>Rate multiplier 0.1</td><td class="num">14.81</td><td class="num">0.133</td></tr>
+<tr><td>Rate multiplier 0.25</td><td class="num">16.41</td><td class="num">0.136</td></tr>
+<tr><td>Rate multiplier 0.5</td><td class="num">16.76</td><td class="num">0.138</td></tr>
+<tr><td>Rate multiplier 1</td><td class="num">17.24</td><td class="num">0.141</td></tr>
+<tr><td>Rate multiplier 5</td><td class="num">17.54</td><td class="num">0.140</td></tr>
+<tr><td>Wage-only limit (rate &rarr; &infin;)</td><td class="num">17.63</td><td class="num">0.141</td></tr>
+<tr><td>Surplus-proportional variant, limit</td><td class="num">26.15</td><td class="num">0.162</td></tr>
+<tr><td><strong>Measured, day 120</strong></td><td class="num"><strong>29.48</strong></td><td class="num"><strong>0.194</strong></td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 13</span> | <strong>Wealth-confound re-scoring of the protest-onset register.</strong> Income group is the World Bank classification carried per country. The permutation tests are exact within income strata; because positives and controls co-occur in only one stratum (2 positives against 12 controls), the design cannot yield <em>p</em> below 0.011 regardless of effect size, so non-significance here is a statement about the register's construction as much as about the model. The registered fix is an income-matched control set.</figcaption>
+<table>
+<thead><tr><th>Analysis</th><th class="num">Statistic</th><th class="num"><em>p</em></th><th class="num">n</th></tr></thead>
+<tbody>
+<tr><td>Pooled register claim (reproduced)</td><td class="num">&rho; = 0.552</td><td class="num">0.0052</td><td class="num">24</td></tr>
+<tr><td>Confound: outcome vs income group</td><td class="num">&rho; = &minus;0.815</td><td class="num">~10<sup>&minus;6</sup></td><td class="num">24</td></tr>
+<tr><td>Wealth alone: P(onset) vs income group</td><td class="num">&rho; = &minus;0.464</td><td class="num">0.022</td><td class="num">24</td></tr>
+<tr><td>Partial &rho;, income controlled</td><td class="num">0.339</td><td class="num">0.176 (exact)</td><td class="num">24</td></tr>
+<tr><td>Within high-income stratum, positives vs controls</td><td class="num">0.375 vs 0.031</td><td class="num">0.143&ndash;0.176 (exact)</td><td class="num">2 vs 12</td></tr>
+<tr><td>Robustness, FY2011 classification</td><td class="num">partial &rho; = 0.339</td><td class="num">0.278 (exact)</td><td class="num">24</td></tr>
+<tr><td>Within positives: P(onset) vs income</td><td class="num">&rho; = 0.056</td><td class="num">0.86</td><td class="num">12</td></tr>
 </tbody>
 </table>
 </figure>

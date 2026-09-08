@@ -273,6 +273,32 @@ def world_state(fidelity: str = "20k",
                                 "yet — registered limitation"})
 
 
+@router.get("/world/hash")
+def world_hash_get(fidelity: str = "20k",
+                   authorization: Optional[str] = Header(None)):
+    """The reproducibility claim, exercisable from outside.
+
+    Returns the full-world digest of the served snapshot plus the
+    physics configuration stamp. An identical (seed, day, config)
+    reconstruction must reproduce this value bit-for-bit; a caller
+    who re-runs and gets a different hash has falsified the paper's
+    determinism claim. Audit provenance: assessability move 5.
+    """
+    key = _auth(authorization)
+    _qlog("world_hash", {"fidelity": fidelity}, key)
+    from earth1.persistence import world_hash
+    from earth1.configstamp import stamp
+    w = _world(fidelity)
+    return _envelope(fidelity, {
+        "world_hash": world_hash(w),
+        "day": float(w.day),
+        "config_stamp": stamp(),
+        "note": "digest of the entire world state at the served "
+                "snapshot — every component, not just the population; "
+                "identical (seed, day, config) must reproduce it "
+                "exactly"})
+
+
 @router.get("/world/history")
 def world_history(fidelity: str = "20k",
                   authorization: Optional[str] = Header(None)):

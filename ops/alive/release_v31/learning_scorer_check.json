@@ -1,0 +1,215 @@
+{
+ "report_file": "/Users/pietronovelli/Documents/GitHub/earth-1-engine/data/cycles/v02_report.json",
+ "published_row": "/Users/pietronovelli/Documents/GitHub/earth-1-engine/ops/alive/CALIBRATION_CYCLES.md:32",
+ "A_structure": {
+  "report_keys": [
+   "G1_frozen_minus_exp",
+   "G1b_naive_minus_exp",
+   "G1b_stretch_naiveforced_minus_exp",
+   "G8_shock_cycles_naive_minus_exp",
+   "G7_frozen_minus_placebo",
+   "G2_cover90_late",
+   "G3_recovery",
+   "G4_no_false_learning_mis",
+   "curves_ws",
+   "curves_mis",
+   "EXPERIENTIAL_LEARNING_DEMONSTRATED"
+  ],
+  "has_G1c_key": false,
+  "has_G7prime_key": false,
+  "curves_ws_arms": [
+   "exp",
+   "frozen",
+   "naive",
+   "naive_forced",
+   "placebo"
+  ],
+  "has_filter_curve": false,
+  "conclusion": "report emitted by PRE-patch scorer (no G1c/G7prime keys, no filter curve) \u2014 matches the audit note"
+ },
+ "B_verbatim": {
+  "G1_mean_log": {
+   "report": 2.1593028139718604,
+   "published": 2.16,
+   "match_2dp": true
+  },
+  "G1_p": {
+   "report": 3.0517578125e-05,
+   "published_bound": "p<1e-4",
+   "match": true
+  },
+  "G1b_mean_log": {
+   "report": 0.5463945793255698,
+   "published": 0.55,
+   "match_2dp": true
+  },
+  "G1b_ci": {
+   "report": [
+    0.32368174246399695,
+    0.7691074161871426
+   ],
+   "published": [
+    0.32,
+    0.77
+   ],
+   "match_2dp": true
+  },
+  "G1b_p": {
+   "report": 0.000213623046875,
+   "published": 0.0002,
+   "match_1sf": true
+  },
+  "G8_mean_log": {
+   "report": 0.5902603322055597,
+   "published": 0.59,
+   "match_2dp": true
+  },
+  "G8_p": {
+   "report": 6.103515625e-05,
+   "published": 0.0001,
+   "match_1sf": true
+  },
+  "G2_cover": {
+   "report": 0.9633928571428573,
+   "published": 0.963,
+   "match_3dp": true
+  },
+  "G3_u_err": {
+   "report": [
+    0.0063766005843515295,
+    0.03425415130532908
+   ],
+   "published": [
+    0.006,
+    0.034
+   ],
+   "match": true
+  },
+  "G4": {
+   "report": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "published": "4/4",
+   "match": true
+  },
+  "G7_null_as_respecified": {
+   "report_mean_log": 0.07800392387060702,
+   "report_p": 0.899932861328125,
+   "ci_spans_zero": true
+  },
+  "verdict_flag": true
+ },
+ "C_wilcoxon_structure": {
+  "n_ws_worlds": 16,
+  "G1": {
+   "p": 3.0517578125e-05,
+   "p_times_2pow16": 2.0,
+   "integer_multiple_of_2pow-16": true,
+   "is_min_two_sided_n16": true
+  },
+  "G1b": {
+   "p": 0.000213623046875,
+   "p_times_2pow16": 14.0,
+   "integer_multiple_of_2pow-16": true,
+   "is_min_two_sided_n16": false
+  },
+  "G8": {
+   "p": 6.103515625e-05,
+   "p_times_2pow16": 4.0,
+   "integer_multiple_of_2pow-16": true,
+   "is_min_two_sided_n16": false
+  },
+  "note": "min two-sided sign-rank p for n=16 is 2/2^16 = 3.0517578125e-05; G1 attains it => all 16 paired differences one sign. The published G1c p=3e-5 equals the same minimum, consistent with the published 'positive in 16/16 WS worlds'."
+ },
+ "D_late_window": {
+  "cycles": "12..23",
+  "late_means": {
+   "frozen": 1.9251381736168802,
+   "exp": 0.2162081215059415,
+   "placebo": 2.2683485417458535,
+   "naive": 0.36034308087070527,
+   "naive_forced": 0.3310324976707789
+  },
+  "exp_late_vs_published": {
+   "computed": 0.2162081215059415,
+   "published": 0.216,
+   "match_3dp": true
+  },
+  "log_ratio_frozen_exp": {
+   "computed": 2.1865115533662993,
+   "paired_gate_G1": 2.1593028139718604,
+   "abs_gap": 0.027208739394438908
+  },
+  "log_ratio_placebo_exp": {
+   "computed": 2.3505658617769325,
+   "published_paired_G7prime": 2.08,
+   "abs_gap": 0.2705658617769324
+  },
+  "log_ratio_naive_exp": {
+   "computed": 0.5108151107683732,
+   "paired_gate_G1b": 0.5463945793255698,
+   "abs_gap": 0.035579468557196625
+  },
+  "note": "gates are per-seed paired means of log-CRPS differences; report stores cross-seed mean curves, so log-of-means only ballparks the paired estimates (Jensen gap expected, same sign/scale)"
+ },
+ "E_filter_row_arithmetic": {
+  "published_filter_late": 1.04,
+  "computed_exp_late": 0.2162081215059415,
+  "implied_ratio": 4.810180083690429,
+  "published_ratio": 4.8,
+  "ratio_match_1dp": true,
+  "log_implied_ratio": 1.5707345228535112,
+  "published_paired_G1c": 1.51,
+  "within_published_ci": true,
+  "note": "filter late-mean 1.04 comes from the published row, NOT from the report file (no filter curve stored) \u2014 this is the exact unverifiable-locally piece"
+ },
+ "F_naive_forced_pattern": {
+  "cycles_differing": [
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23
+  ],
+  "expected_repeat_shock_cycles_among_them": [
+   16,
+   17
+  ],
+  "forced_leq_naive_at_repeat_shocks": true,
+  "identical_before_first_repeat_shock": true
+ },
+ "G_missing_artifacts": {
+  "out_root": "/opt/earth1-data/exploop_v02",
+  "out_root_exists": false,
+  "n_required_files_missing": 100,
+  "n_required_files_total": 100,
+  "first_missing_examples": [
+   "/opt/earth1-data/exploop_v02/arms/9201_frozen.json",
+   "/opt/earth1-data/exploop_v02/arms/9201_exp.json",
+   "/opt/earth1-data/exploop_v02/arms/9201_placebo.json"
+  ],
+  "rescore_feasible_locally": false
+ },
+ "provenance": {
+  "scorer": "/Users/pietronovelli/Documents/GitHub/earth-1-engine/scripts/exploop/run_v0.py",
+  "patch_commits": {
+   "ac6d35d": "2026-08-31 17:28:53 +0200 \u2014 scorer includes filter arm (G1c) + re-specified G7prime + v0.2 verdict formula",
+   "25b956b": "2026-08-31 17:29:15 +0200 \u2014 crps dict built from full arms list (filter included)"
+  },
+  "report_mtime_before_patch": "v02_report.json written 2026-08-31 16:40 (pre-patch scorer output)",
+  "working_tree": "clean for the scorer file (patch is committed, not pending)"
+ },
+ "overall": {
+  "n_checks": 15,
+  "n_pass": 15,
+  "all_consistency_checks_pass": true,
+  "gates_reproduced_exactly": false,
+  "why_not": "G1c/G7' need the per-seed filter/exp/placebo arm files under /opt/earth1-data/exploop_v02 (prime host); absent on this machine"
+ }
+}
