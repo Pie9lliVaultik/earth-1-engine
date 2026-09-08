@@ -60,7 +60,7 @@
 <figure class="tbl">
 <figcaption><span class="lbl">Extended Data Table 1</span> | <strong>Distance from human majorities, by estate.</strong> Frozen physics, 200,000 agents, three seeds, leave-one-country-out, named-entity abstention active with abstained cells excluded from both model and baselines. The pooled row is the ledger's own headline block and is not a recomputation of the estate rows. The third estate is the Pew Global Attitudes frame as compiled in GlobalOpinionQA, recorded in the ledger as <em>goqa_dev</em> &mdash; an alias of the Pew development frame, with the same items and content hash; it carries no per-cell survey <em>n</em>, so noise-relative statistics do not exist for it.</figcaption>
 <table>
-<thead><tr><th>Estate</th><th class="num">Cells</th><th class="num">Majority agree</th><th class="num">Within noise</th><th class="num">Median &sigma;</th><th class="num">MAE (pp)</th><th class="num">Signed (pp)</th></tr></thead>
+<thead><tr><th>Estate</th><th class="num">Cells</th><th class="num">Majority agree</th><th class="num">Within noise</th><th class="num">Median half-widths</th><th class="num">MAE (pp)</th><th class="num">Signed (pp)</th></tr></thead>
 <tbody>
 <tr><td>All estates pooled</td><td class="num">21,776</td><td class="num">83.5%</td><td class="num">14.2%</td><td class="num">3.78</td><td class="num">10.65</td><td class="num">&mdash;</td></tr>
 <tr><td>World Values Survey, held-out</td><td class="num">5,807</td><td class="num">84.6%</td><td class="num">13.8</td><td class="num">3.80</td><td class="num">10.84</td><td class="num">&minus;0.04</td></tr>
@@ -72,7 +72,7 @@
 </figure>
 
 <figure class="tbl">
-<figcaption><span class="lbl">Extended Data Table 2</span> | <strong>Median distance in sampling errors, by question family and region.</strong> Only family-by-region blocks with at least 30 scored cells are reported; an em dash means the block did not reach that threshold and no value exists in the record. Pooled regional extremes quoted in Section 3.3 come from a separate block of the ledger and are not derivable from this matrix.</figcaption>
+<figcaption><span class="lbl">Extended Data Table 2</span> | <strong>Median distance in survey 95% half-widths, by question family and region.</strong> Only family-by-region blocks with at least 30 scored cells are reported; an em dash means the block did not reach that threshold and no value exists in the record. Pooled regional extremes quoted in Section 3.3 come from a separate block of the ledger and are not derivable from this matrix.</figcaption>
 <table>
 <thead><tr><th>Family</th><th class="num">C. Asia</th><th class="num">E. Asia</th><th class="num">E. Eur.</th><th class="num">Lat. Am.</th><th class="num">MENA</th><th class="num">N. Am.</th><th class="num">Oceania</th><th class="num">S. Asia</th><th class="num">SE Asia</th><th class="num">SSA</th><th class="num">W. Eur.</th></tr></thead>
 <tbody>
@@ -86,9 +86,9 @@
 </figure>
 
 <figure class="tbl">
-<figcaption><span class="lbl">Extended Data Table 3</span> | <strong>Country-level extremes</strong>, median distance in sampling errors, countries with at least 40 scored cells.</figcaption>
+<figcaption><span class="lbl">Extended Data Table 3</span> | <strong>Country-level extremes</strong>, median distance in survey 95% half-widths, countries with at least 40 scored cells.</figcaption>
 <table>
-<thead><tr><th>Closest ten</th><th class="num">&sigma;</th><th>Farthest ten</th><th class="num">&sigma;</th></tr></thead>
+<thead><tr><th>Closest ten</th><th class="num">Half-widths</th><th>Farthest ten</th><th class="num">Half-widths</th></tr></thead>
 <tbody>
 <tr><td>United Kingdom</td><td class="num">2.04</td><td>Bangladesh</td><td class="num">4.79</td></tr>
 <tr><td>Cyprus</td><td class="num">2.16</td><td>Thailand</td><td class="num">4.88</td></tr>
