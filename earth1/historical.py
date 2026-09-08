@@ -26,7 +26,7 @@ from datetime import date, timedelta
 import numpy as np
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GDELT_DIR = "/opt/earth1-data/gdelt"
+GDELT_DIR = os.environ.get("EARTH1_GDELT_DIR", "/opt/earth1-data/gdelt")
 
 # registered GDELT QuadClass -> force map (v1; XI.A.2 owed with the
 # battery's first scored event)
@@ -139,9 +139,13 @@ def gdelt_day_aggregates(T: date, warm_days: int = 90):
 
 
 def birth_at(T_str: str, pop: int, seed: int, substrate="c2plus_v1",
-             warm_days: int = 90):
+             warm_days: int = 90, post_birth=None):
     """Returns (world, vintage_report). The warm replays <=T GDELT news
-    through the memory channel day by day."""
+    through the memory channel day by day.
+
+    post_birth: optional callable(world) applied once, immediately after
+    birth and before the warm loop (founder ruling 2026-09-08, emergence
+    experiment: graph-arm transforms). Default None = unchanged."""
     from earth1.alive import birth_world, live_one_day
     from earth1.genesis import GENESIS_COUNTRY_CODES
     from earth1.memory import Memory
@@ -160,6 +164,8 @@ def birth_at(T_str: str, pop: int, seed: int, substrate="c2plus_v1",
     report["resolved"]["wb_unemployment"] = un or err
 
     w = birth_world(pop, seed, substrate=substrate)
+    if post_birth is not None:
+        post_birth(w)
     rng = np.random.default_rng(seed)
 
     aggs, missing = gdelt_day_aggregates(T, warm_days)

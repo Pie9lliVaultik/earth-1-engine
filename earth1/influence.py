@@ -35,6 +35,8 @@ instead of relaxing back into the mean.
 """
 from __future__ import annotations
 
+import os
+
 import numpy as np
 
 BETA = 1.0            # conviction exponent; 0 = pure averaging (legacy)
@@ -169,6 +171,33 @@ ENCOUNTER_SEED_TIE = 920_000
 ENCOUNTER_SEED_FEED = 930_000
 
 
+def _social_transmission_scale() -> float:
+    """EARTH1_SOCIAL_TRANSMISSION — founder ruling 2026-09-08: emergence
+    experiment (transmission-off arm switch).
+
+    Default 'on' (absent/any other value): scale 1.0, behaviour
+    bit-identical to the frozen physics — the scale is only ever
+    MULTIPLIED into the finished delta when it is not 1.0, so the
+    default path performs no arithmetic at all (trajectory-neutral by
+    construction, verified by the rule-2 day-10 hash in
+    tests/test_review_influence_flag.py).
+
+    'off': scale 0.0 — ZERO applied force movement, STREAM-PRESERVING
+    by design. Everything upstream of the final scaling still runs
+    identically: partner draws consume exactly the same RNG (the
+    per-day private encounter generators), agreement evidence
+    (accumulate_drive) is computed from the same encounter structure,
+    susceptibility/arousal weighting and the has-mask are all applied.
+    Downstream consumers (update_conviction, plasticity) see identical
+    inputs apart from forces not moving.
+
+    Read ONCE PER CALL at function level (never cached at import) so a
+    harness can flip the arm per-run inside one process.
+    """
+    v = os.environ.get("EARTH1_SOCIAL_TRANSMISSION", "on")
+    return 0.0 if v.strip().lower() == "off" else 1.0
+
+
 class DayScratch:
     """The day's encounter evidence. Created at the start of a tick,
     consumed (and zeroed) by update_conviction. Never persisted."""
@@ -221,6 +250,26 @@ def dyadic_move(f, partner, has, mu, susceptibility=None,
     if susceptibility is not None:
         move = move * susceptibility
     move[~has] = 0.0
+    # founder ruling 2026-09-08: emergence experiment — the
+    # transmission-off arm gate. This return value IS the applied delta
+    # at BOTH canonical application sites, so scaling it here gates each
+    # site with the same factor:
+    #   1. earth1/influence.py::propagate  — tie encounters,
+    #      `f = np.clip(f + mv, 0, 1)` (k applications per day);
+    #   2. earth1/feed.py::feed_tick      — the hub/media path,
+    #      `civ.forces = np.clip(f + move, 0.0, 1.0)` (feed.py imports
+    #      this function at call time, so the gate travels with it).
+    # The scale lands AFTER partner selection, delta, gate, arousal
+    # weights, susceptibility and the has-mask — nothing upstream
+    # changes, no RNG is consumed here, and accumulate_drive runs
+    # BEFORE this function at both call sites, so encounter evidence is
+    # computed identically in both arms. The legacy operators
+    # (propagate_meanfield_legacy, feed_tick_legacy) are deliberately
+    # NOT gated: they are LEGACY_COMPARISON_ONLY registered Stage-B
+    # broken twins, never on the canonical path.
+    scale = _social_transmission_scale()
+    if scale != 1.0:
+        move = move * scale
     return move
 
 
@@ -250,6 +299,12 @@ def propagate(forces: np.ndarray, alpha: np.ndarray, adj, *,
     for _ in range(k):
         partner, has = sample_partners(csr, rng)
         accumulate_drive(scratch, f, partner, has)
+        # APPLICATION SITE 1 of 2 (site 2: earth1/feed.py::feed_tick).
+        # The EARTH1_SOCIAL_TRANSMISSION arm switch (founder ruling
+        # 2026-09-08: emergence experiment) is applied inside
+        # dyadic_move, to the finished delta — with the flag 'off', mv
+        # is exactly zero here while partner draws, evidence and
+        # susceptibility above computed identically.
         mv = dyadic_move(f, partner, has, mu, susceptibility)
         f = np.clip(f + mv, 0, 1)
     return f

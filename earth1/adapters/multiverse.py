@@ -15,6 +15,11 @@ rules, asserted in code:
 
 Readout (registered):
   binary:       P(YES) = d_no / (d_yes + d_no)
+                [founder ruling 2026-09-08: emergence experiment,
+                ruling 3 / review M07a — served with semantics fields as
+                a branch-consistency ratio, not a calibrated event
+                probability; see ops/alive/SEMANTICS_BINARY_READOUT.md.
+                Formula unchanged.]
   k outcomes:   P(i) = softmax(-d_i / T_class)  (T FITTED per class on
                 FIT-half DEV events; default 1.0 until first fits)
   d_i = euclidean distance between the null world's and world_i's
@@ -411,6 +416,19 @@ def ask(q: dict, base_world, seed: int, horizon_days: int = 60) -> dict:
                         "branch_hashes": v.branch_hashes,
                         "distances": v.distances,
                         "noise_floor": v.noise_floor})
+        # founder ruling 2026-09-08: emergence experiment — ruling 3
+        # (external review M07a), first step. The 2-outcome readout
+        # d_NO/(d_YES+d_NO) is a normalized branch-displacement ratio
+        # (relative consequence-consistency), NOT a calibrated event
+        # probability; the served surface must say what the number is.
+        # ADDITIVE ONLY: every computed value above (p_model included)
+        # stays byte-identical to the pre-ruling payload. Derivation and
+        # direction-blindness proof: ops/alive/SEMANTICS_BINARY_READOUT.md.
+        if len(v.outcomes) == 2:
+            payload["semantics"] = "branch_consistency"
+            payload["semantics_note"] = (
+                "normalized branch-displacement ratio; not a calibrated "
+                "event probability (see SEMANTICS_BINARY_READOUT.md)")
         if payload["calibration_tier"] == "UNCALIBRATED":
             up = os.path.join(_ROOT, "data", "uncalibrated_questions.jsonl")
             with open(up, "a") as f:

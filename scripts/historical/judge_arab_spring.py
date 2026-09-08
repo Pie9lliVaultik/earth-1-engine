@@ -18,7 +18,7 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT)
-GD = "/opt/earth1-data/gdelt"
+GD = os.environ.get("EARTH1_GDELT_DIR", "/opt/earth1-data/gdelt")
 W0, W1 = date(2010, 12, 17), date(2011, 3, 16)
 FIPS = json.load(open(os.path.join(ROOT, "data/geo/fips_to_iso2.json")))["map"]
 
