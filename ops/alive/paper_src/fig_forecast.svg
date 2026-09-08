@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 150" width="100%" font-family="Charter, Georgia, serif">
+<text x="90.0" y="45.0" font-size="8" text-anchor="end">Peak memory (GB)</text>
+<rect x="96.0" y="36.0" width="275.2" height="13.0" fill="none" stroke="#888" stroke-width="0.8" stroke-dasharray="3 2"/>
+<rect x="96.0" y="51.0" width="287.2" height="13.0" fill="#2b3a4a"/>
+<text x="375.2" y="45.0" font-size="7.4" fill="#555">forecast 311</text>
+<text x="387.2" y="60.0" font-size="7.4" fill="#2b3a4a">measured 324.5</text>
+<text x="90.0" y="92.0" font-size="8" text-anchor="end">Time per world-day (min)</text>
+<rect x="96.0" y="83.0" width="254.9" height="13.0" fill="none" stroke="#888" stroke-width="0.8" stroke-dasharray="3 2"/>
+<rect x="96.0" y="98.0" width="272.6" height="13.0" fill="#2b3a4a"/>
+<text x="354.9" y="92.0" font-size="7.4" fill="#555">forecast 14.4</text>
+<text x="372.6" y="107.0" font-size="7.4" fill="#2b3a4a">measured 15.4</text>
+<text x="235.0" y="14" font-size="7.8" text-anchor="middle" fill="#333">forecast made from the 1M&#8211;64M ladder before the 100M run was executed</text>
+</svg>

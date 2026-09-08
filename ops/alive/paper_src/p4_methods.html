@@ -1,0 +1,109 @@
+<h2 class="sec"><span class="n">4</span>Methods</h2>
+
+<p class="first">This section describes what exists and how it is evaluated. It is deliberately not a reproduction specification: update equations, fitted constants, functional forms, injector templates, the registered vocabulary and internal module structure are withheld. Where a stated quantity would permit reconstruction of a withheld mapping, it is given at reduced precision or omitted, and the omission is marked. The claims in this paper rest on measured outputs against registered gates and sealed judges rather than on disclosed internals.</p>
+
+<h3 class="sub"><span class="n">4.1</span>Population substrate</h3>
+
+<p class="first">The substrate carries 194 countries. Each country holds a five-dimensional contingency table over sex (2 levels), age band (6), education (3), income (3) and settlement (2), giving 216 cells per country and 41,904 cells in total. Age, sex and settlement margins are census-derived for all 194 countries. Education and income margins are measured directly from survey microdata for 63 countries; for the remaining 131 they are pooled from donors within the same income tier, and the distinction is recorded per country as a provenance flag that travels with any figure computed from that country.</p>
+
+<p>The joint is fitted from its margins by iterative proportional fitting over pooled donors<sup>20</sup>. The alternative of assuming independence between the demographic axes was evaluated as a baseline on withheld joint tables and rejected: IPF beat independent marginals by 24.8% at <em>p</em> &le; 2.4 &times; 10<sup>&minus;13</sup>. The practical content of that margin is that the correlation between education, income and settlement is a measured property of each country rather than an artefact of the fitting procedure.</p>
+
+<p>Adult age structure is not drawn parametrically. It is derived from stable-population density using each country's own Gompertz survival curve<sup>21</sup>, so that the age pyramid and the mortality process are consistent with one another by construction rather than by calibration.</p>
+
+<p>Aggregation is population-true. Every agent carries a weight equal to the ratio of its country's census share to that country's share of the simulated population, so that a global statistic is an estimate of the world rather than of the resident sample. The world population anchor is 8,140,897,523. This is the mechanism by which a 200,000-agent world reports a global poverty rate at all, and it is why Section 2.4 finds aggregate figures invariant in population size.</p>
+
+<h3 class="sub"><span class="n">4.2</span>The behavioural grammar</h3>
+
+<p class="first">Agents carry eight forces. The forces are latent channels through which circumstance becomes disposition and disposition becomes action; they are updated daily by arithmetic over agent state and are not natural-language quantities. Their definitions, couplings, update equations and constants are withheld.</p>
+
+<p>Three structural properties are load-bearing for the results and are stated without disclosing the mechanism. First, the grammar is universal: the same operators with the same constants run in every country, so cross-country variation in outputs follows from variation in circumstance and composition rather than from per-country tuning. Second, forces are moved each day by two competing operations &mdash; a social push along graph edges and a restoring pull toward the state implied by the agent's own material circumstances &mdash; and the material target is returned rather than applied so that the two can be composed and inspected separately. Third, dispositional traits are themselves updated on a slower loop from the agent's deviation relative to its neighbourhood, so that personality is an outcome of social position as well as an input to it.</p>
+
+<h3 class="sub"><span class="n">4.3</span>Deterministic tick and world hashing</h3>
+
+<p class="first">The world advances in discrete days. Every stochastic draw on the daily path is taken from an explicitly seeded generator, and the engine contains no dependence on wall-clock time, on iteration order over unordered containers, or on any third-party inference service. A world hash is computed over the complete state, and it is this hash that the determinism checks compare.</p>
+
+<p>Determinism is verified along three independent construction paths &mdash; rebirth from the same seed, continuation from a saved checkpoint, and a flag-on run against its own baseline. Six of six checks pass, including branch contrast and historical rebirth, and the question-answering layer reproduces a model probability to seven decimal places on demand.</p>
+
+<p>Two controls establish that this is a meaningful rather than a nominal property. In the failing direction, a perturbation of 10<sup>&minus;9</sup> applied to a single agent's internal well-being value in a four-million-agent world changes the world hash, and undoing the perturbation restores it exactly; the hash is therefore sensitive to one part in a billion of one person's interior state and cannot be agreeing by coarseness. In the independent-implementation direction, a separate implementation was compared against the canonical engine at a registered tolerance of bitwise zero: 38 of 38 checkpoints over a full 365 simulated days at 200,000 agents were bitwise identical with equal day-365 world hashes, together with 11 identical checkpoints per seed on shorter runs at two further seeds. No physics was altered to obtain any of that agreement.</p>
+
+<p>A configuration stamp accompanies every run. The physics configuration is recorded and asserted at load, and a run whose stamp does not match the frozen configuration is refused rather than silently executed. This control exists because an earlier scaling campaign was launched on engine defaults rather than the frozen flag set, and produced a materially different equilibrium before the discrepancy was caught; the stamp converts that failure mode from a matter of operator discipline into a hard gate.</p>
+
+<h3 class="sub"><span class="n">4.4</span>Branch-versus-null contrast</h3>
+
+<p class="first">Claims about the effect of a perturbation are produced as a paired contrast rather than as a description of a single run. A world is advanced to a chosen date, then forked: one branch receives the perturbation and the other does not, and both continue under common random numbers<sup>19</sup> so that the stochastic path is shared and cancels in the difference. Effects are reported as the paired difference across seeds with a seed-level error bar.</p>
+
+<p>The engine carries a registered class noise floor below which a branch difference is not reported as a signal. When a perturbation produces a difference beneath that floor, the system returns an abstention naming the structural absence responsible rather than a number. The floor's value is withheld. This is the mechanism by which the fiscal-shock case in Section 2.8 returned a physics abstention instead of a spurious effect.</p>
+
+<h3 class="sub"><span class="n">4.5</span>Social graph and influence</h3>
+
+<p class="first">The social graph is constructed once at genesis with homophilous structure across several relationship channels, each with its own degree and weight distribution, including a small number of high-degree hubs. It is not a summary statistic: social computation reads a living view rebuilt after each day's deaths, migrations and job changes, so that deceased agents retain their edges as history but carry no weight in current dynamics.</p>
+
+<p>Daily influence is dyadic. Each agent draws a small number of encounters sampled by tie weight from its living neighbourhood, and for each encounter moves a fixed fraction of the way toward that partner's current value, scaled by a susceptibility term depending on the agent's own age, conviction, mental state and hunger. The same encounters accumulate agreement evidence, from which conviction is updated at the end of the day. Tie weights are then updated from the day's interaction, and a limited number of agents rewire toward partners closer to them in force space. Fractions, susceptibility functions and rewiring rates are withheld.</p>
+
+<p>One property of the encounter sampler is recorded as a limitation because it bears on how the paper's error bars should be read: the encounter stream is keyed on simulation day and is independent of the world seed. Seed replicates therefore differ in their population draw and graph &mdash; the dominant source of variance &mdash; but do not resample the encounter sequence itself, so reported variance under-states the contribution of the influence channel specifically. The magnitude of that under-statement is quantifiable by reseeding the stream and is registered as outstanding work.</p>
+
+<h3 class="sub"><span class="n">4.6</span>Opinion readout and evaluation protocol</h3>
+
+<p class="first">Opinion estimates are produced by a readout from agent state to survey-item response. The readout's construction is withheld. Evaluation is leave-one-country-out: the country under evaluation contributes nothing to the estimate for its own items. Items requiring named-entity knowledge that the substrate does not carry trigger abstention, and abstained cells are excluded from both the model and every baseline, so that abstention cannot flatter the comparison.</p>
+
+<p>Three baselines are scored on the identical cell set. The naive baseline assigns the grand mean across countries. The region-copy baseline assigns a country the attitudes of its region. The MrsP baseline is a multilevel regression with poststratification over census covariates, the standard small-area estimator for exactly this task<sup>22,23,24</sup>. Scores are national mean absolute error in percentage points, and majority agreement is reported alongside distance measured in units of the survey's own sampling error, so that a model answer can be compared against the precision of the survey it is being scored against rather than against an arbitrary tolerance.</p>
+
+<p>Estates are separated by design. Development estates may be scored repeatedly. Holdout and prospective estates are sealed, registered by name and location, and reserved for a single scored exposure under founder-witnessed final scoring. Every opinion figure in this paper is a development-estate measurement.</p>
+
+<h3 class="sub"><span class="n">4.7</span>Frozen-forecast protocol and sealed judges</h3>
+
+<p class="first">Historical retrodiction follows a fixed order that admits no move after the outcome is visible.</p>
+
+<ol>
+<li>A world is born at date <em>T</em> from archive material, under a mechanical assertion that no input, anchor or news item in the consumed set postdates <em>T</em>. The assertion is executed, not asserted informally; a violation aborts the run.</li>
+<li>The question, the horizon, the scoring procedure and the pass tiers are written and committed.</li>
+<li>The judge is registered by name and location, with its outcome values unfetched.</li>
+<li>The model output is frozen and committed as a hashed artefact.</li>
+<li>Only then is the judge fetched, and the result is scored once.</li>
+</ol>
+
+<p>Where a judge is discovered to be biased, the correction is applied forward-only and never retroactively, with the raw table reported beside the corrected one. In one instance the event-count judge was found to over-rank countries with dense media coverage, and normalisation by country total event volume was adopted from the third event onward, leaving earlier scored rows as they were recorded.</p>
+
+<p>Model probabilities are reported to four decimal places. The underlying branch distances that generate them are withheld, since publishing both at full precision would disclose the readout mapping exactly.</p>
+
+<h3 class="sub"><span class="n">4.8</span>Experience loop and control arms</h3>
+
+<p class="first">The learning experiment is a sealed synthetic-recovery design, pre-registered in full before any cycle ran. Twenty twin worlds at 20,000 agents were generated against sealed planted parameters &mdash; sixteen well-specified and four deliberately misspecified &mdash; and run for twenty-four cycles of thirty simulated days each. The learner observes a summary vector per cycle and updates a particle representation over the eligible parameters; the planted values are not visible to it.</p>
+
+<p>Five control arms were registered. The <em>frozen</em> arm never updates. The <em>naive updater</em> smooths observations without structure. The <em>shuffled-resolution placebo</em> receives observations whose correspondence to outcomes has been destroyed, and is the arm that tests whether apparent learning can arise from fitting noise. The <em>shock-window</em> gate scores only the cycles containing sharp forcing. The primary arm, added as a binding condition on the pre-registration, is the <em>informed non-learner</em>: identical particle machinery and identical observation access, but no persistent update, since per cycle its weights are computed fresh from that window's observation distance alone with parameters fixed at their prior draws. It may condition on what it has just seen; it may not learn. The gate is the conjunction of every registered comparison, and scoring is paired log-CRPS<sup>26</sup> with Wilcoxon signed-rank significance.</p>
+
+<p>Supporting gates cover calibration and honesty: interval coverage against a registered band, parameter-recovery error, and behaviour under deliberate misspecification, where the requirement is that the loop widen rather than narrow its intervals. Replay from the hash-chained ledger is required to be bit-identical before the cycle closes. One recorded caveat is carried forward: the stage scorer omitted the non-learner arm, so the two gates involving it were computed directly from the arm files by the same paired method, with a scorer patch outstanding.</p>
+
+<h3 class="sub"><span class="n">4.9</span>Scale measurement</h3>
+
+<p class="first">Memory and time were measured at 1M, 4M, 16M, 64M and 100M agents on a single 48-core AMD EPYC 9454P. Reported bytes per agent are steady-state resident state divided by population; peak resident memory is reported separately because construction requires roughly 3.2 times the final state as working memory, and it is that transient, not the steady state, which binds a single machine.</p>
+
+<p>The scale-invariance comparison is run as a control: identical configuration and identical seed lineage at four populations, with the census read at the same simulated day. The day-5 census used for that comparison is a pre-equilibration state and is reported only to establish invariance in population size; the calibrated board is measured at 180 days and is a separate run under verified frozen physics. Conflating the two would misrepresent an equilibration transient as an accuracy result, and the two are kept apart throughout.</p>
+
+<p>Mortality observation deserves a specific note, because the obvious method is wrong. A deceased agent's slot is reused within the same tick, so a naive comparison of the alive mask before and after a tick sees an occupied slot on both sides and misses the death; measured against a known ground truth this method captured 12% of deaths. All mortality figures in this paper are taken with an observer that detects person-identity turnover as well as the alive flag and reads ages from the pre-tick snapshot, which captures 100% on the same test. Where an earlier campaign reported mortality taken by the naive method, those lines are marked VOID in the record rather than restated.</p>
+
+<h3 class="sub"><span class="n">4.10</span>Governance</h3>
+
+<p class="first">Cycles change one named thing at a time, so that any movement in the gates is attributable to it. Gates are fixed by written ruling before the run. VOID is reserved for defects in the measuring instrument and is never invoked for an unwelcome result; where a finding is voided, the instrument defect that voided it is recorded alongside, and where a voided finding is later re-measured in the opposite direction, both readings stay on the record.</p>
+
+<p>Freezes carry their failures. The physics tag on which every result in this paper was measured was released as a freeze-with-named-regression, carrying the failed direction gate and five named regressions rather than a fix that would have reopened the calibration loop. A registered substrate defect discovered after the freeze was recorded and deliberately left unpatched for the same reason and scheduled as a later cycle.</p>
+
+<p>No benchmarking against frontier language models is performed. This is a standing prohibition in the project's own governing document, and it is why no accuracy comparison against such systems appears anywhere in this paper. The comparisons drawn in Sections 2.2 and 2.9 are structural &mdash; concerning reproducibility, cost and conditionality &mdash; and carry no implication about relative accuracy.</p>
+
+<h3 class="sub"><span class="n">4.11</span>Interfaces</h3>
+
+<p class="first">The engine exposes a versioned interface for questions, structured consequence reports, world state and history, event streams, and population-frame discovery, so that the results described here can be exercised against a running world rather than taken on the report's word. Every answer carries its calibration tier, its provenance, and the configuration stamp of the physics that produced it. Answers that the physics cannot support are returned as abstentions naming the missing channel rather than as numbers.</p>
+
+<h3 class="sub"><span class="n">4.12</span>Related work</h3>
+
+<p class="first">Classical agent-based modelling established that simple local rules can generate non-obvious population structure, from residential segregation<sup>2</sup> and artificial societies with economies and demographics<sup>3</sup> to threshold models of collective behaviour<sup>4</sup>, cascades on networks<sup>5</sup> and bounded-confidence opinion dynamics<sup>6,7,30</sup>. Methodological work in the tradition has concentrated on description standards<sup>16</sup>, on the persistent difficulty of replicating published models<sup>15</sup>, and on the field's role in economics and policy<sup>9,10,31</sup>. Earth-1 belongs to this lineage in its commitment to legible mechanism, and departs from it in grounding the population in a fitted demographic joint and in treating exact reproducibility as a hard requirement rather than an aspiration.</p>
+
+<p>Language-model agent societies begin with generative agents<sup>11</sup> and scale through successive systems to billion-agent populations with survey-derived profiles<sup>1</sup>. This literature has solved problems Earth-1 does not attempt, above all open-ended behaviour expressed in language: an agent that can articulate a reason, hold a free-form discussion, or respond to a scenario posed in words on the day it is invented. Earth-1's agents carry no language at all, and questions of that kind are outside what it can answer.</p>
+
+<p>The estimation baselines against which the opinion readout is scored come from the survey statistics literature, principally multilevel regression with poststratification<sup>22,23</sup> and its subnational extensions<sup>24</sup>, with iterative proportional fitting<sup>20</sup> and calibration estimators<sup>32</sup> underlying the population frame itself. Scoring follows standard proper-scoring practice<sup>26,27</sup>, and the pre-registration discipline follows the reform literature in the empirical sciences<sup>17,18,28</sup>.</p>
+
+<h3 class="sub"><span class="n">4.13</span>Data and code availability</h3>
+
+<p class="first">The population frame is derived from public census and survey sources: national census margins, World Values Survey microdata<sup>33</sup>, Pew Research Center survey frames<sup>34</sup>, World Bank poverty and income series<sup>35</sup>, and United Nations population estimates<sup>36</sup>. Judge datasets used in the retrodiction battery are public and are registered by name, location and content hash in the frozen forecast artefacts.</p>
+
+<p>The engine, its physics, the calibration ladder and the readout construction are proprietary and are not released. Results are exercisable through the interface described in Section 4.11.</p>

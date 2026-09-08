@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Earth-1 preprint</title>
+<link rel="stylesheet" href="paper_print.css">
+</head><body>
+<div class="titleblock">
+  <h1 class="doctitle">Earth-1: a deterministic civilization model with no language model in the loop</h1>
+  <p class="authors">Earthling Labs</p>
+  <p class="affil">Earthling Labs, London, United Kingdom</p>
+  <p class="meta">Correspondence: pietro@vaultik.com &nbsp;·&nbsp; Version 3.0 &nbsp;·&nbsp; 8 September 2026 &nbsp;·&nbsp; Epoch 3, physics tag freeze-0.9</p>
+</div>
+
+<div class="abstract">
+<h2>Abstract</h2>
+<p>Computational models of society divide into two families that trade against each other along a single axis. Classical agent-based models are cheap and inspectable but behaviourally thin: their agents follow heuristics the modeller chose. Societies of language-model agents are behaviourally rich and demographically groundable, but their cost scales with the product of agents, questions and days; their results are conditional on the particular checkpoint behind the agents; and their own authors state that outputs are best read as hypotheses to be examined empirically, &ldquo;not as evidence about real societies&rdquo;<sup>1</sup>. We describe <span class="sc">Earth-1</span>, a deterministic civilization model that occupies a third position. It contains no language model anywhere in its runtime path, and it can be held to a prediction it made before the outcome existed.</p>
+<p>Agents are drawn from a census-grounded five-dimensional joint population across 194 countries &mdash; 216 cells per country, fitted by iterative proportional fitting over pooled donors, which beat an independent-marginal baseline on withheld joints by 24.8% at <em>p</em> &le; 2.4 &times; 10<sup>&minus;13</sup> &mdash; and are advanced by an eight-force behavioural grammar under a deterministic tick.</p>
+<p>The system reproduces the world it models. At 200,000 census-true agents over 180 days it puts global poverty at 45.9% against a real 46.1%, median income at $9.61 per day against $9.27, the crude death rate at 0.0073 per year against 0.0076, and the 65-and-over adult share at 14.1% against 13.6%. That board reproduces at twenty times the population. Determinism is exact rather than statistical: three independent execution paths converge on one identical world hash, an independent re-implementation reproduces 38 of 38 checkpoints bitwise across a simulated year, and a perturbation of 10<sup>&minus;9</sup> applied to one agent in a four-million-agent world changes that hash and restores it exactly on undo. Against 21,776 scored item-country survey cells under leave-one-country-out, the model agrees with the real human majority on 83.5%, and 14.2% of its answers fall inside the survey's own 95% sampling noise.</p>
+<p>The architecture is what makes this affordable. State costs 981 bytes per agent, flat to 0.7% across a hundredfold range of population; the resource envelope of a hundred-million-agent run was forecast before it was executed and held on both memory and wall-clock; and one world of four million people has run continuously past day 16,860 on a single 48-core server. Serving the same world by prompting each agent once per day would have consumed roughly 40 trillion tokens.</p>
+<p>We report the misses at the same resolution as the results, and Section 3.3 is a complete register of them. The opinion readout sits about two percentage points behind a region-copy baseline in aggregate while being outright best of four methods on 64 of 468 held-out items; the aggregate event-direction gate stands at 4 of 10 registered calls against a decision rule of 80%; and extreme poverty and unemployment both run high against their anchors. Each was measured against gates fixed by written ruling before the run that tested them. That is the property this paper is about: Earth-1's distinguishing feature is not that it is right, but that it is the kind of object that can be shown to be wrong.</p>
+<p class="keywords"><strong>Keywords:</strong> agent-based modelling; computational social science; determinism; reproducibility; pre-registration; synthetic populations; iterative proportional fitting; falsifiability</p>
+</div>
+
+<h2 class="sec"><span class="n">1</span>Main</h2>
+
+<p class="first">The computational study of societies has organised itself into two research programmes that trade against each other along a single axis.</p>
+
+<p>The older programme, agent-based modelling in the Schelling&ndash;Sugarscape lineage<sup>2,3</sup>, buys tractability with behavioural poverty. Rules are hand-specified, parameters are chosen subjectively, and the interesting question &mdash; why a population does what it does &mdash; is answered by the modeller before the simulation starts. What such models gain is considerable: they are cheap, they are inspectable, and every mechanism in them can be read. The tradition has produced durable results precisely because its mechanisms are legible, from residential segregation arising out of mild individual preference<sup>2</sup> through threshold models of collective behaviour<sup>4</sup> and global cascades on random networks<sup>5</sup> to bounded-confidence opinion dynamics<sup>6,7</sup>. It has also been used operationally, most visibly in epidemic policy<sup>8</sup>. Its recognised weakness is not that its agents are simple but that their simplicity is a modelling choice rather than a measured fact, which makes the step from model behaviour to claims about people a matter of argument rather than evidence<sup>9,10</sup>.</p>
+
+<p>The newer programme replaces the rule with a language model. Generative agents demonstrated that language-model-driven characters could produce recognisably human routines and social coordination<sup>11</sup>, and successive systems have scaled that design substantially. The largest reported to date instantiates one billion language-model-powered agents on a scale-free network through prompt caching, knowledge distillation to surrogate models, and mixture-of-models routing<sup>1</sup>. These populations are behaviourally rich in a way no hand-written rule reproduces, and they can be conditioned on real demographic distributions drawn from survey microdata.</p>
+
+<p>Three properties travel with that design. Cost scales with the product of agents, questions and days, because behaviour is generated per agent per question rather than computed from state. Results are conditional on the model behind the agents: the same reported system moves its stance-change rate by up to 4.7 percentage points, with topic-dependent sign, when the communication language of the underlying model is swapped<sup>1</sup>. And reproducibility is statistical rather than exact &mdash; the strongest such claim in that literature is a coefficient of variation below 0.01% across five runs, which is a statement about the narrowness of a distribution, not about the recovery of a particular world.</p>
+
+<p>The authors of that work are admirably direct about what follows. Their outputs, they write, &ldquo;should not be treated as substitutes for human participants&rdquo; and are &ldquo;best read as hypotheses to be examined empirically, not as evidence about real societies&rdquo;<sup>1</sup>. We take that disclaimer seriously, and this paper begins from the gap it opens.</p>
+
+<h3 class="sub"><span class="n">1.1</span>The property neither family has</h3>
+
+<p class="first">A model whose outputs are hypotheses cannot be falsified by the world. It can be interesting, it can be suggestive, it can generate research directions &mdash; but it cannot lose a bet, because nothing it produces was ever committed to in a form that the world could later contradict. A model that cannot be falsified accumulates capability without accumulating credence. It becomes more impressive every year without becoming more trustworthy.</p>
+
+<p>Falsifiability of this kind is not a matter of scientific etiquette<sup>12</sup>. It is an architectural requirement with a hard precondition: to hold a model to a prediction, one must be able to recover the exact world that produced it. Not a world drawn from the same distribution &mdash; <em>that</em> world, bit for bit, months later, on different hardware. The requirement is familiar from the reproducibility literature in computational science<sup>13,14</sup>, and it has a specific history in agent-based modelling, where independent re-implementation of published models has repeatedly failed to reproduce their results<sup>15</sup>. The remedies developed in response &mdash; standardised model description<sup>16</sup>, pre-registration of analyses<sup>17,18</sup> &mdash; are procedural. Earth-1 takes the requirement literally and makes it architectural, and everything else this paper describes follows from that decision.</p>
+
+<h3 class="sub"><span class="n">1.2</span>Earth-1</h3>
+
+<p class="first">Earth-1 is a deterministic civilization model built on that requirement. Its population is drawn from a census-grounded five-dimensional joint distribution across 194 countries and aggregated with census weights, so that every global figure it reports is an estimate of the world rather than of the sample resident in memory. Its agents are advanced by an eight-force behavioural grammar under a deterministic tick. No language model appears anywhere in its runtime path.</p>
+
+<p>Removing generative inference from the loop is not an economy measure, though the economics that follow are dramatic. It is what buys exact reproducibility, and exact reproducibility is what makes every subsequent claim in this paper checkable: a frozen forecast can be reopened and re-run, a perturbation can be contrasted against a null branch of the same world under common random numbers<sup>19</sup>, and a result that arrives months after the run can still be attributed to the thing that caused it.</p>
+
+<p>The consequence is a different relationship between the model and its own errors. A system whose behaviour is generated cannot say which of its mechanisms produced a given output; a system whose behaviour is computed from state can. Earth-1's misses resolve, one at a time, onto operators that are absent from the physics and can be named before any repair is attempted. Section 3.3 lists them. Each entry is simultaneously an admission and a testable prediction about what should change when the operator is added.</p>
+
+<h3 class="sub"><span class="n">1.3</span>Contributions</h3>
+
+<p class="first">This paper reports the following.</p>
+
+<ol>
+<li><strong>A census-grounded population substrate.</strong> A per-country joint over sex, age band, education, income and settlement, fitted by iterative proportional fitting<sup>20</sup> over pooled donors, which beats an independent-marginal baseline on withheld joints by 24.8% at <em>p</em> &le; 2.4 &times; 10<sup>&minus;13</sup>. Adult age structure is derived from stable-population density under each country's own Gompertz survival curve<sup>21</sup> rather than from a parametric draw (Section 2.1, Methods 4.1).</li>
+<li><strong>Exact determinism, verified along three independent paths and one re-implementation.</strong> Same-seed rebirth, save-and-load continuation, and flag-on baseline converge on a single world hash; an independent implementation reproduces 38 of 38 checkpoints bitwise across a 365-day year; and a 10<sup>&minus;9</sup> perturbation to one agent in a four-million-agent world is detected by that hash and reversed exactly on undo (Section 2.2).</li>
+<li><strong>A material board that matches real anchors and holds under scale.</strong> Poverty, income, mortality and age structure land on their anchors at 200,000 agents and reproduce at four million, while a five-day census is invariant to 0.08 percentage points across a 500-fold range of population (Section 2.3, 2.4).</li>
+<li><strong>Population-level agreement with real humans.</strong> 83.5% majority agreement across 21,776 scored item-country cells under leave-one-country-out, with 14.2% of cells inside the survey's own sampling noise, reported alongside a four-method baseline board on which the readout is behind two of the three baselines (Section 2.5).</li>
+<li><strong>A mechanistic account of social transmission, and a measured separation of what is designed from what emerges.</strong> Within one generation, the heavy tail of income is shown to be drawn at genesis while wealth concentration is shown to grow (Section 2.6).</li>
+<li><strong>A demonstrated parameter-learning loop against a hard control.</strong> On sealed synthetic twin worlds with planted parameters, an experiential learner beats an informed non-learner given identical observations without persistence, by 4.8&times; on late-window score, positive in 16 of 16 well-specified worlds (Section 2.7).</li>
+<li><strong>Retrodiction under a frozen-forecast protocol</strong>, with the register of hits and misses reported at equal resolution (Section 2.8, 3.3).</li>
+<li><strong>An economics that permits continuous operation.</strong> 981 bytes per agent, flat across a hundredfold scale range; a four-million-person world running past day 16,860 on one server; roughly 40 trillion tokens of generative inference not spent (Section 2.9).</li>
+</ol>
+
+<h3 class="sub"><span class="n">1.4</span>What this paper withholds</h3>
+
+<p class="first">This is a description of a system and its measured behaviour, not a reproduction specification. Force update equations, fitted constant values, calibration readout formulae, injector templates, the registered vocabulary and internal module structure are proprietary and are described functionally throughout. Where a quantity would permit reconstruction of a withheld mapping, it is stated at reduced precision or omitted and the omission is marked. Every claim below rests on measured outputs against registered gates and sealed judges rather than on disclosed internals.</p>
+
+
+<h2 class="sec"><span class="n">2</span>Results</h2>
+
+<h3 class="sub"><span class="n">2.1</span>Overview of Earth-1</h3>
+
+<p class="first">The dominant design for large-scale social simulation instantiates <em>N</em> reasoning entities, gives each a natural-language profile and a policy realised by a language model, dispatches their interactions through an event queue, and aggregates the emitted actions into a population-level statistic. Earth-1 does not implement a smaller version of this. It does not instantiate a population of reasoners at all.</p>
+
+<p>The difference is categorical rather than one of degree. There is no per-agent natural-language reasoning anywhere in Earth-1: agents do not deliberate, do not emit text, and hold no beliefs expressible as sentences. What the engine evolves is a single civilization whose population is a state manifold &mdash; a census-grounded joint distribution instantiated in memory at 981 bytes per agent, with behaviour expressed as arithmetic over that state. An individual is an addressable view of the manifold rather than a separately-reasoned process. In a swarm the agent is the unit of computation and the society is the sum of its outputs; in Earth-1 the civilization is the unit and the person is a coordinate within it.</p>
+
+<p>Earth-1 carries 194 countries. Each holds a five-dimensional joint over sex (2), age band (6), education (3), income (3) and settlement (2) &mdash; 216 cells per country. Age, sex and settlement margins are census-derived for all 194. The joint itself is drawn by iterative proportional fitting over pooled donors, which beat an independent-marginal baseline by 24.8% on withheld joints at <em>p</em> &le; 2.4 &times; 10<sup>&minus;13</sup>: the correlation structure between education, income and residence is measured rather than assumed away. The adult age pyramid is derived from stable-population density using each country's own Gompertz survival curve rather than a parametric draw. Every country's joint carries a declared provenance recording whether its education and income margins were measured from survey microdata or pooled from income-tier donors, so a consumer of any figure can see which countries carry it and how well grounded each one is; the provenance register appears in Section 3.3.</p>
+
+<p>This is a different object from a profile pool. Where a swarm samples agent personas from a fixed set of survey records, Earth-1 instantiates a country's joint distribution and draws people from it, then attaches to every agent a weight equal to the ratio of its country's census share to its share of the simulated population. Global figures are therefore population-true against a world anchor of 8,140,897,523 people: a poverty rate reported here is an estimate of the world, not of the sample that happens to be resident in memory.</p>
+
+<p>On top of the substrate sits an eight-force behavioural grammar. The forces are the channels through which circumstance becomes disposition and disposition becomes action; their definitions, couplings and constants are withheld. What matters for the results below is structural: the grammar is arithmetic over state, it is applied identically to every agent, and it is the same grammar in every country. Earth-1 does not carry per-country behavioural rules, so cross-country variation in its outputs is a consequence of cross-country variation in circumstance and composition rather than of tuning.</p>
+
+<h3 class="sub"><span class="n">2.2</span>Determinism and exact reproducibility</h3>
+
+<p class="first">The first result is a property of the instrument rather than of the world it models. Earth-1's determinism block records six checks of six passing. Three independent construction paths &mdash; rebirth from the same seed, continuation from a saved checkpoint, and a flag-on run against its own baseline &mdash; converge on one identical world hash, <code>49bb7d1d949f28f3</code>. Branch common-random-number contrast passes, historical rebirth passes, and the question-answering layer reproduces a model probability of 0.4311624 exactly on demand.</p>
+
+<p>A reproducibility claim is only as strong as the sensitivity of the detector that would catch a violation, so the hash was tested in the failing direction. On the live four-million-agent world, moving a single agent's internal well-being value by 10<sup>&minus;9</sup> changed the world hash, and undoing the perturbation restored the original hash exactly. Two runs that agree on this hash therefore agree on the state of the world down to one part in a billion of one person's interior. Bit-identity here is not an artefact of a hash too blunt to disagree.</p>
+
+<p>The strongest form of the claim is that the physics, not the code path, is the invariant. Against a registered tolerance of bitwise zero, an independent implementation and the canonical engine produced <strong>38 of 38 identical checkpoints across a full 365-day year at 200,000 agents</strong>, with equal day-365 world hashes, together with 11 identical checkpoints per seed across two further seeds at a smaller population. No physics was changed to obtain any of that agreement. Reproducibility that survives re-implementation is a property of the model rather than of one binary, and it is the condition under which a third party could in principle land on the same bits.</p>
+
+<div class="box">
+<h5>Why exact reproducibility is not the same as run-to-run stability</h5>
+<p>A coefficient of variation below 0.01% across five runs<sup>1</sup> is a genuine and non-trivial result at billion-agent scale, and it establishes that a conclusion drawn from one run is not an artefact of stochastic seeding. It is nevertheless a statement about the dispersion of a distribution, not about the identity of an object. Every run is a fresh draw, so there is no artefact to freeze and consequently nothing for a pre-registration to attach to. Exact determinism supplies the missing object: a specific world, recoverable by hash, to which a claim can be pinned before its outcome is known. The distinction is structural and carries no implication about accuracy.</p>
+</div>
+
+<h3 class="sub"><span class="n">2.3</span>The material board</h3>
+
+<p class="first">At 200,000 census-true agents over 180 days under the frozen physics configuration, the world's material aggregates land on their real anchors (Table 1).</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 1</span> | <strong>The material board at 200,000 census-true agents, 180 days, freeze-0.9.</strong> Population-true global figures against real-world anchors. The two lines outside their anchors are reported in Section 3.3 and are not counted as passing.</figcaption>
+<table>
+<thead><tr><th>Quantity</th><th class="num">Earth-1</th><th class="num">Real anchor</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Poverty headcount, $8.30/day</td><td class="num">45.9%</td><td class="num">46.1%</td><td>on anchor</td></tr>
+<tr><td>Median income</td><td class="num">$9.61/day</td><td class="num">$9.27/day</td><td>on anchor</td></tr>
+<tr><td>Crude death rate</td><td class="num">0.0073/yr</td><td class="num">0.0076/yr</td><td>on anchor</td></tr>
+<tr><td>Adult share aged 65 and over</td><td class="num">14.1%</td><td class="num">13.6%</td><td>on anchor</td></tr>
+<tr><td>Mean age at death</td><td class="num">69.0 yr</td><td class="num">66.2&ndash;71.8</td><td>in structural band</td></tr>
+<tr><td>Poverty headcount, $3.00/day</td><td class="num">16.8%</td><td class="num">10.4%</td><td>1.6&times; over &mdash; see 3.3</td></tr>
+<tr><td>Unemployment rate</td><td class="num">~9.7%</td><td class="num">4.8%</td><td>2&times; over &mdash; see 3.3</td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>Four of the five headline material lines land within a fraction of a percentage point of anchors that were not available to the calibration as free parameters, and the fifth falls inside a structural band derived from the survival curves themselves. The two failures are informative rather than diffuse: both concern the lower tail of material circumstance, and both are traced in Section 3.3 to specific absent operators rather than to a general mis-fit.</p>
+
+<h3 class="sub"><span class="n">2.4</span>Scale and scale invariance</h3>
+
+<p class="first">State costs between 975.2 and 981.6 bytes per agent across the 1M, 4M, 16M, 64M and 100M rungs &mdash; flat to 0.7% across a hundredfold range (Table 2). The tick scales as <em>n</em><sup>1.07</sup>. Birth requires a consistent factor of roughly 3.2 times the final state as working memory, which is the binding constraint on a single machine rather than the steady-state footprint. At one hundred million agents, birth takes 756.7 seconds and a world-day 924.8 seconds at a peak of 324.5 GB, on one 48-core AMD EPYC 9454P.</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 2</span> | <strong>Scaling ladder.</strong> Measured on one AMD EPYC 9454P (48 cores). Values marked ~ are recorded as approximations in the source. Peak resident memory exceeds steady-state resident state because construction requires roughly 3.2&times; the final state as working memory.</figcaption>
+<table>
+<thead><tr><th>Population</th><th class="num">Birth</th><th class="num">Per world-day</th><th class="num">Bytes/agent</th><th class="num">Peak RSS</th></tr></thead>
+<tbody>
+<tr><td>1,000,000</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">975.2</td><td class="num">&mdash;</td></tr>
+<tr><td>4,000,000</td><td class="num">&mdash;</td><td class="num">60 s</td><td class="num">978.7</td><td class="num">&mdash;</td></tr>
+<tr><td>16,000,000</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">980.4</td><td class="num">&mdash;</td></tr>
+<tr><td>64,000,000</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">981.6</td><td class="num">&mdash;</td></tr>
+<tr><td>100,000,000</td><td class="num">756.7 s</td><td class="num">924.8 s</td><td class="num">~980</td><td class="num">324.5 GB</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 190" width="100%" font-family="Charter, Georgia, serif">
+<line x1="52.0" y1="158.0" x2="420.0" y2="158.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="48.0" y="160.5" font-size="7.5" text-anchor="end" fill="#444">960</text>
+<line x1="52.0" y1="122.5" x2="420.0" y2="122.5" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="48.0" y="125.0" font-size="7.5" text-anchor="end" fill="#444">970</text>
+<line x1="52.0" y1="87.0" x2="420.0" y2="87.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="48.0" y="89.5" font-size="7.5" text-anchor="end" fill="#444">980</text>
+<line x1="52.0" y1="51.5" x2="420.0" y2="51.5" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="48.0" y="54.0" font-size="7.5" text-anchor="end" fill="#444">990</text>
+<line x1="52.0" y1="16.0" x2="420.0" y2="16.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="48.0" y="18.5" font-size="7.5" text-anchor="end" fill="#444">1000</text>
+<rect x="52.0" y="81.3" width="368.0" height="22.7" fill="#2b3a4a" opacity="0.07"/>
+<line x1="52.0" y1="16.0" x2="52.0" y2="158.0" stroke="#000" stroke-width="0.8"/>
+<line x1="52.0" y1="158.0" x2="420.0" y2="158.0" stroke="#000" stroke-width="0.8"/>
+<polyline points="52.0,104.0 162.8,91.6 273.6,85.6 384.3,81.3 420.0,87.0" fill="none" stroke="#111" stroke-width="1.5"/>
+<circle cx="52.0" cy="104.0" r="2.4" fill="#111"/>
+<text x="52.0" y="169.0" font-size="7.5" text-anchor="middle" fill="#444">1M</text>
+<circle cx="162.8" cy="91.6" r="2.4" fill="#111"/>
+<text x="162.8" y="169.0" font-size="7.5" text-anchor="middle" fill="#444">4M</text>
+<circle cx="273.6" cy="85.6" r="2.4" fill="#111"/>
+<text x="273.6" y="169.0" font-size="7.5" text-anchor="middle" fill="#444">16M</text>
+<circle cx="384.3" cy="81.3" r="2.4" fill="#111"/>
+<text x="384.3" y="169.0" font-size="7.5" text-anchor="middle" fill="#444">64M</text>
+<circle cx="420.0" cy="87.0" r="2.4" fill="#111"/>
+<text x="420.0" y="169.0" font-size="7.5" text-anchor="middle" fill="#444">100M</text>
+<text x="60.0" y="30.2" font-size="7.6" fill="#2b3a4a">span 975.2&#8211;981.6 B, flat to 0.7% across 100&#215;</text>
+<text x="236.0" y="186.0" font-size="8" text-anchor="middle">population (log scale)</text>
+<text x="11" y="87.0" font-size="8" text-anchor="middle" transform="rotate(-90,11,87.0)">bytes per agent</text>
+</svg><figcaption><span class="lbl">Figure 1</span> | <strong>State cost per agent is flat across a hundredfold range of population.</strong> Measured at five rungs on one 48-core machine. The shaded band spans the full observed range, 975.2 to 981.6 bytes per agent. Flat per-agent cost is what makes the economics of Section 2.9 hold at scale rather than degrading with population.</figcaption></figure>
+
+<p>That ladder is a validated instrument rather than a table of observations. Extrapolating from the rungs below it, the hundred-million-agent run was forecast at <strong>311 GB and 14.4 minutes per world-day before it was executed</strong>, and measured 324.5 GB and 15.4 minutes. An out-of-sample engineering forecast, made beyond the largest previously measured rung, held on both axes.</p>
+
+<figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 150" width="100%" font-family="Charter, Georgia, serif">
+<text x="90.0" y="45.0" font-size="8" text-anchor="end">Peak memory (GB)</text>
+<rect x="96.0" y="36.0" width="275.2" height="13.0" fill="none" stroke="#888" stroke-width="0.8" stroke-dasharray="3 2"/>
+<rect x="96.0" y="51.0" width="287.2" height="13.0" fill="#2b3a4a"/>
+<text x="375.2" y="45.0" font-size="7.4" fill="#555">forecast 311</text>
+<text x="387.2" y="60.0" font-size="7.4" fill="#2b3a4a">measured 324.5</text>
+<text x="90.0" y="92.0" font-size="8" text-anchor="end">Time per world-day (min)</text>
+<rect x="96.0" y="83.0" width="254.9" height="13.0" fill="none" stroke="#888" stroke-width="0.8" stroke-dasharray="3 2"/>
+<rect x="96.0" y="98.0" width="272.6" height="13.0" fill="#2b3a4a"/>
+<text x="354.9" y="92.0" font-size="7.4" fill="#555">forecast 14.4</text>
+<text x="372.6" y="107.0" font-size="7.4" fill="#2b3a4a">measured 15.4</text>
+<text x="235.0" y="14" font-size="7.8" text-anchor="middle" fill="#333">forecast made from the 1M&#8211;64M ladder before the 100M run was executed</text>
+</svg><figcaption><span class="lbl">Figure 2</span> | <strong>The scaling laws are predictive, not merely descriptive.</strong> Peak memory and wall-clock per world-day at one hundred million agents were forecast by extrapolation from the rungs below before the run was executed, and held on both axes. An engineering forecast that survives out-of-sample use is the condition under which projections toward larger populations are admissible at all.</figcaption></figure>
+
+<p>The board also reproduces at scale. Four million agents over 180 days on verified freeze-0.9 physics return a median income of 9.52 against the board's 9.605, a poverty headcount of 45.29% against 45.88%, a crude death rate of 0.00738 against 0.00727, and a mean age at death of 68.29 against 68.99 &mdash; every line inside its gate at twenty times the calibrated population. The extreme-poverty line moves with them, at 16.30% against the board's 16.80%, and remains high against its real anchor of 10.4%; the scale-up reproduces the board including the board's known miss. Through equilibration, a 100M world tracks a 4M control to a poverty gap of 0.01, 0.00, 0.02 and 0.06 percentage points at days 5, 15, 30 and 60, with mean age at death identical at day 60.</p>
+
+<p>The sharpest scale result concerns invariance rather than accuracy. A five-day census &mdash; an equilibration state well before the 180-day board, which must not be read as a calibrated result &mdash; is <em>the same world</em> at every population size (Table 3).</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 3</span> | <strong>Scale invariance of the day-5 census.</strong> A pre-equilibration state, reported here to establish invariance in population size and <em>not</em> as an accuracy result; the calibrated board is measured at 180 days and appears in Table 1. Across a 500-fold range the poverty line varies by 0.08 percentage points and the median by seven cents.</figcaption>
+<table>
+<thead><tr><th>Population</th><th class="num">Median $/day</th><th class="num">Poverty $8.30</th><th class="num">Poverty $3.00</th></tr></thead>
+<tbody>
+<tr><td>200,000</td><td class="num">3.30</td><td class="num">0.9456</td><td class="num">0.4438</td></tr>
+<tr><td>1,000,000</td><td class="num">3.24</td><td class="num">0.9460</td><td class="num">0.4466</td></tr>
+<tr><td>4,000,000</td><td class="num">3.23</td><td class="num">0.9464</td><td class="num">0.4470</td></tr>
+<tr><td>100,000,000</td><td class="num">3.23</td><td class="num">0.9463</td><td class="num">0.4467</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 200" width="100%" font-family="Charter, Georgia, serif">
+<line x1="54.0" y1="148.7" x2="416.0" y2="148.7" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="50.0" y="151.2" font-size="7.5" text-anchor="end" fill="#444">0.9445</text>
+<line x1="54.0" y1="110.2" x2="416.0" y2="110.2" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="50.0" y="112.7" font-size="7.5" text-anchor="end" fill="#444">0.9455</text>
+<line x1="54.0" y1="71.7" x2="416.0" y2="71.7" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="50.0" y="74.2" font-size="7.5" text-anchor="end" fill="#444">0.9465</text>
+<line x1="54.0" y1="33.2" x2="416.0" y2="33.2" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="50.0" y="35.7" font-size="7.5" text-anchor="end" fill="#444">0.9475</text>
+<line x1="54.0" y1="14.0" x2="54.0" y2="168.0" stroke="#000" stroke-width="0.8"/>
+<line x1="54.0" y1="168.0" x2="416.0" y2="168.0" stroke="#000" stroke-width="0.8"/>
+<text x="421.0" y="139.7" font-size="7.5" fill="#b04a3a">3.20</text>
+<text x="421.0" y="108.9" font-size="7.5" fill="#b04a3a">3.25</text>
+<text x="421.0" y="78.1" font-size="7.5" fill="#b04a3a">3.30</text>
+<text x="421.0" y="47.3" font-size="7.5" fill="#b04a3a">3.35</text>
+<line x1="416.0" y1="14.0" x2="416.0" y2="168.0" stroke="#b04a3a" stroke-width="0.8"/>
+<polyline points="54.0,106.4 147.7,91.0 228.5,75.6 416.0,79.4" fill="none" stroke="#111" stroke-width="1.5"/>
+<polyline points="54.0,75.6 147.7,112.6 228.5,118.7 416.0,118.7" fill="none" stroke="#b04a3a" stroke-width="1.2" stroke-dasharray="3 2"/>
+<circle cx="54.0" cy="106.4" r="2.4" fill="#111"/>
+<circle cx="147.7" cy="91.0" r="2.4" fill="#111"/>
+<circle cx="228.5" cy="75.6" r="2.4" fill="#111"/>
+<circle cx="416.0" cy="79.4" r="2.4" fill="#111"/>
+<circle cx="54.0" cy="75.6" r="2" fill="#b04a3a"/>
+<circle cx="147.7" cy="112.6" r="2" fill="#b04a3a"/>
+<circle cx="228.5" cy="118.7" r="2" fill="#b04a3a"/>
+<circle cx="416.0" cy="118.7" r="2" fill="#b04a3a"/>
+<text x="54.0" y="179.0" font-size="7.5" text-anchor="middle" fill="#444">200k</text>
+<text x="147.7" y="179.0" font-size="7.5" text-anchor="middle" fill="#444">1M</text>
+<text x="228.5" y="179.0" font-size="7.5" text-anchor="middle" fill="#444">4M</text>
+<text x="416.0" y="179.0" font-size="7.5" text-anchor="middle" fill="#444">100M</text>
+<text x="235.0" y="196.0" font-size="8" text-anchor="middle">population (log scale, 500&#215; range)</text>
+<text x="11" y="91.0" font-size="8" text-anchor="middle" transform="rotate(-90,11,91.0)">poverty $8.30</text>
+<text x="461.0" y="91.0" font-size="8" text-anchor="middle" fill="#b04a3a" transform="rotate(90,461.0,91.0)">median $/day</text>
+</svg><figcaption><span class="lbl">Figure 3</span> | <strong>The census is invariant in population size.</strong> Day-5 poverty headcount at the $8.30 line (solid, left axis) and median daily income (dashed, right axis) at four populations spanning a 500-fold range. The headcount moves by 0.08 percentage points and the median by seven cents. This is a pre-equilibration state, shown to establish invariance in <em>N</em>; the calibrated board is measured at 180 days and appears in Table 1.</figcaption></figure>
+
+<p>The board's dependence is on <em>time</em>, not on <em>N</em>. This retroactively licenses the entire calibration ladder: tuning at small populations and confirming at larger ones is legitimate precisely because the physics is scale-free, and a calibration that held only at its own sampling frame would have broken at this step. It did not.</p>
+
+<p>Scale therefore buys statistical resolution rather than a different world, and that is the affirmative case for building a larger one. Rare events &mdash; deaths, crises, tail behaviour, narrow demographic segments &mdash; become measurable in days of world-time instead of years, because a population sample can substitute for a time sample only when the larger world is demonstrably the same world. Establishing invariance first is what makes the exchange admissible.</p>
+
+<h3 class="sub"><span class="n">2.5</span>Agreement with real human populations</h3>
+
+<p class="first">Against 21,776 scored item-country cells across three development estates, under leave-one-country-out with named-entity abstention active and abstained cells excluded from both the model and the baselines, Earth-1 agrees with the real human majority on <strong>83.5%</strong> of cells. Of the 12,669 cells where the survey's own sample size is known, <strong>14.2% are statistically indistinguishable from the survey's own 95% sampling noise</strong> &mdash; for one cell in seven, the model's answer cannot be told apart from having asked people. Median distance is 3.78 sampling errors and mean absolute error 10.65 percentage points. The signed error is near zero overall, so the residual is family-specific tilt rather than one global bias (Table 4).</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 4</span> | <strong>Distance from human majorities by question family</strong>, pooled across three estates. Median distance is in units of the survey's own sampling error; MAE is in percentage points; signed error is positive where the model reads too high. The family classifier is itself a known limitation: a substantial block of items is family-unclassifiable and falls into &lsquo;other&rsquo;, and the classifier does not separate belief items from politics-of-religion items.</figcaption>
+<table>
+<thead><tr><th>Family</th><th class="num">Cells</th><th class="num">Majority agree</th><th class="num">Median &sigma;</th><th class="num">MAE (pp)</th><th class="num">Signed (pp)</th></tr></thead>
+<tbody>
+<tr><td>Technology and climate</td><td class="num">735</td><td class="num">90.5%</td><td class="num">2.97</td><td class="num">8.33</td><td class="num">+0.84</td></tr>
+<tr><td>Religion and values</td><td class="num">1,163</td><td class="num">86.0%</td><td class="num">3.91</td><td class="num">9.98</td><td class="num">+0.29</td></tr>
+<tr><td>Security</td><td class="num">553</td><td class="num">87.9%</td><td class="num">3.65</td><td class="num">10.24</td><td class="num">&minus;0.04</td></tr>
+<tr><td>Democracy and governance</td><td class="num">2,861</td><td class="num">83.7%</td><td class="num">3.79</td><td class="num">10.51</td><td class="num">+0.14</td></tr>
+<tr><td>Other</td><td class="num">14,161</td><td class="num">83.4%</td><td class="num">3.81</td><td class="num">10.74</td><td class="num">&minus;0.03</td></tr>
+<tr><td>International relations</td><td class="num">1,162</td><td class="num">79.7%</td><td class="num">3.71</td><td class="num">11.36</td><td class="num">+0.28</td></tr>
+<tr><td>Economy</td><td class="num">1,141</td><td class="num">79.5%</td><td class="num">3.55</td><td class="num">11.51</td><td class="num">+0.21</td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>Against continuous-valued baselines the readout is behind, and we report the board in full (Table 5). On 98 held-out WVS items Earth-1 scores 11.84 pp mean absolute error against a naive grand-mean baseline's 12.80, a multilevel-regression-with-poststratification estimator's 11.18<sup>22,23,24</sup>, and a region-copy baseline's 9.70. On 469 Pew-frame items the figures are 12.01, 12.02, 11.06 and 10.31. A replication on 110 never-labelled, never-calibrated items returns 11.20 &plusmn; 0.16 against region-copy's 9.81, so the deficit is not an artefact of item selection. Earth-1 beats the naive baseline and trails both informed baselines by roughly one to two points. The registered ACCEPT tier is 7.0 pp; this readout does not reach it.</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 5</span> | <strong>Four-method national-MAE board</strong> (percentage points; lower is better). All rows are development-estate measurements. The sealed holdout and prospective judges remain unspent and are reserved for a single scored exposure under founder-witnessed final scoring, so no row here is a final benchmark result.</figcaption>
+<table>
+<thead><tr><th>Frame</th><th class="num">Items</th><th class="num">Earth-1</th><th class="num">MrsP</th><th class="num">Naive</th><th class="num">Region-copy</th><th>Recorded verdict</th></tr></thead>
+<tbody>
+<tr><td>WVS held-out</td><td class="num">98</td><td class="num">11.84</td><td class="num">11.18</td><td class="num">12.80</td><td class="num">9.70</td><td>miss; beats naive only</td></tr>
+<tr><td>Pew frame</td><td class="num">469</td><td class="num">12.01</td><td class="num">11.06</td><td class="num">12.02</td><td class="num">10.31</td><td>miss; &asymp; naive</td></tr>
+<tr><td>WVS extended (never labelled)</td><td class="num">110</td><td class="num">11.20</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">9.81</td><td>replication; same verdict</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 196" width="100%" font-family="Charter, Georgia, serif">
+<line x1="112.0" y1="22.0" x2="112.0" y2="170.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="112.0" y="181.0" font-size="7.5" text-anchor="middle" fill="#444">0</text>
+<line x1="187.4" y1="22.0" x2="187.4" y2="170.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="187.4" y="181.0" font-size="7.5" text-anchor="middle" fill="#444">3</text>
+<line x1="262.7" y1="22.0" x2="262.7" y2="170.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="262.7" y="181.0" font-size="7.5" text-anchor="middle" fill="#444">6</text>
+<line x1="338.1" y1="22.0" x2="338.1" y2="170.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="338.1" y="181.0" font-size="7.5" text-anchor="middle" fill="#444">9</text>
+<line x1="413.4" y1="22.0" x2="413.4" y2="170.0" stroke="#e4e4e4" stroke-width="0.5"/>
+<text x="413.4" y="181.0" font-size="7.5" text-anchor="middle" fill="#444">12</text>
+<text x="106.0" y="34.9" font-size="7.8" text-anchor="end">Technology/climate</text>
+<rect x="112.0" y="27.1" width="209.2" height="9.7" fill="#2b3a4a"/>
+<text x="325.2" y="34.9" font-size="7.4" fill="#333">8.33 pp</text>
+<text x="106.0" y="42.9" font-size="6.9" text-anchor="end" fill="#777">n=735</text>
+<text x="106.0" y="56.0" font-size="7.8" text-anchor="end">Religion/values</text>
+<rect x="112.0" y="48.2" width="250.7" height="9.7" fill="#2b3a4a"/>
+<text x="366.7" y="56.0" font-size="7.4" fill="#333">9.98 pp</text>
+<text x="106.0" y="64.0" font-size="6.9" text-anchor="end" fill="#777">n=1,163</text>
+<text x="106.0" y="77.1" font-size="7.8" text-anchor="end">Security</text>
+<rect x="112.0" y="69.4" width="257.2" height="9.7" fill="#2b3a4a"/>
+<text x="373.2" y="77.1" font-size="7.4" fill="#333">10.24 pp</text>
+<text x="106.0" y="85.1" font-size="6.9" text-anchor="end" fill="#777">n=553</text>
+<text x="106.0" y="98.3" font-size="7.8" text-anchor="end">Democracy/governance</text>
+<rect x="112.0" y="90.5" width="264.0" height="9.7" fill="#2b3a4a"/>
+<text x="380.0" y="98.3" font-size="7.4" fill="#333">10.51 pp</text>
+<text x="106.0" y="106.3" font-size="6.9" text-anchor="end" fill="#777">n=2,861</text>
+<text x="106.0" y="119.4" font-size="7.8" text-anchor="end">Other</text>
+<rect x="112.0" y="111.6" width="269.8" height="9.7" fill="#2b3a4a"/>
+<text x="385.8" y="119.4" font-size="7.4" fill="#333">10.74 pp</text>
+<text x="106.0" y="127.4" font-size="6.9" text-anchor="end" fill="#777">n=14,161</text>
+<text x="106.0" y="140.6" font-size="7.8" text-anchor="end">Intl. relations</text>
+<rect x="112.0" y="132.8" width="285.4" height="9.7" fill="#2b3a4a"/>
+<text x="401.4" y="140.6" font-size="7.4" fill="#333">11.36 pp</text>
+<text x="106.0" y="148.6" font-size="6.9" text-anchor="end" fill="#777">n=1,162</text>
+<text x="106.0" y="161.7" font-size="7.8" text-anchor="end">Economy</text>
+<rect x="112.0" y="153.9" width="289.1" height="9.7" fill="#2b3a4a"/>
+<text x="405.1" y="161.7" font-size="7.4" fill="#333">11.51 pp</text>
+<text x="106.0" y="169.7" font-size="6.9" text-anchor="end" fill="#777">n=1,141</text>
+<line x1="112.0" y1="170.0" x2="426.0" y2="170.0" stroke="#000" stroke-width="0.8"/>
+<text x="269.0" y="193.0" font-size="8" text-anchor="middle">national mean absolute error (percentage points)</text>
+<text x="235.0" y="12" font-size="7.8" text-anchor="middle" fill="#333">ordered best to worst; bar length is MAE, lower is better</text>
+</svg><figcaption><span class="lbl">Figure 4</span> | <strong>National mean absolute error by question family</strong>, pooled across three development estates and ordered best to worst. Families where an attitude follows from simulated circumstance sit at the top; the two weakest families correspond to inputs the substrate does not carry, both registered in Section 3.3.</figcaption></figure>
+
+<p>The per-item structure is where a mechanistic model earns its place. On the Pew frame Earth-1 is <strong>outright best of the four methods on 64 of 468 items and beats region-copy on 137</strong>, and those wins concentrate in outgroup trust and material hardship &mdash; precisely the domains where an attitude follows from circumstances the engine simulates. Its losses concentrate in religion and geopolitics, which correspond to inputs the substrate does not currently carry, and both absences are registered in Section 3.3. Region-copy, meanwhile, is a lookup table: it assigns a country the attitudes of its neighbours. It cannot be perturbed, cannot answer a counterfactual, cannot be run forward, and has nothing whatever to say about any individual. On this evidence Earth-1 is the less accurate estimator of a static survey margin and the only one of the four methods that is a model of anything.</p>
+
+<h3 class="sub"><span class="n">2.6</span>Social structure, transmission and emergence</h3>
+
+<p class="first">Agent-based societies routinely claim that collective behaviour <em>emerges</em> rather than being written in, and the claim is routinely unfalsifiable. Two explanations for any neighbour-correlated pattern &mdash; genuine transmission between agents, and a shared response by similar agents to a common input &mdash; leave the same signature in aggregate statistics. A model that cannot separate them can only narrate emergence. Earth-1 can separate them, and the machinery that makes this possible is set out here.</p>
+
+<h4 class="subsub"><span class="n">2.6.1</span>A graph over people, not a channel over aggregates</h4>
+
+<p class="first">Each agent holds ties across several relationship channels &mdash; household, colleagues, neighbours, friends, weak ties<sup>25</sup>, and a small set of high-degree media hubs &mdash; with channel-specific weights and degrees. Every social computation on the daily path reads a <em>living view</em> of that graph, rebuilt after each day's deaths, migrations and job changes, so that the dead retain their edges as history while carrying no weight in current dynamics. The graph is constructed at genesis with homophilous structure: people are connected preferentially to people like them, as they are in the world being modelled. Tie weights then move continuously, and a limited amount of rewiring changes who is connected to whom.</p>
+
+<h4 class="subsub"><span class="n">2.6.2</span>Transmission is dyadic and reads a named partner's state</h4>
+
+<p class="first">The daily influence operation is not a mean-field approximation. Each agent draws a small number of encounters per day, sampled by tie weight from its living neighbourhood. For each encounter, the agent's force vector moves a fixed fraction of the way toward <em>that specific partner's current value</em>, scaled by a susceptibility term depending on the agent's own condition &mdash; age, conviction, mental state, hunger. The quantity moved is read from the partner's state at that moment.</p>
+
+<p>This is transmission in the strict sense: information about one person's state enters another person's state through a named edge, and the same encounters simultaneously accumulate the evidence from which conviction is updated at the end of the day. Belief and certainty co-evolve out of the same interactions. We state plainly what the operator is and is not. It moves each agent toward a partner's value and contains no term pushing an agent toward the partner's <em>pole</em>; considered in isolation it is contractive in the variance of the force distribution. Earth-1 contains no designed polarization mechanism and this paper makes no claim of emergent polarization.</p>
+
+<h4 class="subsub"><span class="n">2.6.3</span>Two forces act on every belief, every day</h4>
+
+<p class="first">An agent's forces are moved each day by two competing operations. The social operation pushes the agent toward the people it encounters. A second operation computes the force state the agent's <em>material circumstances</em> imply &mdash; work, income, reserves, hunger, housing, health &mdash; and relaxes the agent toward that target. The material target is deliberately returned rather than applied, so that the social layer acts as a push and circumstance as a restoring pull.</p>
+
+<p>This tension is the structural core of the model's social dynamics: an agent is moved by the people it knows and pulled back by the life it actually lives. A world with only the push saturates; a world with only the pull is a lookup table on circumstance. Because both operations are arithmetic on inspectable state, the balance between them can be read directly rather than inferred from outputs.</p>
+
+<h4 class="subsub"><span class="n">2.6.4</span>The feedback structure</h4>
+
+<p class="first">Emergence requires closed loops; a one-way pipeline cannot produce it. Five are traceable on the daily path. <em>Influence and conviction:</em> encounters move forces and simultaneously accumulate agreement evidence; conviction updates from that evidence; conviction then weights susceptibility to subsequent movement. <em>The fabric responds to the conversation:</em> tie strengths update from the day's interaction, agreement strengthening a tie and disagreement weakening it, and a small number of agents find replacements closer to them in force space, so the graph the influence operator runs on tomorrow is a function of what that operator did today. <em>Social position feeds back into disposition:</em> an agent's daily deviation from its neighbourhood's mean force updates its dispositional traits, which in turn shape both susceptibility and the material force target. <em>Memory spreads along the graph:</em> events enter the world's chronicle with a scope, and that scope grows to the people who know the people it happened to, with rehearsal consolidating repeated similar events rather than stacking them. <em>Institutions close the loop through the population:</em> government policy reads aggregate population state and chooses accordingly, and the resulting policy changes the material conditions from which every agent's force target is computed.</p>
+
+<p>We are careful about what the second of these supports. The <em>direction</em> of the resulting assortativity is written into the update rule, so segregation is designed; only its <em>magnitude</em>, arising from coupling with the influence dynamics, is emergent.</p>
+
+<h4 class="subsub"><span class="n">2.6.5</span>Drawn or grown: a distinction Earth-1 can make</h4>
+
+<p class="first">The discipline that matters is refusing to credit emergence for anything that was drawn at genesis. Earth-1 is unusual in being able to tell the difference, and the demonstration is worth stating precisely.</p>
+
+<p>The population's income distribution is heavy-tailed, and it would be easy to attribute that tail to correlated shocks travelling through the firm structure and the social graph. Measurement says otherwise: wage kurtosis is 247.01 at birth and 246.76 after 120 days of living. Living changes it by roughly a quarter of one percent. <strong>The heavy tail of income is drawn, not grown, and Earth-1 says so.</strong></p>
+
+<p>Over the same 120 days, the ratio of the 99th percentile of accumulated wealth to the median rises from 11.88 to 29.48, and the share held by the top one percent rises from 0.122 to 0.194 &mdash; with only 6.5% of agents having experienced any job loss at all. Nothing placed that concentration in the world at genesis. It grows out of the interaction between correlated employment shocks, scarring, and the differential capacity of households to absorb them. <strong>Within a generation, wealth concentration is emergent, and Earth-1 says that too.</strong></p>
+
+<p>Two superficially similar inequalities in the same population, one designed and one grown, correctly distinguished. This separation is unavailable to a model whose runs differ from each other, because it requires holding an entire world fixed and asking what a single mechanism contributed. We also state its boundary: across generations no mechanism in the current engine creates new mass in the income tail, since wage is carried forward at replacement without mobility and accumulated wealth restarts. Long-run inequality in this model is not grown, and is not presented as such.</p>
+
+<h4 class="subsub"><span class="n">2.6.6</span>Emergence as a measurement</h4>
+
+<p class="first">Determinism is what makes the preceding subsection possible. Because the world is bit-reproducible, a perturbed branch runs against a null branch of the <em>same</em> world under common random numbers<sup>19</sup>, and any difference between them is attributable to the perturbation rather than to sampling. An emergent claim in Earth-1 therefore takes the form of a paired difference with a seed-level error bar rather than a description of what the model appeared to do.</p>
+
+<p>The instrument also returns negative results, which is the harder test and the more useful capability. When a fiscal shock was applied to a single country at full fidelity, the shocked branch fell below the engine's registered class noise floor relative to its control, and the system returned an abstention traceable to a named structural absence rather than a narrative about resilience. A model that narrates emergence cannot return that answer; it will always produce a story. The decomposition of the remaining neighbour correlation into transmission and homophily is quantified by a zero-transmission ablation on the schedule, using exactly the branch-versus-null apparatus described here.</p>
+
+<p>The general principle is the one this section has been building toward. Earth-1 does not ask to be believed about emergence. It exposes the mechanism as arithmetic, holds the world still, and measures what each part of it contributed.</p>
+
+<h3 class="sub"><span class="n">2.7</span>Learning from experience under sealed controls</h3>
+
+<p class="first">Earth-1's parameters can be recovered from observation, and the gates for that claim were built to catch the loop pretending to learn. We state the scope precisely at the outset: this is a <strong>synthetic-recovery experiment</strong>, not a claim about learning from the real world. Experience Loop v0.2 ran twenty simulated twin worlds at 20,000 agents against sealed planted parameters &mdash; sixteen well-specified and four deliberately misspecified &mdash; over twenty-four cycles of thirty simulated days, with the design pre-registered before any cycle ran.</p>
+
+<p>The decisive arm was added as a binding condition on the pre-registration: an <em>informed non-learner</em> with identical particle machinery and identical observation access to the experiential learner, but no persistent update. Per cycle its weights are computed fresh from that window's observation distance alone, with no multiplicative accumulation, no resampling, and parameters fixed at their prior draws forever. It may condition on what it has just seen; it may not learn. Any advantage the experiential arm shows over it must therefore come from persistence rather than from information.</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 6</span> | <strong>Experience Loop v0.2 pre-registered control arms.</strong> Paired log-CRPS<sup>26</sup> differences stated in the direction the record states them, so positive favours the experiential learner. All arms run on the same twenty sealed synthetic worlds. The success condition was the conjunction of every gate, registered before the run.</figcaption>
+<table>
+<thead><tr><th>Control arm</th><th>What it isolates</th><th class="num">&Delta; log-CRPS</th><th class="num">95% CI</th><th class="num"><em>p</em></th></tr></thead>
+<tbody>
+<tr><td>Informed non-learner (primary)</td><td>persistence vs state conditioning</td><td class="num">+1.51</td><td class="num">[1.21, 1.81]</td><td class="num">3 &times; 10<sup>&minus;5</sup></td></tr>
+<tr><td>Frozen model</td><td>any adaptation at all</td><td class="num">+2.16</td><td class="num">&mdash;</td><td class="num">&lt; 10<sup>&minus;4</sup></td></tr>
+<tr><td>Naive updater</td><td>structure vs smoothing</td><td class="num">+0.55</td><td class="num">[0.32, 0.77]</td><td class="num">2 &times; 10<sup>&minus;4</sup></td></tr>
+<tr><td>Shuffled-resolution placebo</td><td>real signal vs spurious fit</td><td class="num">+2.08</td><td class="num">&mdash;</td><td class="num">3 &times; 10<sup>&minus;5</sup></td></tr>
+<tr><td>Shock windows</td><td>adaptation when it matters</td><td class="num">+0.59</td><td class="num">&mdash;</td><td class="num">10<sup>&minus;4</sup></td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 250" width="100%" font-family="Charter, Georgia, serif">
+<line x1="52.0" y1="194.8" x2="460.0" y2="194.8" stroke="#ddd" stroke-width="0.5"/>
+<text x="48.0" y="197.3" font-size="7.5" text-anchor="end" fill="#444">0.01</text>
+<line x1="52.0" y1="124.6" x2="460.0" y2="124.6" stroke="#ddd" stroke-width="0.5"/>
+<text x="48.0" y="127.1" font-size="7.5" text-anchor="end" fill="#444">0.1</text>
+<line x1="52.0" y1="54.3" x2="460.0" y2="54.3" stroke="#ddd" stroke-width="0.5"/>
+<text x="48.0" y="56.8" font-size="7.5" text-anchor="end" fill="#444">1</text>
+<line x1="52.0" y1="12.0" x2="52.0" y2="216.0" stroke="#000" stroke-width="0.8"/>
+<line x1="52.0" y1="216.0" x2="460.0" y2="216.0" stroke="#000" stroke-width="0.8"/>
+<text x="52.0" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">1</text>
+<text x="140.7" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">6</text>
+<text x="247.1" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">12</text>
+<text x="353.6" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">18</text>
+<text x="460.0" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">24</text>
+<text x="256.0" y="246.0" font-size="8" text-anchor="middle">cycle</text>
+<text x="11" y="114.0" font-size="8" text-anchor="middle" transform="rotate(-90,11,114.0)">error (log)</text>
+<rect x="173.2" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<rect x="190.9" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<rect x="315.1" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<rect x="332.8" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<polyline points="52.0,192.9 69.7,191.2 87.5,191.6 105.2,11.0 123.0,17.2 140.7,20.2 158.4,19.8 176.2,23.7 193.9,25.5 211.7,29.0 229.4,31.4 247.1,32.8 264.9,29.5 282.6,31.6 300.3,32.9 318.1,33.9 335.8,32.7 353.6,34.6 371.3,32.4 389.0,34.3 406.8,36.1 424.5,37.3 442.3,38.7 460.0,39.6" fill="none" stroke="#888" stroke-width="1.0" stroke-dasharray="4 2"/>
+<polyline points="52.0,197.1 69.7,196.7 87.5,196.7 105.2,17.4 123.0,21.3 140.7,23.6 158.4,20.6 176.2,22.3 193.9,22.6 211.7,27.2 229.4,30.0 247.1,31.2 264.9,25.9 282.6,27.9 300.3,29.2 318.1,30.3 335.8,27.7 353.6,29.1 371.3,25.2 389.0,27.7 406.8,30.3 424.5,32.0 442.3,33.5 460.0,34.6" fill="none" stroke="#b04a3a" stroke-width="1.0" stroke-dasharray="1 2"/>
+<polyline points="52.0,157.7 69.7,157.7 87.5,173.6 105.2,58.9 123.0,73.1 140.7,74.3 158.4,51.2 176.2,73.6 193.9,66.2 211.7,81.2 229.4,84.1 247.1,87.2 264.9,71.8 282.6,89.7 300.3,94.5 318.1,94.8 335.8,62.5 353.6,82.7 371.3,78.9 389.0,92.4 406.8,94.6 424.5,94.9 442.3,95.9 460.0,98.8" fill="none" stroke="#4a6fa5" stroke-width="1.0" stroke-dasharray="3 2"/>
+<polyline points="52.0,196.2 69.7,208.1 87.5,214.1 105.2,42.0 123.0,53.8 140.7,69.1 158.4,67.8 176.2,75.3 193.9,79.2 211.7,86.4 229.4,92.6 247.1,96.2 264.9,89.8 282.6,95.2 300.3,99.2 318.1,101.7 335.8,93.6 353.6,99.0 371.3,99.3 389.0,103.2 406.8,106.1 424.5,108.3 442.3,111.9 460.0,115.1" fill="none" stroke="#111" stroke-width="1.7"/>
+<line x1="66.0" y1="18.0" x2="82.0" y2="18.0" stroke="#111" stroke-width="1.7"/>
+<text x="86.0" y="20.5" font-size="7.5">Experiential</text>
+<line x1="66.0" y1="28.0" x2="82.0" y2="28.0" stroke="#4a6fa5" stroke-width="1.0" stroke-dasharray="3 2"/>
+<text x="86.0" y="30.5" font-size="7.5">Naive updater</text>
+<line x1="66.0" y1="38.0" x2="82.0" y2="38.0" stroke="#b04a3a" stroke-width="1.0" stroke-dasharray="1 2"/>
+<text x="86.0" y="40.5" font-size="7.5">Shuffled placebo</text>
+<line x1="66.0" y1="48.0" x2="82.0" y2="48.0" stroke="#888" stroke-width="1.0" stroke-dasharray="4 2"/>
+<text x="86.0" y="50.5" font-size="7.5">Frozen</text>
+</svg><figcaption><span class="lbl">Figure 5</span> | <strong>Learning against its controls across twenty-four cycles</strong> on sixteen well-specified sealed synthetic worlds; lower is better, log scale. The experiential learner separates from every control and stays separated. The shuffled-resolution placebo tracks the frozen model, which is the control that matters: when the correspondence between observation and outcome is destroyed, no apparent learning appears. Shaded columns are the registered shock windows.</figcaption></figure>
+
+<p>The learner beat the informed non-learner in <strong>16 of 16 well-specified worlds</strong>, with a late-window score of 0.216 against 1.04 &mdash; a 4.8-fold gap. The causal control holds in both directions, which is the part that matters: the placebo learner is statistically indistinguishable from the frozen model (&Delta; = 0.078, <em>p</em> = 0.90), so an apparent improvement does not appear when the signal it would have to come from has been destroyed. Learning appears when, and only when, there is something real to learn from. Ninety-percent intervals cover at 0.963, the loop stays honest under deliberate misspecification in four cases of four, and replay from the hash-chained ledger is bit-identical. One recorded caveat: the stage scorer omitted the non-learner arm, so the two gates involving it were computed directly from the arm files by the same paired method, with a scorer patch outstanding.</p>
+
+<h3 class="sub"><span class="n">2.8</span>Retrodiction under a frozen forecast</h3>
+
+<p class="first">Every historical result below was produced by birthing a world at date <em>T</em> on real archive material, under a mechanical assertion that no input, anchor or news item postdates <em>T</em>, then freezing and committing the output <em>before</em> the judge was fetched. The judge is registered beforehand by name and location with its values unfetched, and the result is scored once.</p>
+
+<p>On a pre-committed register of protest-onset countries against quiet controls, Earth-1's unforced country states rank the real protest-prone countries above the quiet ones at <strong>Spearman &rho; = 0.552</strong> (<em>p</em> = 0.0052), with a Mann-Whitney separation at <em>p</em> = 0.0044 and a thirteenfold discrimination margin &mdash; mean onset probability 0.417 for the positives against 0.031 for the controls. Controls sitting at approximately zero satisfies the registered placebo criterion. The ordering is a real signal; the probabilities are not calibrated as forecasts, since the Brier<sup>27</sup> improvement over base rate is not statistically significant.</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 7</span> | <strong>Frozen-forecast retrodiction battery.</strong> Each world was born at <em>T</em> on archive material only, its output frozen and committed, and the judge fetched afterwards and scored once. Model probabilities are reported to four decimal places; the branch distances that generate them are withheld.</figcaption>
+<table>
+<thead><tr><th>Event</th><th><em>T</em></th><th>Registered judge</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Arab Spring</td><td>2010-12-16</td><td>Protest events by country, 90 days, 185-country overlap</td><td>Material-stress geography &rho; = +0.168, <em>p</em> = 0.022; fear channel +0.069, not significant</td></tr>
+<tr><td>Global financial crisis</td><td>2008-09-14</td><td>Real 2008&rarr;2009 unemployment delta</td><td>Response 0.64&times; real, within registered 2&times; band; direction right, <em>t</em> = 2.2 at 16 seeds</td></tr>
+<tr><td>COVID-19</td><td>2020-02-28</td><td>Real unemployment delta</td><td>Response 3.5&times; real, within registered 5&times; band; direction <em>t</em> &asymp; 18</td></tr>
+<tr><td>SVB banking stress</td><td>2023-03-08</td><td>Contagion to &ge; 2 further banks within 30 days</td><td>0.3019; resolved YES. Under-called; every material line abstained</td></tr>
+<tr><td>Sri Lanka</td><td>2022-03-31</td><td>Government fall within 120 days</td><td>0.3985; government fell. Under-called</td></tr>
+<tr><td>Truss gilt crisis</td><td>2022-09-22</td><td>UK fiscal-stress response at full fidelity</td><td>Physics abstention: shocked branch below registered class noise floor relative to control</td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>The aggregate event-direction gate stands at <strong>4 of 10 registered observable-level direction calls</strong> &mdash; two of four on COVID, two of three on the financial crisis, none of three on the Arab Spring &mdash; scored on a five-replicate battery covering three events. The pre-registered tiers were 75% for ACCEPT and 85% for GOOD; the 80% figure against which this is usually quoted is the freeze decision rule rather than the pre-registered tier. We report it as a failure either way. One qualification belongs with it: a later sixteen-seed re-run of the financial-crisis event moved that call's significance from <em>t</em> = 0.7 to <em>t</em> = 2.2, so the five-replicate battery on which the 40% was scored was underpowered relative to what the engine now runs.</p>
+
+<p>Two of the individual misses are under-calls rather than misdirections. The model put 0.3019 on banking contagion and 0.3985 on a government falling, and both happened. In the banking case every material line abstained while the United States emerged as the top force mover at twice the runner-up &mdash; right about the fear, missing the plumbing.</p>
+
+<h3 class="sub"><span class="n">2.9</span>The economics of a language-model-free civilization</h3>
+
+<p class="first">The runtime path contains zero language-model calls. This is an architectural property rather than an optimisation: there is no inference to cache, distil, or route, because there is no generation anywhere in the loop. The consequences are measurable (Table 8).</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 8</span> | <strong>Cost of the living world, measured against a per-agent-prompt equivalent.</strong> The equivalent assumes one small prompt per agent per day at 500 input and 100 output tokens, priced at $1 per million tokens, which is below frontier pricing. Earth-1's own figures are measured on one 48-core machine.</figcaption>
+<table>
+<thead><tr><th>Quantity</th><th class="num">Earth-1, measured</th><th class="num">One prompt per agent per day</th></tr></thead>
+<tbody>
+<tr><td>Tokens per world-day (4M agents)</td><td class="num">0</td><td class="num">2,400,000,000</td></tr>
+<tr><td>Cost per world-day</td><td class="num">&mdash;</td><td class="num">&asymp; $2,400</td></tr>
+<tr><td>Elapsed world-days</td><td class="num">16,860</td><td class="num">16,860</td></tr>
+<tr><td>To reproduce the world's full history</td><td class="num">11.7 days on one box</td><td class="num">40.3 trillion tokens, &asymp; $40,000,000</td></tr>
+<tr><td>Resident state, 4M agents</td><td class="num">3.9 GB</td><td class="num">&mdash;</td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>The figure that matters is not the per-day cost but the last row of the comparison. Reproducibility that costs forty million dollars to exercise is not reproducibility anyone will exercise. An entire civilization's history that can be regenerated from scratch in under twelve days on a single machine makes bit-exact replay of a decades-long world an operational reality rather than a theoretical property, and it is what allows a claim made about day 400 to be rechecked at day 16,000 without renegotiating a compute budget.</p>
+
+<p>A second consequence is temporal stability. Because no component of the runtime path depends on a third-party inference service, results cannot drift when a vendor ships a new checkpoint or retires an old one. The comparison class measures its own exposure to exactly this: swapping the communication language behind its agents moves a headline behavioural rate by up to 4.7 percentage points with topic-dependent sign<sup>1</sup>. An Earth-1 result obtained today reproduces bit-for-bit next year, which is the precondition for the frozen-forecast protocol of Section 2.8 to mean anything at all.</p>
+
+<p>Scale invariance and census weighting together settle what a larger population is actually for. Because the census is invariant across a five-hundredfold range, aggregate accuracy is already population-true at two hundred thousand agents; what more agents buy is individual and subnational resolution, and the statistical power to measure rare events in days of world-time rather than years. The economic argument is finally a simple one: removing generative inference from the runtime path is what makes a civilization cheap enough to leave running, cheap enough to re-derive from scratch, and stable enough that a result obtained today can be reproduced exactly a year from now on different hardware.</p>
+
+
+<h2 class="sec"><span class="n">3</span>Discussion</h2>
+
+<h3 class="sub"><span class="n">3.1</span>A model of its own</h3>
+
+<p class="first">The results above describe a system that is not a cheaper approximation of a language-model society and not a larger instance of a classical agent-based model. It is a third object, and the case for treating it as its own class rests on three properties that do not co-occur elsewhere.</p>
+
+<p>The first is that its population is an estimate of a real one. A per-country joint over five demographic dimensions, fitted so that the correlation structure between education, income and residence is measured rather than assumed, and aggregated by census weight against a world population anchor, means that a global figure Earth-1 reports is a claim about humanity rather than about a convenience sample. Classical agent-based models typically do not carry a demographic frame at all; language-model societies increasingly do, but they sample personas from a pool rather than instantiating a joint distribution and drawing from it.</p>
+
+<p>The second is that behaviour is computed rather than generated, which is what makes the model's mechanisms addressable. When Earth-1 is wrong, the error can be traced to an operator, and when an operator is absent the model can say so by abstaining rather than by producing a plausible number. This is the difference between a system whose errors are enumerable and one whose errors are diffuse. A model that is wrong without being wrong about anything in particular offers no handles for repair; Earth-1's register in Section 3.3 is a list of handles, each of which constitutes a prediction about what should change when the corresponding channel is added.</p>
+
+<p>The third is exact reproducibility, which converts the first two from design intentions into measurable properties. Without it, a claim that a given inequality is emergent rather than drawn cannot be tested, because the comparison requires holding an entire world fixed while a single mechanism is varied. With it, that comparison is routine.</p>
+
+<p>Together these support a specific and limited sense in which Earth-1 is a foundational model &mdash; not a pretrained network, but a single load-bearing substrate and grammar onto which many domain-specific populations can be conditioned. The same world serves a question about attitudes, a question about material hardship, and a question about the geography of unrest, without being rebuilt for each; and because the substrate is shared, the marginal cost of an additional question is the cost of reading the world rather than the cost of re-simulating it. Under a per-agent-prompt regime, cost scales with questions multiplied by agents multiplied by days; under a shared-substrate regime it does not.</p>
+
+<p>We are precise about where Earth-1 is not ahead. Its largest measured configuration is one hundred million agents, an order of magnitude below the billion-agent systems in the comparison class<sup>1</sup>. Scale is not the axis on which this work competes, and the case for a larger Earth-1 rests on resolution and rare-event power rather than on aggregate accuracy, which Section 2.4 shows is already population-true at two hundred thousand agents.</p>
+
+<h3 class="sub"><span class="n">3.2</span>Falsifiability as an architectural property</h3>
+
+<p class="first">A simulation output is not automatically evidence. For it to bear on a claim about the world, it must have been possible for the run to be wrong in a manner specified before the answer was known. Most properties commonly reported for large social simulations &mdash; population size, throughput, behavioural richness, run-to-run stability &mdash; are orthogonal to that requirement. Earth-1 treats it as the primary design constraint, from which the engineering choices follow rather than the reverse.</p>
+
+<p>The argument runs in four links, each inert without the one before it. <em>Determinism</em>: identical inputs yield an identical world, verified along three independent execution paths and one independent re-implementation. <em>A frozen artefact</em>: because a run reproduces exactly, its output can be committed as a fixed object with a hash, so that &ldquo;the model said <em>X</em>&rdquo; becomes a checkable assertion about a particular artefact rather than a summary of a distribution that would have to be regenerated, and might regenerate differently, in order to be inspected. <em>Pre-registration</em>: once the artefact is fixed, the claim, the gates and the scoring procedure can be written and sealed while the answer is still unknown<sup>17,18</sup>. <em>A judge fetched afterwards</em>: only at that point is outcome data retrieved, from a source registered beforehand by name and location.</p>
+
+<figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="100%" font-family="Charter, Georgia, serif">
+<rect x="8.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="58.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Determinism</text>
+<text x="58.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">identical inputs,</text>
+<text x="58.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">identical world</text>
+<line x1="110.0" y1="54" x2="120.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="121.0,54 117.0,51.4 117.0,56.6" fill="#000"/>
+<rect x="122.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="172.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Frozen artefact</text>
+<text x="172.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">output committed</text>
+<text x="172.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">with a hash</text>
+<line x1="224.0" y1="54" x2="234.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="235.0,54 231.0,51.4 231.0,56.6" fill="#000"/>
+<rect x="236.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="286.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Pre-registration</text>
+<text x="286.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">claim, gates, scoring</text>
+<text x="286.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">sealed</text>
+<line x1="338.0" y1="54" x2="348.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="349.0,54 345.0,51.4 345.0,56.6" fill="#000"/>
+<rect x="350.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="400.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Sealed judge</text>
+<text x="400.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">outcome fetched</text>
+<text x="400.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">afterwards; scored once</text>
+<text x="235.0" y="14" font-size="8" text-anchor="middle" font-style="italic">each link is inert without the one before it</text>
+<text x="235.0" y="99" font-size="7.6" text-anchor="middle" fill="#333">after the outcome is visible the model cannot reselect metric, horizon, country set or threshold</text>
+</svg><figcaption><span class="lbl">Figure 6</span> | <strong>The chain from determinism to evidence.</strong> Exact reproducibility yields an artefact that can be frozen; a frozen artefact is something a pre-registration can attach to; a pre-registered claim can be scored by a judge whose values were unknown when the claim was made. Statistical run-to-run stability supplies no artefact and therefore cannot enter this chain.</figcaption></figure>
+
+<p>It is the ordering, not any individual step, that does the work. Under this sequence the model has no move available after the outcome is visible: it cannot reselect the metric, the horizon, the country set or the threshold. Retrospective scoring leaves the space of admissible framings open until after the answer is in hand, and a sufficiently large space always contains a favourable framing<sup>28</sup>.</p>
+
+<p>A chain of this kind fails through procedure rather than theory, so the procedure is codified: one named change per cycle, so that any movement in the gates is attributable; gates fixed by written ruling before the run; VOID reserved for defects in the measuring instrument and never invoked for an unwelcome result; sealed judges registered with values unfetched until the model output is committed. Such rules are only tested when they cost something. The physics was frozen as a <em>freeze-with-named-regression</em> &mdash; carrying the failed direction gate and five named regressions on the tag rather than a fix that would have reopened the loop &mdash; and a registered substrate defect was likewise left deliberately unpatched and scheduled as a later cycle, because the physics was frozen. Both decisions are locally uncomfortable and structurally necessary. A gate that may be revised once the result is visible is not a gate.</p>
+
+<h4 class="subsub"><span class="n">3.2.1</span>A worked example: the 2022 grain-shock counterfactual</h4>
+
+<p class="first">The counterfactual was frozen and committed before any outcome data was fetched, against a judge registered in advance: an acute-food-insecurity database restricted to the 48 countries assessed in both 2021 and 2022. The model lost on all three registered dimensions. Magnitude overshot by 8.5&times; (+326M modelled against +38.5M real). Geography carried no signal, at Spearman &minus;0.137. Top-five overlap was one of five.</p>
+
+<p>Sealed before the fetch, the written prior had predicted all three failures and named the mechanism responsible: no substitution, no subsidies, no stock drawdown. Reality then confirmed the named damper directly &mdash; Egypt's real change was exactly zero, absorbed by its bread subsidy, which is the classical entitlement mechanism by which food availability and food access come apart<sup>29</sup>. The run is therefore, simultaneously and without contradiction, a triple failure against its own registered gates and a successful test of a stated mechanistic hypothesis. Only the ordering makes the second reading admissible. Had the prior been written after the numbers were known, it would be narrative rather than prediction, and the identical text would carry no evidential weight whatever.</p>
+
+<h3 class="sub"><span class="n">3.3</span>Limitations: the complete register</h3>
+
+<p class="first">This section is the complete register of defects standing against Earth-1 at freeze-0.9. Each entry names one thing: a channel the physics does not contain, a fault the engine's own checks found in its apparatus, a boundary of the substrate, or a score below a gate fixed by written ruling before the run. Each is stated once, with its measured consequence and the closure path the record names. The register is published rather than summarised because a model whose errors can be enumerated this precisely is demonstrating instrument quality, and because each entry is a testable prediction about what should change when the corresponding operator is added.</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 9</span> | <strong>Named open defects at freeze-0.9</strong>, with measured consequence and closure path. Absent channels are physics that has not been built; substrate boundaries are properties of the population frame; instrument defects are faults the engine's own checks found in its measuring apparatus.</figcaption>
+<table>
+<thead><tr><th>Class</th><th>Defect</th><th>Measured consequence</th><th>Closure</th></tr></thead>
+<tbody>
+<tr><td>Absent channel</td><td>No unemployment-insurance operator</td><td>Unemployment ~9.7% against real 4.8%; COVID unemployment response 3.5&times; the real delta</td><td>Insurance and furlough operators</td></tr>
+<tr><td>Absent channel</td><td>No substitution, subsidy or stock-drawdown operators</td><td>Food shock overshoots 8.5&times;; geography &rho; = &minus;0.137; top-5 overlap 1/5</td><td>Price substitution, state transfer, inventory buffering</td></tr>
+<tr><td>Absent channel</td><td>No interbank or deposit channel</td><td>Banking contagion under-called at 0.3019 on an outcome that resolved YES</td><td>Interbank exposure and deposit-flight channel</td></tr>
+<tr><td>Absent channel</td><td>No bond or pension channel</td><td>UK gilt crisis invisible; branch below class noise floor relative to control</td><td>Sovereign-debt and pension-liability channel</td></tr>
+<tr><td>Absent input</td><td>No national religiosity input</td><td>Religion and values is the worst opinion family at 3.91 sampling errors</td><td>Country-level religiosity series</td></tr>
+<tr><td>Absent input</td><td>No geopolitical-alignment input</td><td>International relations is the worst Pew family: 11.36 pp MAE, 79.7% majority agreement</td><td>Alignment and bloc-membership series</td></tr>
+<tr><td>Instrument defect</td><td>Settlement flag inverted in the current substrate</td><td>Model settlement reads as exactly one minus census in every country checked; two physics consumers affected</td><td>Registered, deliberately unpatched under the freeze; scheduled v1.1</td></tr>
+<tr><td>Instrument defect</td><td>Chronicle cost</td><td>A world warmed on ninety days of real news ticks far slower than a cold one; memory spread dominates the tick</td><td>Consolidation pass; registered pre-scale cycle</td></tr>
+<tr><td>Instrument defect</td><td>Encounter stream keyed on simulation day</td><td>Seed replicates do not resample the encounter sequence, so error bars on opinion observables under-sample the influence channel</td><td>Reseed the stream; quantify the under-sampling</td></tr>
+<tr><td>Substrate boundary</td><td>131 of 194 country joints are tier-fallback</td><td>Education and income margins pooled from income-tier donors rather than measured from microdata</td><td>Additional survey microdata licences</td></tr>
+<tr><td>Substrate boundary</td><td>No subnational geography; no household frame</td><td>No adm1 resolution; households not represented as units</td><td>National statistical tables or a negotiated source</td></tr>
+<tr><td>Score below gate</td><td>Event-direction gate</td><td>4 of 10 registered direction calls; pre-registered tiers 75% ACCEPT / 85% GOOD</td><td>Election and shock injector v2</td></tr>
+<tr><td>Score below gate</td><td>Opinion readout against informed baselines</td><td>11.84 pp against MrsP 11.18 and region-copy 9.70; registered ACCEPT tier is 7.0 pp</td><td>Missing inputs above; readout revision</td></tr>
+<tr><td>Score below gate</td><td>Extreme poverty</td><td>16.8% at $3.00/day against a real 10.4%, 1.6&times; over; persists at 20&times; scale</td><td>Lower-tail income and transfer operators</td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>Four further boundaries belong on the record because they bound how the results above may be read, and none of them is a defect in the engine.</p>
+
+<p><em>The sealed judges are unspent.</em> Every opinion and benchmark figure in this paper is a development-estate measurement. The holdout and prospective estates are registered, sealed, and reserved for a single scored exposure under founder-witnessed final scoring. No number reported here is a final benchmark result, and the paper should not be read as one.</p>
+
+<p><em>The learning result is synthetic.</em> Section 2.7 demonstrates parameter recovery on twenty simulated twin worlds against sealed planted parameters. It establishes that the loop learns rather than conditions, and that it does not learn when the signal is destroyed. It does not establish learning from real-world observation, and the same freeze package records the external real-data scoreboard as a miss.</p>
+
+<p><em>Some strong results are ordering results, not calibration results.</em> The protest register ranks real protest-prone countries above quiet controls at &rho; = 0.552 with a thirteenfold discrimination margin, but its Brier improvement over base rate is not significant. Earth-1 is currently better at saying <em>where</em> than at saying <em>how likely</em>.</p>
+
+<p><em>Opinion performance varies sharply by region.</em> The best region sits at 2.28 sampling errors and the worst, East Asia, at 4.66. Regional structure of this size is not captured by the family-level breakdown in Table 4 and is not currently explained by a named absent input.</p>
+
+<p>Finally, one methodological caveat about how the record itself is maintained. Where two committed artefacts disagree &mdash; as two files do on the number of cells abstained in the distance run &mdash; the disagreement is carried forward rather than silently reconciled, on the principle that a register which quietly harmonises its own sources has stopped being a register.</p>
+
+<h3 class="sub"><span class="n">3.4</span>Outlook</h3>
+
+<p class="first">The defects in Table 9 are not a backlog so much as a research programme with the order of work already fixed. Each absent channel names a mechanism whose addition makes a specific, quantified prediction: adding an unemployment-insurance operator should move the unemployment line toward 4.8% and shrink the COVID overshoot below 3.5&times;; adding substitution and subsidy operators should reduce the food-shock magnitude error from 8.5&times; and, if the mechanism named in the sealed prior is the right one, should recover the countries whose real change was absorbed by domestic transfers. Because the gates were fixed before the runs that failed them, those predictions can be scored the same way.</p>
+
+<p>Three lines of work follow directly from results reported here. The zero-transmission ablation described in Section 2.6.6 will decompose neighbour correlation into transmission and homophily, converting the paper's structural claim about dyadic influence into a quantity. Reseeding the encounter stream will establish how much the current error bars on opinion observables under-state variance in the influence channel specifically. And the sealed estates will be spent once, under the registered protocol, at which point the opinion figures in Section 2.5 acquire a final rather than a developmental status.</p>
+
+<p>The broader claim we would defend is narrow and structural. A model that can lose a pre-registered bet, and does, occupies a different epistemic position from one that cannot be placed in the position of losing. Earth-1's material board lands on real anchors, its census is invariant across a five-hundredfold range of population, its world is recoverable bit-for-bit across independent implementations, and it agrees with real human majorities on five cells in six. It is also, by its own registered gates, behind two statistical baselines on continuous opinion estimation and below its direction target on events. Both halves of that sentence are measurements, taken with the same instrument, under rules written before the answers were known. That is the property the architecture was built to have.</p>
+
+
+<h2 class="sec"><span class="n">4</span>Methods</h2>
+
+<p class="first">This section describes what exists and how it is evaluated. It is deliberately not a reproduction specification: update equations, fitted constants, functional forms, injector templates, the registered vocabulary and internal module structure are withheld. Where a stated quantity would permit reconstruction of a withheld mapping, it is given at reduced precision or omitted, and the omission is marked. The claims in this paper rest on measured outputs against registered gates and sealed judges rather than on disclosed internals.</p>
+
+<h3 class="sub"><span class="n">4.1</span>Population substrate</h3>
+
+<p class="first">The substrate carries 194 countries. Each country holds a five-dimensional contingency table over sex (2 levels), age band (6), education (3), income (3) and settlement (2), giving 216 cells per country and 41,904 cells in total. Age, sex and settlement margins are census-derived for all 194 countries. Education and income margins are measured directly from survey microdata for 63 countries; for the remaining 131 they are pooled from donors within the same income tier, and the distinction is recorded per country as a provenance flag that travels with any figure computed from that country.</p>
+
+<p>The joint is fitted from its margins by iterative proportional fitting over pooled donors<sup>20</sup>. The alternative of assuming independence between the demographic axes was evaluated as a baseline on withheld joint tables and rejected: IPF beat independent marginals by 24.8% at <em>p</em> &le; 2.4 &times; 10<sup>&minus;13</sup>. The practical content of that margin is that the correlation between education, income and settlement is a measured property of each country rather than an artefact of the fitting procedure.</p>
+
+<p>Adult age structure is not drawn parametrically. It is derived from stable-population density using each country's own Gompertz survival curve<sup>21</sup>, so that the age pyramid and the mortality process are consistent with one another by construction rather than by calibration.</p>
+
+<p>Aggregation is population-true. Every agent carries a weight equal to the ratio of its country's census share to that country's share of the simulated population, so that a global statistic is an estimate of the world rather than of the resident sample. The world population anchor is 8,140,897,523. This is the mechanism by which a 200,000-agent world reports a global poverty rate at all, and it is why Section 2.4 finds aggregate figures invariant in population size.</p>
+
+<h3 class="sub"><span class="n">4.2</span>The behavioural grammar</h3>
+
+<p class="first">Agents carry eight forces. The forces are latent channels through which circumstance becomes disposition and disposition becomes action; they are updated daily by arithmetic over agent state and are not natural-language quantities. Their definitions, couplings, update equations and constants are withheld.</p>
+
+<p>Three structural properties are load-bearing for the results and are stated without disclosing the mechanism. First, the grammar is universal: the same operators with the same constants run in every country, so cross-country variation in outputs follows from variation in circumstance and composition rather than from per-country tuning. Second, forces are moved each day by two competing operations &mdash; a social push along graph edges and a restoring pull toward the state implied by the agent's own material circumstances &mdash; and the material target is returned rather than applied so that the two can be composed and inspected separately. Third, dispositional traits are themselves updated on a slower loop from the agent's deviation relative to its neighbourhood, so that personality is an outcome of social position as well as an input to it.</p>
+
+<h3 class="sub"><span class="n">4.3</span>Deterministic tick and world hashing</h3>
+
+<p class="first">The world advances in discrete days. Every stochastic draw on the daily path is taken from an explicitly seeded generator, and the engine contains no dependence on wall-clock time, on iteration order over unordered containers, or on any third-party inference service. A world hash is computed over the complete state, and it is this hash that the determinism checks compare.</p>
+
+<p>Determinism is verified along three independent construction paths &mdash; rebirth from the same seed, continuation from a saved checkpoint, and a flag-on run against its own baseline. Six of six checks pass, including branch contrast and historical rebirth, and the question-answering layer reproduces a model probability to seven decimal places on demand.</p>
+
+<p>Two controls establish that this is a meaningful rather than a nominal property. In the failing direction, a perturbation of 10<sup>&minus;9</sup> applied to a single agent's internal well-being value in a four-million-agent world changes the world hash, and undoing the perturbation restores it exactly; the hash is therefore sensitive to one part in a billion of one person's interior state and cannot be agreeing by coarseness. In the independent-implementation direction, a separate implementation was compared against the canonical engine at a registered tolerance of bitwise zero: 38 of 38 checkpoints over a full 365 simulated days at 200,000 agents were bitwise identical with equal day-365 world hashes, together with 11 identical checkpoints per seed on shorter runs at two further seeds. No physics was altered to obtain any of that agreement.</p>
+
+<p>A configuration stamp accompanies every run. The physics configuration is recorded and asserted at load, and a run whose stamp does not match the frozen configuration is refused rather than silently executed. This control exists because an earlier scaling campaign was launched on engine defaults rather than the frozen flag set, and produced a materially different equilibrium before the discrepancy was caught; the stamp converts that failure mode from a matter of operator discipline into a hard gate.</p>
+
+<h3 class="sub"><span class="n">4.4</span>Branch-versus-null contrast</h3>
+
+<p class="first">Claims about the effect of a perturbation are produced as a paired contrast rather than as a description of a single run. A world is advanced to a chosen date, then forked: one branch receives the perturbation and the other does not, and both continue under common random numbers<sup>19</sup> so that the stochastic path is shared and cancels in the difference. Effects are reported as the paired difference across seeds with a seed-level error bar.</p>
+
+<p>The engine carries a registered class noise floor below which a branch difference is not reported as a signal. When a perturbation produces a difference beneath that floor, the system returns an abstention naming the structural absence responsible rather than a number. The floor's value is withheld. This is the mechanism by which the fiscal-shock case in Section 2.8 returned a physics abstention instead of a spurious effect.</p>
+
+<h3 class="sub"><span class="n">4.5</span>Social graph and influence</h3>
+
+<p class="first">The social graph is constructed once at genesis with homophilous structure across several relationship channels, each with its own degree and weight distribution, including a small number of high-degree hubs. It is not a summary statistic: social computation reads a living view rebuilt after each day's deaths, migrations and job changes, so that deceased agents retain their edges as history but carry no weight in current dynamics.</p>
+
+<p>Daily influence is dyadic. Each agent draws a small number of encounters sampled by tie weight from its living neighbourhood, and for each encounter moves a fixed fraction of the way toward that partner's current value, scaled by a susceptibility term depending on the agent's own age, conviction, mental state and hunger. The same encounters accumulate agreement evidence, from which conviction is updated at the end of the day. Tie weights are then updated from the day's interaction, and a limited number of agents rewire toward partners closer to them in force space. Fractions, susceptibility functions and rewiring rates are withheld.</p>
+
+<p>One property of the encounter sampler is recorded as a limitation because it bears on how the paper's error bars should be read: the encounter stream is keyed on simulation day and is independent of the world seed. Seed replicates therefore differ in their population draw and graph &mdash; the dominant source of variance &mdash; but do not resample the encounter sequence itself, so reported variance under-states the contribution of the influence channel specifically. The magnitude of that under-statement is quantifiable by reseeding the stream and is registered as outstanding work.</p>
+
+<h3 class="sub"><span class="n">4.6</span>Opinion readout and evaluation protocol</h3>
+
+<p class="first">Opinion estimates are produced by a readout from agent state to survey-item response. The readout's construction is withheld. Evaluation is leave-one-country-out: the country under evaluation contributes nothing to the estimate for its own items. Items requiring named-entity knowledge that the substrate does not carry trigger abstention, and abstained cells are excluded from both the model and every baseline, so that abstention cannot flatter the comparison.</p>
+
+<p>Three baselines are scored on the identical cell set. The naive baseline assigns the grand mean across countries. The region-copy baseline assigns a country the attitudes of its region. The MrsP baseline is a multilevel regression with poststratification over census covariates, the standard small-area estimator for exactly this task<sup>22,23,24</sup>. Scores are national mean absolute error in percentage points, and majority agreement is reported alongside distance measured in units of the survey's own sampling error, so that a model answer can be compared against the precision of the survey it is being scored against rather than against an arbitrary tolerance.</p>
+
+<p>Estates are separated by design. Development estates may be scored repeatedly. Holdout and prospective estates are sealed, registered by name and location, and reserved for a single scored exposure under founder-witnessed final scoring. Every opinion figure in this paper is a development-estate measurement.</p>
+
+<h3 class="sub"><span class="n">4.7</span>Frozen-forecast protocol and sealed judges</h3>
+
+<p class="first">Historical retrodiction follows a fixed order that admits no move after the outcome is visible.</p>
+
+<ol>
+<li>A world is born at date <em>T</em> from archive material, under a mechanical assertion that no input, anchor or news item in the consumed set postdates <em>T</em>. The assertion is executed, not asserted informally; a violation aborts the run.</li>
+<li>The question, the horizon, the scoring procedure and the pass tiers are written and committed.</li>
+<li>The judge is registered by name and location, with its outcome values unfetched.</li>
+<li>The model output is frozen and committed as a hashed artefact.</li>
+<li>Only then is the judge fetched, and the result is scored once.</li>
+</ol>
+
+<p>Where a judge is discovered to be biased, the correction is applied forward-only and never retroactively, with the raw table reported beside the corrected one. In one instance the event-count judge was found to over-rank countries with dense media coverage, and normalisation by country total event volume was adopted from the third event onward, leaving earlier scored rows as they were recorded.</p>
+
+<p>Model probabilities are reported to four decimal places. The underlying branch distances that generate them are withheld, since publishing both at full precision would disclose the readout mapping exactly.</p>
+
+<h3 class="sub"><span class="n">4.8</span>Experience loop and control arms</h3>
+
+<p class="first">The learning experiment is a sealed synthetic-recovery design, pre-registered in full before any cycle ran. Twenty twin worlds at 20,000 agents were generated against sealed planted parameters &mdash; sixteen well-specified and four deliberately misspecified &mdash; and run for twenty-four cycles of thirty simulated days each. The learner observes a summary vector per cycle and updates a particle representation over the eligible parameters; the planted values are not visible to it.</p>
+
+<p>Five control arms were registered. The <em>frozen</em> arm never updates. The <em>naive updater</em> smooths observations without structure. The <em>shuffled-resolution placebo</em> receives observations whose correspondence to outcomes has been destroyed, and is the arm that tests whether apparent learning can arise from fitting noise. The <em>shock-window</em> gate scores only the cycles containing sharp forcing. The primary arm, added as a binding condition on the pre-registration, is the <em>informed non-learner</em>: identical particle machinery and identical observation access, but no persistent update, since per cycle its weights are computed fresh from that window's observation distance alone with parameters fixed at their prior draws. It may condition on what it has just seen; it may not learn. The gate is the conjunction of every registered comparison, and scoring is paired log-CRPS<sup>26</sup> with Wilcoxon signed-rank significance.</p>
+
+<p>Supporting gates cover calibration and honesty: interval coverage against a registered band, parameter-recovery error, and behaviour under deliberate misspecification, where the requirement is that the loop widen rather than narrow its intervals. Replay from the hash-chained ledger is required to be bit-identical before the cycle closes. One recorded caveat is carried forward: the stage scorer omitted the non-learner arm, so the two gates involving it were computed directly from the arm files by the same paired method, with a scorer patch outstanding.</p>
+
+<h3 class="sub"><span class="n">4.9</span>Scale measurement</h3>
+
+<p class="first">Memory and time were measured at 1M, 4M, 16M, 64M and 100M agents on a single 48-core AMD EPYC 9454P. Reported bytes per agent are steady-state resident state divided by population; peak resident memory is reported separately because construction requires roughly 3.2 times the final state as working memory, and it is that transient, not the steady state, which binds a single machine.</p>
+
+<p>The scale-invariance comparison is run as a control: identical configuration and identical seed lineage at four populations, with the census read at the same simulated day. The day-5 census used for that comparison is a pre-equilibration state and is reported only to establish invariance in population size; the calibrated board is measured at 180 days and is a separate run under verified frozen physics. Conflating the two would misrepresent an equilibration transient as an accuracy result, and the two are kept apart throughout.</p>
+
+<p>Mortality observation deserves a specific note, because the obvious method is wrong. A deceased agent's slot is reused within the same tick, so a naive comparison of the alive mask before and after a tick sees an occupied slot on both sides and misses the death; measured against a known ground truth this method captured 12% of deaths. All mortality figures in this paper are taken with an observer that detects person-identity turnover as well as the alive flag and reads ages from the pre-tick snapshot, which captures 100% on the same test. Where an earlier campaign reported mortality taken by the naive method, those lines are marked VOID in the record rather than restated.</p>
+
+<h3 class="sub"><span class="n">4.10</span>Governance</h3>
+
+<p class="first">Cycles change one named thing at a time, so that any movement in the gates is attributable to it. Gates are fixed by written ruling before the run. VOID is reserved for defects in the measuring instrument and is never invoked for an unwelcome result; where a finding is voided, the instrument defect that voided it is recorded alongside, and where a voided finding is later re-measured in the opposite direction, both readings stay on the record.</p>
+
+<p>Freezes carry their failures. The physics tag on which every result in this paper was measured was released as a freeze-with-named-regression, carrying the failed direction gate and five named regressions rather than a fix that would have reopened the calibration loop. A registered substrate defect discovered after the freeze was recorded and deliberately left unpatched for the same reason and scheduled as a later cycle.</p>
+
+<p>No benchmarking against frontier language models is performed. This is a standing prohibition in the project's own governing document, and it is why no accuracy comparison against such systems appears anywhere in this paper. The comparisons drawn in Sections 2.2 and 2.9 are structural &mdash; concerning reproducibility, cost and conditionality &mdash; and carry no implication about relative accuracy.</p>
+
+<h3 class="sub"><span class="n">4.11</span>Interfaces</h3>
+
+<p class="first">The engine exposes a versioned interface for questions, structured consequence reports, world state and history, event streams, and population-frame discovery, so that the results described here can be exercised against a running world rather than taken on the report's word. Every answer carries its calibration tier, its provenance, and the configuration stamp of the physics that produced it. Answers that the physics cannot support are returned as abstentions naming the missing channel rather than as numbers.</p>
+
+<h3 class="sub"><span class="n">4.12</span>Related work</h3>
+
+<p class="first">Classical agent-based modelling established that simple local rules can generate non-obvious population structure, from residential segregation<sup>2</sup> and artificial societies with economies and demographics<sup>3</sup> to threshold models of collective behaviour<sup>4</sup>, cascades on networks<sup>5</sup> and bounded-confidence opinion dynamics<sup>6,7,30</sup>. Methodological work in the tradition has concentrated on description standards<sup>16</sup>, on the persistent difficulty of replicating published models<sup>15</sup>, and on the field's role in economics and policy<sup>9,10,31</sup>. Earth-1 belongs to this lineage in its commitment to legible mechanism, and departs from it in grounding the population in a fitted demographic joint and in treating exact reproducibility as a hard requirement rather than an aspiration.</p>
+
+<p>Language-model agent societies begin with generative agents<sup>11</sup> and scale through successive systems to billion-agent populations with survey-derived profiles<sup>1</sup>. This literature has solved problems Earth-1 does not attempt, above all open-ended behaviour expressed in language: an agent that can articulate a reason, hold a free-form discussion, or respond to a scenario posed in words on the day it is invented. Earth-1's agents carry no language at all, and questions of that kind are outside what it can answer.</p>
+
+<p>The estimation baselines against which the opinion readout is scored come from the survey statistics literature, principally multilevel regression with poststratification<sup>22,23</sup> and its subnational extensions<sup>24</sup>, with iterative proportional fitting<sup>20</sup> and calibration estimators<sup>32</sup> underlying the population frame itself. Scoring follows standard proper-scoring practice<sup>26,27</sup>, and the pre-registration discipline follows the reform literature in the empirical sciences<sup>17,18,28</sup>.</p>
+
+<h3 class="sub"><span class="n">4.13</span>Data and code availability</h3>
+
+<p class="first">The population frame is derived from public census and survey sources: national census margins, World Values Survey microdata<sup>33</sup>, Pew Research Center survey frames<sup>34</sup>, World Bank poverty and income series<sup>35</sup>, and United Nations population estimates<sup>36</sup>. Judge datasets used in the retrodiction battery are public and are registered by name, location and content hash in the frozen forecast artefacts.</p>
+
+<p>The engine, its physics, the calibration ladder and the readout construction are proprietary and are not released. Results are exercisable through the interface described in Section 4.11.</p>
+
+
+<h2 class="sec"><span class="n">5</span>Acknowledgements</h2>
+
+<p class="first">We thank the maintainers of the public statistical infrastructure this work depends on &mdash; national census agencies, the World Values Survey Association, the Pew Research Center, the World Bank and the United Nations Population Division &mdash; without whose published margins and microdata a census-grounded population frame would not be constructible.</p>
+
+<h2 class="sec"><span class="n">6</span>Author contributions</h2>
+
+<p class="first">The engine, population substrate, behavioural grammar, calibration ladder, evaluation harness and interfaces were designed and implemented at Earthling Labs. Founder rulings fixed the gates, the freeze discipline and the sealed-judge protocol before each run they govern, and the binding condition that the learning experiment include an informed non-learner arm was imposed at pre-registration. All measurements reported here were produced under the frozen physics configuration and recorded in the project's operational ledger.</p>
+
+<h2 class="sec"><span class="n">7</span>Competing interests</h2>
+
+<p class="first">The authors are affiliated with Earthling Labs, which develops Earth-1 commercially. The engine, its physics and its readout construction are proprietary.</p>
+
+<h2 class="sec nonum">References</h2>
+
+<ol class="refs">
+<li><span class="rn">1.</span> Guan, H., He, J., Fan, L., Ren, Z., He, S., Yu, X., Chen, Y., Xu, X., Zheng, S., Gao, Y., Chen, E., Liu, T.-Y. &amp; Liu, Z. Modeling Earth-scale human-like societies with one billion agents. <em>arXiv</em> 2506.12078v2 (2026).</li>
+<li><span class="rn">2.</span> Schelling, T. C. Dynamic models of segregation. <em>Journal of Mathematical Sociology</em> <strong>1</strong>, 143&ndash;186 (1971).</li>
+<li><span class="rn">3.</span> Epstein, J. M. &amp; Axtell, R. <em>Growing Artificial Societies: Social Science from the Bottom Up</em> (MIT Press, 1996).</li>
+<li><span class="rn">4.</span> Granovetter, M. Threshold models of collective behavior. <em>American Journal of Sociology</em> <strong>83</strong>, 1420&ndash;1443 (1978).</li>
+<li><span class="rn">5.</span> Watts, D. J. A simple model of global cascades on random networks. <em>Proceedings of the National Academy of Sciences</em> <strong>99</strong>, 5766&ndash;5771 (2002).</li>
+<li><span class="rn">6.</span> Deffuant, G., Neau, D., Amblard, F. &amp; Weisbuch, G. Mixing beliefs among interacting agents. <em>Advances in Complex Systems</em> <strong>3</strong>, 87&ndash;98 (2000).</li>
+<li><span class="rn">7.</span> Hegselmann, R. &amp; Krause, U. Opinion dynamics and bounded confidence models, analysis, and simulation. <em>Journal of Artificial Societies and Social Simulation</em> <strong>5</strong>(3) (2002).</li>
+<li><span class="rn">8.</span> Ferguson, N. M. <em>et al.</em> Impact of non-pharmaceutical interventions (NPIs) to reduce COVID-19 mortality and healthcare demand. <em>Imperial College COVID-19 Response Team, Report 9</em> (2020).</li>
+<li><span class="rn">9.</span> Bonabeau, E. Agent-based modeling: methods and techniques for simulating human systems. <em>Proceedings of the National Academy of Sciences</em> <strong>99</strong>, 7280&ndash;7287 (2002).</li>
+<li><span class="rn">10.</span> Farmer, J. D. &amp; Foley, D. The economy needs agent-based modelling. <em>Nature</em> <strong>460</strong>, 685&ndash;686 (2009).</li>
+<li><span class="rn">11.</span> Park, J. S., O'Brien, J. C., Cai, C. J., Morris, M. R., Liang, P. &amp; Bernstein, M. S. Generative agents: interactive simulacra of human behavior. <em>Proceedings of UIST '23</em> (2023).</li>
+<li><span class="rn">12.</span> Popper, K. R. <em>The Logic of Scientific Discovery</em> (Hutchinson, 1959).</li>
+<li><span class="rn">13.</span> Peng, R. D. Reproducible research in computational science. <em>Science</em> <strong>334</strong>, 1226&ndash;1227 (2011).</li>
+<li><span class="rn">14.</span> Donoho, D. L. An invitation to reproducible computational research. <em>Biostatistics</em> <strong>11</strong>, 385&ndash;388 (2010).</li>
+<li><span class="rn">15.</span> Edmonds, B. &amp; Hales, D. Replication, replication and replication: some hard lessons from model alignment. <em>Journal of Artificial Societies and Social Simulation</em> <strong>6</strong>(4) (2003).</li>
+<li><span class="rn">16.</span> Grimm, V. <em>et al.</em> A standard protocol for describing individual-based and agent-based models. <em>Ecological Modelling</em> <strong>198</strong>, 115&ndash;126 (2006).</li>
+<li><span class="rn">17.</span> Nosek, B. A., Ebersole, C. R., DeHaven, A. C. &amp; Mellor, D. T. The preregistration revolution. <em>Proceedings of the National Academy of Sciences</em> <strong>115</strong>, 2600&ndash;2606 (2018).</li>
+<li><span class="rn">18.</span> Ioannidis, J. P. A. Why most published research findings are false. <em>PLoS Medicine</em> <strong>2</strong>, e124 (2005).</li>
+<li><span class="rn">19.</span> Glasserman, P. &amp; Yao, D. D. Some guidelines and guarantees for common random numbers. <em>Management Science</em> <strong>38</strong>, 884&ndash;908 (1992).</li>
+<li><span class="rn">20.</span> Deming, W. E. &amp; Stephan, F. F. On a least squares adjustment of a sampled frequency table when the expected marginal totals are known. <em>Annals of Mathematical Statistics</em> <strong>11</strong>, 427&ndash;444 (1940).</li>
+<li><span class="rn">21.</span> Gompertz, B. On the nature of the function expressive of the law of human mortality. <em>Philosophical Transactions of the Royal Society of London</em> <strong>115</strong>, 513&ndash;583 (1825).</li>
+<li><span class="rn">22.</span> Gelman, A. &amp; Little, T. C. Poststratification into many categories using hierarchical logistic regression. <em>Survey Methodology</em> <strong>23</strong>, 127&ndash;135 (1997).</li>
+<li><span class="rn">23.</span> Park, D. K., Gelman, A. &amp; Bafumi, J. Bayesian multilevel estimation with poststratification: state-level estimates from national polls. <em>Political Analysis</em> <strong>12</strong>, 375&ndash;385 (2004).</li>
+<li><span class="rn">24.</span> Leemann, L. &amp; Wasserfallen, F. Extending the use and prediction precision of subnational public opinion estimation. <em>American Journal of Political Science</em> <strong>61</strong>, 1003&ndash;1022 (2017).</li>
+<li><span class="rn">25.</span> Granovetter, M. S. The strength of weak ties. <em>American Journal of Sociology</em> <strong>78</strong>, 1360&ndash;1380 (1973).</li>
+<li><span class="rn">26.</span> Gneiting, T. &amp; Raftery, A. E. Strictly proper scoring rules, prediction, and estimation. <em>Journal of the American Statistical Association</em> <strong>102</strong>, 359&ndash;378 (2007).</li>
+<li><span class="rn">27.</span> Brier, G. W. Verification of forecasts expressed in terms of probability. <em>Monthly Weather Review</em> <strong>78</strong>, 1&ndash;3 (1950).</li>
+<li><span class="rn">28.</span> Tetlock, P. E. <em>Expert Political Judgment: How Good Is It? How Can We Know?</em> (Princeton University Press, 2005).</li>
+<li><span class="rn">29.</span> Sen, A. <em>Poverty and Famines: An Essay on Entitlement and Deprivation</em> (Clarendon Press, 1981).</li>
+<li><span class="rn">30.</span> Lorenz, J. Continuous opinion dynamics under bounded confidence: a survey. <em>International Journal of Modern Physics C</em> <strong>18</strong>, 1819&ndash;1838 (2007).</li>
+<li><span class="rn">31.</span> Tesfatsion, L. Agent-based computational economics: a constructive approach to economic theory. In <em>Handbook of Computational Economics</em>, Vol. 2 (Elsevier, 2006).</li>
+<li><span class="rn">32.</span> Deville, J.-C. &amp; S&auml;rndal, C.-E. Calibration estimators in survey sampling. <em>Journal of the American Statistical Association</em> <strong>87</strong>, 376&ndash;382 (1992).</li>
+<li><span class="rn">33.</span> Haerpfer, C., Inglehart, R., Moreno, A., Welzel, C., Kizilova, K., D&iacute;ez-Medrano, J., Lagos, M., Norris, P., Ponarin, E. &amp; Puranen, B. (eds). <em>World Values Survey: Round Seven</em> (JD Systems Institute &amp; WVSA Secretariat).</li>
+<li><span class="rn">34.</span> Pew Research Center. <em>Global Attitudes Survey</em> series.</li>
+<li><span class="rn">35.</span> World Bank. <em>Poverty and Inequality Platform</em>; population indicator SP.POP.TOTL.</li>
+<li><span class="rn">36.</span> United Nations, Department of Economic and Social Affairs, Population Division. <em>World Population Prospects</em> (2024).</li>
+</ol>
+
+<div class="newpage"></div>
+<h2 class="sec nonum">Extended Data</h2>
+
+<p class="first">The tables below carry the per-estate, per-region and per-arm detail behind the headline figures in Section 2. Values are transcribed from the project's operational ledger. Where the ledger records a value as approximate, or as unavailable, that is reproduced rather than filled.</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 1</span> | <strong>Distance from human majorities, by estate.</strong> Frozen physics, 200,000 agents, three seeds, leave-one-country-out, named-entity abstention active with abstained cells excluded from both model and baselines. The pooled row is the ledger's own headline block and is not a recomputation of the estate rows. The <em>goqa_dev</em> estate carries no per-cell survey <em>n</em>, so noise-relative statistics do not exist for it.</figcaption>
+<table>
+<thead><tr><th>Estate</th><th class="num">Cells</th><th class="num">Majority agree</th><th class="num">Within noise</th><th class="num">Median &sigma;</th><th class="num">MAE (pp)</th><th class="num">Signed (pp)</th></tr></thead>
+<tbody>
+<tr><td>All estates pooled</td><td class="num">21,776</td><td class="num">83.5%</td><td class="num">14.2%</td><td class="num">3.78</td><td class="num">10.65</td><td class="num">&mdash;</td></tr>
+<tr><td>WVS held-out</td><td class="num">5,807</td><td class="num">84.6%</td><td class="num">13.8</td><td class="num">3.80</td><td class="num">10.84</td><td class="num">&minus;0.04</td></tr>
+<tr><td>WVS extended</td><td class="num">6,862</td><td class="num">83.7%</td><td class="num">14.6</td><td class="num">3.75</td><td class="num">10.32</td><td class="num">&minus;0.00</td></tr>
+<tr><td>GOQA development</td><td class="num">9,107</td><td class="num">82.7%</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">10.77</td><td class="num">+0.19</td></tr>
+</tbody>
+</table>
+<p class="tnote">The within-noise fraction is computed over the 12,669 cells where survey sample size is known. Two committed artefacts disagree on the number of abstained cells for this run; the disagreement is recorded rather than reconciled.</p>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 2</span> | <strong>Median distance in sampling errors, by question family and region.</strong> Only family-by-region blocks with at least 30 scored cells are reported; an em dash means the block did not reach that threshold and no value exists in the record. Pooled regional extremes quoted in Section 3.3 come from a separate block of the ledger and are not derivable from this matrix.</figcaption>
+<table>
+<thead><tr><th>Family</th><th class="num">C. Asia</th><th class="num">E. Asia</th><th class="num">E. Eur.</th><th class="num">Lat. Am.</th><th class="num">MENA</th><th class="num">N. Am.</th><th class="num">Oceania</th><th class="num">S. Asia</th><th class="num">SE Asia</th><th class="num">SSA</th><th class="num">W. Eur.</th></tr></thead>
+<tbody>
+<tr><td>Democracy/governance</td><td class="num">3.49</td><td class="num">5.15</td><td class="num">4.21</td><td class="num">3.00</td><td class="num">4.57</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">4.29</td><td class="num">4.19</td><td class="num">3.29</td><td class="num">3.55</td></tr>
+<tr><td>Other</td><td class="num">4.52</td><td class="num">4.71</td><td class="num">3.00</td><td class="num">3.49</td><td class="num">4.15</td><td class="num">4.37</td><td class="num">2.16</td><td class="num">4.27</td><td class="num">4.71</td><td class="num">3.67</td><td class="num">3.19</td></tr>
+<tr><td>Religion/values</td><td class="num">4.73</td><td class="num">5.11</td><td class="num">4.38</td><td class="num">3.29</td><td class="num">3.90</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">4.20</td><td class="num">4.37</td><td class="num">4.36</td><td class="num">3.11</td></tr>
+<tr><td>Security</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">3.54</td><td class="num">4.16</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+<tr><td>Technology/climate</td><td class="num">4.44</td><td class="num">3.79</td><td class="num">2.24</td><td class="num">3.11</td><td class="num">2.62</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">4.99</td><td class="num">&mdash;</td><td class="num">1.98</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 3</span> | <strong>Country-level extremes</strong>, median distance in sampling errors, countries with at least 40 scored cells.</figcaption>
+<table>
+<thead><tr><th>Closest ten</th><th class="num">&sigma;</th><th>Farthest ten</th><th class="num">&sigma;</th></tr></thead>
+<tbody>
+<tr><td>United Kingdom</td><td class="num">2.04</td><td>Bangladesh</td><td class="num">4.79</td></tr>
+<tr><td>Cyprus</td><td class="num">2.16</td><td>Thailand</td><td class="num">4.88</td></tr>
+<tr><td>Australia</td><td class="num">2.24</td><td>Tunisia</td><td class="num">4.97</td></tr>
+<tr><td>New Zealand</td><td class="num">2.32</td><td>China</td><td class="num">5.00</td></tr>
+<tr><td>Romania</td><td class="num">2.48</td><td>Myanmar</td><td class="num">5.01</td></tr>
+<tr><td>Argentina</td><td class="num">2.64</td><td>Mongolia</td><td class="num">5.27</td></tr>
+<tr><td>Ecuador</td><td class="num">2.69</td><td>Egypt</td><td class="num">5.58</td></tr>
+<tr><td>Uruguay</td><td class="num">2.80</td><td>Indonesia</td><td class="num">6.05</td></tr>
+<tr><td>Russia</td><td class="num">2.82</td><td>Vietnam</td><td class="num">6.27</td></tr>
+<tr><td>Slovakia</td><td class="num">2.88</td><td>Tajikistan</td><td class="num">7.85</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 4</span> | <strong>The calibrated board reproduced at twenty times the population.</strong> Four million agents, 180 days, verified frozen physics, against the 200,000-agent reference board. Every line falls inside its registered gate. The extreme-poverty line reproduces the board including the board's own known miss against its real anchor of 10.4%.</figcaption>
+<table>
+<thead><tr><th>Quantity</th><th class="num">4M &times; 180 d</th><th class="num">200k board</th><th class="num">Difference</th></tr></thead>
+<tbody>
+<tr><td>Median income</td><td class="num">9.52</td><td class="num">9.605</td><td class="num">&minus;0.9%</td></tr>
+<tr><td>Poverty, $8.30/day</td><td class="num">45.29%</td><td class="num">45.88%</td><td class="num">&minus;0.59 pp</td></tr>
+<tr><td>Poverty, $3.00/day</td><td class="num">16.30%</td><td class="num">16.80%</td><td class="num">&minus;0.50 pp</td></tr>
+<tr><td>Crude death rate</td><td class="num">0.00738</td><td class="num">0.00727</td><td class="num">+0.00011</td></tr>
+<tr><td>Mean age at death</td><td class="num">68.29</td><td class="num">68.99</td><td class="num">&minus;0.70 yr</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 5</span> | <strong>A hundred-million-agent world tracked against a four-million-agent control</strong> through equilibration. Poverty gap is the absolute difference in the $8.30/day headcount between the two runs at the same simulated day.</figcaption>
+<table>
+<thead><tr><th>Simulated day</th><th class="num">5</th><th class="num">15</th><th class="num">30</th><th class="num">60</th></tr></thead>
+<tbody>
+<tr><td>Poverty gap (pp)</td><td class="num">0.01</td><td class="num">0.00</td><td class="num">0.02</td><td class="num">0.06</td></tr>
+<tr><td>Mean age at death</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">identical (67.96)</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 6</span> | <strong>Experience Loop v0.2, recorded skill by arm.</strong> Two distinct quantities appear and are labelled as such: a late-window aggregate, which exists in the ledger as prose, and the final value of a twenty-four-point per-cycle skill curve stored in the machine-written report. They are not the same statistic and must not be compared across rows. Lower is better. Curve values are quoted to four decimal places; the report stores them at full precision.</figcaption>
+<table>
+<thead><tr><th>Arm</th><th>Quantity</th><th class="num">Well-specified</th><th class="num">Misspecified</th></tr></thead>
+<tbody>
+<tr><td>Experiential</td><td>late-window score</td><td class="num">0.216</td><td class="num">&mdash;</td></tr>
+<tr><td>Informed non-learner</td><td>late-window score</td><td class="num">1.04</td><td class="num">&mdash;</td></tr>
+<tr><td>Experiential</td><td>final curve value</td><td class="num">0.1365</td><td class="num">0.1512</td></tr>
+<tr><td>Naive-blind</td><td>final curve value</td><td class="num">0.2328</td><td class="num">&mdash;</td></tr>
+<tr><td>Naive-forced</td><td>final curve value</td><td class="num">0.2288</td><td class="num">&mdash;</td></tr>
+<tr><td>Frozen</td><td>final curve value</td><td class="num">1.6175</td><td class="num">1.5715</td></tr>
+<tr><td>Placebo</td><td>final curve value</td><td class="num">1.9080</td><td class="num">3.4808</td></tr>
+<tr><td>Informed non-learner</td><td>final curve value</td><td class="num">not recorded</td><td class="num">not recorded</td></tr>
+</tbody>
+</table>
+<p class="tnote">The report file carries no per-cycle curve for the informed non-learner, because the stage scorer omitted that arm; its late-window level survives only in the operational ledger, and the two gates involving it were computed directly from the arm files by the same paired method.</p>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 7</span> | <strong>Pre-committed protest-onset register, control arm.</strong> The quiet controls against which the positives were scored. Modelled onset probability for the controls averages 0.031 against 0.417 for the positives, a thirteenfold discrimination margin; controls at approximately zero satisfy the registered placebo criterion.</figcaption>
+<table>
+<thead><tr><th>Country</th><th>Class</th><th class="num">Series A</th><th class="num">Series B</th></tr></thead>
+<tbody>
+<tr><td>Uruguay</td><td>quiet</td><td class="num">0.250</td><td class="num">0.125</td></tr>
+<tr><td>Japan</td><td>quiet</td><td class="num">0.000</td><td class="num">0.125</td></tr>
+<tr><td>Singapore</td><td>quiet</td><td class="num">0.125</td><td class="num">0.125</td></tr>
+<tr><td>Norway</td><td>quiet</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+<tr><td>Denmark</td><td>quiet</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+<tr><td>New Zealand</td><td>quiet</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+<tr><td>Canada</td><td>quiet</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+<tr><td>Australia</td><td>quiet</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+<tr><td>Ireland</td><td>quiet</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+<tr><td>Finland</td><td>quiet</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 8</span> | <strong>Determinism and cross-implementation equivalence.</strong> Registered tolerance for the port-equivalence cases is bitwise zero. No physics was changed to obtain any of the recorded agreement.</figcaption>
+<table>
+<thead><tr><th>Check</th><th>Configuration</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Same-seed rebirth</td><td>canonical engine</td><td>single world hash <code>49bb7d1d949f28f3</code></td></tr>
+<tr><td>Save-and-load continuation</td><td>canonical engine</td><td>same hash</td></tr>
+<tr><td>Flag-on against baseline</td><td>canonical engine</td><td>same hash</td></tr>
+<tr><td>Branch common-random-number contrast</td><td>canonical engine</td><td>pass</td></tr>
+<tr><td>Historical rebirth</td><td>canonical engine</td><td>pass</td></tr>
+<tr><td>Adapter determinism</td><td>question layer</td><td>reproduces 0.4311624 exactly</td></tr>
+<tr><td>Perturbed-field control</td><td>live 4M world</td><td>10<sup>&minus;9</sup> on one agent changes the hash; undo restores it</td></tr>
+<tr><td>Port equivalence, long run</td><td>200k, 365 days</td><td>38/38 checkpoints bitwise identical; equal day-365 hash</td></tr>
+<tr><td>Port equivalence, short runs</td><td>two further seeds, 10 days</td><td>11/11 checkpoints bitwise identical per seed</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 9</span> | <strong>Experience Loop v0.2: the registered design, frozen before any cycle ran.</strong> Each element is reproduced from the pre-registration. Numeric parameter payloads of the planted truths and the shock scenario are elided, marked &hellip;, and no row should be read as a complete parameter listing.</figcaption>
+<table>
+<thead><tr><th>Design element</th><th>Registered before the run</th></tr></thead>
+<tbody>
+<tr><td>Binding condition</td><td>The baseline set must include an informed non-learner &mdash; the learner's observation access, no update rule. Beating that arm is the demonstration.</td></tr>
+<tr><td>Power</td><td>16 well-specified and 4 misspecified sealed truths, seeds 9201&ndash;9220 with &hellip;. The predecessor cycle's win was underpowered at 8 worlds.</td></tr>
+<tr><td>Coverage dial</td><td>Observation-noise inflation halved, after the predecessor overshot its registered coverage band.</td></tr>
+<tr><td>Placebo gate re-specification</td><td>Paired experiential-versus-placebo log-CRPS with CI excluding zero. The predecessor's coded form wrongly punished the placebo for beating frozen.</td></tr>
+<tr><td>Sharp shocks</td><td>The registered memory-probe shocks were smoothly decaying and a smoother tracked them. v0.2 forcing is a branch-engine scenario at days 240 and 480 (&hellip;), applied identically to truth and to every simulated world.</td></tr>
+<tr><td>Informed non-learner, defined</td><td>Identical particle machinery and observation access; no persistent update. Per cycle, weights computed fresh from that window's observation distance only &mdash; no multiplicative accumulation, no resampling, parameters fixed at prior draws forever. &ldquo;It may condition on what it just saw; it may not learn.&rdquo;</td></tr>
+<tr><td>Primary gate</td><td>Experiential beats the non-learner on late cycles, paired log-CRPS CI excluding zero. This isolates parameter learning from mere state conditioning.</td></tr>
+<tr><td>Run shape</td><td>24 cycles of 30 simulated days at 20,000 agents, with receipts, replay, blinding, and the coverage, recovery, honesty and replay gates.</td></tr>
+<tr><td>Success condition</td><td>Declared only on the conjunction of every registered gate.</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 10</span> | <strong>Governance rules in force for every measurement in this paper.</strong> These rules are procedural rather than technical, and they are what the frozen-forecast protocol depends on.</figcaption>
+<table>
+<thead><tr><th>Rule</th><th>Content</th><th>Cost when honoured</th></tr></thead>
+<tbody>
+<tr><td>One named change per cycle</td><td>A cycle changes one thing, so movement in the gates is attributable to it</td><td>Slower iteration; coupled fixes cannot be shipped together</td></tr>
+<tr><td>Gates before runs</td><td>Pass tiers, metrics, horizons and country sets fixed by written ruling before the run they govern</td><td>A gate cannot be relaxed once the result is visible</td></tr>
+<tr><td>VOID is instrument-only</td><td>A result may be voided only for a defect in the measuring apparatus, never for being unwelcome; the defect is recorded alongside</td><td>Unfavourable results stand unless the instrument is shown to be broken</td></tr>
+<tr><td>Sealed judges</td><td>Registered by name and location with outcome values unfetched until the model output is committed; scored once</td><td>A judge is spent permanently on first use</td></tr>
+<tr><td>Forward-only judge correction</td><td>A judge found biased is corrected from the next event onward, never retroactively; the raw table is reported beside the corrected one</td><td>Earlier rows keep a known-imperfect judge</td></tr>
+<tr><td>Freeze carries its failures</td><td>A physics tag ships with its failed gates and named regressions rather than a fix that would reopen the calibration loop</td><td>The published tag carries a failed direction gate and five named regressions</td></tr>
+<tr><td>Configuration stamp</td><td>Physics configuration recorded and asserted at load; a mismatched run is refused rather than executed</td><td>Runs abort rather than producing comparable-looking output</td></tr>
+<tr><td>No frontier-model benchmarking</td><td>Standing prohibition in the project's governing document</td><td>No accuracy comparison against language models may be published</td></tr>
+</tbody>
+</table>
+</figure>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Extended Data Table 11</span> | <strong>Population substrate: composition, provenance and declared boundaries.</strong> The joint is fitted per country; provenance travels with every figure computed from a country.</figcaption>
+<table>
+<thead><tr><th>Property</th><th>Value</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>Countries</td><td class="num">194</td><td>&mdash;</td></tr>
+<tr><td>Joint dimensions</td><td>sex, age band, education, income, settlement</td><td>2 &times; 6 &times; 3 &times; 3 &times; 2</td></tr>
+<tr><td>Cells per country</td><td class="num">216</td><td>41,904 cells in total</td></tr>
+<tr><td>Census-derived margins</td><td>age, sex, settlement</td><td>all 194 countries</td></tr>
+<tr><td>Survey-measured education and income</td><td class="num">63</td><td>from survey microdata</td></tr>
+<tr><td>Tier-fallback education and income</td><td class="num">131</td><td>pooled from income-tier donors; registered limitation</td></tr>
+<tr><td>Fitting method</td><td>iterative proportional fitting over pooled donors</td><td>+24.8% over independent marginals on withheld joints, <em>p</em> &le; 2.4 &times; 10<sup>&minus;13</sup></td></tr>
+<tr><td>Adult age structure</td><td>stable-population density under each country's own survival curve</td><td>not a parametric draw</td></tr>
+<tr><td>World population anchor</td><td class="num">8,140,897,523</td><td>public population series</td></tr>
+<tr><td>Not represented</td><td>subnational geography; household frame; ethnicity; religion</td><td>registered boundaries, Section 3.3</td></tr>
+</tbody>
+</table>
+</figure>
+
+<div class="newpage"></div>
+<h2 class="sec nonum">Glossary of registered terms</h2>
+
+<p class="first">The following terms have specific operational meanings in the project's ledger and are used in that sense throughout this paper.</p>
+
+<figure class="tbl">
+<table>
+<thead><tr><th>Term</th><th>Meaning as registered</th></tr></thead>
+<tbody>
+<tr><td>Board</td><td>The set of material aggregates &mdash; poverty, income, mortality, age structure &mdash; measured against real anchors at a stated population and horizon.</td></tr>
+<tr><td>Branch / null</td><td>Two continuations of one world from the same state, one perturbed and one not, advanced under common random numbers so the difference isolates the perturbation.</td></tr>
+<tr><td>Class noise floor</td><td>The registered threshold below which a branch difference is not reported as a signal. Its value is withheld.</td></tr>
+<tr><td>Configuration stamp</td><td>A recorded fingerprint of the physics configuration, asserted at load; a mismatched run is refused.</td></tr>
+<tr><td>Estate</td><td>A partition of evaluation items. Development estates may be scored repeatedly; holdout and prospective estates are sealed and scored once.</td></tr>
+<tr><td>Freeze</td><td>A physics configuration fixed by ruling, against which results may be compared. A freeze-with-named-regression ships carrying its failed gates.</td></tr>
+<tr><td>Frozen forecast</td><td>A model output committed as a hashed artefact before the judge that will score it is fetched.</td></tr>
+<tr><td>Judge</td><td>An external dataset registered by name and location, with outcome values unfetched, used once to score a frozen forecast.</td></tr>
+<tr><td>Physics abstention</td><td>A returned non-answer, issued when a branch difference falls below the class noise floor, naming the structural absence responsible.</td></tr>
+<tr><td>Population-true</td><td>Aggregated with per-agent census weights, so a global figure estimates the world rather than the resident sample.</td></tr>
+<tr><td>Register</td><td>The enumerated list of standing defects, each with a measured consequence and a closure path.</td></tr>
+<tr><td>VOID</td><td>A result withdrawn because the measuring instrument was defective, never because the result was unwelcome.</td></tr>
+</tbody>
+</table>
+</figure>
+
+<h2 class="sec nonum">Supplementary note: why census weighting is load-bearing</h2>
+
+<p class="first">A simulation of two hundred thousand people cannot report a global poverty rate by counting its own poor. Doing so would report the poverty rate of whatever mixture of countries happened to be instantiated, which is a property of the sampling design rather than of the world. Earth-1 avoids this by giving every agent a weight equal to the ratio of its country's share of the real world population to that country's share of the simulated population, so that a country over-represented in memory is proportionally down-weighted in every statistic computed from it.</p>
+
+<p>Three consequences follow, and each is visible in the results. First, aggregate figures become comparable to published international statistics without a correction step, which is what makes the anchors in Table 1 meaningful rather than coincidental. Second, the aggregate is insensitive to population size, which is the mechanism behind the invariance in Figure 1 and Table 3: adding agents refines the within-country estimate without changing the between-country mixture. Third, and least obviously, it changes what a larger world is for. If aggregate accuracy were a function of population, the case for more agents would be accuracy; because it is not, the case for more agents is resolution &mdash; subnational structure, narrow segments, and rare events that a small world produces too few of to measure.</p>
+
+<p>The same construction imposes the boundary recorded in Section 3.3. Weights are national, so the substrate can speak about countries and about the world, and cannot currently speak about regions within a country or about households as units. That is a property of the frame rather than of the physics, and closing it requires subnational margins rather than a change to the engine.</p>
+
+</body></html>

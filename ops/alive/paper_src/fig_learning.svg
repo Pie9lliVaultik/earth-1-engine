@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 250" width="100%" font-family="Charter, Georgia, serif">
+<line x1="52.0" y1="194.8" x2="460.0" y2="194.8" stroke="#ddd" stroke-width="0.5"/>
+<text x="48.0" y="197.3" font-size="7.5" text-anchor="end" fill="#444">0.01</text>
+<line x1="52.0" y1="124.6" x2="460.0" y2="124.6" stroke="#ddd" stroke-width="0.5"/>
+<text x="48.0" y="127.1" font-size="7.5" text-anchor="end" fill="#444">0.1</text>
+<line x1="52.0" y1="54.3" x2="460.0" y2="54.3" stroke="#ddd" stroke-width="0.5"/>
+<text x="48.0" y="56.8" font-size="7.5" text-anchor="end" fill="#444">1</text>
+<line x1="52.0" y1="12.0" x2="52.0" y2="216.0" stroke="#000" stroke-width="0.8"/>
+<line x1="52.0" y1="216.0" x2="460.0" y2="216.0" stroke="#000" stroke-width="0.8"/>
+<text x="52.0" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">1</text>
+<text x="140.7" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">6</text>
+<text x="247.1" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">12</text>
+<text x="353.6" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">18</text>
+<text x="460.0" y="227.0" font-size="7.5" text-anchor="middle" fill="#444">24</text>
+<text x="256.0" y="246.0" font-size="8" text-anchor="middle">cycle</text>
+<text x="11" y="114.0" font-size="8" text-anchor="middle" transform="rotate(-90,11,114.0)">error (log)</text>
+<rect x="173.2" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<rect x="190.9" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<rect x="315.1" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<rect x="332.8" y="12.0" width="6.0" height="204.0" fill="#000" opacity="0.045"/>
+<polyline points="52.0,192.9 69.7,191.2 87.5,191.6 105.2,11.0 123.0,17.2 140.7,20.2 158.4,19.8 176.2,23.7 193.9,25.5 211.7,29.0 229.4,31.4 247.1,32.8 264.9,29.5 282.6,31.6 300.3,32.9 318.1,33.9 335.8,32.7 353.6,34.6 371.3,32.4 389.0,34.3 406.8,36.1 424.5,37.3 442.3,38.7 460.0,39.6" fill="none" stroke="#888" stroke-width="1.0" stroke-dasharray="4 2"/>
+<polyline points="52.0,197.1 69.7,196.7 87.5,196.7 105.2,17.4 123.0,21.3 140.7,23.6 158.4,20.6 176.2,22.3 193.9,22.6 211.7,27.2 229.4,30.0 247.1,31.2 264.9,25.9 282.6,27.9 300.3,29.2 318.1,30.3 335.8,27.7 353.6,29.1 371.3,25.2 389.0,27.7 406.8,30.3 424.5,32.0 442.3,33.5 460.0,34.6" fill="none" stroke="#b04a3a" stroke-width="1.0" stroke-dasharray="1 2"/>
+<polyline points="52.0,157.7 69.7,157.7 87.5,173.6 105.2,58.9 123.0,73.1 140.7,74.3 158.4,51.2 176.2,73.6 193.9,66.2 211.7,81.2 229.4,84.1 247.1,87.2 264.9,71.8 282.6,89.7 300.3,94.5 318.1,94.8 335.8,62.5 353.6,82.7 371.3,78.9 389.0,92.4 406.8,94.6 424.5,94.9 442.3,95.9 460.0,98.8" fill="none" stroke="#4a6fa5" stroke-width="1.0" stroke-dasharray="3 2"/>
+<polyline points="52.0,196.2 69.7,208.1 87.5,214.1 105.2,42.0 123.0,53.8 140.7,69.1 158.4,67.8 176.2,75.3 193.9,79.2 211.7,86.4 229.4,92.6 247.1,96.2 264.9,89.8 282.6,95.2 300.3,99.2 318.1,101.7 335.8,93.6 353.6,99.0 371.3,99.3 389.0,103.2 406.8,106.1 424.5,108.3 442.3,111.9 460.0,115.1" fill="none" stroke="#111" stroke-width="1.7"/>
+<line x1="66.0" y1="18.0" x2="82.0" y2="18.0" stroke="#111" stroke-width="1.7"/>
+<text x="86.0" y="20.5" font-size="7.5">Experiential</text>
+<line x1="66.0" y1="28.0" x2="82.0" y2="28.0" stroke="#4a6fa5" stroke-width="1.0" stroke-dasharray="3 2"/>
+<text x="86.0" y="30.5" font-size="7.5">Naive updater</text>
+<line x1="66.0" y1="38.0" x2="82.0" y2="38.0" stroke="#b04a3a" stroke-width="1.0" stroke-dasharray="1 2"/>
+<text x="86.0" y="40.5" font-size="7.5">Shuffled placebo</text>
+<line x1="66.0" y1="48.0" x2="82.0" y2="48.0" stroke="#888" stroke-width="1.0" stroke-dasharray="4 2"/>
+<text x="86.0" y="50.5" font-size="7.5">Frozen</text>
+</svg>

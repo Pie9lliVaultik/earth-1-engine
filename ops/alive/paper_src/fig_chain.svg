@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="100%" font-family="Charter, Georgia, serif">
+<rect x="8.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="58.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Determinism</text>
+<text x="58.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">identical inputs,</text>
+<text x="58.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">identical world</text>
+<line x1="110.0" y1="54" x2="120.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="121.0,54 117.0,51.4 117.0,56.6" fill="#000"/>
+<rect x="122.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="172.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Frozen artefact</text>
+<text x="172.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">output committed</text>
+<text x="172.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">with a hash</text>
+<line x1="224.0" y1="54" x2="234.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="235.0,54 231.0,51.4 231.0,56.6" fill="#000"/>
+<rect x="236.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="286.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Pre-registration</text>
+<text x="286.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">claim, gates, scoring</text>
+<text x="286.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">sealed</text>
+<line x1="338.0" y1="54" x2="348.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="349.0,54 345.0,51.4 345.0,56.6" fill="#000"/>
+<rect x="350.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="400.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Sealed judge</text>
+<text x="400.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">outcome fetched</text>
+<text x="400.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">afterwards; scored once</text>
+<text x="235.0" y="14" font-size="8" text-anchor="middle" font-style="italic">each link is inert without the one before it</text>
+<text x="235.0" y="99" font-size="7.6" text-anchor="middle" fill="#333">after the outcome is visible the model cannot reselect metric, horizon, country set or threshold</text>
+</svg>

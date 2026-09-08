@@ -1,0 +1,105 @@
+<h2 class="sec"><span class="n">3</span>Discussion</h2>
+
+<h3 class="sub"><span class="n">3.1</span>A model of its own</h3>
+
+<p class="first">The results above describe a system that is not a cheaper approximation of a language-model society and not a larger instance of a classical agent-based model. It is a third object, and the case for treating it as its own class rests on three properties that do not co-occur elsewhere.</p>
+
+<p>The first is that its population is an estimate of a real one. A per-country joint over five demographic dimensions, fitted so that the correlation structure between education, income and residence is measured rather than assumed, and aggregated by census weight against a world population anchor, means that a global figure Earth-1 reports is a claim about humanity rather than about a convenience sample. Classical agent-based models typically do not carry a demographic frame at all; language-model societies increasingly do, but they sample personas from a pool rather than instantiating a joint distribution and drawing from it.</p>
+
+<p>The second is that behaviour is computed rather than generated, which is what makes the model's mechanisms addressable. When Earth-1 is wrong, the error can be traced to an operator, and when an operator is absent the model can say so by abstaining rather than by producing a plausible number. This is the difference between a system whose errors are enumerable and one whose errors are diffuse. A model that is wrong without being wrong about anything in particular offers no handles for repair; Earth-1's register in Section 3.3 is a list of handles, each of which constitutes a prediction about what should change when the corresponding channel is added.</p>
+
+<p>The third is exact reproducibility, which converts the first two from design intentions into measurable properties. Without it, a claim that a given inequality is emergent rather than drawn cannot be tested, because the comparison requires holding an entire world fixed while a single mechanism is varied. With it, that comparison is routine.</p>
+
+<p>Together these support a specific and limited sense in which Earth-1 is a foundational model &mdash; not a pretrained network, but a single load-bearing substrate and grammar onto which many domain-specific populations can be conditioned. The same world serves a question about attitudes, a question about material hardship, and a question about the geography of unrest, without being rebuilt for each; and because the substrate is shared, the marginal cost of an additional question is the cost of reading the world rather than the cost of re-simulating it. Under a per-agent-prompt regime, cost scales with questions multiplied by agents multiplied by days; under a shared-substrate regime it does not.</p>
+
+<p>We are precise about where Earth-1 is not ahead. Its largest measured configuration is one hundred million agents, an order of magnitude below the billion-agent systems in the comparison class<sup>1</sup>. Scale is not the axis on which this work competes, and the case for a larger Earth-1 rests on resolution and rare-event power rather than on aggregate accuracy, which Section 2.4 shows is already population-true at two hundred thousand agents.</p>
+
+<h3 class="sub"><span class="n">3.2</span>Falsifiability as an architectural property</h3>
+
+<p class="first">A simulation output is not automatically evidence. For it to bear on a claim about the world, it must have been possible for the run to be wrong in a manner specified before the answer was known. Most properties commonly reported for large social simulations &mdash; population size, throughput, behavioural richness, run-to-run stability &mdash; are orthogonal to that requirement. Earth-1 treats it as the primary design constraint, from which the engineering choices follow rather than the reverse.</p>
+
+<p>The argument runs in four links, each inert without the one before it. <em>Determinism</em>: identical inputs yield an identical world, verified along three independent execution paths and one independent re-implementation. <em>A frozen artefact</em>: because a run reproduces exactly, its output can be committed as a fixed object with a hash, so that &ldquo;the model said <em>X</em>&rdquo; becomes a checkable assertion about a particular artefact rather than a summary of a distribution that would have to be regenerated, and might regenerate differently, in order to be inspected. <em>Pre-registration</em>: once the artefact is fixed, the claim, the gates and the scoring procedure can be written and sealed while the answer is still unknown<sup>17,18</sup>. <em>A judge fetched afterwards</em>: only at that point is outcome data retrieved, from a source registered beforehand by name and location.</p>
+
+<figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="100%" font-family="Charter, Georgia, serif">
+<rect x="8.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="58.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Determinism</text>
+<text x="58.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">identical inputs,</text>
+<text x="58.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">identical world</text>
+<line x1="110.0" y1="54" x2="120.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="121.0,54 117.0,51.4 117.0,56.6" fill="#000"/>
+<rect x="122.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="172.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Frozen artefact</text>
+<text x="172.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">output committed</text>
+<text x="172.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">with a hash</text>
+<line x1="224.0" y1="54" x2="234.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="235.0,54 231.0,51.4 231.0,56.6" fill="#000"/>
+<rect x="236.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="286.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Pre-registration</text>
+<text x="286.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">claim, gates, scoring</text>
+<text x="286.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">sealed</text>
+<line x1="338.0" y1="54" x2="348.0" y2="54" stroke="#000" stroke-width="0.7"/>
+<polygon points="349.0,54 345.0,51.4 345.0,56.6" fill="#000"/>
+<rect x="350.0" y="26" width="100" height="56" fill="none" stroke="#000" stroke-width="0.7"/>
+<text x="400.0" y="44" font-size="8.6" font-weight="bold" text-anchor="middle">Sealed judge</text>
+<text x="400.0" y="57.0" font-size="7.4" text-anchor="middle" fill="#333">outcome fetched</text>
+<text x="400.0" y="66.5" font-size="7.4" text-anchor="middle" fill="#333">afterwards; scored once</text>
+<text x="235.0" y="14" font-size="8" text-anchor="middle" font-style="italic">each link is inert without the one before it</text>
+<text x="235.0" y="99" font-size="7.6" text-anchor="middle" fill="#333">after the outcome is visible the model cannot reselect metric, horizon, country set or threshold</text>
+</svg><figcaption><span class="lbl">Figure 6</span> | <strong>The chain from determinism to evidence.</strong> Exact reproducibility yields an artefact that can be frozen; a frozen artefact is something a pre-registration can attach to; a pre-registered claim can be scored by a judge whose values were unknown when the claim was made. Statistical run-to-run stability supplies no artefact and therefore cannot enter this chain.</figcaption></figure>
+
+<p>It is the ordering, not any individual step, that does the work. Under this sequence the model has no move available after the outcome is visible: it cannot reselect the metric, the horizon, the country set or the threshold. Retrospective scoring leaves the space of admissible framings open until after the answer is in hand, and a sufficiently large space always contains a favourable framing<sup>28</sup>.</p>
+
+<p>A chain of this kind fails through procedure rather than theory, so the procedure is codified: one named change per cycle, so that any movement in the gates is attributable; gates fixed by written ruling before the run; VOID reserved for defects in the measuring instrument and never invoked for an unwelcome result; sealed judges registered with values unfetched until the model output is committed. Such rules are only tested when they cost something. The physics was frozen as a <em>freeze-with-named-regression</em> &mdash; carrying the failed direction gate and five named regressions on the tag rather than a fix that would have reopened the loop &mdash; and a registered substrate defect was likewise left deliberately unpatched and scheduled as a later cycle, because the physics was frozen. Both decisions are locally uncomfortable and structurally necessary. A gate that may be revised once the result is visible is not a gate.</p>
+
+<h4 class="subsub"><span class="n">3.2.1</span>A worked example: the 2022 grain-shock counterfactual</h4>
+
+<p class="first">The counterfactual was frozen and committed before any outcome data was fetched, against a judge registered in advance: an acute-food-insecurity database restricted to the 48 countries assessed in both 2021 and 2022. The model lost on all three registered dimensions. Magnitude overshot by 8.5&times; (+326M modelled against +38.5M real). Geography carried no signal, at Spearman &minus;0.137. Top-five overlap was one of five.</p>
+
+<p>Sealed before the fetch, the written prior had predicted all three failures and named the mechanism responsible: no substitution, no subsidies, no stock drawdown. Reality then confirmed the named damper directly &mdash; Egypt's real change was exactly zero, absorbed by its bread subsidy, which is the classical entitlement mechanism by which food availability and food access come apart<sup>29</sup>. The run is therefore, simultaneously and without contradiction, a triple failure against its own registered gates and a successful test of a stated mechanistic hypothesis. Only the ordering makes the second reading admissible. Had the prior been written after the numbers were known, it would be narrative rather than prediction, and the identical text would carry no evidential weight whatever.</p>
+
+<h3 class="sub"><span class="n">3.3</span>Limitations: the complete register</h3>
+
+<p class="first">This section is the complete register of defects standing against Earth-1 at freeze-0.9. Each entry names one thing: a channel the physics does not contain, a fault the engine's own checks found in its apparatus, a boundary of the substrate, or a score below a gate fixed by written ruling before the run. Each is stated once, with its measured consequence and the closure path the record names. The register is published rather than summarised because a model whose errors can be enumerated this precisely is demonstrating instrument quality, and because each entry is a testable prediction about what should change when the corresponding operator is added.</p>
+
+<figure class="tbl">
+<figcaption><span class="lbl">Table 9</span> | <strong>Named open defects at freeze-0.9</strong>, with measured consequence and closure path. Absent channels are physics that has not been built; substrate boundaries are properties of the population frame; instrument defects are faults the engine's own checks found in its measuring apparatus.</figcaption>
+<table>
+<thead><tr><th>Class</th><th>Defect</th><th>Measured consequence</th><th>Closure</th></tr></thead>
+<tbody>
+<tr><td>Absent channel</td><td>No unemployment-insurance operator</td><td>Unemployment ~9.7% against real 4.8%; COVID unemployment response 3.5&times; the real delta</td><td>Insurance and furlough operators</td></tr>
+<tr><td>Absent channel</td><td>No substitution, subsidy or stock-drawdown operators</td><td>Food shock overshoots 8.5&times;; geography &rho; = &minus;0.137; top-5 overlap 1/5</td><td>Price substitution, state transfer, inventory buffering</td></tr>
+<tr><td>Absent channel</td><td>No interbank or deposit channel</td><td>Banking contagion under-called at 0.3019 on an outcome that resolved YES</td><td>Interbank exposure and deposit-flight channel</td></tr>
+<tr><td>Absent channel</td><td>No bond or pension channel</td><td>UK gilt crisis invisible; branch below class noise floor relative to control</td><td>Sovereign-debt and pension-liability channel</td></tr>
+<tr><td>Absent input</td><td>No national religiosity input</td><td>Religion and values is the worst opinion family at 3.91 sampling errors</td><td>Country-level religiosity series</td></tr>
+<tr><td>Absent input</td><td>No geopolitical-alignment input</td><td>International relations is the worst Pew family: 11.36 pp MAE, 79.7% majority agreement</td><td>Alignment and bloc-membership series</td></tr>
+<tr><td>Instrument defect</td><td>Settlement flag inverted in the current substrate</td><td>Model settlement reads as exactly one minus census in every country checked; two physics consumers affected</td><td>Registered, deliberately unpatched under the freeze; scheduled v1.1</td></tr>
+<tr><td>Instrument defect</td><td>Chronicle cost</td><td>A world warmed on ninety days of real news ticks far slower than a cold one; memory spread dominates the tick</td><td>Consolidation pass; registered pre-scale cycle</td></tr>
+<tr><td>Instrument defect</td><td>Encounter stream keyed on simulation day</td><td>Seed replicates do not resample the encounter sequence, so error bars on opinion observables under-sample the influence channel</td><td>Reseed the stream; quantify the under-sampling</td></tr>
+<tr><td>Substrate boundary</td><td>131 of 194 country joints are tier-fallback</td><td>Education and income margins pooled from income-tier donors rather than measured from microdata</td><td>Additional survey microdata licences</td></tr>
+<tr><td>Substrate boundary</td><td>No subnational geography; no household frame</td><td>No adm1 resolution; households not represented as units</td><td>National statistical tables or a negotiated source</td></tr>
+<tr><td>Score below gate</td><td>Event-direction gate</td><td>4 of 10 registered direction calls; pre-registered tiers 75% ACCEPT / 85% GOOD</td><td>Election and shock injector v2</td></tr>
+<tr><td>Score below gate</td><td>Opinion readout against informed baselines</td><td>11.84 pp against MrsP 11.18 and region-copy 9.70; registered ACCEPT tier is 7.0 pp</td><td>Missing inputs above; readout revision</td></tr>
+<tr><td>Score below gate</td><td>Extreme poverty</td><td>16.8% at $3.00/day against a real 10.4%, 1.6&times; over; persists at 20&times; scale</td><td>Lower-tail income and transfer operators</td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>Four further boundaries belong on the record because they bound how the results above may be read, and none of them is a defect in the engine.</p>
+
+<p><em>The sealed judges are unspent.</em> Every opinion and benchmark figure in this paper is a development-estate measurement. The holdout and prospective estates are registered, sealed, and reserved for a single scored exposure under founder-witnessed final scoring. No number reported here is a final benchmark result, and the paper should not be read as one.</p>
+
+<p><em>The learning result is synthetic.</em> Section 2.7 demonstrates parameter recovery on twenty simulated twin worlds against sealed planted parameters. It establishes that the loop learns rather than conditions, and that it does not learn when the signal is destroyed. It does not establish learning from real-world observation, and the same freeze package records the external real-data scoreboard as a miss.</p>
+
+<p><em>Some strong results are ordering results, not calibration results.</em> The protest register ranks real protest-prone countries above quiet controls at &rho; = 0.552 with a thirteenfold discrimination margin, but its Brier improvement over base rate is not significant. Earth-1 is currently better at saying <em>where</em> than at saying <em>how likely</em>.</p>
+
+<p><em>Opinion performance varies sharply by region.</em> The best region sits at 2.28 sampling errors and the worst, East Asia, at 4.66. Regional structure of this size is not captured by the family-level breakdown in Table 4 and is not currently explained by a named absent input.</p>
+
+<p>Finally, one methodological caveat about how the record itself is maintained. Where two committed artefacts disagree &mdash; as two files do on the number of cells abstained in the distance run &mdash; the disagreement is carried forward rather than silently reconciled, on the principle that a register which quietly harmonises its own sources has stopped being a register.</p>
+
+<h3 class="sub"><span class="n">3.4</span>Outlook</h3>
+
+<p class="first">The defects in Table 9 are not a backlog so much as a research programme with the order of work already fixed. Each absent channel names a mechanism whose addition makes a specific, quantified prediction: adding an unemployment-insurance operator should move the unemployment line toward 4.8% and shrink the COVID overshoot below 3.5&times;; adding substitution and subsidy operators should reduce the food-shock magnitude error from 8.5&times; and, if the mechanism named in the sealed prior is the right one, should recover the countries whose real change was absorbed by domestic transfers. Because the gates were fixed before the runs that failed them, those predictions can be scored the same way.</p>
+
+<p>Three lines of work follow directly from results reported here. The zero-transmission ablation described in Section 2.6.6 will decompose neighbour correlation into transmission and homophily, converting the paper's structural claim about dyadic influence into a quantity. Reseeding the encounter stream will establish how much the current error bars on opinion observables under-state variance in the influence channel specifically. And the sealed estates will be spent once, under the registered protocol, at which point the opinion figures in Section 2.5 acquire a final rather than a developmental status.</p>
+
+<p>The broader claim we would defend is narrow and structural. A model that can lose a pre-registered bet, and does, occupies a different epistemic position from one that cannot be placed in the position of losing. Earth-1's material board lands on real anchors, its census is invariant across a five-hundredfold range of population, its world is recoverable bit-for-bit across independent implementations, and it agrees with real human majorities on five cells in six. It is also, by its own registered gates, behind two statistical baselines on continuous opinion estimation and below its direction target on events. Both halves of that sentence are measurements, taken with the same instrument, under rules written before the answers were known. That is the property the architecture was built to have.</p>
