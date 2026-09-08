@@ -62,7 +62,7 @@ def _fields(w):
         "fear_by_country": s.get("fear_by_country"),
         # registered negative control: the material board
         "pov_830": p.get("poverty_830_2021ppp_headcount"),
-        "median_income": p.get("median_income_day"),
+        "median_income": p.get("median_welfare_ppp"),
         "unemployment": float((cw * (~life.employed & lf)).sum()
                               / max((cw * lf).sum(), 1e-9)),
     }
@@ -135,6 +135,9 @@ def orchestrate(concurrency=3):
                 env["EARTH1_GDELT_DIR"] = os.environ["EARTH1_GDELT_DIR"]
             if c == "notrans":
                 env["EARTH1_SOCIAL_TRANSMISSION"] = "off"
+            for tv in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS",
+                       "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
+                env[tv] = os.environ.get("EARTH1_WORKER_THREADS", "6")
             env["PYTHONPATH"] = ROOT
             p = subprocess.Popen(
                 [sys.executable, os.path.abspath(__file__), "worker",

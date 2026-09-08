@@ -106,7 +106,7 @@ def _board(w, watch):
         if wl.sum() > 0 else None
     return {"pov_830": p.get("poverty_830_2021ppp_headcount"),
             "pov_300": p.get("poverty_300_2021ppp_headcount"),
-            "median_income": p.get("median_income_day"),
+            "median_income": p.get("median_welfare_ppp"),  # board convention (cycle.py)
             "unemployment": round(unemp, 5),
             "adult_65plus": round(a65, 5),
             "deaths_cumulative": watch.n,
@@ -201,6 +201,9 @@ def orchestrate(concurrency=3):
         while jobs and len(running) < concurrency:
             arm, seed = jobs.pop(0)
             env = dict(base_env); env.update(freeze); env.update(ARMS[arm])
+            for tv in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS",
+                       "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
+                env[tv] = os.environ.get("EARTH1_WORKER_THREADS", "6")
             env["PYTHONPATH"] = ROOT
             p = subprocess.Popen(
                 [sys.executable, os.path.abspath(__file__), "worker",
